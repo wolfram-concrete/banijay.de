@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lokales Quellmaterial (Fonts, Film, Visuals, scraped_content) — nicht deploybar, zu gross fuer GitHub
+design-source/
+.venv

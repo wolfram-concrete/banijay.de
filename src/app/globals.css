@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ------------------------------------------------------------------ */
+/*  Banijay Germany — Design Tokens                                    */
+/*  Electric Blue + Black color-blocking, Magenta accent, Thunder type */
+/* ------------------------------------------------------------------ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Markenfarben */
+  --color-electric: #0103b4; /* elektrisches Banijay-Blau (Hauptfeld) */
+  --color-electric-deep: #01016a; /* tiefe Variante für Verläufe */
+  --color-magenta: #ff4370; /* Akzent / Display-Type */
+  --color-magenta-soft: #ff6f93;
+  --color-bone: #ededed; /* helles Color-Block-Feld */
+  --color-ink: #050507; /* tiefes Schwarz */
+  --color-graphite: #1f1f1f; /* dunkle Schrift auf hell */
+
+  /* Schriften */
+  --font-display: var(--font-thunder);
+  --font-body: var(--font-konstant);
+
+  /* Layout */
+  --shell-max: 1600px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #050507;
+  --foreground: #ededed;
+}
+
+* {
+  border-color: color-mix(in oklab, #ededed 12%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--color-magenta);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+
+/* Inhalts-Container */
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Monumentale Display-Type: Thunder, eng, versal */
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.78;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Kleines Label / Kicker */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Glas-Layer (frosted) über Inhalten */
+.glass {
+  background: color-mix(in oklab, #ffffff 6%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid color-mix(in oklab, #ffffff 14%, transparent);
+}
+.glass-dark {
+  background: color-mix(in oklab, #050507 38%, transparent);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  border: 1px solid color-mix(in oklab, #ffffff 10%, transparent);
+}
+
+/* Subtiles Film-Korn über cinematische Flächen */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Reveal-on-scroll (gesteuert von <Reveal/>) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Format-Wand: endlose Laufbänder */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  animation: marquee-left 60s linear infinite;
+}
+.marquee-track.reverse {
+  animation-name: marquee-right;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
 }
