@@ -1,157 +1,243 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------ */
-/*  Banijay Germany — Design Tokens                                    */
-/*  Electric Blue + Black color-blocking, Magenta accent, Thunder type */
-/* ------------------------------------------------------------------ */
+/*
+  ──────────────────────────────────────────────────────────────────────────
+  BANIJAY GERMANY — Design Tokens
+  ──────────────────────────────────────────────────────────────────────────
+  PHASE 1 (aktuell): Wireframe / Graustufen. Fokus auf Struktur & Hierarchie.
+  PHASE 2 (später):  Cinematic Layer. Dann werden nur diese Token-Werte
+                     getauscht — Komponenten bleiben unverändert.
 
-@theme inline {
-  /* Markenfarben */
-  --color-electric: #0103b4; /* elektrisches Banijay-Blau (Hauptfeld) */
-  --color-electric-deep: #01016a; /* tiefe Variante für Verläufe */
-  --color-magenta: #ff4370; /* Akzent / Display-Type */
-  --color-magenta-soft: #ff6f93;
-  --color-bone: #ededed; /* helles Color-Block-Feld */
-  --color-ink: #050507; /* tiefes Schwarz */
-  --color-graphite: #1f1f1f; /* dunkle Schrift auf hell */
-
-  /* Schriften */
-  --font-display: var(--font-thunder);
-  --font-body: var(--font-konstant);
-
-  /* Layout */
-  --shell-max: 1600px;
-}
+  Brand-Referenz für Phase 2:
+    --background  #070309   (near-black)
+    --accent      #FB4B68   (Banijay Coral, aus Logo)
+    glow:         #E0218A Magenta · #6B2FB3 Violett · #2B1A6B Indigo
+  ──────────────────────────────────────────────────────────────────────────
+*/
 
 :root {
-  --background: #050507;
-  --foreground: #ededed;
+  /* Surfaces — Phase 2 „Banijay Kinetic": warmes Editorial (Algarve-Anmutung) */
+  --background: #f4f3ee;
+  --surface: #eceae3;
+  --surface-2: #e3e0d7;
+  --foreground: #0e0d0b;
+  --muted: #eceae3;
+  --muted-foreground: #6b675f;
+  --border: #dbd8ce;
+
+  /* Accent — Banijay Coral */
+  --accent: #fb4b68;
+  --accent-foreground: #ffffff;
+
+  /* Placeholder-Flächen */
+  --placeholder: #e4e1d8;
+  --placeholder-foreground: #908c82;
+
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-placeholder: var(--placeholder);
+  --color-placeholder-foreground: var(--placeholder-foreground);
+
+  --font-sharp: var(--font-sharp);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
 }
 
 * {
-  border-color: color-mix(in oklab, #ededed 12%, transparent);
+  border-color: var(--color-border);
 }
 
-html {
-  scroll-behavior: smooth;
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sharp), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-}
-
-::selection {
-  background: var(--color-magenta);
-  color: #fff;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Utilities                                                          */
-/* ------------------------------------------------------------------ */
-
-/* Inhalts-Container */
-.shell {
+/* Zentrierter Content-Container (ersetzt Tailwind-v3 container-Plugin) */
+.container {
   width: 100%;
-  max-width: var(--shell-max);
   margin-inline: auto;
   padding-inline: 1.5rem;
+  max-width: 90rem;
 }
-@media (min-width: 768px) {
-  .shell {
+@media (min-width: 1024px) {
+  .container {
     padding-inline: 2.5rem;
   }
 }
 
-/* Monumentale Display-Type: Thunder, eng, versal */
-.display {
-  font-family: var(--font-display);
-  font-weight: 900;
-  line-height: 0.78;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
+/*
+  ──────────────────────────────────────────────────────────────────────────
+  PHASE 2 · „Banijay Kinetic" — Algarve-orientiert: hell, editorial, große Typo
+  ──────────────────────────────────────────────────────────────────────────
+*/
+:root {
+  --bj-paper: #f4f3ee;   /* warmes Off-White (Algarve-Anmutung) */
+  --bj-ink: #0e0d0b;     /* fast-schwarz */
+  --bj-coral: #fb4b68;   /* Banijay Coral */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Kleines Label / Kicker */
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+/* Lenis Smooth-Scroll */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Section-Reveal — bulletproof per CSS scroll-driven animation.
+   Kein JS/Observer-Timing. Fällt das Feature aus, bleibt der Inhalt SICHTBAR. */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(44px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-in 1s var(--ease-out-expo) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
-/* Glas-Layer (frosted) über Inhalten */
-.glass {
-  background: color-mix(in oklab, #ffffff 6%, transparent);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid color-mix(in oklab, #ffffff 14%, transparent);
-}
-.glass-dark {
-  background: color-mix(in oklab, #050507 38%, transparent);
-  backdrop-filter: blur(24px) saturate(120%);
-  -webkit-backdrop-filter: blur(24px) saturate(120%);
-  border: 1px solid color-mix(in oklab, #ffffff 10%, transparent);
-}
+/* Kinetische Typo: Zeilen-Clip-Reveal (Wort steigt aus der Maske) */
+.kinetic-clip { overflow: hidden; display: block; }
 
-/* Subtiles Film-Korn über cinematische Flächen */
-.grain::after {
+/* 3D-Flip-Perspektive für Headline-Wörter */
+.flip-3d { perspective: 1000px; }
+
+/*
+  ──────────────────────────────────────────────────────────────────────────
+  Navigation — estrela-inspiriert: dunkle Glas-Pille mit violett/pink Lichtkante
+  ──────────────────────────────────────────────────────────────────────────
+*/
+.nav-pill {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(28, 26, 31, 0.82), rgba(11, 10, 13, 0.86));
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 12px 40px -14px rgba(0, 0, 0, 0.75),
+    0 0 28px -6px rgba(190, 55, 165, 0.32);
+}
+/* Violett/pinke Lichtkante (Gradient-Border via Mask) */
+.nav-pill::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    125deg,
+    rgba(224, 33, 138, 0.55),
+    rgba(107, 47, 179, 0.4) 42%,
+    rgba(255, 255, 255, 0.04) 70%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Reveal-on-scroll (gesteuert von <Reveal/>) */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+/* Nav-Einfahrt beim Laden — robust per CSS (endet immer sichtbar) */
+@keyframes nav-enter {
+  from { opacity: 0; transform: translateY(-28px); }
+  to { opacity: 1; transform: none; }
 }
-.reveal[data-shown="true"] {
-  opacity: 1;
-  transform: none;
+.nav-enter { animation: nav-enter 0.9s var(--ease-out-expo) 0.15s both; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-enter { animation: none; }
 }
 
-/* Format-Wand: endlose Laufbänder */
-@keyframes marquee-left {
+/* Split-Text-Hover (line-normal / line-hover) */
+.n-link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 1.05em;
+}
+.n-link .line-normal,
+.n-link .line-hover {
+  display: block;
+  transition: transform 0.45s var(--ease-out-expo);
+}
+.n-link .line-hover {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: #ff5c8a;
+}
+.n-link:hover .line-normal,
+.n-link:focus-visible .line-normal,
+.n-link:hover .line-hover,
+.n-link:focus-visible .line-hover {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .n-link { overflow: visible; height: auto; }
+  .n-link .line-normal,
+  .n-link .line-hover { transition: none; }
+  .n-link .line-hover { display: none; }
+  .n-link:hover .line-normal,
+  .n-link:focus-visible .line-normal { transform: none; color: #ff5c8a; }
+}
+
+/* Ökosystem-Orbit: langsam rotierende Ringe */
+@keyframes eco-spin { to { transform: rotate(360deg); } }
+.eco-spin { animation: eco-spin 40s linear infinite; transform-origin: center; }
+.eco-spin-rev { animation: eco-spin 60s linear infinite reverse; transform-origin: center; }
+@media (prefers-reduced-motion: reduce) {
+  .eco-spin, .eco-spin-rev { animation: none; }
+}
+
+/* Endlos-Marquee (Format-Ticker) */
+@keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-@keyframes marquee-right {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
 .marquee-track {
-  display: flex;
-  width: max-content;
-  gap: 1rem;
-  animation: marquee-left 60s linear infinite;
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 38s linear infinite;
+  will-change: transform;
 }
-.marquee-track.reverse {
-  animation-name: marquee-right;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+.marquee-mask:hover .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .marquee-track {
-    animation: none;
-  }
+/* Wireframe-Hilfsfläche: markiert Media/Visual-Boxen klar als „noch ohne Design" */
+.wf-placeholder {
+  background-color: var(--color-placeholder);
+  color: var(--color-placeholder-foreground);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 11px,
+    rgba(0, 0, 0, 0.035) 11px,
+    rgba(0, 0, 0, 0.035) 12px
+  );
 }

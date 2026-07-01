@@ -1,0 +1,39 @@
+// Company-Teaserbilder von der Live-Seite (scraped_content, 2026-06-25).
+// Liegen app-fertig in public/companies/<slug>.<ext>.
+// CMS-ready: werden später Payload-Media-Uploads, daher PayloadImage-Shape.
+
+import type { Company } from "./companies";
+import type { PayloadImage } from "@/types/blocks";
+
+/** slug → Dateiendung in public/companies/ (nicht alle Bilder sind .png). */
+const COMPANY_IMAGE_EXT: Record<string, "png" | "jpg"> = {
+  "banijay-productions-germany": "png",
+  "endemolshine-germany": "jpg",
+  "dynamic-ally-pictures": "png",
+  brainpool: "png",
+  "banijay-germany-live": "png",
+  "cape-cross": "png",
+  "banijay-media-germany": "png",
+  "influence-vision": "jpg",
+  madefor: "jpg",
+  "good-humor": "jpg",
+  "potatohead-pictures": "jpg",
+  "bb-endemol-shine": "jpg",
+  "endemol-shine-polska": "jpg",
+  "mts-management": "png",
+  "sr-management": "jpg",
+  en2rage: "jpg",
+  "ogp-only-good-people": "jpg",
+  myshow: "png",
+  "cologne-comedy-festival": "png",
+  "elevate-talent-management": "png",
+};
+
+export function getCompanyImage(company: Pick<Company, "slug" | "name">): PayloadImage | undefined {
+  const ext = COMPANY_IMAGE_EXT[company.slug];
+  if (!ext) return undefined;
+  return {
+    url: `/companies/${company.slug}.${ext}`,
+    alt: `${company.name} – Teaserbild`,
+  };
+}
