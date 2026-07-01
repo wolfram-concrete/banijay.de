@@ -7,14 +7,14 @@ export const ABOUT = {
       "Banijay Germany ist ein führendes Entertainment-Haus im deutschen Markt. Unter unserem Dach entstehen Programme, Formate, Live-Erlebnisse, digitale Inhalte und Talentwelten – entwickelt von eigenständigen Companies, Labels und kreativen Unternehmer:innen.",
   },
   proof: {
-    headline: "Eine der stärksten Entertainment-Welten im deutschen Markt.",
+    headline: "Eine der stärksten Entertainment-Welten Deutschlands.",
     text:
-      "Banijay Germany steht für Reichweite, Produktionskraft und kreative Vielfalt. Die aktuelle Website nennt 1.300 Mitarbeitende, 25+ Companies und Labels, 4 Milliarden Views & Zuschauer, 3.000 Stunden Entertainment und 130+ Companies weltweit.",
+      "Unsere Companies entwickeln, produzieren und vermarkten Entertainment für Sender, Plattformen, Marken, Bühnen und Communities.",
   },
   principle: {
     headline: "Kreative Freiheit braucht ein starkes Dach.",
     text:
-      "Banijay Germany verbindet eigenständige Companies mit der Kraft eines gemeinsamen Entertainment-Hauses. Jede Company behält ihre eigene Handschrift, ihre eigene Kultur und ihre eigene Nähe zum Markt. Banijay schafft Verbindung: Austausch, Reichweite, Produktionskompetenz, internationale Perspektive und unternehmerische Kraft.",
+      "Jede Company behält ihre eigene Handschrift. Banijay Germany verbindet Strategie, Reichweite, Erfahrung und operative Kraft.",
   },
   ceo: {
     headline: "Geführt von Menschen, die Entertainment verstehen.",
@@ -27,14 +27,14 @@ export const ABOUT = {
       "Unsere Stärke liegt in der Verbindung: kreative Unternehmer:innen, starke Companies und die Kraft eines internationalen Entertainment-Hauses. So entstehen Formate, die nicht nur produziert werden, sondern Menschen erreichen.",
   },
   international: {
-    headline: "In Deutschland verwurzelt. International verbunden.",
+    headline: "Aus Deutschland. Mit Anschluss an die ganze Banijay-Welt.",
     text:
-      "Banijay Germany ist Teil der internationalen Banijay-Gruppe. Dadurch verbindet die Gruppe lokale Marktkenntnis mit globaler Content-Kompetenz, internationaler Formatkraft und einem Netzwerk aus mehr als 130 Companies weltweit.",
+      "Banijay Germany ist Teil der internationalen Banijay-Gruppe. So treffen lokale Marktnähe, globale Erfahrung und ein Netzwerk aus mehr als 130 Companies weltweit zusammen.",
   },
   partnership: {
-    headline: "Für Partner, die Entertainment mit Wirkung suchen.",
+    headline: "Für Partner, die Wirkung suchen.",
     text:
-      "Banijay Germany arbeitet mit Sendern, Plattformen, Marken, Talenten und kreativen Partnern. Entscheidend ist nicht nur, dass ein Inhalt produziert wird. Entscheidend ist, dass er Publikum findet, Gespräche auslöst und auf der richtigen Bühne Wirkung entfaltet.",
+      "Banijay Germany arbeitet mit Sendern, Plattformen, Marken, Talenten und Partnern für Ideen, Formate und Marken. Entscheidend ist nicht nur, dass ein Inhalt produziert wird – sondern dass er Publikum findet und im Gespräch bleibt.",
     cards: [
       { title: "Sender & Plattformen", text: "Formate, Produktionen und Entertainment-Marken für lineare und digitale Ausspielwege." },
       { title: "Marken & Unternehmen", text: "Branded Entertainment, Partnerschaften und Content, der Marken in Entertainment übersetzt." },
@@ -42,5 +42,5 @@ export const ABOUT = {
       { title: "Live & Experience Partner", text: "Bühnen, Festivals, Shows, Tourneen und immersive Erlebnisse." },
     ],
   },
-  cta: { text: "Kontakt aufnehmen", href: "/contact" },
+  cta: { text: "Gespräch starten", href: "/contact" },
 };

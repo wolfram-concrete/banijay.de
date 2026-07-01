@@ -10,9 +10,9 @@ export const CAREER = {
   jobWorld: {
     headline: "Viele Companies. Viele Rollen. Ein gemeinsames Ziel.",
     text:
-      "Ob Produktion, Redaktion, Entwicklung, Live, Digital, Talent-Management, Vermarktung oder Administration: Jobs bei Banijay entstehen dort, wo Entertainment gemacht wird – direkt in den Companies und Labels der Gruppe.",
+      "Ob Köln, Berlin, Münster, Wien oder Zürich: In der Banijay-Welt findest du Jobs nah an Formaten, Talenten und Publikum.",
     text2:
-      "Die aktuelle Karriereseite zeigt Jobs über verschiedene Companies und Standorte hinweg, unter anderem Köln, Berlin, Münster, Wien und Zürich.",
+      "Jobs entstehen dort, wo Entertainment gemacht wird – direkt in den Companies und Labels der Gruppe.",
     locations: ["Köln", "Berlin", "Münster", "Wien", "Zürich"],
     areas: [
       "Produktion",
@@ -27,9 +27,9 @@ export const CAREER = {
     ],
   },
   talent: {
-    headline: "Für Talente, die mehr wollen als einen Job.",
+    headline: "Für Talente, die weiter wollen.",
     text:
-      "Mit BANIJAY TOMORROW fördert Banijay Germany neue Talente und unterstützt Professionals sowie Führungskräfte mit Workshops und Entwicklungsangeboten. Die Academy richtet sich laut Karriereseite gezielt an Talents für einen starken Start ins Berufsleben.",
+      "BANIJAY TOMORROW bündelt Academy, Workshops und Entwicklungsangebote für Talente, Professionals und Führungskräfte.",
   },
   cta: { text: "Offene Stellen ansehen", href: "#stellen" },
 };

@@ -4,6 +4,9 @@ import { Section, Heading, Eyebrow } from "@/components/wireframe";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
 import { CountUp } from "@/components/cinematic/CountUp";
+import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
+import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
+import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { ABOUT } from "@/data/about";
 import { STATS } from "@/data/site";
 
@@ -17,17 +20,12 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border px-[2vw] pb-20 pt-36 lg:pb-28 lg:pt-44">
-        <Reveal>
-          <Eyebrow className="text-accent">About</Eyebrow>
-          <h1 className="mt-6 font-medium uppercase leading-[0.9] tracking-tight text-[clamp(2.6rem,8.5vw,9rem)]">
-            {ABOUT.hero.headline}
-          </h1>
-          <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            {ABOUT.hero.text}
-          </p>
-        </Reveal>
-      </section>
+      <AlgarvePageHero
+        headline={"We are\nBanijay"}
+        label="Über Banijay"
+        body="Ein führendes Entertainment-Netzwerk im deutschen Markt: eigenständige Companies, bekannte Marken und kreative Teams unter einem starken Dach."
+        image="/grid/g05.jpg"
+      />
 
       {/* Zahlen / Proof (inkl. About-only Umsatz) */}
       <Section surface>
@@ -73,12 +71,12 @@ export default function AboutPage() {
       <Section surface>
         <Reveal>
           <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:items-center">
-            <div className="overflow-hidden rounded-xl border border-border">
+            <div className="overflow-hidden rounded-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/people/marcus-wolter.jpg"
                 alt="Marcus Wolter, CEO & Co-Founder Banijay Germany"
-                className="aspect-[4/3] w-full object-cover"
+                className="aspect-[4/5] w-full object-cover"
               />
             </div>
             <div>
@@ -87,31 +85,23 @@ export default function AboutPage() {
               <blockquote className="mt-6 text-2xl font-medium leading-snug tracking-tight md:text-3xl">
                 „{ABOUT.ceo.quote}“
               </blockquote>
-              <p className="mt-4 font-medium">{ABOUT.ceo.name}</p>
+              <p className="mt-6 font-medium">{ABOUT.ceo.name}</p>
               <p className="text-sm text-muted-foreground">{ABOUT.ceo.role}</p>
-              <div className="mt-6 rounded-md border border-dashed border-border p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-                  Alternative Quote zur Freigabe
-                </p>
-                <p className="mt-2 text-sm italic leading-relaxed text-foreground">„{ABOUT.ceo.altQuote}“</p>
-              </div>
             </div>
           </div>
         </Reveal>
       </Section>
 
-      {/* Internationalität */}
-      <Section>
-        <Reveal>
-          <div className="max-w-3xl">
-            <Eyebrow className="text-accent">International</Eyebrow>
-            <Heading className="mt-4">{ABOUT.international.headline}</Heading>
-            <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-              {ABOUT.international.text}
-            </p>
-          </div>
-        </Reveal>
-      </Section>
+      {/* Internationalität — Algarve Image-Block + Glass-Card */}
+      <AlgarveImageStatement
+        eyebrow="International"
+        headline={ABOUT.international.headline}
+        text={ABOUT.international.text}
+        image="/grid/g06.jpg"
+      />
+
+      {/* Leadership — Algarve Founder-Grid */}
+      <AlgarveFounders />
 
       {/* Partnerverständnis */}
       <Section surface>
@@ -121,10 +111,15 @@ export default function AboutPage() {
             <Heading className="mt-4">{ABOUT.partnership.headline}</Heading>
             <p className="mt-5 text-base leading-relaxed text-muted-foreground">{ABOUT.partnership.text}</p>
           </div>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
+          <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {ABOUT.partnership.cards.map((card) => (
-              <div key={card.title} className="bg-background p-7 transition-colors hover:bg-surface">
-                <h3 className="text-lg font-medium">{card.title}</h3>
+              <div key={card.title} className="border-t border-black/15 pt-5">
+                <h3
+                  className="text-foreground"
+                  style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.2rem", fontWeight: 500 }}
+                >
+                  {card.title}
+                </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.text}</p>
               </div>
             ))}
@@ -138,7 +133,7 @@ export default function AboutPage() {
           <Reveal>
             <div className="flex flex-col items-start gap-6">
               <h2 className="max-w-3xl text-4xl font-medium leading-[1.05] tracking-tight md:text-6xl">
-                Lass uns über Entertainment mit Wirkung sprechen.
+                Lass uns über Entertainment sprechen, das Menschen erreicht.
               </h2>
               <Button href={ABOUT.cta.href} className="bg-accent text-accent-foreground hover:bg-accent/90">
                 {ABOUT.cta.text} <ArrowUpRight size={16} />

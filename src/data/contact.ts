@@ -16,7 +16,13 @@ export const CONTACT_PAGE = {
   formFields: [
     { name: "name", label: "Name", type: "text" },
     { name: "email", label: "E-Mail", type: "email" },
-    { name: "topic", label: "Anliegen", type: "select", options: ["Partner & Projekte", "Presse", "Career", "Allgemeine Anfrage"] },
+    { name: "topic", label: "Anliegen", type: "select", options: ["Projekt oder Partnerschaft", "Presseanfrage", "Karriere", "Allgemeine Anfrage"] },
     { name: "message", label: "Nachricht", type: "textarea" },
   ],
+  form: {
+    submit: "Anfrage senden",
+    success: "Danke. Deine Anfrage ist angekommen. Das passende Team meldet sich bei dir.",
+    error:
+      "Die Nachricht konnte gerade nicht gesendet werden. Bitte prüfe deine Angaben und versuche es erneut.",
+  },
 };

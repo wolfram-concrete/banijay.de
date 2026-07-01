@@ -1,141 +1,81 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
-import { ChevronDown, ArrowUpRight } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+import { ArrowUpRight } from "lucide-react";
 import type { Company } from "@/data/companies";
 import { getCompanyImage } from "@/data/companyImages";
-import { cn } from "@/lib/utils";
 
-// Tier-bewusste Company-Card (Konzept „Company Card UX"):
-//  - featured:   große Card mit voller Tiefe
-//  - specialist: kompakter
-//  - label:      kurze Label-/Experience-Card
-// Aufklappbare Detail-Ebene laut Konzept: „Bei Klick auf Mehr erfahren".
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="rounded-full border border-border bg-background px-2.5 py-0.5 text-[11px] text-muted-foreground">
-      {children}
-    </span>
-  );
-}
+// Algarve-Editorial-Company-Card: bild-first, minimaler Text.
+// Großes Teaser-Bild (Hover-Zoom + „known for"-Overlay), Name (Sharp), ein
+// Profil-Satz, dezentes Tier-Label. Keine Corporate-Box, keine Tag-Wolke.
 
 export function CompanyCard({ company }: { company: Company }) {
-  const [open, setOpen] = useState(false);
-  const isFeatured = company.tier === "featured";
-  const isLabel = company.tier === "label";
   const image = getCompanyImage(company);
+  const isFeatured = company.tier === "featured";
+  const href = company.externalLink;
+  const Wrapper = href ? "a" : "div";
 
   return (
-    <article
-      className={cn(
-        "group flex flex-col rounded-lg border border-border bg-background p-6 transition-colors hover:border-foreground/30",
-        isFeatured && "lg:p-8",
-      )}
+    <Wrapper
+      {...(href ? { href, target: "_blank", rel: "noreferrer" } : {})}
+      className="group block no-underline"
     >
-      {/* Kopf: Logo-Platzhalter + Name + Tier-Marker */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              "relative flex shrink-0 items-center justify-center overflow-hidden rounded-md border border-border/70 bg-surface font-medium text-foreground/70",
-              isFeatured ? "h-12 w-12 text-lg" : "h-10 w-10 text-base",
-            )}
-          >
-            {image ? (
-              <Image
-                src={image.url}
-                alt={image.alt}
-                fill
-                sizes="48px"
-                className="object-cover"
-              />
-            ) : (
-              company.name.charAt(0)
-            )}
-          </span>
-          <div>
-            <h3 className={cn("font-medium leading-tight tracking-tight", isFeatured ? "text-xl" : "text-lg")}>
-              {company.name}
-            </h3>
-            {company.parent && (
-              <p className="text-[11px] text-muted-foreground">Label unter {company.parent}</p>
-            )}
+      <div
+        className="relative overflow-hidden rounded-2xl"
+        style={{ aspectRatio: isFeatured ? "16 / 10" : "4 / 3", background: "#e8e6df" }}
+      >
+        {image ? (
+          <img
+            src={image.url}
+            alt={company.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-5xl font-medium text-black/15">
+            {company.name.charAt(0)}
           </div>
-        </div>
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+        )}
+
+        {/* Tier-Label */}
+        <span
+          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.12em]"
+          style={{ background: "rgba(0,0,0,0.32)", color: "#f8f7f3", backdropFilter: "blur(6px)" }}
+        >
           {company.tier}
         </span>
+
+        {/* Hover-Overlay: known for */}
+        {company.knownFor.length > 0 && (
+          <div
+            className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.82), rgba(0,0,0,0) 66%)" }}
+          >
+            <span className="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-white/60">Known for</span>
+            <span className="mt-1 text-sm leading-snug text-white">
+              {company.knownFor.slice(0, 4).join(" · ")}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Profil-Satz */}
-      <p className="mt-4 text-sm font-medium text-foreground">{company.profile}</p>
-
-      {/* Kurztext (Label-Cards knapper) */}
-      {!isLabel && (
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{company.description}</p>
-      )}
-
-      {/* Kompetenz-Tags */}
-      {company.competencies.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {company.competencies.map((c) => (
-            <Tag key={c}>{c}</Tag>
-          ))}
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <div>
+          <h3
+            className="m-0 text-foreground"
+            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.35rem", fontWeight: 500, letterSpacing: "-0.01em" }}
+          >
+            {company.name}
+          </h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{company.profile}</p>
+          {company.parent && (
+            <p className="mt-1 text-xs text-muted-foreground/70">Label unter {company.parent}</p>
+          )}
         </div>
-      )}
-
-      {/* Known for */}
-      {company.knownFor.length > 0 && (
-        <div className="mt-4">
-          <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Known for</p>
-          <p className="mt-1 text-sm text-foreground">{company.knownFor.join(" · ")}</p>
-        </div>
-      )}
-
-      <div className="mt-auto" />
-
-      {/* Aufklappbare Detail-Ebene */}
-      {open && (
-        <div className="mt-5 space-y-4 border-t border-border pt-5 text-sm">
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
-              Rolle im Banijay-Netzwerk
-            </p>
-            <p className="mt-1 text-foreground">{company.roleInWorld}</p>
-          </div>
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
-              Ausgewählte Produktionen / Cases
-            </p>
-            <p className="mt-1 text-muted-foreground">
-              {company.knownFor.length > 0 ? company.knownFor.join(", ") : "folgt"}
-            </p>
-          </div>
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
-              Geschäftsführung / kreative Köpfe
-            </p>
-            <p className="mt-1 text-muted-foreground">Platzhalter — Inhalte mit Banijay ergänzen</p>
-          </div>
-        </div>
-      )}
-
-      {/* Aktionen */}
-      <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-muted-foreground"
-        >
-          {open ? "Weniger" : "Mehr erfahren"}
-          <ChevronDown size={15} className={cn("transition-transform", open && "rotate-180")} />
-        </button>
-        <span className="inline-flex items-center gap-1 text-sm text-muted-foreground group-hover:text-foreground">
-          Zur Company <ArrowUpRight size={14} />
-        </span>
+        {href && (
+          <ArrowUpRight
+            size={20}
+            className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground"
+          />
+        )}
       </div>
-    </article>
+    </Wrapper>
   );
 }

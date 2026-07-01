@@ -15,6 +15,8 @@ export function SmoothScroll() {
 
     const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
     lenis.on("scroll", ScrollTrigger.update);
+    // Dev-Hook: erlaubt exaktes Positionieren aus der Preview (Lenis-eigene API).
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);

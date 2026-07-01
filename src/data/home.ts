@@ -16,7 +16,7 @@ export const HOME = {
   hero: {
     headline: "Die Entertainment-Welt hinter den Momenten, über die Deutschland spricht.",
     subline:
-      "Banijay Germany vereint starke Companies, kreative Unternehmer:innen und bekannte Formate unter einem Dach. Gemeinsam schaffen wir Unterhaltung für TV, Streaming, Digital, Live und Bühnen – mit Reichweite, Haltung und Wirkung.",
+      "Die Entertainment-Welt hinter Shows, Stories und Live-Momenten, die Millionen erreichen.",
     primaryCta: { text: "Companies entdecken", href: "/companies" },
     secondaryCta: { text: "Kontakt aufnehmen", href: "/contact" },
   },
@@ -49,13 +49,13 @@ export const HOME = {
     text:
       "Die Banijay-Welt lässt sich nicht über eine einzige Kategorie erklären. Manche Companies entwickeln große Shows, andere produzieren Fiction, betreuen Talente, bauen digitale Reichweiten auf, schaffen Live-Erlebnisse oder ermöglichen Produktionen technisch und organisatorisch.",
     fields: [
-      { title: "Show & Entertainment", text: "Prime-Time, Studio, Quiz, Competition, große Publikumsformate." },
-      { title: "Reality & Factual", text: "Reality, Factual Entertainment, Doku-Entertainment, Social Experiments." },
-      { title: "Comedy & Live", text: "Comedy-Marken, Bühnenprogramme, Festivals, Tourneen und Live-Erlebnisse." },
-      { title: "Fiction & Scripted", text: "Serien, Filme, Reihen, Comedy-Fiction und fiktionales Storytelling." },
-      { title: "Digital & Social", text: "Social Content, Plattformlogiken, Creator, Communities, digitale Distribution." },
-      { title: "Talent & Artists", text: "Künstlermanagement, Personality-Aufbau, Artist Development." },
-      { title: "Services & Experiences", text: "Production Services, Ticketing, Events, Postproduktion, Studio- und Veranstaltungstechnik." },
+      { title: "Show & Entertainment", claim: "Große Momente für Prime Time, Streaming und Bühne.", text: "Prime-Time, Studio, Quiz, Competition, große Publikumsformate." },
+      { title: "Reality & Factual", claim: "Nah an Menschen, Geschichten und gesellschaftlichen Bewegungen.", text: "Reality, Factual Entertainment, Doku-Entertainment, Social Experiments." },
+      { title: "Comedy & Live", claim: "Timing, Talent und Publikumskraft in einem System.", text: "Comedy-Marken, Bühnenprogramme, Festivals, Tourneen und Live-Erlebnisse." },
+      { title: "Fiction & Scripted", claim: "Erzählte Welten mit Haltung, Tempo und Reichweite.", text: "Serien, Filme, Reihen, Comedy-Fiction und fiktionales Storytelling." },
+      { title: "Digital & Social", claim: "Entertainment für Feeds, Communities und neue Plattformlogiken.", text: "Social Content, Plattformlogiken, Creator, Communities, digitale Distribution." },
+      { title: "Talent & Artists", claim: "Persönlichkeiten entdecken, aufbauen und langfristig begleiten.", text: "Künstlermanagement, Personality-Aufbau, Artist Development." },
+      { title: "Services & Experiences", claim: "Produktionen technisch und organisatorisch möglich machen.", text: "Production Services, Ticketing, Events, Postproduktion, Studio- und Veranstaltungstechnik." },
     ],
   },
 
@@ -82,7 +82,7 @@ export const HOME = {
   partnerCta: {
     headline: "Let’s create what people talk about.",
     text:
-      "Ob Sender, Plattform, Marke, Talent oder kreativer Partner: Wer Entertainment mit Wirkung entwickeln will, findet in Banijay Germany eine Welt aus Erfahrung, Reichweite, Produktionskraft und kreativer Eigenständigkeit.",
-    cta: { text: "Kontakt aufnehmen", href: "/contact" },
+      "Für Sender, Plattformen, Marken und Talente: Wir entwickeln Entertainment, das Reichweite aufbaut, Menschen erreicht und im Gespräch bleibt.",
+    cta: { text: "Gespräch starten", href: "/contact" },
   },
 };

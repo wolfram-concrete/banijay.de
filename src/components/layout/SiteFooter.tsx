@@ -1,56 +1,146 @@
 import Link from "next/link";
-import { NAV_ITEMS, CONTACT, SITE } from "@/data/site";
+import { NAV_ITEMS, CONTACT } from "@/data/site";
+
+// Footer — Algarve-Referenz: dunkles Rounded-Panel mit großen Nav-Links links,
+// Kontakt rechts, dem Claim „Mehr als ein Produktionshaus.", darunter BANIJAY
+// als großes Lettering im Endlos-Marquee, zuletzt die Legal-Zeile.
+
+const INK = "#0e0d0b";
+const ACCENT = "#ff4370"; // Footer-Typo & Außenfläche (Magenta-Flow)
+const marqueeWords = ["Banijay", "Banijay", "Banijay"];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-surface">
-      <div className="container grid gap-12 py-16 lg:grid-cols-[2fr_1fr_1fr] lg:py-20">
-        {/* Marke + Claim */}
-        <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/banijay-logo.png" alt="Banijay Germany" className="h-8 w-auto" />
-          <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">{SITE.tagline}</p>
-        </div>
+    <footer
+      style={{
+        background: ACCENT,
+        paddingTop: "2.22vw",
+        paddingBottom: "2.22vw",
+        // Footer legt sich komplett über Logo & Menu der fixen Nav (z-99) — im
+        // Footer stehen ohnehin alle Infos, also müssen Logo/Menu dort nicht sein.
+        position: "relative",
+        zIndex: 100,
+      }}
+    >
+      <style>{`@keyframes footerMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+      <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+        <div
+          style={{
+            background: INK,
+            color: ACCENT,
+            borderRadius: "1.67vw",
+            paddingTop: "4.44vw",
+            paddingBottom: "2.5vw",
+            overflow: "hidden",
+          }}
+        >
+          {/* Nav-Links + Kontakt */}
+          <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
+            <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
+              <nav className="flex flex-col" style={{ gap: "0.4vw" }}>
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="uppercase transition-opacity hover:opacity-60"
+                    style={{
+                      fontFamily: "var(--font-sharp), sans-serif",
+                      fontSize: "clamp(1.75rem, 2.6vw, 3.2rem)",
+                      fontWeight: 500,
+                      letterSpacing: "-0.02em",
+                      lineHeight: "118%",
+                      color: ACCENT,
+                    }}
+                  >
+                    {item.label === "Banijay" ? "Home" : item.label}
+                  </Link>
+                ))}
+              </nav>
 
-        {/* Navigation */}
-        <div>
-          <h3 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">Navigation</h3>
-          <ul className="mt-4 space-y-2.5">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="text-sm text-foreground hover:text-muted-foreground">
-                  {item.label}
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
+                    Folgen
+                  </span>
+                  <a
+                    href="https://instagram.com/banijaygermany"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:opacity-70"
+                    style={{ fontSize: "1.05rem" }}
+                  >
+                    @banijaygermany
+                  </a>
+                </div>
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
+                    Kontakt
+                  </span>
+                  <div style={{ lineHeight: "1.6", fontSize: "1.05rem" }}>
+                    {CONTACT.street}
+                    <br />
+                    {CONTACT.city}
+                  </div>
+                  <a href={`mailto:${CONTACT.email}`} className="hover:opacity-70" style={{ fontSize: "1.05rem" }}>
+                    {CONTACT.email}
+                  </a>
+                  <a
+                    href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`}
+                    className="hover:opacity-70"
+                    style={{ fontSize: "1.05rem" }}
+                  >
+                    {CONTACT.phone}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* BANIJAY — großes Lettering-Marquee (Referenz-Größe, langsam) */}
+          <div className="w-full overflow-hidden" style={{ marginTop: "6vw", marginBottom: "3vw" }}>
+            <div className="flex w-max" style={{ animation: "footerMarquee 60s linear infinite" }}>
+              {[0, 1].map((dup) => (
+                <div key={dup} className="flex shrink-0" aria-hidden={dup === 1}>
+                  {marqueeWords.map((w, i) => (
+                    <span
+                      key={i}
+                      className="uppercase"
+                      style={{
+                        fontFamily: "var(--font-sharp), sans-serif",
+                        fontSize: "22vw",
+                        fontWeight: 500,
+                        letterSpacing: "-0.05em",
+                        lineHeight: 1,
+                        paddingRight: "2vw",
+                        color: ACCENT,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {w}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Legal */}
+          <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
+            <div
+              className="flex flex-col gap-3 text-xs uppercase tracking-[0.14em] sm:flex-row sm:items-center sm:justify-between"
+              style={{ opacity: 0.5 }}
+            >
+              <div className="flex gap-6">
+                <Link href="/impressum" className="hover:opacity-100">
+                  Impressum
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Kontakt */}
-        <div>
-          <h3 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">Kontakt</h3>
-          <address className="mt-4 space-y-2.5 text-sm not-italic text-foreground">
-            <p>
-              {CONTACT.street}
-              <br />
-              {CONTACT.city}
-            </p>
-            <p>
-              <a href={`mailto:${CONTACT.email}`} className="hover:text-muted-foreground">
-                {CONTACT.email}
-              </a>
-            </p>
-            <p>{CONTACT.phone}</p>
-          </address>
-        </div>
-      </div>
-
-      <div className="border-t border-border">
-        <div className="container flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Banijay Germany. Alle Rechte vorbehalten.</p>
-          <div className="flex gap-6">
-            <Link href="/impressum" className="hover:text-foreground">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-foreground">Datenschutz</Link>
+                <Link href="/datenschutz" className="hover:opacity-100">
+                  Datenschutz
+                </Link>
+              </div>
+              <span>© {new Date().getFullYear()} Banijay Germany</span>
+            </div>
           </div>
         </div>
       </div>

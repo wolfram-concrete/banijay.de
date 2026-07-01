@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { Section, Eyebrow } from "@/components/wireframe";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
+import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
+import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
 import { CONTACT_PAGE } from "@/data/contact";
 import { CONTACT } from "@/data/site";
 
@@ -16,32 +18,40 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border px-[2vw] pb-20 pt-36 lg:pb-28 lg:pt-44">
-        <Reveal>
-          <Eyebrow className="text-accent">Contact</Eyebrow>
-          <h1 className="mt-6 font-medium uppercase leading-[0.9] tracking-tight text-[clamp(2.4rem,8vw,8.5rem)]">
-            {CONTACT_PAGE.hero.headline}
-          </h1>
-          <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            {CONTACT_PAGE.hero.subline}
-          </p>
-        </Reveal>
-      </section>
+      <AlgarvePageHero
+        headline={"Let’s\ntalk"}
+        label="Contact"
+        body="Für Projekte, Presse, Talente und Partnerschaften: Hier beginnt der richtige Kontakt zu Banijay Germany."
+        image="/grid/g10.jpeg"
+      />
 
       {/* Kontaktbereiche */}
       <Section surface>
         <Reveal>
           <Eyebrow className="text-accent">Bereiche</Eyebrow>
-          <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {CONTACT_PAGE.areas.map((area) => (
-              <div key={area.title} className="bg-background p-7 transition-colors hover:bg-surface">
-                <h3 className="text-lg font-medium">{area.title}</h3>
+              <div key={area.title} className="border-t border-black/15 pt-5">
+                <h3
+                  className="text-foreground"
+                  style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.2rem", fontWeight: 500 }}
+                >
+                  {area.title}
+                </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{area.text}</p>
               </div>
             ))}
           </div>
         </Reveal>
       </Section>
+
+      {/* Statement — Algarve Image-Block */}
+      <AlgarveImageStatement
+        eyebrow="Kontakt"
+        headline="Der kürzeste Weg zur richtigen Antwort."
+        text="Ob Format, Partnerschaft, Presse oder Bewerbung — schreib uns kurz, worum es geht. Deine Anfrage landet direkt beim passenden Team."
+        image="/grid/g09.jpg"
+      />
 
       {/* Ansprechpartner/Adresse + Formular */}
       <Section>
@@ -125,7 +135,7 @@ export default function ContactPage() {
                   </div>
                 ))}
                 <Button type="button" className="w-full sm:w-auto">
-                  Nachricht senden
+                  Anfrage senden
                 </Button>
                 <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground">
                   Formular-Logik & Spam-Schutz folgen in der CMS-Anbindung.

@@ -36,7 +36,8 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("border-b border-border py-20 lg:py-28", surface && "bg-surface", className)}
+      className={cn("py-24 lg:py-32", className)}
+      style={{ background: surface ? "#f0eee6" : "#f8f7f3" }}
     >
       <div className="container">{children}</div>
     </section>
@@ -46,10 +47,7 @@ export function Section({
 export function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <span
-      className={cn(
-        "text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground",
-        className,
-      )}
+      className={cn("text-[0.8rem] font-bold uppercase tracking-[0.14em] text-accent", className)}
     >
       {children}
     </span>
@@ -68,10 +66,15 @@ export function Heading({
   return (
     <Tag
       className={cn(
-        "font-medium leading-[1.1] tracking-tight text-foreground",
-        Tag === "h1" ? "text-4xl md:text-6xl" : Tag === "h2" ? "text-3xl md:text-5xl" : "text-xl md:text-2xl",
+        "font-medium leading-[1.04] tracking-tight text-foreground",
+        Tag === "h1"
+          ? "text-[clamp(2.4rem,6vw,5rem)]"
+          : Tag === "h2"
+            ? "text-[clamp(1.9rem,4.2vw,3.6rem)]"
+            : "text-[clamp(1.3rem,2vw,1.9rem)]",
         className,
       )}
+      style={{ fontFamily: "var(--font-sharp), sans-serif" }}
     >
       {children}
     </Tag>

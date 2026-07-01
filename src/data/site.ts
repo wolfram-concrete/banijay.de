@@ -27,9 +27,9 @@ export interface Stat {
 /** Zahlenmodule. Auf Home max. 5 (Konzept Section 4). */
 export const STATS: Stat[] = [
   { value: "1.300", label: "Mitarbeitende", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
-  { value: "25+", label: "Companies und Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
-  { value: "4 Milliarden", label: "Views & Zuschauer", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
-  { value: "3.000", label: "Stunden Entertainment", note: "Produktionskraft über Genres und Plattformen hinweg." },
+  { value: "25+", label: "Companies & Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
+  { value: "4 Mrd.", label: "Views & Zuschauer", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
+  { value: "3.000", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
   { value: "130+", label: "Companies weltweit", note: "Lokale Marktnähe mit internationaler Banijay-Perspektive." },
   {
     value: "250 Mio. €",
