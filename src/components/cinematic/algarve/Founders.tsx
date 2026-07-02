@@ -57,8 +57,14 @@ export function AlgarveFounders() {
       });
       tiles.forEach((el, i) => gsap.set(el, { ...initial[i], opacity: reduce ? 1 : 0.82, transformOrigin: "50% 50%" }));
 
+      // Name + Titel starten unsichtbar — sie sollen erst auflayern, wenn die
+      // Karten an ihrer finalen Grid-Position eingerastet sind.
+      const metas = gsap.utils.toArray<HTMLElement>("[data-team-meta]");
+      gsap.set(metas, { opacity: reduce ? 1 : 0, y: reduce ? 0 : 12 });
+
       if (reduce) {
         gsap.set(tiles, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
+        gsap.set(metas, { opacity: 1, y: 0 });
         return;
       }
 
@@ -67,7 +73,7 @@ export function AlgarveFounders() {
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: "+=140%",
+          end: "+=160%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
@@ -81,7 +87,15 @@ export function AlgarveFounders() {
         opacity: 1,
         ease: "power2.out",
         stagger: 0.06,
+        duration: 0.7,
       });
+      // Erst NACHDEM alle Karten eingerastet sind (Ende der Entfaltung), faden
+      // Name + Titel gestaffelt von unten ein.
+      tl.to(
+        metas,
+        { opacity: 1, y: 0, ease: "power2.out", stagger: 0.05, duration: 0.4 },
+        ">-0.05",
+      );
     },
     { scope: root },
   );
@@ -110,7 +124,7 @@ export function AlgarveFounders() {
                 <div className="overflow-clip" style={{ borderRadius: "0.9vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
                 </div>
-                <div className="flex flex-col" style={{ gap: "0.1vw" }}>
+                <div data-team-meta className="flex flex-col" style={{ gap: "0.1vw", willChange: "transform, opacity" }}>
                   <div className="text-black" style={NAME}>
                     {p.name}
                   </div>

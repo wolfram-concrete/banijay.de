@@ -5,6 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Team-Namen nach Einrasten + About-Video aus Grid-Modul (02.07., 19. Runde)
+- **Team-Section (Founders):** Name + Titel der Karten starten jetzt unsichtbar
+  (opacity 0, leicht nach unten versetzt) und **layern erst auf, wenn die Karten
+  an ihrer finalen Grid-Position eingerastet sind** — gestaffelt eingeblendet am
+  Ende der Entfaltungs-Timeline (Pin-Range auf +=160% verlängert). Verifiziert:
+  Start meta-opacity 0 bei geclusterten/rotierten Karten (scale 0.52), am Ende
+  meta-opacity 1 bei Karten-Matrix = Identität.
+- **About – Proof/Video zusammengeführt (`ProofVideo`):** Zahlen-Section +
+  Statement-Video sind jetzt **eine gepinnte Section**. Das Video liegt nicht mehr
+  als separate Section darunter, sondern als **gerundetes Video-Modul im Grid**
+  (unter den Bento-Kennzahlen). Beim Weiterscrollen **wächst genau dieses Modul aus
+  seiner Grid-Position per animiertem clip-path auf Full-Screen** (kein Verzerren,
+  da das Video full-size bleibt und nur das Sichtfenster aufgeht) und layert über
+  die komplette Fakten-Section — **erst danach** kommt das Prinzip-Statement Wort
+  für Wort rein. Alte separate `StatementVideo.tsx` entfernt. Verifiziert:
+  Start-Clip = Modul-Rect (inset ~446px top), Fullscreen, Statement erscheint
+  danach.
+
 ### Flip-Cards responsive: Querformat statt zu hoch (02.07., 18. Runde)
 - **Company-Cards & Career-RoleStack:** auf Tablet/Mobile (≤991px) wurden die
   Sticky-Flip-Cards unnötig hoch (feste 96vh/90vh) und das schwebende
