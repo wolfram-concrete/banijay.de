@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Career-Fächer: gestapelte Streifen zurück, gepinnt gestaffelt (02.07., 26. Runde)
+- **`CareerTomorrowStack` final:** Full-Viewport-Sweeps (Runde 23) verwarfen den
+  „Fächer"-Look — zurück zum **gestapelten Karten-Layout** (Magenta-Karte + dünne
+  Farbstreifen + content-große schwarze Karte), aber jetzt **gepinnt** und dadurch
+  sichtbar gestaffelt: die Streifen layern leicht verzögert nacheinander **nach
+  unten** auf (Orange → Gelb → Grün, clip-Wipe), als **letzter Fächer kommt die
+  schwarze Karte** heraus, **erst danach** fadet der Content ein. Größen kompaktiert,
+  damit das Stack in die Pin-Bühne passt (Stack ~1060px). Verifiziert über den
+  Scrollverlauf: Streifen wischen einzeln (88→0 %), Schwarz bei ~78 %, Content 0→0.99.
+
 ### Menü-Overlay schließen: Nav-Farbe synchronisiert (02.07., 25. Runde)
 - **Fix „MENU verschwindet kurz beim Schließen":** Beim Schließen sprang die Nav-Farbe
   sofort auf Magenta, während das (magentafarbene) Overlay noch 500 ms nach oben
