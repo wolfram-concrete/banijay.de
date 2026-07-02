@@ -125,7 +125,7 @@ export default function AboutPage() {
         role={ABOUT.ceo.role}
         quote={ABOUT.ceo.quote}
         name={ABOUT.ceo.name}
-        image="/people/marcus-wolter.jpg"
+        image="/people/marcus-wolter-06.png"
         cta={{ text: "Kontakt aufnehmen", href: "mailto:hello@banijay.de" }}
       />
 

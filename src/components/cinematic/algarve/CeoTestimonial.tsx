@@ -20,14 +20,14 @@ const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
 
 export function AlgarveCeoTestimonial({
-  heading,
   role,
   quote,
   name,
   image,
   cta,
 }: {
-  heading: string;
+  /** Optional — die Heading-Zeile wurde entfernt; Seiten übergeben es evtl. noch. */
+  heading?: string;
   role: string;
   quote: string;
   name: string;
@@ -36,7 +36,6 @@ export function AlgarveCeoTestimonial({
 }) {
   const root = useRef<HTMLElement>(null);
   const bg = useRef<HTMLDivElement>(null);
-  const head = useRef<HTMLHeadingElement>(null);
   const grid = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -55,15 +54,14 @@ export function AlgarveCeoTestimonial({
         },
       );
 
-      // 2) Danach Content rein: Heading fährt geclippt hoch, Grid fadet an.
-      const tl = gsap.timeline({
+      // 2) Content fadet an, sobald die Section in Sicht ist.
+      gsap.from(grid.current, {
+        opacity: 0,
+        y: "3vw",
+        duration: 0.9,
+        ease: "power2.out",
         scrollTrigger: { trigger: root.current, start: "top 60%", toggleActions: "play none none none" },
       });
-      tl.from(head.current, { yPercent: 145, duration: 0.9, ease: "power3.out" }).from(
-        grid.current,
-        { opacity: 0, y: "3vw", duration: 0.9, ease: "power2.out" },
-        0.18,
-      );
     },
     { scope: root },
   );
@@ -76,18 +74,6 @@ export function AlgarveCeoTestimonial({
           className="relative overflow-clip max-[767px]:!p-[8vw]"
           style={{ background: MAGENTA, borderRadius: "1.67vw", padding: "5vw", color: INK, willChange: "transform" }}
         >
-          {/* Heading — geclippt, fährt hoch. Etwas mehr Zeilenhöhe + Padding, damit
-              Umlaut-/Oberkanten (z. B. „Ü") nicht vom Clip abgeschnitten werden. */}
-          <div className="overflow-clip" style={{ marginBottom: "2.4vw", paddingTop: "0.12em" }}>
-            <h2
-              ref={head}
-              className="m-0 uppercase max-[767px]:!text-[13vw]"
-              style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.2vw" }}
-            >
-              {heading}
-            </h2>
-          </div>
-
           {/* Grid: Bild links / Zitat rechts (Birkform 0.8fr / 1.2fr) */}
           <div ref={grid} className="grid items-stretch gap-[4vw] md:grid-cols-[0.8fr_1.2fr] max-[767px]:!gap-[8vw]">
             <div className="overflow-clip" style={{ borderRadius: "1.11vw" }}>
