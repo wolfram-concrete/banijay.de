@@ -41,6 +41,9 @@ src/
   data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
 public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
+  company-media/<slug>/  Hochauflösende, lokal optimierte Company-Poster (poster.jpg,
+                         1400px, siehe banijay-company-media-recherche.md) — ersetzen
+                         die alten 260–270px-Scrapes in public/companies/
   video/  companies/  people/  grid/   Bild- und Videomaterial
 ```
 
