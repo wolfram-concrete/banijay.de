@@ -1,51 +1,83 @@
-import Link from "next/link";
-import { NAV_ITEMS, CONTACT } from "@/data/site";
+"use client";
 
-// Footer — Algarve-Referenz: dunkles Rounded-Panel mit großen Nav-Links links,
-// Kontakt rechts, dem Claim „Mehr als ein Produktionshaus.", darunter BANIJAY
-// als großes Lettering im Endlos-Marquee, zuletzt die Legal-Zeile.
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { NAV_ITEMS, CONTACT, SOCIAL } from "@/data/site";
+
+// Footer — dunkles Rounded-Panel mit großen Nav-Links, Kontakt + Social-Buttons,
+// darunter BANIJAY als großes Lettering-Marquee, zuletzt die Legal-Zeile.
+// Auf /about invertiert: magentafarbene Card + schwarze Schrift, kein Magenta
+// hinter dem Footer (Außenfläche = Paper).
 
 const INK = "#0e0d0b";
-const ACCENT = "#ff4370"; // Footer-Typo & Außenfläche (Magenta-Flow)
+const ACCENT = "#ff4370";
+const PAPER = "#f8f7f3";
 const marqueeWords = ["Banijay", "Banijay", "Banijay"];
 
+function IconInstagram() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+function IconLinkedin() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  );
+}
+
 export function SiteFooter() {
+  const pathname = usePathname();
+  const inverted = pathname === "/about";
+
+  // Card-Grund (BG) und Schrift (FG) je nach Variante; Außenfläche OUTER.
+  const BG = inverted ? ACCENT : INK;
+  const FG = inverted ? INK : ACCENT;
+  const OUTER = inverted ? PAPER : ACCENT;
+
   return (
     <footer
       style={{
-        background: ACCENT,
+        background: OUTER,
         paddingTop: "2.22vw",
         paddingBottom: "2.22vw",
-        // Footer legt sich komplett über Logo & Menu der fixen Nav (z-99) — im
-        // Footer stehen ohnehin alle Infos, also müssen Logo/Menu dort nicht sein.
         position: "relative",
         zIndex: 100,
       }}
     >
-      <style>{`@keyframes footerMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+      <style>{`
+        @keyframes footerMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        .footer-social{transition:background-color .3s ease,color .3s ease}
+        .footer-social:hover{background:var(--fg);color:var(--bg)}
+      `}</style>
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         <div
           style={{
             position: "relative",
-            background: INK,
-            color: ACCENT,
+            background: BG,
+            color: FG,
             borderRadius: "1.67vw",
             paddingTop: "4.44vw",
             paddingBottom: "2.5vw",
             overflow: "hidden",
           }}
         >
-          {/* Kleine Banijay-Bildmarke (Magenta): oben bündig mit der Oberkante des
-              Folgen-Blocks, rechts ins schwarze Modul gesetzt. Plain <img>. */}
+          {/* Kleine Banijay-Bildmarke: oben bündig mit der Folgen-Oberkante, rechts.
+              Auf /about (magenta Card) auf Ink umfärben (brightness 0). */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/brand/banijay-sign.svg"
             alt="Banijay"
             className="absolute"
-            style={{ top: "4.44vw", right: "4.44vw", height: "2.4rem", width: "auto" }}
+            style={{ top: "4.44vw", right: "4.44vw", height: "2.4rem", width: "auto", filter: inverted ? "brightness(0)" : undefined }}
           />
 
-          {/* Nav-Links + Kontakt */}
+          {/* Nav-Links + Kontakt/Folgen */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
             <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
               <nav className="flex flex-col" style={{ gap: "0.4vw" }}>
@@ -60,7 +92,7 @@ export function SiteFooter() {
                       fontWeight: 500,
                       letterSpacing: "-0.02em",
                       lineHeight: "118%",
-                      color: ACCENT,
+                      color: FG,
                     }}
                   >
                     {item.label === "Banijay" ? "Home" : item.label}
@@ -73,15 +105,31 @@ export function SiteFooter() {
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
                     Folgen
                   </span>
-                  <a
-                    href="https://instagram.com/banijaygermany"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:opacity-70"
-                    style={{ fontSize: "1.05rem" }}
-                  >
-                    @banijaygermany
-                  </a>
+                  {/* Social-Buttons wie in der Hauptnavigation, hier invertiert. */}
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href={SOCIAL.instagram.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Instagram — ${SOCIAL.instagram.handle}`}
+                      className="footer-social inline-flex items-center gap-2 rounded-full border bg-transparent px-5 py-2.5 text-sm font-medium"
+                      style={{ borderColor: FG, color: FG, ["--fg" as string]: FG, ["--bg" as string]: BG }}
+                    >
+                      <IconInstagram />
+                      Instagram
+                    </a>
+                    <a
+                      href={SOCIAL.linkedin.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`LinkedIn — ${SOCIAL.linkedin.handle}`}
+                      className="footer-social inline-flex items-center gap-2 rounded-full border bg-transparent px-5 py-2.5 text-sm font-medium"
+                      style={{ borderColor: FG, color: FG, ["--fg" as string]: FG, ["--bg" as string]: BG }}
+                    >
+                      <IconLinkedin />
+                      LinkedIn
+                    </a>
+                  </div>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
@@ -105,10 +153,9 @@ export function SiteFooter() {
                 </div>
               </div>
             </div>
-
           </div>
 
-          {/* BANIJAY — großes Lettering-Marquee (Referenz-Größe, langsam) */}
+          {/* BANIJAY — großes Lettering-Marquee (auf die Card geclippt via overflow). */}
           <div className="w-full overflow-hidden" style={{ marginTop: "6vw", marginBottom: "3vw" }}>
             <div className="flex w-max" style={{ animation: "footerMarquee 60s linear infinite" }}>
               {[0, 1].map((dup) => (
@@ -124,7 +171,7 @@ export function SiteFooter() {
                         letterSpacing: "-0.05em",
                         lineHeight: 1,
                         paddingRight: "2vw",
-                        color: ACCENT,
+                        color: FG,
                         whiteSpace: "nowrap",
                       }}
                     >

@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Hero-Rework + Footer-Social/-Invert + Career-Cards (02.07., 5. Runde)
+- **Subpage-Hero:** bunter Gradient/Aura entfernt; Farbcontainer + Video-Container
+  wieder mit radialen (abgerundeten) Kanten; Video macht wieder seinen Zoom
+  Höhe → Breite → Full-Screen (wie ursprünglich), nach dem Farbcontainer-Reveal.
+- **Footer:** unter „Folgen" jetzt Instagram- & LinkedIn-Buttons wie in der
+  Hauptnavigation (invertiert). Auf /about invertierter Footer: Magenta-Card +
+  schwarze Schrift/Marquee, kein Magenta hinter dem Footer (Außenfläche Paper).
+- **About:** Hero-Label „Über Banijay" → „About" (konsistent mit Docked-Label/Nav).
+- **Career-Rollen-Cards:** wie die Company-Cards — bunte Card-Farben (Rainbow,
+  Magenta zuerst), Career-Foto in schwebendem Bildmodul statt Vollbild.
+
 ### Subpage-Hero-Choreografie + Proof (02.07., 4. Runde)
 - **Subpage-Hero (PageHero):** neue Reveal-Choreografie nach Mockup — aus dem kleinen
   Video-Container skalieren nacheinander (schnell, versetzt) Farbcontainer auf
