@@ -52,8 +52,8 @@ export default function AboutPage() {
                 {ABOUT.proof.headline}
               </h2>
               <p
-                className="max-[767px]:!text-[4vw]"
-                style={{ marginTop: "1.11vw", fontSize: "1.3vw", lineHeight: "145%", color: "rgba(0,0,0,0.64)", maxWidth: "40vw" }}
+                className="max-[767px]:!text-[4vw] md:max-w-[40vw]"
+                style={{ marginTop: "1.11vw", fontSize: "1.3vw", lineHeight: "145%", color: "rgba(0,0,0,0.64)" }}
               >
                 {ABOUT.proof.text}
               </p>
@@ -99,8 +99,8 @@ export default function AboutPage() {
                 {ABOUT.principle.headline}
               </h2>
               <p
-                className="max-[767px]:!text-[4vw]"
-                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)", maxWidth: "48vw" }}
+                className="max-[767px]:!text-[4vw] md:max-w-[48vw]"
+                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)" }}
               >
                 {ABOUT.principle.text}
               </p>
@@ -124,7 +124,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <Kicker tone="#fb4b68">{ABOUT.ceo.headline}</Kicker>
-                <p className="max-[767px]:!text-[4vw]" style={{ fontSize: "1.3vw", lineHeight: "150%", color: "rgba(248,247,243,0.7)", maxWidth: "40vw" }}>
+                <p className="max-[767px]:!text-[4vw] md:max-w-[40vw]" style={{ fontSize: "1.3vw", lineHeight: "150%", color: "rgba(248,247,243,0.7)" }}>
                   {ABOUT.ceo.text}
                 </p>
                 <blockquote
@@ -167,8 +167,8 @@ export default function AboutPage() {
                 {ABOUT.partnership.headline}
               </h2>
               <p
-                className="max-[767px]:!text-[4vw]"
-                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)", maxWidth: "48vw" }}
+                className="max-[767px]:!text-[4vw] md:max-w-[48vw]"
+                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)" }}
               >
                 {ABOUT.partnership.text}
               </p>

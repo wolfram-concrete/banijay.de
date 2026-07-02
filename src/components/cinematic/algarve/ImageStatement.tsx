@@ -35,10 +35,9 @@ export function AlgarveImageStatement({
             </div>
 
             <div
-              className="relative z-10 mx-auto flex flex-col items-center text-center max-[767px]:!w-[86%]"
+              className="relative z-10 mx-auto flex flex-col items-center text-center md:max-w-[44vw] max-[767px]:!w-[86%]"
               style={{
                 width: "62%",
-                maxWidth: "44vw",
                 gap: "1.2vw",
                 borderRadius: "1.67vw",
                 background: "rgba(0,0,0,0.32)",
