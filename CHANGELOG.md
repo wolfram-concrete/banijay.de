@@ -5,6 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Große Choreografie-Reworks (02.07.)
+- **Scroll-Start global:** Section-Reveals (`.reveal`) starten erst, wenn wirklich
+  im Bild (`animation-range entry 22%–62%`); Team-Fade-Batch auf `top 82%`.
+  Pinned-/Scrub-Trigger unverändert.
+- **Docked-Label:** kein doppeltes Seiten-Label mehr. Auf Subpages rastet das rote
+  Label erst am Ende der Hero-Bühne ein (Shift + Scale-Down); das weiße Hero-Label
+  blendet dabei aus → sauberer Handoff, ein-Element-Eindruck.
+- **Companies-Intro (Home):** „Unsere/Companies" faden als normale Zeilen
+  nebeneinander in der Mitte ein → ziehen dann auseinander (öffnen das „Loch") →
+  erst danach steigen die ersten Cards aus der Mitte auf.
+- **Team-Übergang (Home):** `LogoReveal` nutzt das Fullscreen-Video
+  (`team-fullscreen.mp4`), das sich über die Team-Section hochschiebt + aufskaliert;
+  danach wächst das b als Maske → Magenta-Blende → News.
+- **Grid-Section (Home):** drei loopende Video-Cutouts (`grid-loop1–3`, aus dem
+  9:16-Reel geschnitten, ~250–340 KB) in verteilten Tiles.
+- **Preloader-Steg:** neue Solid-b-SVG (`banijay-sign-solid.svg`) schließt den
+  Spalt zwischen den Balken → beim Cutout-Aufzoomen kein Magenta-Zwischenstreifen.
+
 ### Feinschliff (02.07.)
 - **Preloader**: Hintergrund jetzt weboptimiertes Video (`preloader-bg.mp4`) statt
   Magenta; Partikel-„b" in Weiß. Hero-, Preloader- und Team-Video als
