@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home Team→Video→News: Overlay wie die Magenta-Fläche (02.07., 28. Runde)
+- **LogoReveal (Team→Video→News) neu getaktet:** Vorher schob sich das Video per
+  Transform in der eigenen Sektion hoch (marginTop nur -18vh) → kein sichtbarer
+  Overlay über die Team-Section. Jetzt **gleiche Logik wie die Magenta-Fläche über
+  dem Statement**: Section mit `marginTop -100vh` + `z-2` steigt als volle Video-
+  Fläche über den (gepinnt fertig aufgebauten) Team-Grid **von unten nach oben** auf
+  (getragen vom Section-Scroll) und **rastet oben ein**. ERST DANN erscheint aus der
+  MITTE ein kleines „b" (opacity 0→1) und wächst über mask-size (152→8442px) zur
+  vollen Magenta-Blende → News. Verifiziert: videoTop 152→0 (Rise→Lock), b ab p=0.15,
+  Center voll Magenta am Ende. Mobile: ruhige 100vh-Video-Section ohne Overlap/b-Blende
+  (GSAP nur ≥768px).
+
 ### Home Statement→Companies: eine Magenta-Ebene statt zwei (02.07., 27. Runde)
 - **Fix „zwei pinke Ebenen":** Es liefen zwei Magenta-Flächen übereinander — die
   AboutIntro-Blende (radiale Ecke, z-auto) UND die aufsteigende CompaniesScroller-

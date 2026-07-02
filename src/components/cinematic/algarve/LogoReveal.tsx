@@ -7,25 +7,28 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Team-→-Video-→-News-Übergang: KEIN Magenta zwischen Team und Video. Der
-// full-bleed Video-Container sitzt unter der Team-Section, schiebt sich beim
-// Scrollen nach oben, überlagert die komplette Team-Section und fadet auf, bis er
-// fullscreen ist (wie der Videocontainer in den Subpage-Heros). Danach wächst aus
-// der Mitte das kleine „b" immer größer, bis es als komplette Magenta-Fläche alles
-// einfärbt → Übergang in die News. Das „b" wächst scharf über mask-size (SVG).
+// Team-→-Video-→-News-Übergang — gleiche Choreografie-Logik wie die Magenta-Fläche
+// über dem Home-Statement: Die Section (marginTop -100vh, z-2) steigt als volle
+// Video-Fläche über die (gepinnte, fertig aufgebaute) Team-Section auf — von unten
+// nach oben, getragen vom Scroll der Section selbst — und rastet oben ein. ERST DANN
+// wächst aus der MITTE ein kleines „b" immer größer, bis es als komplette Magenta-
+// Fläche alles einfärbt → Übergang in die News. Das „b" wächst scharf über mask-size.
 
 const ACCENT = "#ff4370";
 const SIGN = "url(/brand/banijay-sign.svg)";
 
 export function AlgarveLogoReveal() {
   const root = useRef<HTMLElement>(null);
-  const media = useRef<HTMLDivElement>(null);
   const growB = useRef<HTMLDivElement>(null);
   const solid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
+      // Nur Desktop: die gepinnte Video-Rise + b-Blende. Mobile zeigt eine ruhige
+      // Video-Section (100vh, kein Overlap) und leitet direkt in die Magenta-News.
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
@@ -35,19 +38,18 @@ export function AlgarveLogoReveal() {
           invalidateOnRefresh: true,
         },
       });
-      // A) Video schiebt sich von unten hoch, fadet auf und überlagert die
-      //    Team-Section — bis full-bleed (kein Magenta dazwischen).
-      tl.fromTo(
-        media.current,
-        { yPercent: 100, scale: 0.94, opacity: 0.4 },
-        { yPercent: 0, scale: 1, opacity: 1, ease: "power2.out", duration: 0.6 },
-        0,
-      );
-      // B) Danach wächst das „b" aus der Mitte scharf über mask-size auf.
-      const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.2;
+
+      // Das „b" ist zunächst unsichtbar — es erscheint erst, wenn das Video oben
+      // eingerastet ist (Section-Top = Viewport-Top → Timeline-Start), und wächst
+      // dann aus der Mitte scharf über mask-size auf volle Größe.
+      const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.12;
       const bEnd = Math.max(window.innerWidth, window.innerHeight) * 6;
       growB.current?.style.setProperty("--bs", `${bStart}px`);
+      gsap.set(growB.current, { opacity: 0 });
+
       const st = { s: bStart };
+      // Kurzer Halte-Beat (Video eingerastet), dann das „b" einblenden + aufwachsen.
+      tl.set(growB.current, { opacity: 1 }, 0.18);
       tl.to(
         st,
         {
@@ -56,38 +58,40 @@ export function AlgarveLogoReveal() {
           duration: 1,
           onUpdate: () => growB.current?.style.setProperty("--bs", `${st.s}px`),
         },
-        0.95,
+        0.2,
       )
         // Magenta-Kreis-Blende schließt die b-Binnenlücke synchron zum Wachsen.
         .fromTo(
           solid.current,
           { "--r": "0%" },
           { "--r": "160%", ease: "power2.in", duration: 0.9 },
-          1.3,
+          0.6,
         );
     },
     { scope: root },
   );
 
   return (
-    // Transparent (kein Magenta) + negativer Margin + zIndex: das aufsteigende
-    // Video legt sich sichtbar über die dahinter durchscheinende Team-Section.
-    <section ref={root} className="relative" style={{ height: "300vh", marginTop: "-18vh", zIndex: 2 }}>
+    // marginTop -100vh + z-2: die Video-Fläche schiebt sich beim Scrollen von unten
+    // über die Team-Section (die dahinter gepinnt fertig aufgebaut ist) — analog zur
+    // Magenta-Fläche über dem Statement. Hintergrund Ink, falls kurz sichtbar.
+    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "300vh", marginTop: "-100vh", zIndex: 2, background: "#0e0d0b" }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
-        {/* Full-bleed Video-Container (kein Rahmen, kein Magenta-Padding) */}
-        <div ref={media} className="absolute inset-0 overflow-clip" style={{ transformOrigin: "50% 100%", willChange: "transform, opacity" }}>
+        {/* Full-bleed Video-Container (rastet oben ein) */}
+        <div className="absolute inset-0 overflow-clip">
           <video autoPlay muted loop playsInline poster="/brand/team-poster.jpg" className="absolute inset-0 h-full w-full object-cover">
             <source src="/video/team-fullscreen.mp4" type="video/mp4" />
           </video>
 
-          {/* magenta „b" — wächst SCHARF über mask-size */}
+          {/* magenta „b" — wächst SCHARF aus der Mitte über mask-size */}
           <div
             ref={growB}
             className="absolute inset-0"
             style={{
               background: ACCENT,
-              willChange: "mask-size",
-              ["--bs" as string]: "180px",
+              opacity: 0, // Start unsichtbar (Desktop-GSAP blendet ein; Mobile bleibt aus)
+              willChange: "mask-size, opacity",
+              ["--bs" as string]: "120px",
               WebkitMaskImage: SIGN,
               maskImage: SIGN,
               WebkitMaskRepeat: "no-repeat",
