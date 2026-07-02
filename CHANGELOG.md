@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Menü-Overlay mobil: rechtsbündig, kompakter, Spotify-Widget (02.07., 30. Runde)
+- **Mobile-Menü-Overlay** überarbeitet: Nav-Links jetzt **rechtsbündig** (Nav mobil
+  full-width, damit `items-end` an den rechten Rand schiebt) und **kleinere Schrift**
+  (8.5vw ≈ 32px statt bis 7rem). Das **kompakte Spotify-Widget** (Höhe 152 statt 352)
+  eingesetzt; Kontakt-Block (Folgen/Büro/Kontakt) kompakter (kleinere Abstände +
+  Text). Verifiziert: alles passt in einen Screen (Content ~826px), Nav rechte Kante
+  368/375. Desktop unverändert (Spotify 352, Nav 112px).
+
 ### Companies-Slider mobil + Footer-z, News-Mobile, Timing (02.07., 29. Runde)
 - **Companies mobil neu:** „UNSERE" oben / „COMPANIES" darunter (gestapelt) + echter
   **horizontaler Scroll-Snap-Slider** (links → rechts, native `overflow-x-auto`),

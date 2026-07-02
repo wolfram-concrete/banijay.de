@@ -346,16 +346,17 @@ export function SiteHeader() {
       >
         <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div className="flex min-h-screen w-full flex-row-reverse items-start justify-between overflow-hidden pb-[3vw] pt-[9vw] max-[767px]:flex-col max-[767px]:gap-14 max-[767px]:overflow-auto max-[767px]:pb-20 max-[767px]:pt-28">
-            {/* Große Links — rechtsbündig nach rechts */}
+            {/* Große Links — rechtsbündig (auch auf Mobile; dort full-width, damit
+                items-end wirklich an den rechten Viewport-Rand schiebt). */}
             <nav
-              className="flex flex-col items-end text-right max-[767px]:items-start max-[767px]:text-left"
+              className="flex flex-col items-end text-right max-[767px]:w-full"
               style={{ gap: "0.4vh", color: INK }}
             >
               {NAV_ITEMS.map((item, i) => {
                 const labelText = item.label === "Banijay" ? "Home" : item.label;
                 const inner = (
                   <span
-                    className="block uppercase"
+                    className="block uppercase max-[767px]:!text-[8.5vw]"
                     style={{
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontWeight: 500,
@@ -375,7 +376,7 @@ export function SiteHeader() {
                 // auf, About/Career/Kontakt rutschen dabei nach unten.
                 if (item.href === "/news") {
                   return (
-                    <div key={item.href} className="flex flex-col items-end max-[767px]:items-start">
+                    <div key={item.href} className="flex flex-col items-end">
                       <button
                         type="button"
                         onClick={() => setNewsOpen((v) => !v)}
@@ -406,19 +407,18 @@ export function SiteHeader() {
             {/* Info-Block — linksbündig; Spotify-Widget rechts daneben, unten bündig.
                 Bei offenem News-Slider ausgeblendet, damit dieser Platz bekommt. */}
             <div
-              className="flex flex-col items-start gap-10 self-end transition-opacity duration-500 max-[767px]:self-start"
+              className="flex flex-col items-start gap-10 self-end transition-opacity duration-500 max-[767px]:w-full max-[767px]:gap-6 max-[767px]:self-start"
               style={{ opacity: infoVisible ? 1 : 0, color: INK }}
             >
-              {/* Spotify-Widget (WOLTER TALKS) — linksbündig oberhalb von „Folgen" */}
+              {/* Spotify-Widget (WOLTER TALKS) — Desktop großer Player (352),
+                  Mobile das kompakte Widget (152), damit Kontaktinfos noch reinpassen. */}
               <iframe
                 title="WOLTER TALKS auf Spotify"
                 src="https://open.spotify.com/embed/show/1DNETtYd9Y197eAQ45xMdh?utm_source=generator&theme=0"
-                height={352}
-                frameBorder={0}
                 loading="lazy"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                className="w-[20rem] max-[767px]:w-full max-[767px]:max-w-[22rem]"
-                style={{ borderRadius: 12 }}
+                className="h-[352px] w-[20rem] max-[767px]:!h-[152px] max-[767px]:w-full max-[767px]:max-w-full"
+                style={{ borderRadius: 12, border: 0 }}
               />
               <div className="flex flex-col gap-3">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Folgen</div>
@@ -447,17 +447,17 @@ export function SiteHeader() {
                   </a>
                 </div>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 max-[767px]:!gap-1.5">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Büro</div>
-                <div className="text-xl leading-relaxed">
+                <div className="text-xl leading-relaxed max-[767px]:!text-base">
                   {CONTACT.street}
                   <br />
                   {CONTACT.city}
                 </div>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 max-[767px]:!gap-1.5">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Kontakt</div>
-                <a href={`mailto:${CONTACT.email}`} className="text-xl hover:underline">
+                <a href={`mailto:${CONTACT.email}`} className="text-xl hover:underline max-[767px]:!text-base">
                   {CONTACT.email}
                 </a>
               </div>
