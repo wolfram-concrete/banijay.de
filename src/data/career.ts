@@ -70,7 +70,7 @@ export const CAREER = {
     eyebrow: "Banijay Tomorrow",
     headline: "Für Talente, die mehr wollen als einen Job.",
     text: "BANIJAY TOMORROW verbindet Academy, Workshops und Entwicklungsangebote für neue Talente, Professionals und Führungskräfte. So wird Karriere nicht als starre Laufbahn erzählt, sondern als Entwicklung innerhalb einer kreativen Entertainment-Welt.",
-    image: "/career/c5.png",
+    image: "/career/tomorrow.jpg",
     cta: { text: "BANIJAY TOMORROW Login", href: "https://banijaytomorrow.de/" },
   },
 
