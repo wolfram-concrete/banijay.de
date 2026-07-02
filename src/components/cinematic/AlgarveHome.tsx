@@ -171,7 +171,13 @@ export function AlgarveHome() {
     fit(true);
     const ro = new ResizeObserver(() => fit());
     ro.observe(box);
-    document.fonts?.ready.then(() => fit(true));
+    // Nach dem Font-Load ändert sich durch den Neu-Fit von „BANIJAY" die Hero-Höhe
+    // → die (scroll-getriggerten) Grid-Positionen müssen neu vermessen werden, sonst
+    // verrutscht die Scroll-Choreografie (fühlt sich wie ein „Zurückspringen" an).
+    document.fonts?.ready.then(() => {
+      fit(true);
+      ScrollTrigger.refresh();
+    });
     return () => ro.disconnect();
   }, []);
 

@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Prinzip-Statement, Footer-Revert, Scroll-Stabilität (02.07., 9. Runde)
+- **Prinzip-Section (About):** neu als Mission-Statement-Template (IntroText) —
+  asymmetrisches 3-Spalten-Grid: Label „PRINZIP" links, riesige Headline über die
+  Spalten 2–3 mit Wort-für-Wort-Reveal aus einer Clip-Maske (gestaffelt), Copy
+  darunter. Auf Sharp-Grotesk statt Serif gezogen.
+- **Footer:** die eingefärbte Logo-Banderole außerhalb der Magenta-Card wieder
+  verworfen — die BANIJAY-Banderole bleibt auf die Card geclippt (kein Bleed).
+- **Home-Scroll:** `ScrollTrigger.refresh()` nach dem Font-Load (BANIJAY-Fit) —
+  verhindert verrutschte Grid-Trigger, die sich beim Weiterscrollen wie ein
+  „Zurückspringen zum Hero" anfühlen konnten.
+
 ### Footer-Farblogik, Preloader-Cutout, CEO-Modul (02.07., 8. Runde)
 - **Partner-Section (About):** neu aufgebaut im „section_blog-home"-Template
   (Algarve News-Layout) — links Sticky-Heading (Eyebrow · H2 · Copy · CTA),

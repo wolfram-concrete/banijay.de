@@ -5,6 +5,7 @@ import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
+import { AlgarveMissionStatement } from "@/components/cinematic/algarve/MissionStatement";
 import { AlgarvePartnerGrid } from "@/components/cinematic/algarve/PartnerGrid";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
@@ -17,18 +18,6 @@ export const metadata: Metadata = {
 };
 
 const SHARP = "var(--font-sharp), sans-serif";
-
-// Kleiner Magenta-Kicker (Eyebrow) im Algarve-/Kinetic-Look.
-function Kicker({ children, tone = "#ff4370" }: { children: React.ReactNode; tone?: string }) {
-  return (
-    <span
-      className="mb-[0.9vw] block max-[767px]:!text-[3vw]"
-      style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: tone }}
-    >
-      {children}
-    </span>
-  );
-}
 
 export default function AboutPage() {
   return (
@@ -89,28 +78,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 03 Prinzip — großes Statement */}
-      <section style={{ background: "#f8f7f3", paddingTop: "2vw", paddingBottom: "6.5vw" }}>
-        <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
-          <Reveal>
-            <div className="max-w-[62vw] max-[767px]:!max-w-full">
-              <Kicker>Prinzip</Kicker>
-              <h2
-                className="m-0 max-[767px]:!text-[7vw]"
-                style={{ fontFamily: SHARP, fontSize: "3.6vw", lineHeight: "112%", fontWeight: 500, letterSpacing: "-0.11vw", color: "#0e0d0b" }}
-              >
-                {ABOUT.principle.headline}
-              </h2>
-              <p
-                className="max-[767px]:!text-[4vw] md:max-w-[48vw]"
-                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)" }}
-              >
-                {ABOUT.principle.text}
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* 03 Prinzip — Mission-Statement-Template (Label + Wort-Reveal-Headline) */}
+      <AlgarveMissionStatement label="Prinzip" headline={ABOUT.principle.headline} body={ABOUT.principle.text} />
 
       {/* 04 CEO / Führung — Testimonial-Section (Birkform) mit Magenta-Parallax */}
       <AlgarveCeoTestimonial
