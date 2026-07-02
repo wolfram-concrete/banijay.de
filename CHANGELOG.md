@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### CEO-Modul-Feinschliff + Grid-Bilder (02.07., 10. Runde)
+- **CEO-Modul:** neues Marcus-Wolter-Foto (2022, Farbe, weboptimiert); die Rolle
+  steht jetzt UNTER dem Namen; das magenta Quadrat („roter Kasten") ist entfernt;
+  das Zitat enthüllt sich Wort für Wort (Typo-Animation aus Clip-Maske).
+- **Home-Grid:** die zwei S/W-/Stock-Portraits (Temptation Island, Cologne Comedy
+  Festival) durch farbige Stills ersetzt — Paar am Meer bzw. farbige Live-Bühne.
+  (Temptation-Island-Bild ist ein Presse-Still aus dem Netz; das Live-Bühnen-Bild
+  ist frei lizenziert via Pexels.)
+
 ### Prinzip-Statement, Footer-Revert, Scroll-Stabilität (02.07., 9. Runde)
 - **Prinzip-Section (About):** neu als Mission-Statement-Template (IntroText) —
   asymmetrisches 3-Spalten-Grid: Label „PRINZIP" links, riesige Headline über die
