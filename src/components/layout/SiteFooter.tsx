@@ -26,6 +26,7 @@ export function SiteFooter() {
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         <div
           style={{
+            position: "relative",
             background: INK,
             color: ACCENT,
             borderRadius: "1.67vw",
@@ -34,6 +35,16 @@ export function SiteFooter() {
             overflow: "hidden",
           }}
         >
+          {/* Kleine Banijay-Bildmarke (Magenta): oben bündig mit der Oberkante des
+              Folgen-Blocks, rechts ins schwarze Modul gesetzt. Plain <img>. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/banijay-sign.svg"
+            alt="Banijay"
+            className="absolute"
+            style={{ top: "4.44vw", right: "4.44vw", height: "2.4rem", width: "auto" }}
+          />
+
           {/* Nav-Links + Kontakt */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
             <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
@@ -125,27 +136,15 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Legal + Bildmarke — gleiches Grid wie oben, damit das b linksbündig
-              mit dem Folgen/Kontakt-Block sitzt; unten auf der Impressum-Grundlinie. */}
+          {/* Legal */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
-            <div className="grid items-end gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
-              <div className="flex gap-6 text-xs tracking-[0.02em]" style={{ opacity: 0.5 }}>
-                <Link href="/impressum" className="hover:opacity-100">
-                  Impressum
-                </Link>
-                <Link href="/datenschutz" className="hover:opacity-100">
-                  Datenschutz
-                </Link>
-              </div>
-              {/* Kleine Banijay-Bildmarke (Magenta), linksbündig mit der Kontaktspalte.
-                  Plain <img>: Brand-SVG, next/image lädt Brand-Assets nicht. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/banijay-sign.svg"
-                alt="Banijay"
-                className="justify-self-start md:pl-[6vw]"
-                style={{ height: "2.4rem", width: "auto", boxSizing: "content-box" }}
-              />
+            <div className="flex gap-6 text-xs tracking-[0.02em]" style={{ opacity: 0.5 }}>
+              <Link href="/impressum" className="hover:opacity-100">
+                Impressum
+              </Link>
+              <Link href="/datenschutz" className="hover:opacity-100">
+                Datenschutz
+              </Link>
             </div>
           </div>
         </div>

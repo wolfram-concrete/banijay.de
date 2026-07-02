@@ -163,7 +163,7 @@ export function AlgarveServicesStack() {
 
               {/* Rotiertes Glass-Video */}
               <div
-                className="absolute flex items-center justify-center"
+                className="absolute overflow-hidden"
                 style={{
                   zIndex: 3,
                   width: "27vw",
@@ -172,12 +172,8 @@ export function AlgarveServicesStack() {
                   maxHeight: "600px",
                   inset: "auto 10% 10% auto",
                   transform: card.rotate,
-                  padding: "2.22vw",
                   borderRadius: "1.67vw",
-                  backgroundColor: "#00000052",
-                  boxShadow: "inset 0 0 24px 0 rgba(248,247,243,0.08), inset 0 6px 12px 0 rgba(248,247,243,0.16)",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 1.2vw 3vw -0.6vw rgba(0,0,0,0.35)",
                 }}
               >
                 <video
@@ -188,8 +184,8 @@ export function AlgarveServicesStack() {
                   muted
                   playsInline
                   preload="metadata"
-                  className="absolute inset-0 m-auto"
-                  style={{ width: "90%", height: "92%", borderRadius: "1.11vw", objectFit: "cover" }}
+                  className="absolute inset-0 h-full w-full"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
             </div>
