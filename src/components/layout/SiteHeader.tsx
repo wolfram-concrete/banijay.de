@@ -124,7 +124,7 @@ const MAGENTA = "#ff4370";
 const PAGE_LABEL: Record<string, string> = {
   "/": "Home",
   "/companies": "Companies",
-  "/about": "Über Banijay",
+  "/about": "About",
   "/career": "Career",
   "/news": "News",
   "/contact": "Contact",
@@ -275,7 +275,7 @@ export function SiteHeader() {
                 // Über Magenta-Flächen bzw. im offenen Overlay invertiert sie auf Ink.
                 fontFamily: "var(--font-sharp), sans-serif",
                 fontWeight: 700,
-                fontSize: "1rem",
+                fontSize: "1.2rem",
                 lineHeight: 1,
                 letterSpacing: "0.02em",
                 color: open || onMagenta ? INK : MAGENTA,
@@ -297,7 +297,7 @@ export function SiteHeader() {
                   transformOrigin: "top right",
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontWeight: 400,
-                  fontSize: "0.75rem",
+                  fontSize: "0.9rem",
                   lineHeight: 1,
                   letterSpacing: "0.06em",
                   color: onMagenta ? INK : MAGENTA,

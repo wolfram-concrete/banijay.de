@@ -75,12 +75,13 @@ export function AlgarveCeoTestimonial({
           className="relative overflow-clip max-[767px]:!p-[8vw]"
           style={{ background: MAGENTA, borderRadius: "1.67vw", padding: "5vw", color: INK, willChange: "transform" }}
         >
-          {/* Heading — geclippt, fährt hoch */}
-          <div className="overflow-clip" style={{ marginBottom: "3vw" }}>
+          {/* Heading — geclippt, fährt hoch. Etwas mehr Zeilenhöhe + Padding, damit
+              Umlaut-/Oberkanten (z. B. „Ü") nicht vom Clip abgeschnitten werden. */}
+          <div className="overflow-clip" style={{ marginBottom: "2.4vw", paddingTop: "0.12em" }}>
             <h2
               ref={head}
               className="m-0 uppercase max-[767px]:!text-[13vw]"
-              style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.2vw" }}
+              style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.2vw" }}
             >
               {heading}
             </h2>
@@ -109,8 +110,8 @@ export function AlgarveCeoTestimonial({
               {cta && (
                 <a
                   href={cta.href}
-                  className="inline-flex w-fit items-center justify-center no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!text-[3.4vw]"
-                  style={{ border: `0.09vw solid ${INK}`, color: INK, borderRadius: "0.5vw", padding: "0.83vw 1.53vw", fontFamily: SHARP, fontSize: "1.05vw" }}
+                  className="inline-flex w-fit items-center justify-center rounded-full border border-[#0e0d0b] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!text-[3.4vw]"
+                  style={{ padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw" }}
                 >
                   {cta.text}
                 </a>
