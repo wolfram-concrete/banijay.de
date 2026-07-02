@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Nav-/Footer-/Scroll-Feinschliff (02.07., 7. Runde)
+- **Nav-Docked-Label:** auf der Home kein eingerastetes „Home"-Label mehr — die
+  Orientierungs-Wortmarke unter „MENU" erscheint nur noch auf Unterseiten.
+- **Footer-„B":** von oben rechts nach unten verlagert — sitzt jetzt auf der
+  Unterlänge (Legal-Zeile) und linksbündig mit den Social-CTAs (gleiches
+  Grid + `md:pl-[6vw]`).
+- **Menü über Footer:** Footer-`zIndex` von 100 → 40 gesenkt, damit sich das
+  geöffnete Menü-Overlay (z-98) full-size DAVOR legt statt dahinter.
+- **LogoReveal (Team → Video):** Magenta-Fläche + „b"-Maske entfernt. Nur noch
+  der Fullscreen-Video-Container, der sich von unten über die Team-Section
+  schiebt und dabei auf Full-Size aufskaliert.
+- **Companies-Intro:** die radiale Ober-Kante (links + rechts, rechts stärker =
+  „b"-Logo-Körper) faltet sich beim Aufsteigen über die Typo komplett auf
+  (Radien → 0), bevor der farbige Card-Ablauf startet; Schatten-Blob entfernt.
+
 ### Hero-Rework + Footer-Social/-Invert + Career-Cards (02.07., 5. Runde)
 - **Subpage-Hero:** bunter Gradient/Aura entfernt; Farbcontainer + Video-Container
   wieder mit radialen (abgerundeten) Kanten; Video macht wieder seinen Zoom

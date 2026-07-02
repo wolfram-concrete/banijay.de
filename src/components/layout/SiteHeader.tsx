@@ -122,7 +122,8 @@ const MAGENTA = "#ff4370";
 
 // Seiten-Label, das beim Scrollen unter „MENU" einrastet (Orientierung).
 const PAGE_LABEL: Record<string, string> = {
-  "/": "Home",
+  // „/" (Home) absichtlich NICHT gelistet — das eingerastete Label soll nur auf
+  // Unterseiten als Orientierung erscheinen, nicht auf der Startseite.
   "/companies": "Companies",
   "/about": "About",
   "/career": "Career",

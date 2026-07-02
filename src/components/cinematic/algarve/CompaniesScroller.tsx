@@ -204,6 +204,21 @@ export function AlgarveCompaniesScroller() {
     () => {
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Kante auffalten: Während die Magenta-Fläche über die Typo hochsteigt,
+      // laufen die radialen Ober-Ecken (links + rechts, rechts als Logo-Körper)
+      // von stark gerundet auf 0 → aus der „b"-Andeutung wird die volle Fläche.
+      gsap.fromTo(
+        root.current,
+        { borderTopLeftRadius: "10vw", borderTopRightRadius: "26vw" },
+        {
+          borderTopLeftRadius: "0vw",
+          borderTopRightRadius: "0vw",
+          ease: "none",
+          scrollTrigger: { trigger: root.current, start: "top bottom", end: "top 10%", scrub: true },
+        },
+      );
+
       const els = gsap.utils.toArray<HTMLElement>("[data-work]");
       if (els.length < 3) return;
 
@@ -272,8 +287,11 @@ export function AlgarveCompaniesScroller() {
   return (
     <>
       {/* ── Desktop: pinned Works-Bühne ──────────────────────────────────── */}
-      {/* Negativer Margin + gerundete Oberkante + z-index: die Magenta-Fläche
-          schiebt sich beim Scrollen von unten über die Section darüber. */}
+      {/* Negativer Margin + z-index: die Magenta-Fläche schiebt sich beim Scrollen
+          von unten über die Typo-Section darüber. Die Oberkante ist anfangs
+          radial gekurvt — rechts deutlich stärker als links (Suggestion: der
+          Körper des „b"-Logos) — und faltet sich beim Aufsteigen komplett auf
+          (Radien → 0), bevor der farbige Section-Ablauf beginnt. */}
       <section
         ref={root}
         data-nav-theme="magenta"
@@ -283,24 +301,10 @@ export function AlgarveCompaniesScroller() {
           height: `${TOTAL_VH}vh`,
           marginTop: "-16vh",
           zIndex: 2,
-          borderTopLeftRadius: "2.5vw",
-          borderTopRightRadius: "2.5vw",
+          borderTopLeftRadius: "10vw",
+          borderTopRightRadius: "26vw",
         }}
       >
-        {/* Große radiale Kurve rechts — markiert die rechte „Bild-Endkante". */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-1/2 -translate-y-1/2"
-          style={{
-            right: "-24vw",
-            width: "58vw",
-            height: "130vh",
-            borderRadius: "50%",
-            background: "radial-gradient(closest-side, rgba(0,0,0,0.12), rgba(0,0,0,0) 70%)",
-            zIndex: 0,
-          }}
-        />
-
         <div className="sticky top-0 flex w-screen items-end" style={{ height: "100vh" }}>
           <div className="flex h-full w-full flex-col justify-center" style={{ padding: "2vw" }}>
             {/* Wörter */}

@@ -47,7 +47,10 @@ export function SiteFooter() {
         paddingTop: "2.22vw",
         paddingBottom: "2.22vw",
         position: "relative",
-        zIndex: 100,
+        // Über den Content-Sections (zIndex ~2), aber UNTER dem Menü-Overlay
+        // (z-[98]) und der Nav-Bar (z-[99]) — sonst legt sich das geöffnete Menü
+        // hinter den Footer statt full-size darüber.
+        zIndex: 40,
       }}
     >
       <style>{`
@@ -67,16 +70,6 @@ export function SiteFooter() {
             overflow: "hidden",
           }}
         >
-          {/* Kleine Banijay-Bildmarke: oben bündig mit der Folgen-Oberkante, rechts.
-              Auf /about (magenta Card) auf Ink umfärben (brightness 0). */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/banijay-sign.svg"
-            alt="Banijay"
-            className="absolute"
-            style={{ top: "4.44vw", right: "4.44vw", height: "2.4rem", width: "auto", filter: inverted ? "brightness(0)" : undefined }}
-          />
-
           {/* Nav-Links + Kontakt/Folgen */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
             <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
@@ -183,8 +176,14 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Legal */}
-          <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
+          {/* Legal (links) + Banijay-Bildmarke (rechts). Das B sitzt unten auf der
+              Unterlänge und startet linksbündig mit den Social-CTAs: gleiches
+              Grid-Template + md:pl-[6vw] wie der Kontakt-/Folgen-Block oben.
+              Auf /about (magenta Card) auf Ink umfärben (brightness 0). */}
+          <div
+            className="grid items-end gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24"
+            style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}
+          >
             <div className="flex gap-6 text-xs tracking-[0.02em]" style={{ opacity: 0.5 }}>
               <Link href="/impressum" className="hover:opacity-100">
                 Impressum
@@ -192,6 +191,14 @@ export function SiteFooter() {
               <Link href="/datenschutz" className="hover:opacity-100">
                 Datenschutz
               </Link>
+            </div>
+            <div className="md:pl-[6vw]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/banijay-sign.svg"
+                alt="Banijay"
+                style={{ height: "2.4rem", width: "auto", filter: inverted ? "brightness(0)" : undefined }}
+              />
             </div>
           </div>
         </div>
