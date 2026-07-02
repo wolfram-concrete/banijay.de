@@ -2,7 +2,7 @@
 
 Cinematischer Website-Relaunch für **Banijay Germany**. Die Umsetzung adaptiert die
 Sektions-Choreografie des Algarve-Webflow-Templates (kinetischer Hero, gepinnte
-Scroll-Bühnen, Logo-Reveal, clip-path-/Peel-Übergänge) und füllt sie mit den echten
+Scroll-Bühnen, Logo-Reveal, clip-path-Reveal-Übergänge) und füllt sie mit den echten
 Inhalten der Banijay-Welt — Companies, Formate, Kompetenzfelder, Team und News.
 
 ## Stack
@@ -34,7 +34,8 @@ src/
                          CeoTestimonial, Founders/Team, LogoReveal, NewsStack,
                          WorksCards, PageHero, AboutIntro, ProofVideo (About:
                          Zahlen→Video-Aufskalierung), CareerRoleStack,
-                         CareerTomorrowStack (Standorte→Tomorrow-Peel), CareerSocial…
+                         CareerTomorrowStack (Standorte→Tomorrow, gepinnte
+                         Emerge-Sequenz), CareerSocial…
     layout/              SiteHeader, SiteFooter
   data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
 public/
@@ -51,7 +52,7 @@ public/
 | Magenta      | `#ff4370`  | Einheitlicher Akzent: CTA, MENU, Flow-/Reveal-Flächen (= `banijay-sign.svg`) |
 
 Der frühere separate Coral-Ton (`#fb4b68`) wurde auf das einheitliche Magenta
-`#ff4370` zusammengeführt. Die Career-Peel-Kaskade nutzt zusätzlich Orange
+`#ff4370` zusammengeführt. Die Career-Emerge-Kaskade nutzt zusätzlich Orange
 `#ff7a3d`, Gelb `#ffd23f` und Grün `#8fd94e` als Zwischen-Layer.
 
 ## Assets & Git

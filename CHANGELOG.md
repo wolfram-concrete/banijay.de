@@ -18,8 +18,9 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ### Docs aktualisiert (02.07.)
 - **README** auf aktuellen Stand: Modul-Liste (ProofVideo, CareerTomorrowStack …),
-  Design-System (Coral `#fb4b68` → einheitliches Magenta `#ff4370`, Peel-Farben),
-  Video-Tabelle (`b-glass.mp4`, Preloader auf der Home entfernt).
+  Design-System (Coral `#fb4b68` → einheitliches Magenta `#ff4370`, Emerge-Kaskaden-
+  Farben), Video-Tabelle (`b-glass.mp4`, Preloader auf der Home entfernt). Begriff
+  „Peel" → „Emerge-Sequenz" nachgezogen.
 
 ### Career-Peel-Animation, CEO-Titel entdoppelt, MENU mobil (02.07., 22. Runde)
 - **Career `CareerTomorrowStack` – Peel-Animation (Desktop):** Der Übergang ist jetzt
