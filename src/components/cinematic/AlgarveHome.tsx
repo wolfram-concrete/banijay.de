@@ -83,39 +83,24 @@ export function AlgarveHome() {
   const content = useRef<HTMLDivElement>(null);
   const gridSection = useRef<HTMLElement>(null);
   const heroVideo = useRef<HTMLVideoElement>(null);
-  const heroBVideo = useRef<HTMLVideoElement>(null); // b-maskierter Klon (Glas-B vor der Schrift)
 
   // Hero-Video: normal schnell, KEIN Loop — gegen Ende verlangsamt es und friert
-  // auf dem letzten Frame als Standbild ein. Der b-maskierte Klon läuft synchron
-  // mit, damit der freigestellte Glas-B-Bereich pixelgleich über der Schrift sitzt.
+  // auf dem letzten Frame als Standbild ein.
   useEffect(() => {
     const v = heroVideo.current;
     if (!v) return;
-    const b = heroBVideo.current;
     v.muted = true;
     v.playbackRate = 1;
-    if (b) b.muted = true;
     const SLOW = 2.5; // letzte 2.5s ausklingen lassen
     const onTime = () => {
       const dur = v.duration || 0;
       if (!Number.isFinite(dur) || dur === 0) return;
       const rem = dur - v.currentTime;
       if (rem <= SLOW) v.playbackRate = Math.max(0.08, rem / SLOW);
-      // Klon synchron halten (Rate spiegeln, Drift korrigieren).
-      if (b) {
-        b.playbackRate = v.playbackRate;
-        if (Math.abs(b.currentTime - v.currentTime) > 0.18) {
-          try {
-            b.currentTime = v.currentTime;
-          } catch {}
-        }
-      }
       if (rem <= 0.08) {
         v.pause();
-        b?.pause();
         try {
           v.currentTime = Math.max(0, dur - 0.05);
-          if (b) b.currentTime = Math.max(0, dur - 0.05);
         } catch {}
       }
     };
@@ -201,13 +186,10 @@ export function AlgarveHome() {
         .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 0.68)
         .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 0.68);
 
-      // Erst NACH der oberen Headline bauen sich die unteren Zeilen (Factsheet +
-      // Subline) nacheinander auf.
-      tl.from(
-        "[data-heroline]",
-        { autoAlpha: 0, y: 26, duration: 0.5, ease: "power2.out", stagger: 0.13 },
-        ">-0.05",
-      );
+      // Die unteren Zeilen (Factsheet + Subline) bleiben zunächst verborgen — sie
+      // erscheinen erst beim Scrollen (siehe Scroll-Reveal-Effekt unten), damit der
+      // Hero anfangs ruhig nur aus der Headline besteht.
+      gsap.set("[data-heroline]", { autoAlpha: 0, y: 26 });
 
       // Die H1-Animation startet ERST, wenn der Preloader-Übergang vollständig
       // abgeschlossen ist — das Event „banijay:introdone" feuert im onComplete NACH
@@ -218,6 +200,16 @@ export function AlgarveHome() {
         window.addEventListener("banijay:introdone", startHero, { once: true });
         gsap.delayedCall(5, startHero);
       }
+
+      // Untere Zeilen (Factsheet + Subline) erscheinen erst beim Scrollen — ganz
+      // entspannt, nachdem der Hero-Fuß ein Stück gewachsen ist.
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top top-=70",
+        once: true,
+        onEnter: () =>
+          gsap.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.16, ease: "power2.out" }),
+      });
 
       // Sticky-Grid — EXAKT nach der Algarve-Referenz (custom GSAP, Timeline
       // t-df357d83, Trigger auf section_grid-home, scrub 1). Positionen/Dauern
@@ -254,8 +246,8 @@ export function AlgarveHome() {
       {/* Video full-bleed (auch hinter der fixen Nav). Weiße Typo direkt darüber,
           kein Wash. paddingTop hält WE/ARE frei unter der überlagernden Nav. */}
       <section
-        className="relative flex min-h-screen flex-col overflow-clip"
-        style={{ background: "#0a0a0a", paddingTop: "5rem", paddingBottom: "2.22vw" }}
+        className="relative flex min-h-[112vh] flex-col overflow-clip"
+        style={{ background: "#0a0a0a", paddingTop: "6.5rem", paddingBottom: "3.5vw" }}
       >
         {/* Hintergrund: cinematisches Kamera-Video, langsam abgespielt (0.5×) */}
         <video
@@ -265,31 +257,7 @@ export function AlgarveHome() {
           playsInline
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/video/hero-cinematic.mp4" type="video/mp4" />
-        </video>
-
-        {/* Freigestellter Glas-„b": derselbe Video-Klon, auf die b-Form maskiert und
-            ÜBER der Schrift (z-5) — pixelgleich zum Hintergrund, dadurch sitzt der
-            Glaskörper wie ein Freisteller vor „BANIJAY". */}
-        <video
-          ref={heroBVideo}
-          autoPlay
-          muted
-          playsInline
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{
-            zIndex: 5,
-            WebkitMaskImage: "url(/brand/banijay-sign.svg)",
-            maskImage: "url(/brand/banijay-sign.svg)",
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-            WebkitMaskPosition: "center 46%",
-            maskPosition: "center 46%",
-            WebkitMaskSize: "auto 64vh",
-            maskSize: "auto 64vh",
-          }}
-        >
-          <source src="/video/hero-cinematic.mp4" type="video/mp4" />
+          <source src="/video/hero-bg.mp4" type="video/mp4" />
         </video>
 
         {/* Weicher Bild-Fuß nur für die Lesbarkeit von Factsheet/Subline (dunkel,

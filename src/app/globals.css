@@ -241,3 +241,37 @@ html.lenis body { height: auto; }
     rgba(0, 0, 0, 0.035) 12px
   );
 }
+
+/* Company-Card-CTA „Zur Website": radialer Farb-Invert beim Hover statt
+   ruckelndem Pfeil. Der Grund läuft von der rechten Seite (Pfeil) radial auf,
+   die Fläche kippt vom gefüllten Pill in eine outlinete, invertierte Variante.
+   Farben kommen als CSS-Variablen (--cta-fg / --cta-bg) je Card herein. */
+.cta-invert {
+  position: relative;
+  overflow: hidden;
+  background: var(--cta-fg);
+  color: var(--cta-bg);
+  border: 0.09vw solid var(--cta-fg);
+  transition: color 0.35s ease;
+}
+.cta-invert .cta-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--cta-bg);
+  border-radius: 999px;
+  transform: scale(0);
+  transform-origin: 84% 50%;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cta-invert:hover .cta-fill,
+.cta-invert:focus-visible .cta-fill {
+  transform: scale(1.4);
+}
+.cta-invert:hover,
+.cta-invert:focus-visible {
+  color: var(--cta-fg);
+}
+.cta-invert .cta-label {
+  position: relative;
+  z-index: 1;
+}

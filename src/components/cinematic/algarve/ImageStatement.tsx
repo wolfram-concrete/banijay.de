@@ -1,20 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
+import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/cinematic/Reveal";
 
 // Algarve „image block"-Modul: vollflächiges Bild mit Dark-Overlay und einer
-// zentrierten Frosted-Glass-Card (Eyebrow + Headline + Text). Für starke
-// Statement-Momente auf Unterseiten (z. B. About „International").
+// zentrierten Frosted-Glass-Card (Eyebrow + Headline + Text + optionaler CTA).
+// Für starke Statement-Momente auf Unterseiten (z. B. About „International",
+// Career „BANIJAY TOMORROW").
 
 export function AlgarveImageStatement({
   eyebrow,
   headline,
   text,
   image,
+  cta,
 }: {
   eyebrow?: string;
   headline: string;
   text: string;
   image: string;
+  /** Optionaler externer CTA (öffnet in neuem Tab). */
+  cta?: { text: string; href: string };
 }) {
   return (
     <section style={{ background: "#f8f7f3" }} className="py-12 lg:py-20">
@@ -64,6 +69,16 @@ export function AlgarveImageStatement({
               <p className="m-0 max-w-xl" style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.15rem)", lineHeight: 1.55 }}>
                 {text}
               </p>
+              {cta && (
+                <a
+                  href={cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f8f7f3] px-6 py-3 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-white"
+                >
+                  {cta.text} <ArrowUpRight size={16} />
+                </a>
+              )}
             </div>
           </div>
         </Reveal>

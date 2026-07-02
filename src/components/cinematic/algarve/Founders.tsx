@@ -9,25 +9,13 @@ import { LEADERSHIP } from "@/data/leadership";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Team (Algarve section_spiral-team, nach Briefing):
-//  Desktop  = hohe Sticky-Stage (400vh), fünf kuratierte Portraits starten
-//             mittig/übereinander und fahren beim Scrollen in ihre finale Spiral-
-//             Komposition; dahinter das große, ruhige Background-Wort „TEAM".
-//             Danach — AUSSERHALB der Stage — sechs weitere Personen in zwei
-//             Reihen à 3 per ruhigem Scroll-Reveal (kein zweiter Spiral-Effekt).
-//  Mobile   = keine Spiral-Stage, ein sauberes Grid aller Teammitglieder.
+// Team (Algarve section_spiral-team, adaptiert): großes, ruhiges Background-Wort
+// „TEAM" hinter der ersten Reihe, das beim Scrollen ausblendet. Die Portraits
+// stehen NICHT radial, sondern gerade in einem 5er-Raster; Reihe für Reihe faden
+// die Tiles beim Scrollen von unten rein → am Ende eine saubere Liste mit
+// gleichmäßigen Abständen. Mobile: einfaches 2-Spalten-Grid.
 
-const FEATURED = LEADERSHIP.slice(0, 5);
-const EXTENDED = LEADERSHIP.slice(5, 11); // 6 weitere
-
-// Finale Spiral-Positionen (xPercent/yPercent des 40vw-Path-Containers).
-const SPIRAL = [
-  { xp: -60, yp: -55 },
-  { xp: 60, yp: -55 },
-  { xp: -80, yp: 10 },
-  { xp: 80, yp: 10 },
-  { xp: 0, yp: 65 },
-];
+const TEAM = LEADERSHIP.slice(0, 11);
 
 const NAME = {
   fontFamily: "var(--font-sharp), sans-serif",
@@ -40,50 +28,32 @@ const ROLE = { color: "#000000a3", fontSize: "clamp(0.78rem, 0.9vw, 1.05rem)", l
 
 export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
-  const master = useRef<HTMLDivElement>(null);
-  const extGrid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const desktop = window.matchMedia("(min-width: 768px)").matches;
+      const tiles = gsap.utils.toArray<HTMLElement>("[data-team-tile]");
 
-      // ── Desktop-Spiral-Stage ──────────────────────────────────────────────
-      if (desktop) {
-        const cards = gsap.utils.toArray<HTMLElement>("[data-spiral]");
-        const names = gsap.utils.toArray<HTMLElement>("[data-spiral-name]");
-        if (reduce) {
-          cards.forEach((c, i) => gsap.set(c, { xPercent: SPIRAL[i].xp, yPercent: SPIRAL[i].yp, scale: 1, opacity: 1 }));
-          gsap.set(names, { opacity: 1 });
-        } else {
-          gsap.set(cards, { xPercent: 0, yPercent: 0, scale: 0.9, opacity: 0 });
-          gsap.set(names, { opacity: 0 });
-          const tl = gsap.timeline({
-            scrollTrigger: { trigger: master.current, start: "top top", end: "bottom bottom", scrub: 0.9 },
-          });
-          cards.forEach((c, i) => {
-            tl.to(c, { xPercent: SPIRAL[i].xp, yPercent: SPIRAL[i].yp, scale: 1, ease: "power1.inOut" }, 0)
-              .to(c, { opacity: 1, ease: "none", duration: 0.35 }, 0);
-          });
-          // Namen/Rollen dezent SPÄT einfaden.
-          tl.to(names, { opacity: 1, ease: "none", duration: 0.2 }, 0.72);
-        }
+      if (reduce) {
+        gsap.set(tiles, { opacity: 1, y: 0 });
+        return;
       }
 
-      // ── Extension-Reveal (6 weitere Personen) ─────────────────────────────
-      if (!reduce) {
-        const tiles = gsap.utils.toArray<HTMLElement>("[data-ext-tile]");
-        const imgs = gsap.utils.toArray<HTMLElement>("[data-ext-img]");
-        gsap.set(tiles, { opacity: 0, y: "4vw" });
-        gsap.set(imgs, { scale: 1.12 });
-        ScrollTrigger.create({
-          trigger: extGrid.current,
-          start: "top 78%",
-          once: true,
-          onEnter: () => {
-            gsap.to(tiles, { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: "power3.out" });
-            gsap.to(imgs, { scale: 1, duration: 0.9, stagger: 0.12, ease: "power3.out" });
-          },
+      // Reihen faden beim Scrollen von unten rein (Tile für Tile beim Eintreten).
+      gsap.set(tiles, { opacity: 0, y: "4vw" });
+      ScrollTrigger.batch("[data-team-tile]", {
+        start: "top 90%",
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09, ease: "power3.out" }),
+      });
+
+      // Background-Wort „TEAM" blendet aus, sobald man in die Section scrollt.
+      const word = root.current?.querySelector<HTMLElement>("[data-team-word]");
+      if (word) {
+        gsap.to(word, {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: { trigger: word, start: "top 34%", end: "top -6%", scrub: true },
         });
       }
     },
@@ -92,90 +62,50 @@ export function AlgarveFounders() {
 
   return (
     <section ref={root} style={{ background: "#f8f7f3" }}>
-      {/* ── Desktop: Spiral-Stage ────────────────────────────────────────── */}
-      <div ref={master} className="relative overflow-clip max-[767px]:hidden" style={{ height: "400vh" }}>
-        <div className="sticky top-0 overflow-clip" style={{ height: "100vh" }}>
-          {/* Background-Wort */}
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <h2
-              className="m-0 uppercase text-black"
-              style={{
-                fontFamily: "var(--font-sharp), sans-serif",
-                fontSize: "18vw",
-                fontWeight: 500,
-                letterSpacing: "-0.5vw",
-                lineHeight: 1,
-                zIndex: 0,
-              }}
-            >
-              Team
-            </h2>
-          </div>
-
-          {/* 5 frei schwebende Portraits (40vw-Path, Bild unten-rechts) */}
-          {FEATURED.map((p) => (
-            <div
-              key={p.name}
-              data-spiral
-              className="absolute inset-0 m-auto flex items-end justify-end"
-              style={{ width: "40vw", height: "40vw", zIndex: 2, willChange: "transform" }}
-            >
-              <div className="flex flex-col items-center" style={{ width: "15vw", gap: "0.7vw" }}>
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  className="w-full object-cover"
-                  style={{ height: "16.8vw", borderRadius: "1.11vw", filter: "grayscale(1)" }}
-                />
-                <div data-spiral-name className="text-center" style={{ opacity: 0 }}>
-                  <div className="text-black" style={NAME}>
-                    {p.name}
-                  </div>
-                  <div style={ROLE}>{p.role}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* ── Desktop: 5er-Raster mit Background-Wort hinter Reihe 1 ─────────── */}
+      <div className="relative max-[767px]:hidden" style={{ padding: "6.94vw 2vw 8.33vw" }}>
+        {/* Background-Wort „TEAM" — liegt hinter der ersten Reihe, blendet aus */}
+        <div
+          data-team-word
+          className="pointer-events-none absolute inset-x-0 flex justify-center"
+          style={{ top: "9vw", zIndex: 0 }}
+        >
+          <h2
+            className="m-0 uppercase text-black"
+            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "18vw", fontWeight: 500, letterSpacing: "-0.5vw", lineHeight: 1 }}
+          >
+            Team
+          </h2>
         </div>
-      </div>
 
-      {/* ── Desktop: Extension (6 weitere, 3×2) ──────────────────────────── */}
-      <div className="max-[767px]:hidden" style={{ padding: "0 2vw 8.33vw" }}>
-        <div ref={extGrid} className="grid grid-cols-3" style={{ columnGap: "1vw", rowGap: "3vw" }}>
-          {EXTENDED.map((p) => (
-            <div key={p.name} data-ext-tile className="flex flex-col" style={{ gap: "1vw" }}>
-              <div className="relative overflow-clip" style={{ borderRadius: "1.11vw", paddingTop: "100%", background: "#e8e6df" }}>
-                <img
-                  data-ext-img
-                  src={p.img}
-                  alt={p.name}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  style={{ filter: "grayscale(1)", willChange: "transform" }}
-                />
+        {/* 5er-Raster, gleiche Abstände */}
+        <div className="relative grid grid-cols-5" style={{ columnGap: "1.2vw", rowGap: "3vw", zIndex: 1 }}>
+          {TEAM.map((p) => (
+            <div key={p.name} data-team-tile className="flex flex-col" style={{ gap: "0.9vw" }}>
+              <div className="overflow-clip" style={{ borderRadius: "1.11vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
+                <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
               </div>
               <div className="flex flex-col" style={{ gap: "0.1vw" }}>
-                <h3 className="m-0 text-black" style={NAME}>
+                <div className="text-black" style={NAME}>
                   {p.name}
-                </h3>
-                <p className="m-0" style={ROLE}>
-                  {p.role}
-                </p>
+                </div>
+                <div style={ROLE}>{p.role}</div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Mobile: sauberes Grid ALLER Teammitglieder ───────────────────── */}
+      {/* ── Mobile: sauberes 2-Spalten-Grid ──────────────────────────────── */}
       <div className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
         <h2 className="m-0 mb-8 uppercase text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "12vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
           Team
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
-          {LEADERSHIP.map((p) => (
+          {TEAM.map((p) => (
             <div key={p.name} className="flex flex-col gap-3">
-              <div className="relative overflow-clip" style={{ borderRadius: "4vw", paddingTop: "100%", background: "#e8e6df" }}>
-                <img src={p.img} alt={p.name} className="absolute inset-0 h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
+              <div className="overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
+                <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
               </div>
               <div>
                 <div className="text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 500, fontSize: "3.6vw", lineHeight: "120%" }}>

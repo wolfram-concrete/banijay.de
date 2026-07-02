@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
@@ -28,7 +29,7 @@ export default function NewsPage() {
           <Reveal>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {NEWS.map((item) => (
-                <article key={item.title} className="group">
+                <Link key={item.title} href={`/news/${item.slug}`} className="group no-underline">
                   <div
                     className="overflow-hidden rounded-2xl"
                     style={{ aspectRatio: "4 / 3", background: "#e8e6df" }}
@@ -49,7 +50,7 @@ export default function NewsPage() {
                   >
                     {item.title}
                   </h2>
-                </article>
+                </Link>
               ))}
             </div>
           </Reveal>

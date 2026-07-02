@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CountUp } from "@/components/cinematic/CountUp";
 import { HOME } from "@/data/home";
-import { ABOUT } from "@/data/about";
 import { homeStats } from "@/data/site";
 import { LEADERSHIP } from "@/data/leadership";
 
@@ -24,22 +23,47 @@ const CARDS = LEADERSHIP.slice(0, 5).map((p) => ({ url: p.img, name: p.name }));
 
 // Finale Ruhelage je Karte (is-left … is-right): x/y in vw, rotation in deg.
 const REST = [
-  { x: 5, y: 4, rot: -18 },
-  { x: 2, y: 2, rot: 3 },
-  { x: 0, y: 0, rot: -3 },
-  { x: -5, y: 2, rot: 4 },
-  { x: -6, y: 4, rot: -8 },
+  { x: 5, y: 2.5, rot: -8 },
+  { x: 2, y: 1.2, rot: 2 },
+  { x: 0, y: 0, rot: -2 },
+  { x: -5, y: 1.2, rot: 3 },
+  { x: -6, y: 2.5, rot: -6 },
 ];
 // Start-x der Entrance (Karte fliegt von weit außen herein). Mitte via scale.
 const ENTER_X = [30, 17, 0, -13, -34];
 
-// Fünf echte/belegte Aussagen (1:1 zu den fünf Karten).
+// Fünf echte Statements — 1:1 aus dem Testimonial-Slider auf banijay.de
+// (Nanni Erben, Arno Schneppenheim, Fabian Tobias, Florian Bösenkopf) plus das
+// CEO-Statement von Marcus Wolter.
 const STATEMENTS = [
-  { quote: HOME.ceo.quote, name: "Marcus Wolter", role: "CEO & Co-Founder, Banijay Germany" },
-  { quote: HOME.ceo.altQuote, name: "Marcus Wolter", role: "CEO & Co-Founder, Banijay Germany" },
-  { quote: HOME.world.extra, name: "Banijay Germany", role: "Entertainment-Netzwerk" },
-  { quote: ABOUT.principle.text, name: "Banijay Germany", role: "Kreative Freiheit, starkes Dach" },
-  { quote: HOME.world.headline, name: "Banijay Germany", role: "Ein Netzwerk kreativer Zentren" },
+  {
+    quote: HOME.ceo.quote,
+    name: "Marcus Wolter",
+    role: "CEO & Co-Founder, Banijay Germany",
+  },
+  {
+    quote:
+      "Mein Ziel ist es, durch relevante Serien und Filme oder die Förderung junger Filmemacher aufzufallen und natürlich durch die Frauenquote, bei der ich mich als Produzentin weiter engagieren möchte.",
+    name: "Nanni Erben",
+    role: "Geschäftsführerin MadeFor",
+  },
+  {
+    quote: "Mit Spaß und Leidenschaft kannst du Berge versetzen oder zumindest einen vernünftigen Tunnel bauen.",
+    name: "Arno Schneppenheim",
+    role: "Geschäftsführer & Co-Founder Banijay Productions Germany",
+  },
+  {
+    quote:
+      "Diversität, Chancengerechtigkeit und Toleranz sind in der Banijay Gruppe gelebte Werte, die als fester Bestandteil in einer jeden Unternehmenskultur angestrebt werden sollten.",
+    name: "Fabian Tobias",
+    role: "Geschäftsführer EndemolShine Germany",
+  },
+  {
+    quote:
+      "Was uns von anderen unterscheidet ist, dass wir Creator nicht als reine Reichweite sehen, sondern als digitale Storyteller. Mit unserer Plattform gestalten wir die Content Creator Economy der Zukunft.",
+    name: "Florian Bösenkopf",
+    role: "Geschäftsführer & Co-Founder influence.vision",
+  },
 ];
 
 const STATS = homeStats().slice(0, 4);

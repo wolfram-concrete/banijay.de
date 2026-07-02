@@ -1,134 +1,184 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-// Algarve „studio-hero" für alle Unterseiten (nicht Home). Entrance-Animation
-// 1:1 aus der Template-Referenz übernommen: IntersectionObserver (threshold 0.1)
-// schaltet CSS-Transitions frei — Headline opacity+translateY(2rem), Bildblock
-// opacity+translateY(2.5rem) mit delay-300, Glass-Card opacity+scale(.95) mit
-// delay-500; alle transition-all duration-700 ease-out.
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+// Subpage-Hero (alle Seiten außer Home). Boldere, zweizeilige H1, die sich beim
+// Laden aufbaut. Beim Scrollen wächst der (schmale) Video-Container in dieser
+// Reihenfolge: 1) in die HÖHE über die H1 (die dabei auf Weiß invertiert und
+// stehen bleibt), 2) in die BREITE, 3) auf Full-Screen — dann still. Danach der
+// Body-Text als große, schwarze, einscrollende Typo (wie Home-Section 3).
 
 const PAPER = "#f8f7f3";
-
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, visible] as const;
-}
+const INK = "#0e0d0b";
+const SHARP = "var(--font-sharp), sans-serif";
 
 export function AlgarvePageHero({
   headline,
   label,
   body,
   image,
+  video = "/video/showreel.mp4",
 }: {
   headline: string;
   label: string;
   body: string;
   image: string;
+  video?: string;
 }) {
-  const [headingRef, headingVisible] = useReveal<HTMLDivElement>();
-  const [imageRef, imageVisible] = useReveal<HTMLDivElement>();
+  const root = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // 1) Headline baut sich auf (beim Laden), Zeile für Zeile hoch.
+      gsap.from("[data-h1-line] > span", {
+        yPercent: 125,
+        opacity: 0,
+        duration: 1.1,
+        ease: "power4.out",
+        stagger: 0.12,
+        delay: 0.15,
+      });
+
+      if (reduce) return;
+
+      gsap.set("[data-hero-label]", { autoAlpha: 0 });
+
+      // 2) Gepinnte Choreografie: Höhe → über die H1 (invert weiß) → Breite →
+      //    Full-Screen → halten. scrub über die gesamte Section-Höhe.
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "[data-hero-stage]",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl
+        // A) Container wächst zunächst nur in die HÖHE (schmal, unter der H1).
+        .to("[data-hero-media]", { top: "36vh", height: "52vh", ease: "none", duration: 0.28 }, 0)
+        // B) Steigt über die H1 UND wächst in die Breite; die H1 invertiert dabei
+        //    auf Weiß (jetzt liegt das breite Video dahinter) und bleibt stehen.
+        .to("[data-hero-media]", { top: "8vh", left: "0vw", width: "100vw", height: "84vh", ease: "none", duration: 0.34 }, 0.3)
+        .to("[data-hero-scrim]", { opacity: 0.5, ease: "none", duration: 0.34 }, 0.3)
+        .to("[data-hero-h1]", { color: PAPER, ease: "none", duration: 0.16 }, 0.38)
+        .to("[data-hero-label]", { autoAlpha: 1, ease: "none", duration: 0.12 }, 0.42)
+        // C) Container zoomt auf Full-Screen.
+        .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.22 }, 0.66)
+        // Halten (letztes Stück ohne Änderung).
+        .to("[data-hero-media]", { opacity: 1, ease: "none", duration: 0.12 }, 0.88);
+
+      // 3) Body-Statement darunter: schwarze Typo scrollt Wort für Wort rein.
+      gsap.from("[data-hero-word]", {
+        opacity: 0.14,
+        ease: "none",
+        stagger: 0.04,
+        scrollTrigger: { trigger: "[data-hero-body]", start: "top 82%", end: "top 32%", scrub: true },
+      });
+    },
+    { scope: root },
+  );
+
+  const lines = headline.split("\n");
+  const words = body.split(" ");
 
   return (
-    <section
-      className="w-full"
-      style={{ background: PAPER, paddingTop: "clamp(7rem, 8.33vw, 11vw)", paddingBottom: "5.56vw" }}
-    >
-      <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div className="mx-auto w-full max-w-[100vw]">
-          {/* Headline */}
+    <div ref={root} style={{ background: PAPER }}>
+      {/* ── Gepinnte Bühne ─────────────────────────────────────────────── */}
+      <section data-hero-stage style={{ position: "relative", height: "300vh" }}>
+        <div className="sticky top-0 overflow-hidden" style={{ height: "100vh" }}>
+          {/* Headline (liegt über dem Video, invertiert beim Aufwachsen) */}
           <div
-            ref={headingRef}
-            className={`mx-auto flex w-full flex-col items-center text-center max-[767px]:!max-w-[75vw] transition-all duration-700 ease-out ${
-              headingVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-            }`}
-            style={{ maxWidth: "71.39vw" }}
+            data-hero-h1
+            className="absolute inset-x-0 flex flex-col items-center text-center"
+            style={{ top: "10vh", paddingLeft: "2vw", paddingRight: "2vw", zIndex: 3, color: INK }}
           >
-            <h1
-              className="uppercase text-black"
-              style={{
-                fontFamily: "var(--font-sharp), sans-serif",
-                fontSize: "clamp(2.6rem, 11.11vw, 12rem)",
-                lineHeight: "115%",
-                fontWeight: 500,
-                letterSpacing: "-0.312vw",
-                margin: 0,
-                whiteSpace: "pre-line",
-              }}
-            >
-              {headline}
-            </h1>
+            {lines.map((ln, i) => (
+              <span key={i} data-h1-line className="block overflow-hidden">
+                <span
+                  className="block uppercase"
+                  style={{
+                    fontFamily: SHARP,
+                    fontWeight: 500,
+                    fontSize: "clamp(2.5rem, 8.5vw, 11rem)",
+                    lineHeight: 1.0,
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {ln}
+                </span>
+              </span>
+            ))}
           </div>
 
-          {/* Bildblock */}
+          {/* Video-Container (schmal → Höhe → Breite → Full-Screen) */}
           <div
-            ref={imageRef}
-            className={`relative overflow-hidden transition-all delay-300 duration-700 ease-out max-[767px]:!py-[27vw] ${
-              imageVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-            }`}
+            data-hero-media
+            className="absolute overflow-hidden"
+            style={{ zIndex: 2, left: "30vw", top: "56vh", width: "40vw", height: "30vh", borderRadius: "1.67vw" }}
+          >
+            <video autoPlay muted loop playsInline poster={image} className="absolute inset-0 h-full w-full object-cover">
+              <source src={video} type="video/mp4" />
+            </video>
+            <div data-hero-scrim className="absolute inset-0" style={{ background: "#000", opacity: 0.2 }} />
+          </div>
+
+          {/* Label rechtsbündig auf der Bildachse (erscheint erst breit) */}
+          <div
+            data-hero-label
+            className="absolute text-right uppercase max-[767px]:!text-[2.6vw]"
             style={{
-              marginTop: "clamp(2.5rem, 6vw, 7vw)",
-              paddingTop: "11.11vw",
-              paddingBottom: "11.11vw",
-              borderRadius: "1.67vw",
+              zIndex: 4,
+              right: "3vw",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: PAPER,
+              fontFamily: SHARP,
+              fontWeight: 700,
+              fontSize: "0.9vw",
+              letterSpacing: "0.16em",
+              textShadow: "0 1px 14px rgba(0,0,0,0.55)",
             }}
           >
-            <div className="absolute inset-0">
-              <img src={image} alt="" className="h-full w-full object-cover" />
-              <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.64)" }} />
-            </div>
-
-            {/* Glass-Card */}
-            <div
-              className={`relative z-10 mx-auto flex flex-col items-center text-center transition-all delay-500 duration-700 ease-out max-[991px]:!max-w-[60vw] max-[767px]:!w-[82%] max-[767px]:!max-w-[90vw] ${
-                imageVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
-              }`}
-              style={{
-                width: "50%",
-                maxWidth: "31.11vw",
-                gap: "1.39vw",
-                borderRadius: "1.67vw",
-                background: "rgba(0,0,0,0.32)",
-                padding: "clamp(1.25rem, 2.22vw, 2.5rem)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                boxShadow: "inset 0 0 24px 0 rgba(248,247,243,0.08), inset 0 6px 12px 0 rgba(248,247,243,0.16)",
-                color: "#f8f7f3",
-              }}
-            >
-              <div
-                className="font-bold uppercase"
-                style={{ fontSize: "clamp(0.65rem, 0.9vw, 0.9rem)", letterSpacing: "0.052vw", lineHeight: "100%" }}
-              >
-                {label}
-              </div>
-              <p className="m-0" style={{ fontSize: "clamp(0.9rem, 1.1vw, 1.15rem)", lineHeight: "135%" }}>
-                {body}
-              </p>
-            </div>
+            {label}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ── Body-Statement (schwarze, einscrollende Typo) ──────────────── */}
+      <section
+        data-hero-body
+        style={{ paddingTop: "8.33vw", paddingBottom: "8.33vw", paddingLeft: "2vw", paddingRight: "2vw" }}
+      >
+        <p
+          className="m-0 max-[767px]:!text-[7vw]"
+          style={{
+            maxWidth: "63.33vw",
+            fontFamily: SHARP,
+            fontWeight: 500,
+            fontSize: "3.33vw",
+            lineHeight: "120%",
+            letterSpacing: "-0.094vw",
+            color: INK,
+          }}
+        >
+          {words.map((w, i) => (
+            <span key={i} data-hero-word style={{ display: "inline-block", whiteSpace: "pre" }}>
+              {w}
+              {i < words.length - 1 ? " " : ""}
+            </span>
+          ))}
+        </p>
+      </section>
+    </div>
   );
 }

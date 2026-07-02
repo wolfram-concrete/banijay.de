@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -26,13 +25,14 @@ const H1 = {
 // Sechs Kompetenzfelder als Sticky-Card-Stack. Claim kommt aus der Datenschicht.
 // Jede Videobox spielt einen anderen Ausschnitt desselben Reels (videoStart =
 // Bruchteil der Videolänge) → wirkt wie 6 unterschiedliche Clips (Platzhalter).
+// Kernkompetenz-Karten alle in Banijay-Magenta, Typo schwarz.
+const MAGENTA = "#ff4370";
 const CARDS = HOME.competenceFields.fields.slice(0, 6).map((f, i) => ({
   index: `0${i + 1}`,
   title: f.title,
   claim: f.claim,
   text: f.text,
-  bg: ["/grid/g02.jpg", "/grid/g05.jpg", "/grid/g08.jpg", "/grid/g11.png", "/grid/g03.png", "/grid/g06.jpg"][i],
-  tint: ["#0d0d0d", "#dfdad1", "#d6cde6", "#0d0d0d", "#dfdad1", "#d6cde6"][i],
+  tint: MAGENTA,
   rotate: i % 2 === 1 ? "rotate(-7deg)" : "rotate(6deg)",
   videoStart: (i + 0.5) / 6,
 }));
@@ -44,19 +44,17 @@ export function AlgarveServicesStack() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-service-card]");
-      // Jede Card (außer der letzten) schrumpft leicht, während die nächste sie
-      // überlagert — gibt dem Stapel Tiefe.
+      // Echtes 3D-Wegkippen (wie auf der Companies-Seite): sobald die nächste Card
+      // hochscrollt, kippt die aktuelle um ihre Oberkante nach hinten weg + faded.
       cards.forEach((card, i) => {
         if (i === cards.length - 1) return;
+        gsap.set(card, { transformPerspective: 2000, transformOrigin: "50% 0%" });
         gsap.to(card, {
-          scale: 0.93,
+          rotationX: -60,
+          scale: 0.8,
+          opacity: 0,
           ease: "none",
-          scrollTrigger: {
-            trigger: cards[i + 1],
-            start: "top bottom",
-            end: "top top",
-            scrub: 0.5,
-          },
+          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: 0.8 },
         });
       });
     },
@@ -114,7 +112,7 @@ export function AlgarveServicesStack() {
       style={{ background: "#f8f7f3", paddingTop: "8.33vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div className="flex flex-col" style={{ gap: "2.22vw", color: "#f8f7f3" }}>
+        <div className="flex flex-col" style={{ gap: "2.22vw", color: "#0e0d0b" }}>
           {CARDS.map((card) => (
             <div
               key={card.index}
@@ -130,18 +128,12 @@ export function AlgarveServicesStack() {
                 transform: "perspective(2000px)",
               }}
             >
-              {/* Hintergrundbild + Overlay */}
-              <div className="absolute inset-0" style={{ zIndex: 1 }}>
-                <img src={card.bg} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0" style={{ backgroundColor: "#000000e0" }} />
-              </div>
-
-              {/* Top: Titel + Index */}
+              {/* Top: Titel + Index (auf voll eingefärbtem Grund, schwarze Typo) */}
               <div className="relative flex items-center justify-between" style={{ zIndex: 3 }}>
                 <h3 className="uppercase" style={H1}>
                   {card.title}
                 </h3>
-                <h3 style={{ ...H1, color: "#f8f7f352" }}>{card.index}</h3>
+                <h3 style={{ ...H1, color: "rgba(0,0,0,0.28)" }}>{card.index}</h3>
               </div>
 
               {/* Bottom: Claim + Text */}

@@ -32,20 +32,17 @@ export function AlgarveAboutIntro({ text }: { text?: string }) {
       const wordEls = gsap.utils.toArray<HTMLElement>("[data-word]");
       // Stabilen GPU-Layer erzwingen → kein Subpixel-Flimmern beim Scrub (Lenis).
       gsap.set(wordEls, { willChange: "transform, opacity", backfaceVisibility: "hidden" });
-      // Partikel-artiger Aufbau: jedes Wort kommt aus einer leicht zufälligen
-      // Streuung (x/y/scale) smooth zusammen — statt eines harten x-Fly-ins.
-      // Zufällige Reihenfolge (from: "random") + weicher Ease = ruhiger, smoother.
+      // Ruhiger, gerichteter Aufbau in Leserichtung: Wörter enthüllen sich in
+      // DOM-Reihenfolge (from: "start" = oben-links → unten-rechts), nur Opacity
+      // + leichtes Anheben. Kein Partikel-/Puzzle-Effekt.
       gsap.from(wordEls, {
         opacity: 0,
-        x: () => gsap.utils.random(-70, 70),
-        y: () => gsap.utils.random(-40, 45),
-        scale: 0.8,
-        ease: "power2.out",
-        force3D: true,
-        stagger: { amount: 1.2, from: "random" },
+        yPercent: 30,
+        ease: "none",
+        stagger: { amount: 1, from: "start" },
         scrollTrigger: {
-          // Startet erst, wenn das Statement mittig gepinnt ist (nicht schon beim
-          // Reinscrollen), und läuft über ~90vh → deutlich langsamer/deliberater.
+          // Startet erst, wenn das Statement mittig gepinnt ist, und läuft über
+          // ~90vh → deutlich langsamer/deliberater.
           trigger: root.current,
           start: "top top",
           end: "+=90%",

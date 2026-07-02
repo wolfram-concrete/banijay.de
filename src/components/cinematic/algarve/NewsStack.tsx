@@ -2,12 +2,13 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { NEWS } from "@/data/news";
 
-// section_blog-home (Algarve 1:1): „Latest news" als 5fr/7fr-Grid. Links sticky
-// (Heading + Read-all). Rechts ein Stapel News-Tiles, die sich beim Scrollen
-// überlagern & pinnen (position:sticky; bottom:10vw + z-Index-Leiter). Reine
-// CSS-Mechanik wie im Original. Inhalt: die echten Banijay-News.
+// section_blog-home: „Latest news" als 5fr/7fr-Grid. Links sticky (Heading +
+// Read-all). Rechts eine ruhige Liste von News-Beiträgen OHNE eigenen Kachel-
+// Background (nur feine Trennlinien) — jeweils mit „Mehr erfahren"-CTA auf die
+// Detailseite. Inhalt: die echten Banijay-News.
 
 const ITEMS = NEWS.slice(0, 5);
 
@@ -56,23 +57,17 @@ export function AlgarveNewsStack() {
             </Link>
           </div>
 
-          {/* Rechte Spalte: gestapelte Tiles */}
-          <div className="relative">
+          {/* Rechte Spalte: ruhige Liste ohne Kachel-Background */}
+          <div className="flex flex-col">
             {ITEMS.map((item, i) => (
               <Link
                 key={item.title}
-                href="/news"
-                className="flex flex-col no-underline"
+                href={`/news/${item.slug}`}
+                className="group flex flex-col no-underline"
                 style={{
-                  position: "sticky",
-                  bottom: "10vw",
-                  zIndex: ITEMS.length - i,
-                  // Kein weißer Hintergrund mehr — Tiles auf Magenta (Section-Farbe),
-                  // die Stapel-Trennung übernimmt die Trennlinie.
-                  backgroundColor: "#ff4370",
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
-                  borderTop: "0.08vw solid rgba(0,0,0,0.35)",
+                  borderTop: i === 0 ? "none" : "0.08vw solid rgba(0,0,0,0.2)",
                   color: "#0e0d0b",
                 }}
               >
@@ -82,17 +77,16 @@ export function AlgarveNewsStack() {
                     style={{
                       borderRadius: "1.11vw",
                       height: "15vw",
-                      // Feiner Schatten → hebt den (teils magentafarbenen) Bildcontainer
-                      // vom Off-White-Tile ab.
                       boxShadow: "0 0.8vw 2.4vw -0.4vw rgba(0,0,0,0.28)",
                     }}
                   >
-                    <img src={item.img} alt={item.title} className="h-full w-full object-cover" />
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    />
                   </div>
-                  <div
-                    className="flex flex-col justify-between"
-                    style={{ maxWidth: "31.11vw", gap: "1.11vw" }}
-                  >
+                  <div className="flex flex-col justify-between" style={{ maxWidth: "31.11vw", gap: "1.11vw" }}>
                     <div className="flex flex-col items-start" style={{ gap: "0.83vw" }}>
                       <span
                         style={{
@@ -110,6 +104,12 @@ export function AlgarveNewsStack() {
                         {item.title}
                       </span>
                     </div>
+                    <span
+                      className="inline-flex items-center gap-[0.4vw] transition-transform duration-300 group-hover:translate-x-1"
+                      style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.05vw", fontWeight: 500 }}
+                    >
+                      Mehr erfahren <ArrowUpRight size={16} />
+                    </span>
                   </div>
                 </div>
               </Link>

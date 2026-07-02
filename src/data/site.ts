@@ -13,7 +13,12 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "News", href: "/news" },
   { label: "About", href: "/about" },
   { label: "Career", href: "/career" },
-  { label: "Contact", href: "/contact" },
+];
+
+/** Rechtliches — subtil unten im Menü-Overlay. */
+export const LEGAL_ITEMS: NavItem[] = [
+  { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
 ];
 
 export interface Stat {
@@ -61,3 +66,9 @@ export const SITE = {
   name: "Banijay Germany",
   tagline: "Die Entertainment-Welt hinter den Momenten, über die Deutschland spricht.",
 };
+
+/** Social-Profile (im Menü-Overlay als Button-Flächen unter „Folgen"). */
+export const SOCIAL = {
+  instagram: { label: "Instagram", handle: "@banijaygermany", url: "https://instagram.com/banijaygermany" },
+  linkedin: { label: "LinkedIn", handle: "Banijay Germany", url: "https://www.linkedin.com/company/banijaygermany/" },
+} as const;

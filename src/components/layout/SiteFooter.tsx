@@ -57,7 +57,7 @@ export function SiteFooter() {
                 ))}
               </nav>
 
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-10 md:pl-[6vw]">
                 <div className="flex flex-col gap-3">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
                     Folgen
@@ -125,13 +125,11 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Legal */}
+          {/* Legal + Bildmarke — gleiches Grid wie oben, damit das b linksbündig
+              mit dem Folgen/Kontakt-Block sitzt; unten auf der Impressum-Grundlinie. */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
-            <div
-              className="flex flex-col gap-3 text-xs uppercase tracking-[0.14em] sm:flex-row sm:items-center sm:justify-between"
-              style={{ opacity: 0.5 }}
-            >
-              <div className="flex gap-6">
+            <div className="grid items-end gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
+              <div className="flex gap-6 text-xs tracking-[0.02em]" style={{ opacity: 0.5 }}>
                 <Link href="/impressum" className="hover:opacity-100">
                   Impressum
                 </Link>
@@ -139,7 +137,15 @@ export function SiteFooter() {
                   Datenschutz
                 </Link>
               </div>
-              <span>© {new Date().getFullYear()} Banijay Germany</span>
+              {/* Kleine Banijay-Bildmarke (Magenta), linksbündig mit der Kontaktspalte.
+                  Plain <img>: Brand-SVG, next/image lädt Brand-Assets nicht. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/banijay-sign.svg"
+                alt="Banijay"
+                className="justify-self-start md:pl-[6vw]"
+                style={{ height: "2.4rem", width: "auto", boxSizing: "content-box" }}
+              />
             </div>
           </div>
         </div>
