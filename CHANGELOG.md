@@ -5,15 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
-### Career-Übergang: Richtung gedreht — Aufbau statt Peel (02.07., 23. Runde)
-- **`CareerTomorrowStack` neu:** Statt die Layer wegzupeelen baut sich der
-  Hintergrund jetzt **von oben nach unten auf**: erst wischen die bunten Fächer-Layer
-  (Orange → Gelb → Grün) nacheinander per Downward-Wipe (clip-path) ein, **zuletzt**
-  baut sich die **schwarze Tomorrow-Card** auf, und **erst danach** fadet der Content
-  darin ein. Die schwarze Card ist jetzt **content-groß** (~520px) statt full-screen.
-  Einheitliches gestapeltes Layout für Desktop (animiert) + Mobile (statisch); kein
-  Pin mehr. Verifiziert: Start nur Magenta sichtbar, Fächer wischen sequentiell,
-  Schwarz baut zuletzt, Content-Opacity 0→1.
+### Career-Übergang: gepinnte Emerge-Sequenz (02.07., 23. Runde)
+- **`CareerTomorrowStack`:** Der Übergang ist jetzt eine **gepinnte** Sequenz
+  („Stop"): Magenta-Standorte-Kachel steht, dann kommen beim Weiterscrollen **leicht
+  verzögert nacheinander** die bunten Kacheln heraus (Orange → Gelb → Grün, je per
+  Downward-Wipe/clip-path), **zuletzt zieht sich die schwarze Kachel voll auf** und
+  wird zum Tomorrow-Background — **erst danach** fadet der Content ein. Full-Viewport-
+  Layer (fitten sicher in die Pin-Bühne). Vorher war der Reveal ohne Pin nicht
+  sichtbar (spielte unter dem Fold ab). Mobile bleibt statisch gestapelt. Verifiziert
+  über den Scrollverlauf: Kacheln wischen sequentiell (68→0 %), Content-Opacity 0→0.98
+  am Ende. CTA-Hover Magenta.
 
 ### Docs aktualisiert (02.07.)
 - **README** auf aktuellen Stand: Modul-Liste (ProofVideo, CareerTomorrowStack …),
