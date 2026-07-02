@@ -31,10 +31,14 @@ export function AlgarveLogoReveal() {
           scale: 1,
           borderRadius: "0vw",
           ease: "power2.out",
+          // Der Aufstieg läuft während des Eintretens (über die noch sichtbare
+          // Team-Section) und ist abgeschlossen, sobald die Section oben andockt
+          // („top top") — danach steht das Full-Screen-Video ruhig (Hold), bevor
+          // die News hochscrollen.
           scrollTrigger: {
             trigger: root.current,
             start: "top bottom",
-            end: "bottom bottom",
+            end: "top top",
             scrub: 1,
             invalidateOnRefresh: true,
           },

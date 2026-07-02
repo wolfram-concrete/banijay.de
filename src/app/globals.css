@@ -10,7 +10,7 @@
 
   Brand-Referenz für Phase 2:
     --background  #070309   (near-black)
-    --accent      #FB4B68   (Banijay Coral, aus Logo)
+    --accent      #ff4370   (Banijay Coral, aus Logo)
     glow:         #E0218A Magenta · #6B2FB3 Violett · #2B1A6B Indigo
   ──────────────────────────────────────────────────────────────────────────
 */
@@ -26,7 +26,7 @@
   --border: #dbd8ce;
 
   /* Accent — Banijay Coral */
-  --accent: #fb4b68;
+  --accent: #ff4370;
   --accent-foreground: #ffffff;
 
   /* Placeholder-Flächen */
@@ -89,7 +89,7 @@ body {
 :root {
   --bj-paper: #f4f3ee;   /* warmes Off-White (Algarve-Anmutung) */
   --bj-ink: #0e0d0b;     /* fast-schwarz */
-  --bj-coral: #fb4b68;   /* Banijay Coral */
+  --bj-coral: #ff4370;   /* Banijay Coral */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -303,7 +303,7 @@ html.lenis body { height: auto; }
   background: radial-gradient(
     circle at 50% 44%,
     #ff4370 0%,
-    #fb4b68 22%,
+    #ff4370 22%,
     #ff7a3d 42%,
     #7b5cff 60%,
     rgba(248, 247, 243, 0) 74%

@@ -99,7 +99,6 @@ export function Preloader() {
   useEffect(() => {
     if (phase !== "cutout" || !knock.current) return;
     const el = knock.current;
-    signalDone(); // Hero läuft an, während das Loch aufzoomt
     // Breite des b-Lochs am Start = Größe des Canvas-b (nahtloser Übergang).
     const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.224 * 0.977;
     el.style.setProperty("--bsize", `${bStart}px`);
@@ -111,6 +110,10 @@ export function Preloader() {
       ease: "power2.in",
       onUpdate: () => el.style.setProperty("--bsize", `${state.s}px`),
       onComplete: () => {
+        // Hero-Typo-Animation startet ERST jetzt — nachdem das b-Loch komplett
+        // aufgezoomt hat und der Hero voll sichtbar ist (nicht schon während des
+        // Zooms hinter dem Overlay).
+        signalDone();
         unlockScroll();
         setPhase("done");
       },
@@ -123,7 +126,13 @@ export function Preloader() {
   if (skip || phase === "done") return null;
 
   return (
-    <div className="fixed inset-0 overflow-hidden" style={{ zIndex: 9999, background: "#0e0d0b" }} aria-hidden>
+    <div
+      className="fixed inset-0 overflow-hidden"
+      aria-hidden
+      // Während der Cutout-Phase transparent, damit man durch das b-Loch den
+      // dahinterliegenden Hero sieht (nicht die schwarze Preloader-Fläche).
+      style={{ zIndex: 9999, background: phase === "cutout" ? "transparent" : "#0e0d0b" }}
+    >
       {/* Hintergrundvideo während der Partikel-Phase (dunkel, Banijay-Pink). */}
       {phase === "particles" && (
         <video

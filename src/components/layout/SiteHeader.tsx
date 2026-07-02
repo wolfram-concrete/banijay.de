@@ -116,7 +116,7 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
 // (Höhe 0 → 100vh) mit großen, gestaffelt einfahrenden Links + Info-Block.
 // Farben in Banijay-Coral, Logo scroll-/routenabhängig weiß bzw. magenta.
 
-const CORAL = "#fb4b68";
+const CORAL = "#ff4370";
 const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
 

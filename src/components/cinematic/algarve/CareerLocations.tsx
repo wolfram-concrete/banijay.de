@@ -9,7 +9,7 @@ const SHARP = "var(--font-sharp), sans-serif";
 
 export function AlgarveCareerLocations() {
   return (
-    <section style={{ background: "#fb4b68", color: "#0e0d0b", paddingTop: "5.2vw", paddingBottom: "5.2vw" }}>
+    <section style={{ background: "#ff4370", color: "#0e0d0b", paddingTop: "5.2vw", paddingBottom: "5.2vw" }}>
       <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
         <p
           className="max-w-[47vw] max-[767px]:!max-w-full max-[767px]:!text-[5vw]"

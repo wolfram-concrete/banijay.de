@@ -48,7 +48,7 @@ export function AlgarveCareerJobsPreview() {
             href={CAREER.jobs.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#fb4b68]"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370]"
           >
             {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
           </a>

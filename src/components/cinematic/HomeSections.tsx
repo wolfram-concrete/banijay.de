@@ -23,7 +23,7 @@ const HEADING = {
   lineHeight: "108%",
 } as const;
 
-const eyebrow = "text-[0.8rem] font-bold uppercase tracking-[0.14em] text-[#fb4b68]";
+const eyebrow = "text-[0.8rem] font-bold uppercase tracking-[0.14em] text-[#ff4370]";
 
 function Wrap({ children, bg = PAPER }: { children: React.ReactNode; bg?: string }) {
   return (

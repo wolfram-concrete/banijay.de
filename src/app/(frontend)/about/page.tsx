@@ -59,7 +59,7 @@ export default function AboutPage() {
             <div className="mt-[3.5vw] grid grid-cols-2 gap-[1vw] md:grid-cols-3">
               {STATS.filter((s) => !s.aboutOnly).map((s, i) => {
                 const accent = i === 0;
-                const bg = accent ? "#fb4b68" : "rgba(14,13,11,0.05)";
+                const bg = accent ? "#ff4370" : "rgba(14,13,11,0.05)";
                 return (
                   <div
                     key={s.label}

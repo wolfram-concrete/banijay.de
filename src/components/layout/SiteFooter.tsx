@@ -1,16 +1,19 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, CONTACT, SOCIAL } from "@/data/site";
 
-// Footer — dunkles Rounded-Panel mit großen Nav-Links, Kontakt + Social-Buttons,
-// darunter BANIJAY als großes Lettering-Marquee, zuletzt die Legal-Zeile.
-// Auf /about invertiert: magentafarbene Card + schwarze Schrift, kein Magenta
-// hinter dem Footer (Außenfläche = Paper).
+// Footer — großes Rounded-Panel mit Nav-Links, Kontakt + Social-Buttons, darunter
+// BANIJAY als großes Lettering-Marquee, zuletzt die Legal-Zeile + Bildmarke.
+// Farb-Logik: NUR auf der Home „dunkel" (Ink-Card, Magenta-Typo, Magenta-Außen).
+// Auf ALLEN anderen Seiten invertiert wie /about: Magenta-Card, Ink-Typo, Paper-
+// Außenfläche. Die BANIJAY-Banderole ist innerhalb der Card in FG-Farbe, ragt aber
+// full-bleed über die Card hinaus — dort (auf der Paper-Außenfläche) ist sie magenta.
 
 const INK = "#0e0d0b";
-const ACCENT = "#ff4370";
+const ACCENT = "#ff4370"; // verbindliches Banijay-Magenta
 const PAPER = "#f8f7f3";
 const marqueeWords = ["Banijay", "Banijay", "Banijay"];
 
@@ -31,17 +34,82 @@ function IconLinkedin() {
   );
 }
 
+// Ein full-bleed Marquee-Track (100vw, identische Wörter/Animation) — zweimal
+// deckungsgleich gerendert (innen FG, außen magenta), damit die Banderole beim
+// Verlassen der Card farblich „umschlägt". marginLeft -2vw schiebt den Start auf
+// die Viewport-Kante 0 (die Card sitzt 2vw eingerückt) → beide Tracks liegen exakt
+// übereinander.
+function MarqueeTrack({ color }: { color: string }) {
+  return (
+    <div style={{ marginLeft: "-2vw", width: "100vw", overflow: "hidden" }}>
+      <div className="flex w-max" style={{ animation: "footerMarquee 60s linear infinite" }}>
+        {[0, 1].map((dup) => (
+          <div key={dup} className="flex shrink-0" aria-hidden={dup === 1}>
+            {marqueeWords.map((w, i) => (
+              <span
+                key={i}
+                className="uppercase"
+                style={{
+                  fontFamily: "var(--font-sharp), sans-serif",
+                  fontSize: "22vw",
+                  fontWeight: 500,
+                  letterSpacing: "-0.05em",
+                  lineHeight: 1,
+                  paddingRight: "2vw",
+                  color,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {w}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function SiteFooter() {
   const pathname = usePathname();
-  const inverted = pathname === "/about";
+  // Home als einzige Ausnahme dunkel; alle anderen Seiten wie /about invertiert.
+  const inverted = pathname !== "/";
 
   // Card-Grund (BG) und Schrift (FG) je nach Variante; Außenfläche OUTER.
   const BG = inverted ? ACCENT : INK;
   const FG = inverted ? INK : ACCENT;
   const OUTER = inverted ? PAPER : ACCENT;
 
+  // Die außen liegende Magenta-Banderole vertikal exakt auf die Card-interne
+  // Banderole ausrichten (misst deren Position relativ zum Footer).
+  const footerRef = useRef<HTMLElement>(null);
+  const insideMarquee = useRef<HTMLDivElement>(null);
+  const bleedMarquee = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const align = () => {
+      const f = footerRef.current;
+      const m = insideMarquee.current;
+      const b = bleedMarquee.current;
+      if (!f || !m || !b) return;
+      const fr = f.getBoundingClientRect();
+      const mr = m.getBoundingClientRect();
+      b.style.top = `${mr.top - fr.top}px`;
+      b.style.height = `${mr.height}px`;
+    };
+    align();
+    window.addEventListener("resize", align);
+    const ro = new ResizeObserver(align);
+    if (footerRef.current) ro.observe(footerRef.current);
+    document.fonts?.ready.then(align);
+    return () => {
+      window.removeEventListener("resize", align);
+      ro.disconnect();
+    };
+  }, [pathname]);
+
   return (
     <footer
+      ref={footerRef}
       style={{
         background: OUTER,
         paddingTop: "2.22vw",
@@ -51,14 +119,27 @@ export function SiteFooter() {
         // (z-[98]) und der Nav-Bar (z-[99]) — sonst legt sich das geöffnete Menü
         // hinter den Footer statt full-size darüber.
         zIndex: 40,
+        overflow: "hidden",
       }}
     >
       <style>{`
         @keyframes footerMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        .footer-social{transition:background-color .3s ease,color .3s ease}
-        .footer-social:hover{background:var(--fg);color:var(--bg)}
+        .footer-social{color:var(--fg);border-color:var(--fg);transition:background-color .3s ease,color .3s ease}
+        .footer-social:hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
       `}</style>
-      <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+
+      {/* Außen liegende Banderole (magenta): full-bleed hinter der Card. Wird nur in
+          den seitlichen Rändern sichtbar, wo die Card sie nicht überdeckt. */}
+      <div
+        ref={bleedMarquee}
+        aria-hidden
+        className="pointer-events-none absolute left-0 w-full overflow-hidden"
+        style={{ zIndex: 0 }}
+      >
+        <MarqueeTrack color={ACCENT} />
+      </div>
+
+      <div style={{ paddingLeft: "2vw", paddingRight: "2vw", position: "relative", zIndex: 1 }}>
         <div
           style={{
             position: "relative",
@@ -98,7 +179,9 @@ export function SiteFooter() {
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
                     Folgen
                   </span>
-                  {/* Social-Buttons wie in der Hauptnavigation, hier invertiert. */}
+                  {/* Social-Buttons: Farbe/Border über die CSS-Vars (--fg/--bg), damit
+                      der Hover Text + Icon zuverlässig invertiert (kein Inline-Color,
+                      das den Hover überschreibt). */}
                   <div className="flex flex-wrap gap-3">
                     <a
                       href={SOCIAL.instagram.url}
@@ -106,7 +189,7 @@ export function SiteFooter() {
                       rel="noopener noreferrer"
                       aria-label={`Instagram — ${SOCIAL.instagram.handle}`}
                       className="footer-social inline-flex items-center gap-2 rounded-full border bg-transparent px-5 py-2.5 text-sm font-medium"
-                      style={{ borderColor: FG, color: FG, ["--fg" as string]: FG, ["--bg" as string]: BG }}
+                      style={{ ["--fg" as string]: FG, ["--bg" as string]: BG }}
                     >
                       <IconInstagram />
                       Instagram
@@ -117,7 +200,7 @@ export function SiteFooter() {
                       rel="noopener noreferrer"
                       aria-label={`LinkedIn — ${SOCIAL.linkedin.handle}`}
                       className="footer-social inline-flex items-center gap-2 rounded-full border bg-transparent px-5 py-2.5 text-sm font-medium"
-                      style={{ borderColor: FG, color: FG, ["--fg" as string]: FG, ["--bg" as string]: BG }}
+                      style={{ ["--fg" as string]: FG, ["--bg" as string]: BG }}
                     >
                       <IconLinkedin />
                       LinkedIn
@@ -148,38 +231,16 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* BANIJAY — großes Lettering-Marquee (auf die Card geclippt via overflow). */}
-          <div className="w-full overflow-hidden" style={{ marginTop: "6vw", marginBottom: "3vw" }}>
-            <div className="flex w-max" style={{ animation: "footerMarquee 60s linear infinite" }}>
-              {[0, 1].map((dup) => (
-                <div key={dup} className="flex shrink-0" aria-hidden={dup === 1}>
-                  {marqueeWords.map((w, i) => (
-                    <span
-                      key={i}
-                      className="uppercase"
-                      style={{
-                        fontFamily: "var(--font-sharp), sans-serif",
-                        fontSize: "22vw",
-                        fontWeight: 500,
-                        letterSpacing: "-0.05em",
-                        lineHeight: 1,
-                        paddingRight: "2vw",
-                        color: FG,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {w}
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
+          {/* BANIJAY — Banderole innerhalb der Card (FG-Farbe, von der Card geclippt).
+              Deckungsgleich mit der außen liegenden Magenta-Banderole. */}
+          <div ref={insideMarquee} style={{ marginTop: "6vw", marginBottom: "3vw" }}>
+            <MarqueeTrack color={FG} />
           </div>
 
           {/* Legal (links) + Banijay-Bildmarke (rechts). Das B sitzt unten auf der
               Unterlänge und startet linksbündig mit den Social-CTAs: gleiches
               Grid-Template + md:pl-[6vw] wie der Kontakt-/Folgen-Block oben.
-              Auf /about (magenta Card) auf Ink umfärben (brightness 0). */}
+              Auf invertierten (magenta) Cards auf Ink umfärben (brightness 0). */}
           <div
             className="grid items-end gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24"
             style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}

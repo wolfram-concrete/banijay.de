@@ -5,6 +5,30 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Footer-Farblogik, Preloader-Cutout, CEO-Modul (02.07., 8. Runde)
+- **Footer global invertiert:** nur die Home ist noch „dunkel" (Ink-Card /
+  Magenta-Typo); ALLE anderen Seiten sind wie /about (Magenta-Card, Ink-Typo,
+  Paper-Außenfläche).
+- **Footer-Social-Hover:** Text + Icon invertieren jetzt korrekt (Inline-Color
+  entfernt, Rest-/Hover-Farbe über CSS-Vars `--fg`/`--bg` → Icon folgt
+  `currentColor`).
+- **Footer-Banderole:** die große BANIJAY-Banderole schlägt beim Verlassen der
+  Card farblich um — innerhalb der Card in FG-Farbe, auf der Paper-Außenfläche
+  magenta (zwei deckungsgleiche full-bleed Marquees, außen hinter der Card).
+- **Magenta vereinheitlicht:** alle `#fb4b68` (Coral-Abweichung) global auf das
+  verbindliche Banijay-Magenta **`#ff4370`** gezogen.
+- **Preloader-Übergang:** das b ist jetzt ein echter Cutout — der Container ist in
+  der Cutout-Phase transparent, sodass durch das b-Loch der Hero sichtbar wird
+  (statt Schwarz). Die Hero-Typo-Animation startet erst NACH dem Aufzoomen
+  (`signalDone` im `onComplete`), nicht mehr versteckt dahinter.
+- **LogoReveal (Team → Video):** der Video-Aufstieg ist auf das Eintreten
+  begrenzt (`end: "top top"`) und steht danach ruhig full-size — kein Kriechen
+  mehr über die ganze Sektionshöhe.
+- **CEO-/Marcus-Modul (CeoTestimonial):** komplett neu als 2-Spalten-Split nach
+  dem gelieferten Template — links Label · großes Zitat · Attribution · CTA,
+  rechts hohe gerundete Media-Spalte mit Portrait + Caption-Karte. Entrance per
+  IntersectionObserver (fade + slide-up, gestaffelt).
+
 ### Nav-/Footer-/Scroll-Feinschliff (02.07., 7. Runde)
 - **Nav-Docked-Label:** auf der Home kein eingerastetes „Home"-Label mehr — die
   Orientierungs-Wortmarke unter „MENU" erscheint nur noch auf Unterseiten.
