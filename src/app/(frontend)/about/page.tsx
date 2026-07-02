@@ -5,6 +5,7 @@ import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
+import { AlgarvePartnerGrid } from "@/components/cinematic/algarve/PartnerGrid";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
 import { STATS } from "@/data/site";
@@ -128,43 +129,8 @@ export default function AboutPage() {
       {/* 06 Leadership — Algarve Founder-Grid */}
       <AlgarveFounders />
 
-      {/* 07 Partnerverständnis */}
-      <section style={{ background: "#f8f7f3", paddingTop: "6.5vw", paddingBottom: "6.5vw" }}>
-        <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
-          <Reveal>
-            <div className="max-w-[62vw] max-[767px]:!max-w-full">
-              <Kicker>Partner</Kicker>
-              <h2
-                className="m-0 max-[767px]:!text-[7vw]"
-                style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "112%", fontWeight: 500, letterSpacing: "-0.11vw", color: "#0e0d0b" }}
-              >
-                {ABOUT.partnership.headline}
-              </h2>
-              <p
-                className="max-[767px]:!text-[4vw] md:max-w-[48vw]"
-                style={{ marginTop: "1.4vw", fontSize: "1.3vw", lineHeight: "150%", color: "rgba(0,0,0,0.64)" }}
-              >
-                {ABOUT.partnership.text}
-              </p>
-            </div>
-            <div className="mt-[3vw] grid gap-x-[2vw] gap-y-[2.5vw] sm:grid-cols-2 lg:grid-cols-4">
-              {ABOUT.partnership.cards.map((card) => (
-                <div key={card.title} style={{ borderTop: "0.12vw solid rgba(0,0,0,0.16)", paddingTop: "1.2vw" }}>
-                  <h3
-                    className="max-[767px]:!text-[5vw]"
-                    style={{ fontFamily: SHARP, fontSize: "1.25vw", fontWeight: 500, color: "#0e0d0b", letterSpacing: "-0.03vw" }}
-                  >
-                    {card.title}
-                  </h3>
-                  <p className="mt-2 max-[767px]:!text-[3.6vw]" style={{ fontSize: "0.95vw", lineHeight: "150%", color: "rgba(0,0,0,0.6)" }}>
-                    {card.text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* 07 Partnerverständnis — als blog-home-Grid (Algarve News-Template) */}
+      <AlgarvePartnerGrid />
 
       {/* 08 Kontakt-Formular (Eingabetemplate) */}
       <AlgarveContactForm

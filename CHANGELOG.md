@@ -6,6 +6,10 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 ## [Unreleased] — 2026-07-02
 
 ### Footer-Farblogik, Preloader-Cutout, CEO-Modul (02.07., 8. Runde)
+- **Partner-Section (About):** neu aufgebaut im „section_blog-home"-Template
+  (Algarve News-Layout) — links Sticky-Heading (Eyebrow · H2 · Copy · CTA),
+  rechts eine Tile-Liste (Bild · Nummer · Titel · Text) mit feinen Trennlinien
+  statt der schlichten 4-Spalten-Ansicht.
 - **Footer global invertiert:** nur die Home ist noch „dunkel" (Ink-Card /
   Magenta-Typo); ALLE anderen Seiten sind wie /about (Magenta-Card, Ink-Typo,
   Paper-Außenfläche).
