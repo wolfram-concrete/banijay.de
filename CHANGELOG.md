@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home Statement→Companies: Nav-Invert + Timing (02.07., 24. Runde)
+- **Nav invertiert über der Magenta-Fläche:** Das aufsteigende Magenta-Overlay der
+  AboutIntro (Home) trägt jetzt `data-nav-theme="magenta"` → sobald es oben liegt,
+  werden **Logo (brightness(0)) + MENU schwarz** statt magenta-auf-magenta unsichtbar.
+  Verifiziert: MENU-Farbe wechselt bei Magenta-oben von `#ff4370` → `#0e0d0b`.
+- **Wartezeit bis Companies verkürzt:** AboutIntro-Höhe 320vh → 230vh, Wort-Reveal
+  `+=90%` → `+=60%`, und die Magenta-Fläche ist erst bei ~90 % (statt ~68 %) „voll" —
+  direkt danach übernimmt die Companies-Section. Leerlauf nach „voll" von ~70vh auf
+  ~13vh reduziert.
+
 ### Career-Übergang: gepinnte Emerge-Sequenz (02.07., 23. Runde)
 - **`CareerTomorrowStack`:** Der Übergang ist jetzt eine **gepinnte** Sequenz
   („Stop"): Magenta-Standorte-Kachel steht, dann kommen beim Weiterscrollen **leicht

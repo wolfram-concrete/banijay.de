@@ -41,7 +41,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
         yPercent: 30,
         ease: "none",
         stagger: { amount: 1, from: "start" },
-        scrollTrigger: { trigger: root.current, start: "top top", end: "+=90%", scrub: 1 },
+        scrollTrigger: { trigger: root.current, start: "top top", end: "+=60%", scrub: 1 },
       });
 
       // magentaExit: gerundete Magenta-Fläche steigt über das stehende Statement
@@ -55,11 +55,13 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
         });
         // 1) Aufsteigen über das (stehende) Statement.
-        tl.to(ov, { yPercent: 0, ease: "power2.out", duration: 0.15 }, 0.4);
+        tl.to(ov, { yPercent: 0, ease: "power2.out", duration: 0.18 }, 0.45);
         // 2) Radiale Ober-Ecken (b-Körper) falten auf → volle Magenta-Fläche.
-        tl.to(ov, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw", ease: "power2.inOut", duration: 0.12 }, 0.55);
-        // Halte-Beat bis Timeline-Ende (hält 1:1-Scroll-Mapping).
-        tl.to(ov, { yPercent: 0, duration: 0.32 }, 0.68);
+        //    „Voll" liegt jetzt nah am Timeline-Ende (~0.85) → direkt danach
+        //    übernimmt die Companies-Section (kein langer Leerlauf mehr).
+        tl.to(ov, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw", ease: "power2.inOut", duration: 0.22 }, 0.63);
+        // Kurzer Halte-Beat bis Timeline-Ende.
+        tl.to(ov, { yPercent: 0, duration: 0.15 }, 0.85);
       }
     },
     { scope: root },
@@ -70,7 +72,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
       ref={root}
       style={{
         background: "#f8f7f3",
-        height: magentaExit ? "320vh" : "220vh",
+        height: magentaExit ? "230vh" : "220vh",
         paddingTop: "5.56vw",
         paddingBottom: "5.56vw",
         position: "relative",
@@ -101,6 +103,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
           <div
             ref={overlay}
             aria-hidden
+            data-nav-theme="magenta"
             className="pointer-events-none absolute inset-0"
             style={{ zIndex: 5, background: ACCENT, willChange: "transform" }}
           />
