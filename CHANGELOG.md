@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Companies-Slider mobil = Desktop-Idee + MENU-Gewicht (02.07., 35. Runde)
+- **Companies mobil komplett neu — gepinnter Coverflow-Slider:** Die Section rastet
+  ein (pin), der vertikale Scroll wird zum **horizontalen Slide** (scrub + card-snap);
+  erst wenn alle Karten durch sind, geht es weiter. Die zentrierte **Fokus-Card ist
+  groß/gerade, die Nachbarn skaliert + gedreht** (radiale Fächer-Idee wie Desktop).
+  Der **Section-Hintergrund blendet in die dominante „gebrannte" Farbe der Fokus-Card**
+  (colorsRef jetzt auch mobil berechnet) — genau wie Desktop. Verifiziert: pinned
+  (812/812), Card-Scales 0.99→0.72, BG wechselt je Fokus-Card.
+- **Card-Text-Padding:** Captions haben jetzt seitliches Padding (7vw) + Zeilenumbruch
+  → lange Namen (z. B. „Endemol Shine Polska") kleben nicht mehr an der Kante, sondern
+  brechen sauber zweizeilig um.
+- **MENU/CLOSE-Gewicht auf 500** — auch Desktop (700 war zu fett). Verifiziert: 500.
+
 ### Company-Fokuspunkte, AboutIntro mobil, Nav-Gewicht (02.07., 34. Runde)
 - **Company-Card-Fokuspunkte:** Jedes der 7 neuen Poster im echten Hochkant-Card-
   Container geprüft und einen **motivspezifischen `object-position`** gesetzt

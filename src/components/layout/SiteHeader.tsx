@@ -298,7 +298,7 @@ export function SiteHeader() {
                 // Maximiert: Versalhöhe ≈ Logo-Höhe (sitzt an Ober-, schließt an
                 // Unterlänge des Banijay-Logos). Logo = 2.625rem → fontSize ~3.5rem.
                 fontFamily: "var(--font-sharp), sans-serif",
-                fontWeight: 700,
+                fontWeight: 500,
                 fontSize: "3.5rem",
                 lineHeight: 0.86,
                 letterSpacing: "-0.01em",

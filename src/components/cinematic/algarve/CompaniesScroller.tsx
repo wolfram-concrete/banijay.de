@@ -74,12 +74,14 @@ export function AlgarveCompaniesScroller() {
   const track = useRef<HTMLDivElement>(null);
   const wordL = useRef<HTMLHeadingElement>(null);
   const wordR = useRef<HTMLHeadingElement>(null);
+  const mRoot = useRef<HTMLElement>(null); // Mobile-Slider-Section
+  const mTrack = useRef<HTMLDivElement>(null); // Mobile-Card-Track
   // Dominante Bildfarbe je Card (für den lebendigen Hintergrund).
   const colorsRef = useRef<([number, number, number] | null)[]>([]);
 
   // Repräsentative (vorherrschende, satte) Farbe je Company-Bild vorberechnen.
+  // Läuft auf allen Viewports — Desktop UND Mobile-Slider nutzen colorsRef.
   useEffect(() => {
-    if (!window.matchMedia("(min-width: 768px)").matches) return;
     let alive = true;
     cards.forEach((card, i) => {
       const img = new Image();
@@ -202,6 +204,88 @@ export function AlgarveCompaniesScroller() {
       rootEl.style.backgroundColor = "";
     };
   }, []);
+
+  // ── Mobile: gepinnter Coverflow-Slider ──────────────────────────────────
+  // Die Section rastet ein (pin), der vertikale Scroll wird zum horizontalen Slide;
+  // erst wenn alle Karten durch sind, geht es weiter. Die zentrierte Fokus-Card ist
+  // groß/gerade, die Nachbarn leicht skaliert + gedreht (radiale Fächer-Idee wie
+  // Desktop). Der Section-Hintergrund blendet in die dominante Farbe der Fokus-Card.
+  useGSAP(
+    () => {
+      if (window.matchMedia("(min-width: 768px)").matches) return;
+      const rootEl = mRoot.current;
+      const trackEl = mTrack.current;
+      const els = gsap.utils.toArray<HTMLElement>("[data-mcard]");
+      if (!rootEl || !trackEl || !els.length) return;
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        // Fallback: natives horizontales Scroll-Snap ohne Pin.
+        rootEl.classList.remove("h-screen", "justify-center");
+        rootEl.classList.add("py-[16vw]");
+        trackEl.classList.add("snap-x", "snap-mandatory", "overflow-x-auto");
+        return;
+      }
+
+      const cur: [number, number, number] = [...BASE_BG];
+      const target: [number, number, number] = [...BASE_BG];
+      const distance = () => Math.max(1, trackEl.scrollWidth - window.innerWidth);
+
+      // Coverflow-Transform je Card nach Abstand zur Bildschirmmitte + Fokus-Farbe.
+      const coverflow = () => {
+        const cX = window.innerWidth / 2;
+        let bi = -1;
+        let bd = 1e9;
+        els.forEach((el, i) => {
+          const r = el.getBoundingClientRect();
+          const d = r.left + r.width / 2 - cX;
+          const ad = Math.min(Math.abs(d) / window.innerWidth, 1);
+          gsap.set(el, { scale: 1 - ad * 0.2, rotationZ: (d / window.innerWidth) * 11, transformOrigin: "50% 60%" });
+          el.style.zIndex = String(100 - Math.round(ad * 100));
+          if (Math.abs(d) < bd) {
+            bd = Math.abs(d);
+            bi = i;
+          }
+        });
+        if (bi >= 0) {
+          const col = colorsRef.current[bi] ?? BASE_BG;
+          target[0] = col[0];
+          target[1] = col[1];
+          target[2] = col[2];
+        }
+      };
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootEl,
+          start: "top top",
+          end: () => "+=" + distance() * 1.15,
+          scrub: 0.5,
+          pin: true,
+          invalidateOnRefresh: true,
+          snap: els.length > 1 ? { snapTo: 1 / (els.length - 1), duration: 0.25, ease: "power1.inOut" } : undefined,
+          onUpdate: coverflow,
+        },
+      });
+      tl.to(trackEl, { x: () => -distance(), ease: "none" }, 0);
+
+      const tick = () => {
+        let moved = false;
+        for (let k = 0; k < 3; k++) {
+          const diff = target[k] - cur[k];
+          if (Math.abs(diff) > 0.4) moved = true;
+          cur[k] += diff * 0.08;
+        }
+        if (moved) rootEl.style.backgroundColor = `rgb(${Math.round(cur[0])},${Math.round(cur[1])},${Math.round(cur[2])})`;
+      };
+      gsap.ticker.add(tick);
+      coverflow();
+      return () => {
+        gsap.ticker.remove(tick);
+        rootEl.style.backgroundColor = "";
+      };
+    },
+    { scope: mRoot },
+  );
 
   useGSAP(
     () => {
@@ -367,29 +451,32 @@ export function AlgarveCompaniesScroller() {
         </div>
       </section>
 
-      {/* ── Mobile: „Unsere" oben, „Companies" darunter, dann horizontaler
-          Slider (links → rechts, native Scroll-Snap). ───────────────────────── */}
-      <section className="hidden max-[767px]:block" style={{ background: "#f8f7f3", paddingTop: "16vw", paddingBottom: "16vw" }}>
-        <div className="mb-8 flex flex-col" style={{ paddingLeft: "3vw", paddingRight: "3vw", lineHeight: 0.98 }}>
-          <h2 className="m-0 uppercase text-black" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Unsere</h2>
-          <h2 className="m-0 uppercase text-black" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Companies</h2>
+      {/* ── Mobile: gepinnter Coverflow-Slider (Scroll → Slide) ──────────────── */}
+      <section
+        ref={mRoot}
+        className="hidden h-screen w-screen flex-col justify-center overflow-clip max-[767px]:flex"
+        style={{ background: `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`, color: "#0e0d0b" }}
+      >
+        <div className="flex flex-col" style={{ paddingLeft: "5vw", paddingRight: "5vw", marginBottom: "7vw", lineHeight: 0.98 }}>
+          <h2 className="m-0 uppercase" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Unsere</h2>
+          <h2 className="m-0 uppercase" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Companies</h2>
         </div>
-        <div
-          className="flex snap-x snap-mandatory gap-[4vw] overflow-x-auto"
-          style={{ paddingLeft: "3vw", paddingRight: "3vw", scrollPaddingLeft: "3vw", WebkitOverflowScrolling: "touch" }}
-        >
+        <div ref={mTrack} className="flex items-center gap-[5vw]" style={{ paddingLeft: "13vw", paddingRight: "13vw" }}>
           {cards.map((card) => {
             const Wrap = card.href ? "a" : "div";
             return (
               <Wrap
                 key={card.name}
+                data-mcard
                 {...(card.href ? { href: card.href, target: "_blank", rel: "noreferrer" } : {})}
-                className="relative flex shrink-0 snap-start flex-col overflow-clip no-underline"
-                style={{ width: "74vw", height: "104vw", borderRadius: "4vw", background: "#fff", boxShadow: "0 2vw 6vw -2vw rgba(0,0,0,0.2)" }}
+                className="relative flex shrink-0 flex-col overflow-clip no-underline"
+                style={{ width: "74vw", height: "104vw", borderRadius: "5vw", background: "#fff", boxShadow: "0 3vw 8vw -2vw rgba(0,0,0,0.35)", willChange: "transform" }}
               >
                 <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: card.objectPosition }} />
-                <div className="absolute bottom-0 flex w-full flex-col items-center text-center" style={{ paddingTop: "24vw", paddingBottom: "6vw", gap: "1vw", backgroundImage: "linear-gradient(0deg, #000, #0000)", color: "#f8f7f3" }}>
-                  <h3 className="m-0 uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "6vw", fontWeight: 500 }}>{card.name}</h3>
+                {/* Caption mit seitlichem Padding, damit lange Namen (z. B. „Endemol
+                    Shine Polska") nicht an der Kante kleben, sondern sauber umbrechen. */}
+                <div className="absolute bottom-0 flex w-full flex-col items-center text-center" style={{ paddingLeft: "7vw", paddingRight: "7vw", paddingTop: "26vw", paddingBottom: "7vw", gap: "1vw", backgroundImage: "linear-gradient(0deg, rgba(0,0,0,0.82), #0000)", color: "#f8f7f3" }}>
+                  <h3 className="m-0 uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "5.4vw", fontWeight: 500, lineHeight: "114%" }}>{card.name}</h3>
                 </div>
               </Wrap>
             );
