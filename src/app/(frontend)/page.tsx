@@ -1,4 +1,3 @@
-import { Preloader } from "@/components/cinematic/Preloader";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCompaniesScroller } from "@/components/cinematic/algarve/CompaniesScroller";
@@ -17,9 +16,6 @@ import { AlgarveDivider } from "@/components/cinematic/algarve/Divider";
 export default function HomePage() {
   return (
     <>
-      {/* Preloader-Intro (Zoom → Invert-Flicker → Magenta-Cut) vor dem Hero */}
-      <Preloader />
-
       {/* Hero (Video + weiße Typo) + Entertainment Portfolio (Sticky-Grid) */}
       <AlgarveHome />
 

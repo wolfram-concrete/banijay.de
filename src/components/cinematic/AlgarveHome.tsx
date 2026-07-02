@@ -222,11 +222,13 @@ export function AlgarveHome() {
       // Die H1-Animation startet ERST, wenn der Preloader-Übergang vollständig
       // abgeschlossen ist — das Event „banijay:introdone" feuert im onComplete NACH
       // dem Cutout-Aufziehen. Fallback nach 5s, falls kein Preloader läuft.
+      // Kein Preloader mehr → die H1-Animation startet kurz nach dem Mount. (Das
+      // introdone-Event bleibt als Kompatibilität erhalten, falls doch ein Intro läuft.)
       const startHero = () => tl.play();
       if ((window as { __introDone?: boolean }).__introDone) startHero();
       else {
         window.addEventListener("banijay:introdone", startHero, { once: true });
-        gsap.delayedCall(5, startHero);
+        gsap.delayedCall(0.35, startHero);
       }
 
       // Untere Zeilen (Factsheet + Subline) erscheinen erst beim Scrollen — ganz

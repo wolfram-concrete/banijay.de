@@ -4,6 +4,7 @@ import { AlgarveCareerRoleStack } from "@/components/cinematic/algarve/CareerRol
 import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJobsPreview";
 import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
 import { AlgarveTomorrowCallout } from "@/components/cinematic/algarve/TomorrowCallout";
+import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { CAREER } from "@/data/career";
 
@@ -41,6 +42,9 @@ export default function CareerPage() {
         image={CAREER.tomorrow.image}
         cta={CAREER.tomorrow.cta}
       />
+
+      {/* 06 Code of Conduct */}
+      <AlgarveCodeOfConductBand />
 
       {/* 07 Bewerbungs-/Kontaktformular (Eingabetemplate, wie About/Companies) */}
       <AlgarveContactForm
