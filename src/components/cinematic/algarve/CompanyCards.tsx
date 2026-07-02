@@ -112,7 +112,7 @@ export function AlgarveCompanyCards() {
             <article
               key={card.id}
               data-company-card
-              className="relative flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[6vw] max-[767px]:!p-[8vw]"
+              className="relative flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[4vw] max-[767px]:!p-[6vw]"
               style={{
                 position: "sticky",
                 top: "1.39vw",
@@ -172,7 +172,7 @@ export function AlgarveCompanyCards() {
 
               {/* Bottom: Claim + Body + Tags + Known-for + CTA */}
               <div
-                className="relative flex flex-col items-start max-[991px]:!mt-[3vw] max-[991px]:!max-w-full max-[991px]:!gap-[2vw] max-[767px]:!mt-[6vw]"
+                className="relative flex flex-col items-start max-[991px]:!mt-[1.6vw] max-[991px]:!max-w-full max-[991px]:!gap-[1.3vw] max-[767px]:!mt-[3vw]"
                 style={{ maxWidth: "42vw", gap: "1.39vw" }}
               >
                 <h4
@@ -303,7 +303,7 @@ export function AlgarveCompanyCards() {
               <div
                 className="hidden w-full overflow-clip max-[991px]:!block"
                 style={{
-                  marginTop: "5vw",
+                  marginTop: "2.5vw",
                   borderRadius: "3vw",
                   boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)",
                 }}
@@ -311,7 +311,7 @@ export function AlgarveCompanyCards() {
                 <img
                   src={card.image}
                   alt={card.imageAlt}
-                  className="block w-full object-cover max-[991px]:!h-[34vw] max-[767px]:!h-[52vw]"
+                  className="block w-full object-cover max-[991px]:!h-[30vw] max-[767px]:!h-[46vw]"
                 />
               </div>
             </article>

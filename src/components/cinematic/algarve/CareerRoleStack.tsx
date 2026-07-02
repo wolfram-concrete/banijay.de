@@ -108,7 +108,7 @@ export function AlgarveCareerRoleStack() {
             <div
               key={card.index}
               data-role-card
-              className="sticky flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[6vw] max-[767px]:!p-[8vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[4vw] max-[767px]:!p-[6vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
@@ -132,7 +132,7 @@ export function AlgarveCareerRoleStack() {
 
               {/* Bottom: Claim + Text */}
               <div
-                className="relative flex flex-col items-start max-[991px]:!mt-[3vw] max-[991px]:!max-w-full max-[991px]:!gap-[2vw] max-[767px]:!mt-[6vw]"
+                className="relative flex flex-col items-start max-[991px]:!mt-[1.6vw] max-[991px]:!max-w-full max-[991px]:!gap-[1.3vw] max-[767px]:!mt-[3vw]"
                 style={{ zIndex: 3, maxWidth: "42vw", gap: "1.11vw" }}
               >
                 <h4
@@ -171,12 +171,12 @@ export function AlgarveCareerRoleStack() {
               {/* Querformat-Bild in-flow — nur Tablet/Mobile (≤991px). */}
               <div
                 className="hidden w-full overflow-clip max-[991px]:!block"
-                style={{ marginTop: "5vw", borderRadius: "3vw", boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)" }}
+                style={{ marginTop: "2.5vw", borderRadius: "3vw", boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)" }}
               >
                 <img
                   src={card.image}
                   alt={card.title}
-                  className="block w-full object-cover max-[991px]:!h-[34vw] max-[767px]:!h-[52vw]"
+                  className="block w-full object-cover max-[991px]:!h-[30vw] max-[767px]:!h-[46vw]"
                 />
               </div>
             </div>

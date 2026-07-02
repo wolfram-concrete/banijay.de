@@ -5,6 +5,27 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Team-Grid-Fit, Career-Regenbogen-Übergang, Flip-Cards enger (02.07., 20. Runde)
+- **About/Home – Team-Grid überlief die Pin-Bühne:** Auf niedrigeren/breiteren
+  Viewports wuchsen die Portraits (festes 4:5) über die fixe 100vh-Bühne hinaus,
+  `overflow:hidden` schnitt die 2. Reihe ab → die Partner-Section darunter wirkte
+  „reingeschnitten". Jetzt füllen die zwei Reihen die verfügbare Bühnenhöhe
+  (`grid-template-rows:1fr/1fr`, Bilder `flex-1`/`min-h-0`), das Grid passt immer
+  in die Bühne. Verifiziert bei 1440×820: kein Overflow, beide Reihen + Namen im
+  Bild.
+- **Career – Standorte → BANIJAY TOMORROW als Layer-System (`CareerTomorrowStack`):**
+  Der Magenta-Standorte-Kasten sendet nach unten mehrere bunte, gerundete Schichten
+  aus (Magenta → Orange → Gelb → Grün) und endet im **schwarzen Layer, der die
+  Tomorrow-Section bildet** — Hintergrund wird von oben aufgebaut, dann läuft nur
+  noch der Content ein. Technik: gestapelte Full-Width-Bänder mit gerundeten
+  Unterkanten, negativer margin + absteigender z-index (jedes Band zeigt unten
+  einen gerundeten Farbstreifen). Alte `CareerLocations.tsx` + `TomorrowCallout.tsx`
+  entfernt (ersetzt).
+- **Flip-Cards enger (Company + Career-RoleStack):** Auf schmalem Tablet wirkten die
+  Karten noch zu hoch. Padding (6vw→4vw / 8vw→6vw), Innenabstände und Querformat-
+  Bildhöhe (34vw→30vw / 52vw→46vw) gestaucht. Verifiziert: Company-Card bei 834px
+  778→655px.
+
 ### Team-Namen nach Einrasten + About-Video aus Grid-Modul (02.07., 19. Runde)
 - **Team-Section (Founders):** Name + Titel der Karten starten jetzt unsichtbar
   (opacity 0, leicht nach unten versetzt) und **layern erst auf, wenn die Karten

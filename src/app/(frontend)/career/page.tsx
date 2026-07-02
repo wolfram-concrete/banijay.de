@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveCareerRoleStack } from "@/components/cinematic/algarve/CareerRoleStack";
 import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJobsPreview";
-import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
-import { AlgarveTomorrowCallout } from "@/components/cinematic/algarve/TomorrowCallout";
+import { AlgarveCareerTomorrowStack } from "@/components/cinematic/algarve/CareerTomorrowStack";
 import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
@@ -32,17 +31,11 @@ export default function CareerPage() {
       {/* 03 Aktuelle Jobs */}
       <AlgarveCareerJobsPreview />
 
-      {/* 04 Standorte */}
-      <AlgarveCareerLocations />
-
-      {/* 05 BANIJAY TOMORROW — Callout-Block (value-features-4) auf Magenta-Grund */}
-      <AlgarveTomorrowCallout
-        eyebrow={CAREER.tomorrow.eyebrow}
-        headline={CAREER.tomorrow.headline}
-        text={CAREER.tomorrow.text}
-        image={CAREER.tomorrow.image}
-        cta={CAREER.tomorrow.cta}
-      />
+      {/* 04+05 Standorte → BANIJAY TOMORROW als gestapeltes Layer-System: der
+          Magenta-Kasten sendet bunte gerundete Schichten nach unten aus und endet
+          im schwarzen Layer, der die Tomorrow-Section bildet (Hintergrund von oben
+          gebaut, dann läuft der Content ein). */}
+      <AlgarveCareerTomorrowStack />
 
       {/* 06 Code of Conduct */}
       <AlgarveCodeOfConductBand />

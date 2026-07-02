@@ -113,15 +113,19 @@ export function AlgarveFounders() {
             Team
           </h2>
 
-          {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP) */}
+          {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP). Die zwei
+              Reihen füllen die verfügbare Bühnenhöhe (1fr/1fr) und die Bilder
+              füllen ihre Zelle — so läuft das Grid nie über die 100vh-Bühne hinaus
+              (sonst würde overflow:hidden auf niedrigen/breiten Viewports die 2.
+              Reihe abschneiden). */}
           <div
             ref={grid}
-            className="grid w-full flex-1 grid-cols-5 content-center"
-            style={{ columnGap: "1.2vw", rowGap: "1.6vw", zIndex: 1 }}
+            className="grid w-full min-h-0 flex-1 grid-cols-5"
+            style={{ columnGap: "1.2vw", rowGap: "1.6vw", gridTemplateRows: "1fr 1fr", zIndex: 1 }}
           >
             {TEAM.map((p) => (
-              <div key={p.name} data-team-tile className="flex flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
-                <div className="overflow-clip" style={{ borderRadius: "0.9vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
+              <div key={p.name} data-team-tile className="flex min-h-0 flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
+                <div className="min-h-0 flex-1 overflow-clip" style={{ borderRadius: "0.9vw", background: "#e8e6df" }}>
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
                 </div>
                 <div data-team-meta className="flex flex-col" style={{ gap: "0.1vw", willChange: "transform, opacity" }}>
