@@ -46,15 +46,10 @@ design-source/
 assets/
 scraped_content/
 .venv
-kompetenz-reel.mp4
+# Ungenutzte/zu große Rohassets bleiben ignoriert:
 preloader.png
 stage-portrait.png
 hero-cinematic.mp4
-hero.mp4
-
-hero-bg.mp4
-preloader-bg.mp4
-team-fullscreen.mp4
-grid-loop1.mp4
-grid-loop2.mp4
-grid-loop3.mp4
+# Genutzte Videos werden committet (weboptimiert), damit sie im Vercel-Deploy
+# vorhanden sind: kompetenz-reel, hero, hero-bg, preloader-bg, team-fullscreen,
+# grid-loop1-3 (siehe public/video/).

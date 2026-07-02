@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Deploy-Fix: Videos im Repo (02.07.)
+- **Ursache:** genutzte Videos waren gitignored → fehlten im Vercel-Build
+  (Preloader-Video spielte nicht, Videos generell weg).
+- Genutzte Videos werden jetzt **committet** und dafür hart weboptimiert:
+  `preloader-bg` 3,9 MB→318 KB, `hero-bg` 3,1 MB→235 KB, `team-fullscreen`
+  →347 KB (laden upfront → schnell), `showreel` 11 MB→420 KB, `hero` 59 MB→11 MB,
+  `kompetenz-reel` 146 MB→13 MB (progressiv beim Scrollen), `grid-loop1–3` je ~0,3 MB.
+- Poster fürs Team-Video: winziges `team-poster.jpg` (19 KB) statt 15 MB-PNG.
+- `.gitignore`: nur noch ungenutzte/zu große Rohassets ignoriert.
+
 ### Fixes (02.07.)
 - **Preloader-Partikel sichtbar:** Das absolut positionierte Hintergrundvideo
   überdeckte die statisch gemalten Partikel (CSS-Paint-Reihenfolge). Canvas liegt

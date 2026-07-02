@@ -67,7 +67,7 @@ export function AlgarveLogoReveal() {
               muted
               loop
               playsInline
-              poster="/brand/stage-portrait.png"
+              poster="/brand/team-poster.jpg"
               className="absolute inset-0 h-full w-full object-cover"
             >
               <source src="/video/team-fullscreen.mp4" type="video/mp4" />
