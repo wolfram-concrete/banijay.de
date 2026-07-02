@@ -17,7 +17,9 @@
 
 :root {
   /* Surfaces — Phase 2 „Banijay Kinetic": warmes Editorial (Algarve-Anmutung) */
-  --background: #f4f3ee;
+  /* Body-Paper exakt = Section-Paper (#f8f7f3) → keine Farbdifferenz (z. B. hinter
+     gepinnten Sektionen). */
+  --background: #f8f7f3;
   --surface: #eceae3;
   --surface-2: #e3e0d7;
   --foreground: #0e0d0b;
@@ -87,7 +89,7 @@ body {
   ──────────────────────────────────────────────────────────────────────────
 */
 :root {
-  --bj-paper: #f4f3ee;   /* warmes Off-White (Algarve-Anmutung) */
+  --bj-paper: #f8f7f3;   /* Off-White = Section-Paper (keine Farbdifferenz) */
   --bj-ink: #0e0d0b;     /* fast-schwarz */
   --bj-coral: #ff4370;   /* Banijay Coral */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

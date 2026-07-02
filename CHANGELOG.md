@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### CoC-Statement-Section + Body-Paper vereinheitlicht (02.07., 16. Runde)
+- **Code-of-Conduct-Section** neu nach text-section-1: großer, linksbündiger
+  Statement-Text mit einem Magenta-Akzentwort („kreative") + Magenta-Pill-CTA
+  (dunkler Play-Icon-Kreis + „Code of Conduct öffnen", öffnet das CoC-PDF),
+  Slide-in beim Scrollen.
+- **Body-Paper vereinheitlicht:** `--background`/`--bj-paper` von `#f4f3ee` auf
+  `#f8f7f3` (= Section-Paper) → keine Farbdifferenz mehr (u. a. das dunklere Grau,
+  das hinter der gepinnten Social-Feed-Section durchschien, ist weg).
+
 ### Career: RoleStack-Copy + Social-Feed als Horizontal-Slider (02.07., 15. Runde)
 - **RoleStack-Intro:** Headline + Copy zu EINEM linksbündigen Copy-Text
   zusammengefügt (über den Flip-Card-Modulen).
