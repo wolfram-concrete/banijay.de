@@ -43,7 +43,6 @@ export function AlgarveProofVideo({
 }) {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const tile = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -51,35 +50,47 @@ export function AlgarveProofVideo({
       // Nur Desktop: die gepinnte clip-path-Aufskalierung.
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       const stageEl = stage.current;
-      const tileEl = tile.current;
+      // Quelle = eine der kleinen GRAUEN Stat-Kacheln (data-pv-source). Aus ihr
+      // heraus wächst das Video — kein separater, vorab sichtbarer Video-Container.
+      const tileEl = stageEl?.querySelector<HTMLElement>("[data-pv-source]") ?? null;
       const overlayEl = overlay.current;
       const words = gsap.utils.toArray<HTMLElement>("[data-pv-word]");
       if (!stageEl || !tileEl || !overlayEl) return;
 
-      // Start-Clip = exakt der Grid-Platz des Video-Moduls (relativ zur Bühne).
-      // So wirkt es, als würde das kleine Modul selbst wachsen.
+      // Start-Clip = exakt der Platz der Quell-Kachel relativ zur Bühne. So wirkt
+      // es, als würde sich diese graue Kachel „aufziehen" und das Video daraus
+      // heraus einlayern.
       const measure = () => {
         const s = stageEl.getBoundingClientRect();
         const t = tileEl.getBoundingClientRect();
-        const top = Math.max(0, t.top - s.top);
-        const left = Math.max(0, t.left - s.left);
-        const right = Math.max(0, s.width - (t.left - s.left) - t.width);
-        const bottom = Math.max(0, s.height - (t.top - s.top) - t.height);
-        return `inset(${top}px ${right}px ${bottom}px ${left}px round 18px)`;
+        return {
+          top: Math.max(0, t.top - s.top),
+          left: Math.max(0, t.left - s.left),
+          right: Math.max(0, s.width - (t.left - s.left) - t.width),
+          bottom: Math.max(0, s.height - (t.top - s.top) - t.height),
+        };
       };
+      const clip = (t: number, r: number, b: number, l: number, rd: number) =>
+        `inset(${t}px ${r}px ${b}px ${l}px round ${rd}px)`;
+      let v = measure();
 
-      gsap.set(overlayEl, { clipPath: measure(), autoAlpha: 1 });
+      // Startlage: Video liegt exakt auf der Quell-Kachel und ist NOCH unsichtbar
+      // (die graue Kachel ist voll zu sehen). Erst nach Scroll-In layert es ein.
+      gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 18), autoAlpha: 0 });
       gsap.set(words, { yPercent: 110, opacity: 0 });
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce) {
-        gsap.set(overlayEl, { clipPath: "inset(0px 0px 0px 0px round 0px)" });
+        gsap.set(overlayEl, { clipPath: "inset(0px 0px 0px 0px round 0px)", autoAlpha: 1 });
         gsap.set(words, { yPercent: 0, opacity: 1 });
         return;
       }
 
-      // Bei jedem Refresh (Resize/Layout) den Start-Clip neu vermessen.
-      const onRefresh = () => gsap.set(overlayEl, { clipPath: measure() });
+      // Bei jedem Refresh (Resize/Layout) neu vermessen.
+      const onRefresh = () => {
+        v = measure();
+        gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 18) });
+      };
       ScrollTrigger.addEventListener("refreshInit", onRefresh);
 
       const tl = gsap.timeline({
@@ -93,18 +104,16 @@ export function AlgarveProofVideo({
         },
       });
 
-      // 1) Video-Modul wächst aus seiner Grid-Position auf Full-Screen (clip-path).
-      tl.to(
-        overlayEl,
-        { clipPath: "inset(0px 0px 0px 0px round 0px)", ease: "power2.inOut", duration: 0.6 },
-        0,
-      );
-      // 2) Erst danach das Statement Wort für Wort zentral aufs Video.
-      tl.to(
-        words,
-        { yPercent: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: 0.06 },
-        0.66,
-      );
+      // A) Das Video layert langsam in der Quell-Kachel ein (fade-in an Ort/Stelle).
+      tl.to(overlayEl, { autoAlpha: 1, ease: "power1.out", duration: 0.12 }, 0);
+      // B) Aus der Kachel nach OBEN + UNTEN aufziehen → volle Höhe (radiale Kanten).
+      tl.to(overlayEl, { clipPath: clip(0, v.right, 0, v.left, 18), ease: "power2.inOut", duration: 0.34 }, 0.12);
+      // C) Symmetrisch nach LINKS + RECHTS aufziehen → volle Breite.
+      tl.to(overlayEl, { clipPath: clip(0, 0, 0, 0, 18), ease: "power2.inOut", duration: 0.3 }, 0.48);
+      // D) Radien schärfen → full-size.
+      tl.to(overlayEl, { clipPath: clip(0, 0, 0, 0, 0), ease: "power2.inOut", duration: 0.12 }, 0.78);
+      // E) Erst full-size das Statement Wort für Wort zentral aufs Video.
+      tl.to(words, { yPercent: 0, opacity: 1, ease: "power3.out", duration: 0.4, stagger: 0.05 }, 0.9);
 
       return () => ScrollTrigger.removeEventListener("refreshInit", onRefresh);
     },
@@ -124,12 +133,13 @@ export function AlgarveProofVideo({
         return (
           <div
             key={s.label}
+            data-pv-source={!accent && i === nonAbout.length - 1 ? true : undefined}
             className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] ${accent ? "col-span-2" : ""}`}
             style={{ background: bg, color: INK, borderRadius: "1.11vw", padding: "1.6vw", minHeight: "9vw" }}
           >
             <span
-              className="max-[767px]:!text-[12vw]"
-              style={{ fontFamily: SHARP, fontSize: accent ? "4.4vw" : "3.2vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw" }}
+              className="max-[767px]:!text-[10.5vw]"
+              style={{ fontFamily: SHARP, fontSize: accent ? "4.4vw" : "3.2vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw", whiteSpace: "nowrap" }}
             >
               <CountUp value={s.value} />
             </span>
@@ -148,7 +158,7 @@ export function AlgarveProofVideo({
       <section ref={root} className="relative max-[767px]:hidden" style={{ height: "300vh", background: PAPER }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
           <div
-            className="mx-auto flex h-full flex-col"
+            className="flex h-full flex-col"
             style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
           >
             <p
@@ -159,19 +169,13 @@ export function AlgarveProofVideo({
             </p>
 
             <div className="mt-[2.5vw]">{bento}</div>
-
-            {/* Video-Modul — gerundetes Modul, das gleich full-screen aufskaliert.
-                In-flow reserviert es hier seinen Platz; das eigentliche (wachsende)
-                Video liegt als Overlay exakt darüber. */}
-            <div
-              ref={tile}
-              className="mt-[1.5vw] w-full flex-1"
-              style={{ minHeight: "10vh", borderRadius: "1.11vw", background: "#0b0a0d" }}
-            />
+            {/* KEIN vorab sichtbarer Video-Container mehr — das Video wächst beim
+                Scrollen aus der grauen Quell-Kachel (data-pv-source) heraus. */}
           </div>
 
-          {/* Wachsender Video-Container (clip-path von Grid-Platz → full) */}
-          <div ref={overlay} className="absolute inset-0 overflow-clip" style={{ willChange: "clip-path" }}>
+          {/* Wachsender Video-Container (clip-path von Quell-Kachel → full). Start
+              unsichtbar (opacity 0) → kein Flash vor dem Scroll-In-Fade. */}
+          <div ref={overlay} className="absolute inset-0 overflow-clip" style={{ willChange: "clip-path, opacity", opacity: 0 }}>
             <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
               <source src={video} type="video/mp4" />
             </video>

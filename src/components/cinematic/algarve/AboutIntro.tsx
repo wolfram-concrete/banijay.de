@@ -48,8 +48,12 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
       // und faltet dann auf Full-Size auf. Die Section ist dafür höher (320vh) →
       // das Sticky-Panel bleibt bis ~progress 0.69 gepinnt; Rise+Unfold liegen
       // sauber INNERHALB dieses Pin-Fensters (Timeline-Total = 1 → 1:1-Mapping).
+      // Der Magenta-Aufstieg über das (stehende) Statement läuft nur auf MOBILE:
+      // dort ist die Desktop-Companies-Fläche (die den Aufstieg via -100vh-Overlap
+      // trägt) ausgeblendet, sodass sonst kein Layer-Over stattfände. Auf Desktop
+      // bleibt es beim bewährten CompaniesScroller-Aufstieg.
       const ov = overlay.current;
-      if (magentaExit && ov) {
+      if (magentaExit && ov && !window.matchMedia("(min-width: 768px)").matches) {
         gsap.set(ov, { yPercent: 100, borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
         const tl = gsap.timeline({
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
@@ -70,7 +74,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
   return (
     <section
       ref={root}
-      className="max-[767px]:!h-[150vh]"
+      className={magentaExit ? undefined : "max-[767px]:!h-[150vh]"}
       style={{
         background: "#f8f7f3",
         height: magentaExit ? "230vh" : "220vh",
@@ -105,7 +109,10 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
             ref={overlay}
             aria-hidden
             data-nav-theme="magenta"
-            className="pointer-events-none absolute inset-0"
+            // Nur auf Mobile gerendert (dort läuft der Aufstieg) — so bleibt die
+            // Blende auf Desktop komplett aus dem Weg. Kein inline-Transform, sonst
+            // parst GSAP das „100%" als px-Baseline und verdoppelt den yPercent-Tween.
+            className="pointer-events-none absolute inset-0 hidden max-[767px]:block"
             style={{ zIndex: 5, background: ACCENT, willChange: "transform" }}
           />
         )}

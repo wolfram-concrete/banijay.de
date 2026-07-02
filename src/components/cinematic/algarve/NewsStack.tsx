@@ -25,10 +25,14 @@ export function AlgarveNewsStack() {
   return (
     <section
       data-nav-theme="magenta"
-      className="relative max-[767px]:!mt-0"
+      className="relative max-[767px]:!mt-0 max-[767px]:!pt-[16vw]"
       style={{
+        // Desktop: der Content überlappt die LogoReveal um 100vh (marginTop -100vh)
+        // und liegt dahinter. Damit die „Latest news"-Headline NICHT von der
+        // Magenta-Fläche oben abgeschnitten wird, muss der paddingTop den Overlap
+        // (100vh) ausgleichen → die Headline landet exakt unter der LogoReveal-Kante.
         background: "#ff4370",
-        paddingTop: "5.56vw",
+        paddingTop: "calc(100vh + 5.56vw)",
         paddingBottom: "8.33vw",
         // Überlappt die LogoReveal-Endphase (volle Magenta-Blende) und liegt
         // dahinter (zIndex 1 < LogoReveal z-2): sobald das Video/​b als volle
@@ -68,18 +72,22 @@ export function AlgarveNewsStack() {
             </Link>
           </div>
 
-          {/* Rechte Spalte: ruhige Liste ohne Kachel-Background */}
-          <div className="flex flex-col">
+          {/* Rechte Spalte: Desktop eine ruhige Liste; Mobile stapeln sich die
+              Tiles ineinander (Algarve blog-home: position:sticky bottom +
+              z-Index-Staffelung — die erste Kachel liegt vorn, jede weitere
+              schiebt sich beim Scrollen darunter). */}
+          <div className="relative flex flex-col">
             {ITEMS.map((item, i) => (
               <Link
                 key={item.title}
                 href={`/news/${item.slug}`}
-                className="group flex flex-col no-underline"
+                className="group flex flex-col no-underline max-[767px]:!sticky max-[767px]:!bottom-[9vw] max-[767px]:!border-t-0 max-[767px]:!bg-[#ff4370] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] max-[767px]:!shadow-[0_-1.5vw_4vw_-1vw_rgba(0,0,0,0.32)]"
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
                   borderTop: i === 0 ? "none" : "0.08vw solid rgba(0,0,0,0.2)",
                   color: "#0e0d0b",
+                  zIndex: ITEMS.length - i,
                 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>

@@ -17,6 +17,7 @@ export default function CompaniesPage() {
         headline={"Die Welt\ndahinter"}
         label="Companies"
         body="25+ Companies und Labels, jede mit eigener Handschrift. Gemeinsam entwickeln sie Shows, Reality, Fiction, Comedy, Digital und Live-Erlebnisse für den deutschen Markt."
+        highlights={["Shows", "Reality", "Fiction", "Comedy", "Digital", "Live-Erlebnisse"]}
         image="/grid/g03.png"
         video="/video/companies-hero.mp4"
       />

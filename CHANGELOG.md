@@ -5,6 +5,60 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Zahlen-Section, Career-Fächer, Site-QA (02.07., 43. Runde)
+- **About Hard-Facts (ProofVideo) — Video wächst aus grauer Kachel:** Der vorab
+  sichtbare dunkle Video-Container ist entfernt. Nach dem Scroll-In **layert das
+  Video langsam in einer der kleinen grauen Stat-Kacheln ein** (fade-in), zieht sich
+  dann nach oben+unten (volle Höhe) und links+rechts (volle Breite) auf — radiale
+  Kanten bis zum letzten Beat — danach kommt das Statement Wort für Wort.
+- **Career-Fächer mit radialen Kanten:** Die Reveal-Maske war rechteckig → die bunten
+  Fächer-Streifen kamen hart abgeschnitten heraus. Jetzt trägt die Clip-Maske **runde
+  Unterkanten** (`round 0 0 R R`) → die Fächer gucken inkl. ihrer radialen Kanten heraus.
+- **Mobile-QA-Fixes:** Partner-Item-Copy war auf 31vw gequetscht → `max-w-full` mobil;
+  About-Bento-Zahl „4 Mrd." brach um → 10.5vw + `nowrap`.
+
+### Career: Fächer-/TOMORROW-Modul nicht mehr abgeschnitten (02.07., 42. Runde)
+- **CareerTomorrowStack Scale-to-Fit:** Der aufgefächerte Stapel (Magenta-Standorte +
+  Farbfächer + schwarze TOMORROW-Karte) war in vw bemessen, die gepinnte Bühne aber in
+  vh → je nach Fensterhöhe wurde oben/unten abgeschnitten. Jetzt wird die natürliche
+  Stapelhöhe gemessen und **proportional auf die Viewport-Höhe skaliert** (Resize-/
+  Font-Load-fest); zusätzlich moderate Höhenreduktion (Bild, Fächer, Paddings), damit
+  der Fit-Scale nah an 1 bleibt (Karte breit).
+
+### About-Feinschliff: Statement, Highlights, CEO, Partner, Team (02.07., 41. Runde)
+- **PageHero Magenta-Highlights:** Neues `highlights`-Prop hebt relevante Wörter im
+  Body-Statement magenta hervor (Wortkern-Match). Companies: Shows, Reality, Fiction,
+  Comedy, Digital, Live-Erlebnisse. About: Companies, Marken, Teams, Dach.
+- **About-Statement umformuliert:** weg vom angreifbaren „ein/das führende Entertainment-
+  Netzwerk" → „Eigenständige Companies, bekannte Marken und kreative Teams — gebündelt
+  unter einem starken Dach, mit weitreichender Präsenz im deutschen Entertainment."
+- **CEO-Section → combo-4-Optik:** kontaindiertes 2-Spalten-Grid (Portrait links mit
+  Overlay-Reveal, rechts Accent · Zitat · Name · CTA), großzügig gesetzt — das Zitat
+  läuft nicht mehr aus dem dunklen Kasten.
+- **Partner-Modul = Home-News-Optik:** keine Eyebrow, keine Nummern, full-width statt
+  zentriert; Headline → Copy → CTA, rechts die Tile-Liste — identisch zum News-Bereich.
+- **ProofVideo Hard-Facts:** linksbündiger Aufbau; das Video-Modul (46vw) skaliert
+  gestuft (oben → rechts → full) statt „hart links raus".
+- **Team-Fokuspunkte + Größe:** per-Bild `object-position` (Gesichter nie abgeschnitten);
+  „Team" von 9vw → 7.22vw (= h1); Mobile-Grid mit variierenden Feature-Kacheln (volle
+  Breite) + gestaffeltem Scale/Fade-Reveal.
+- **News-Section Desktop:** Magenta-LogoReveal überlappte die „Latest news"-Headline
+  (paddingTop glich den -100vh-Overlap nicht aus) → Headline wird nicht mehr abgeschnitten.
+- **Video über Team neu enkodiert:** 355 KB @ 280 kbit → 2,8 MB @ ~2,2 Mbit (1920×1072).
+
+### Home mobil: Hero-Fächer, Companies-Layer, Services-Flip, News-Stack (02.07., 40. Runde)
+- **Hero BANIJAY:** statt der ausgeblendeten Slats fährt das volle Wort per **Clip-Wipe
+  von oben herein** — ein sauberes „fächert herab", kein Geistern.
+- **Portfolio-Grid mobil = altes Scroll-Konzept, schlank:** 2 Bildkacheln oben, großes
+  Showreel-Video mittig, 2 unten; beim Scrollen kippen die Kacheln weg und das Video
+  wächst auf Vollbild (gepinnt, wie Desktop).
+- **AboutIntro → Companies mobil:** `magentaExit` reaktiviert → nach dem Statement steigt
+  die Magenta-Blende von unten drüber und übergibt nahtlos an die Companies (Desktop
+  unverändert; CompaniesScroller trägt es dort via -100vh).
+- **ServicesStack mobil:** Flip-Stack wieder aktiv (bunte Karten kippen weg), Video sauber
+  unter der Headline — kein Text-über-Video mehr.
+- **News-Modul mobil:** Tiles schieben sich ineinander (sticky-Stack + z-Index-Staffelung).
+
 ### Home mobil: Kernkompetenzen, Heading-Umbruch, Testimonials (02.07., 37. Runde)
 - **Kernkompetenzen (ServicesStack) mobil:** Cards waren 90vh hoch mit winziger Schrift
   und schmalem, gedrehtem Video. Jetzt ab ≤767px **static, ~halbe Höhe**, das Video als

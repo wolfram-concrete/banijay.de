@@ -22,7 +22,8 @@ export default function AboutPage() {
       <AlgarvePageHero
         headline={"We are\nBanijay"}
         label="About"
-        body="Ein führendes Entertainment-Netzwerk im deutschen Markt: eigenständige Companies, bekannte Marken und kreative Teams unter einem starken Dach."
+        body="Eigenständige Companies, bekannte Marken und kreative Teams — gebündelt unter einem starken Dach, mit weitreichender Präsenz im deutschen Entertainment."
+        highlights={["Companies", "Marken", "Teams", "Dach"]}
         image="/grid/g05.jpg"
       />
 

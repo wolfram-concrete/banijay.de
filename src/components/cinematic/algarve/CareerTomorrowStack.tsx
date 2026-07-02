@@ -27,14 +27,19 @@ const PAPER = "#f8f7f3";
 const MAGENTA = "#ff4370";
 const LAYERS = ["#ff7a3d", "#ffd23f", "#8fd94e"]; // Orange, Gelb, Grün
 const R = "2.5vw";
-const HIDDEN = "inset(0% 0% 100% 0%)"; // von oben zu (unsichtbar)
-const SHOWN = "inset(0% 0% 0% 0%)";
+// Die Reveal-Maske trägt runde UNTERE Ecken (0 0 R R) → beim Herausfahren gucken
+// die Fächer INKLUSIVE ihrer radialen Unterkanten heraus (statt hart rechteckig
+// abgeschnitten). Die oberen Ecken bleiben eckig; sie liegen ohnehin unter der
+// jeweils darüberliegenden Karte.
+const HIDDEN = `inset(0% 0% 100% 0% round 0px 0px ${R} ${R})`; // von oben zu (unsichtbar)
+const SHOWN = `inset(0% 0% 0% 0% round 0px 0px ${R} ${R})`;
 
 export function AlgarveCareerTomorrowStack() {
   const { locations, tomorrow } = CAREER;
   const root = useRef<HTMLElement>(null);
   const black = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
+  const stackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -42,10 +47,35 @@ export function AlgarveCareerTomorrowStack() {
       const fans = gsap.utils.toArray<HTMLElement>("[data-fan]"); // DOM-Reihenfolge = oben→unten (Orange, Gelb, Grün)
       const blackEl = black.current;
       const contentEl = content.current;
-      if (!fans.length || !blackEl || !contentEl) return;
+      const stackEl = stackRef.current;
+      if (!fans.length || !blackEl || !contentEl || !stackEl) return;
+
+      // Scale-to-Fit: der vollständig aufgefächerte Stapel (Magenta + Fächer +
+      // schwarze Karte) ist in vw bemessen und kann höher als die 100vh-Bühne
+      // werden → sonst schneidet overflow-clip oben & unten ab. Wir messen die
+      // natürliche (Layout-)Höhe und skalieren den Stapel proportional so, dass er
+      // mit etwas Luft in die Viewport-Höhe passt. offsetHeight ignoriert Transform,
+      // ist also stabil messbar.
+      const fit = () => {
+        const natural = stackEl.offsetHeight;
+        if (!natural) return;
+        const scale = Math.min(1, (window.innerHeight * 0.9) / natural);
+        stackEl.style.transformOrigin = "center center";
+        stackEl.style.transform = `scale(${scale})`;
+      };
+      fit();
+      document.fonts?.ready.then(() => {
+        fit();
+        ScrollTrigger.refresh();
+      });
+      const onResize = () => {
+        fit();
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener("resize", onResize);
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) return; // statischer Endzustand
+      if (reduce) return () => window.removeEventListener("resize", onResize); // statischer Endzustand
 
       gsap.set([...fans, blackEl], { clipPath: HIDDEN });
       gsap.set(contentEl, { opacity: 0, y: 30 });
@@ -69,6 +99,8 @@ export function AlgarveCareerTomorrowStack() {
       tl.to(blackEl, { clipPath: SHOWN, ease: "none", duration: 0.8 }, fans.length * 0.6);
       // Erst danach fadet der Content in der schwarzen Karte ein.
       tl.to(contentEl, { opacity: 1, y: 0, ease: "power2.out", duration: 0.6 }, fans.length * 0.6 + 0.55);
+
+      return () => window.removeEventListener("resize", onResize);
     },
     { scope: root },
   );
@@ -93,11 +125,11 @@ export function AlgarveCareerTomorrowStack() {
               rel="noopener noreferrer"
               aria-label={`Jobs in ${loc.name} ansehen — in neuem Tab öffnen`}
               className="group flex items-center justify-between no-underline"
-              style={{ color: INK, paddingTop: "0.95vw", paddingBottom: "0.95vw", borderTop: "0.08vw solid rgba(14,13,11,0.18)", opacity: has ? 1 : 0.55 }}
+              style={{ color: INK, paddingTop: "0.7vw", paddingBottom: "0.7vw", borderTop: "0.08vw solid rgba(14,13,11,0.18)", opacity: has ? 1 : 0.55 }}
             >
               <span
                 className="flex items-center uppercase max-[767px]:!text-[10vw]"
-                style={{ fontFamily: SHARP, fontSize: "2.9vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.1vw", gap: "1.5vw" }}
+                style={{ fontFamily: SHARP, fontSize: "2.5vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.1vw", gap: "1.5vw" }}
               >
                 {loc.name}
                 <ArrowUpRight
@@ -150,7 +182,7 @@ export function AlgarveCareerTomorrowStack() {
             </a>
           </div>
         </div>
-        <div className="overflow-clip max-[767px]:!h-[70vw]" style={{ borderRadius: "1.11vw", height: "22vw", maxHeight: "360px" }}>
+        <div className="overflow-clip max-[767px]:!h-[70vw]" style={{ borderRadius: "1.11vw", height: "17vw", maxHeight: "300px" }}>
           <img src={tomorrow.image} alt={tomorrow.headline} className="h-full w-full object-cover" />
         </div>
       </div>
@@ -160,10 +192,10 @@ export function AlgarveCareerTomorrowStack() {
   // Fächer-Streifen + schwarze Karte teilen sich die gestapelte Geometrie
   // (negativer margin → jeder Layer zeigt unten einen gerundeten Farbstreifen).
   const stack = (isMobile: boolean) => (
-    <div className="relative">
+    <div className="relative" ref={isMobile ? undefined : stackRef}>
       <div
         className="relative"
-        style={{ zIndex: 6, background: MAGENTA, color: INK, borderRadius: R, paddingTop: isMobile ? "9vw" : "3.5vw", paddingBottom: isMobile ? "9vw" : "3.5vw" }}
+        style={{ zIndex: 6, background: MAGENTA, color: INK, borderRadius: R, paddingTop: isMobile ? "9vw" : "3vw", paddingBottom: isMobile ? "9vw" : "3vw" }}
       >
         {locationsContent}
       </div>
@@ -171,14 +203,14 @@ export function AlgarveCareerTomorrowStack() {
         <div
           key={color}
           data-fan={isMobile ? undefined : true}
-          className="relative !h-[5vw] max-[767px]:!h-[7vw]"
+          className="relative !h-[4vw] max-[767px]:!h-[7vw]"
           style={{ zIndex: 5 - i, marginTop: `-${R}`, background: color, borderBottomLeftRadius: R, borderBottomRightRadius: R, willChange: "clip-path" }}
         />
       ))}
       <div
         ref={isMobile ? undefined : black}
         className="relative"
-        style={{ zIndex: 1, marginTop: `-${R}`, background: INK, color: PAPER, borderBottomLeftRadius: R, borderBottomRightRadius: R, paddingTop: isMobile ? "14vw" : "5vw", paddingBottom: isMobile ? "12vw" : "4.5vw", willChange: "clip-path" }}
+        style={{ zIndex: 1, marginTop: `-${R}`, background: INK, color: PAPER, borderBottomLeftRadius: R, borderBottomRightRadius: R, paddingTop: isMobile ? "14vw" : "4vw", paddingBottom: isMobile ? "12vw" : "3.5vw", willChange: "clip-path" }}
       >
         <div ref={isMobile ? undefined : content}>{tomorrowContent}</div>
       </div>

@@ -73,6 +73,16 @@ const CELLS: Cell[] = [
   { src: "/grid/g12.jpg", origin: "100% 100%", fmt: { title: "Cologne Comedy Festival", company: "Cologne Comedy Festival", genre: "Comedy & Live" } },
 ];
 
+// Mobile-Portfolio: reduziert auf 4 Format-Kacheln (2 oben, 2 unten) + großes
+// Showreel-Video mittig. Beim Scrollen kippen die 4 Kacheln weg und das Video
+// wächst auf Vollbild — dasselbe Konzept wie das Desktop-Grid, nur schlanker.
+const MOBILE_TILES = [
+  { cell: CELLS[0]!, row: 1, col: 1, origin: "0% 0%" },
+  { cell: CELLS[3]!, row: 1, col: 2, origin: "100% 0%" },
+  { cell: CELLS[11]!, row: 3, col: 1, origin: "0% 100%" },
+  { cell: CELLS[14]!, row: 3, col: 2, origin: "100% 100%" },
+];
+
 // 4-Zeilen-Factsheet (Algarve-Referenz: Stats links im Hero-Fuß).
 const STAT_LINES = homeStats()
   .slice(0, 4)
@@ -205,14 +215,27 @@ export function AlgarveHome() {
       // „banijay:introdone"), damit die Hero-Animation nicht unsichtbar hinter dem
       // Overlay abläuft. Die gsap.set-Startlagen oben greifen sofort → der Hero
       // steht während des Preloaders bereits korrekt (Front sichtbar, Back verdeckt).
+      const isMobile = !window.matchMedia("(min-width: 768px)").matches;
       const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
       tl.to('[data-flip-front="one"]', { yPercent: -100, rotateX: 90, duration: 0.45 }, 0.06)
         .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.06)
         .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 0.3)
-        .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 0.3)
-        .fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 0.68)
-        .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 0.68)
-        .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 0.68);
+        .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 0.3);
+      if (isMobile) {
+        // Mobile: nur das VOLLE Wort ist sichtbar (Slats ausgeblendet). Es fährt per
+        // Clip-Wipe von oben nach unten herein — „fächert herab" — begleitet von
+        // einem kurzen Settle nach unten. Kein Venetian-Blind-Geistern.
+        tl.fromTo(
+          '[data-strip-mob]',
+          { clipPath: "inset(0% 0% 100% 0%)", y: "-6vw" },
+          { clipPath: "inset(0% 0% 0% 0%)", y: "0vw", duration: 0.9, ease: "power4.out" },
+          0.5,
+        );
+      } else {
+        tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 0.68)
+          .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 0.68)
+          .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 0.68);
+      }
 
       // Die unteren Zeilen (Factsheet + Subline) bleiben zunächst verborgen — sie
       // erscheinen erst beim Scrollen (siehe Scroll-Reveal-Effekt unten), damit der
@@ -270,6 +293,24 @@ export function AlgarveHome() {
           )
           .to("[data-showreel]", { width: "100%", ease: "none", duration: 1.32 }, 1.11)
           .to("[data-showreel]", { height: "100%", ease: "none", duration: 0.93 }, 2.0);
+      } else {
+        // Mobile: dasselbe Konzept — die 4 Kacheln kippen weg, das mittige Video
+        // (schon volle Breite) wächst auf die volle Höhe. Kürzeres Scroll-Fenster.
+        const gridTlM = gsap.timeline({
+          scrollTrigger: {
+            trigger: gridSection.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        });
+        gridTlM
+          .to(
+            "[data-tile-m]",
+            { rotationY: -180, opacity: 0, ease: "power1.inOut", duration: 2.4, stagger: { each: 0.14 } },
+            0.4,
+          )
+          .to("[data-showreel-m]", { height: "100%", ease: "none", duration: 1.4 }, 1.6);
       }
     },
     { scope: root },
@@ -344,7 +385,12 @@ export function AlgarveHome() {
                 ))}
               </div>
 
-              {/* Riesiges BANIJAY über 4 gestaffelte Clip-Zeilen (füllt WE→ARE) */}
+              {/* Riesiges BANIJAY über 4 gestaffelte Clip-Zeilen (füllt WE→ARE).
+                  Desktop: die 3 partiellen Slats bilden beim Load eine Venetian-Blind-
+                  Kaskade, die von oben herabfächert. Mobile: die partiellen Slats
+                  ausblenden (dünne Letter-Top-Streifen lesen auf kleinem Screen als
+                  Geistern) — stattdessen fährt das VOLLE Wort per Clip-Wipe von oben
+                  nach unten herein (data-strip-mob, siehe Hero-Timeline). */}
               <div className="flex flex-col" style={{ gap: "1vw" }}>
                 {(
                   [
@@ -356,10 +402,8 @@ export function AlgarveHome() {
                 ).map(({ h, key }, i) => (
                   // Letzte Zeile (volles Wort) NICHT clippen → „Y"-Tinte, die durch
                   // das negative Letter-Spacing über die Box ragt, bleibt sichtbar.
-                  // Mobile: die 3 partiellen Clip-Zeilen ausblenden (sie geisterten
-                  // über dem vollen Wort) → nur EIN sauberes BANIJAY.
                   <div key={key} data-slice={key} className={i < 3 ? "max-[767px]:!hidden" : ""} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
-                    <h1 data-strip className="m-0 p-0 uppercase text-white" style={BIG}>
+                    <h1 data-strip data-strip-mob={i === 3 ? "" : undefined} className="m-0 p-0 uppercase text-white" style={BIG}>
                       Banijay
                     </h1>
                   </div>
@@ -394,7 +438,7 @@ export function AlgarveHome() {
       {/* ── Sticky-Grid-Sektion (400vh) ───────────────────────────────── */}
       {/* WICHTIG: overflow NICHT auf die Section (das bräche das Sticky-Pinning) —
           das Clipping des Zooms läuft über den Sticky-Container. */}
-      <section ref={gridSection} className="relative max-[767px]:!h-auto" style={{ background: PAPER, height: "400vh" }}>
+      <section ref={gridSection} className="relative" style={{ background: PAPER, height: "400vh" }}>
         <div className="sticky top-0 w-screen overflow-clip max-[767px]:hidden" style={{ height: "100vh" }}>
           <div className="h-full w-full" style={{ padding: "2vw" }}>
             <div
@@ -478,37 +522,56 @@ export function AlgarveHome() {
           </div>
         </div>
 
-        {/* ── Mobile: statisches 2-Spalten-Portfolio (Showreel groß + Format-Kacheln
-            im 3:4-Container). Ersetzt das für Mobile unbrauchbare 5×3-Scaling-Grid. */}
-        <div className="hidden max-[767px]:block" style={{ padding: "12vw 3vw" }}>
-          <div className="relative overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "16 / 10", marginBottom: "3vw" }}>
-            <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
-              <source src="/video/hero.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <div className="grid grid-cols-2 gap-[3vw]">
-            {CELLS.filter((c): c is NonNullable<typeof c> => c !== null).map((cell, i) => (
-              <div key={i} className="relative overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "3 / 4", background: "#e8e6df" }}>
-                {cell.video ? (
-                  <video autoPlay muted loop playsInline poster={cell.src} className="absolute inset-0 h-full w-full object-cover">
-                    <source src={cell.video} type="video/mp4" />
-                  </video>
-                ) : (
-                  <img src={cell.src} alt={cell.fmt.title} className="absolute inset-0 h-full w-full object-cover" />
-                )}
+        {/* ── Mobile: reduziertes Sticky-Grid — 2 Format-Kacheln oben, großes
+            Showreel-Video mittig (volle Breite), 2 Kacheln unten. Beim Scrollen
+            kippen die 4 Kacheln weg und das Video wächst auf Vollbild (gridTlM).
+            Gleiches Konzept wie Desktop, nur schlanker für schmale Screens. */}
+        <div className="sticky top-0 hidden h-screen w-screen overflow-clip max-[767px]:block">
+          <div className="h-full w-full" style={{ padding: "3vw" }}>
+            <div
+              className="relative h-full w-full"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridTemplateRows: "1fr 1fr 1fr",
+                columnGap: "3vw",
+                rowGap: "3vw",
+                perspective: "1200px",
+              }}
+            >
+              {MOBILE_TILES.map(({ cell, row, col, origin }, i) => (
                 <div
-                  className="absolute inset-x-0 bottom-0 flex flex-col"
-                  style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.85), rgba(0,0,0,0) 78%)", padding: "5vw 4vw 4vw" }}
+                  key={i}
+                  data-tile-m
+                  className="relative w-full overflow-hidden"
+                  style={{ borderRadius: "4vw", backfaceVisibility: "hidden", transformOrigin: origin, gridRow: row, gridColumn: col }}
                 >
-                  <span className="uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", color: "#fff", fontWeight: 600, fontSize: "3.6vw", lineHeight: "112%" }}>
-                    {cell.fmt.title}
-                  </span>
-                  <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "2.6vw", marginTop: "1vw", lineHeight: "118%" }}>
-                    {cell.fmt.company}
-                  </span>
+                  <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
+                  <div
+                    className="absolute inset-0 flex flex-col justify-end"
+                    style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.82), rgba(0,0,0,0) 72%)", padding: "3.5vw" }}
+                  >
+                    <span className="uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", color: "#fff", fontWeight: 600, fontSize: "3.4vw", lineHeight: "112%" }}>
+                      {cell.fmt.title}
+                    </span>
+                    <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "2.6vw", marginTop: "0.8vw", lineHeight: "118%" }}>
+                      {cell.fmt.company}
+                    </span>
+                  </div>
                 </div>
+              ))}
+
+              {/* Zentrales Showreel-Video (mittlere Reihe, volle Breite) */}
+              <div
+                data-showreel-m
+                className="absolute overflow-hidden"
+                style={{ zIndex: 5, borderRadius: "4vw", width: "100%", height: "calc(33.333% - 2vw)", inset: "0%", margin: "auto" }}
+              >
+                <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
+                  <source src="/video/hero.mp4" type="video/mp4" />
+                </video>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

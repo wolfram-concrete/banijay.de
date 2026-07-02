@@ -26,6 +26,22 @@ const NAME = {
 } as const;
 const ROLE = { color: "#000000a3", fontSize: "clamp(0.7rem, 0.8vw, 0.95rem)", lineHeight: "122%" } as const;
 
+// Fokuspunkt je Portrait (object-position), damit die Gesichter im Crop nie
+// abgeschnitten werden — Portraits mit Kopf weit oben brauchen einen stärkeren
+// Top-Bias. Default: leicht nach oben versetzt.
+const FOCUS: Record<string, string> = {
+  "/people/lead-1.jpg": "50% 22%",
+  "/people/lead-2.jpg": "50% 14%",
+  "/people/lead-3.jpg": "50% 12%",
+  "/people/lead-4.jpg": "50% 22%",
+  "/people/lead-5.jpg": "50% 20%",
+  "/people/lead-6.jpg": "50% 26%",
+  "/people/lead-7.jpg": "50% 26%",
+  "/people/lead-8.jpg": "50% 22%",
+  "/people/lead-9.jpg": "50% 22%",
+};
+const focus = (img: string) => FOCUS[img] ?? "50% 20%";
+
 export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
@@ -104,6 +120,25 @@ export function AlgarveFounders() {
     { scope: root },
   );
 
+  // Mobile: das Grid baut sich beim Scrollen Stück für Stück auf — jede Kachel
+  // fadet + skaliert gestaffelt herein (kein Pin, ScrollTrigger.batch).
+  useGSAP(
+    () => {
+      if (window.matchMedia("(min-width: 768px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const tiles = gsap.utils.toArray<HTMLElement>("[data-team-mtile]");
+      if (!tiles.length) return;
+      gsap.set(tiles, { autoAlpha: 0, y: 44, scale: 0.93 });
+      ScrollTrigger.batch(tiles, {
+        start: "top 90%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out", stagger: 0.1 }),
+      });
+    },
+    { scope: root },
+  );
+
   return (
     <section ref={root} style={{ background: "#f8f7f3" }}>
       {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
@@ -112,7 +147,7 @@ export function AlgarveFounders() {
           {/* TEAM — eigenständige Headline über der Portrait-Animation (z-3) */}
           <h2
             className="m-0 uppercase text-black"
-            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "9vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 0.9, position: "relative", zIndex: 3 }}
+            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.22vw", fontWeight: 500, letterSpacing: "-0.139vw", lineHeight: 0.95, position: "relative", zIndex: 3 }}
           >
             Team
           </h2>
@@ -130,7 +165,7 @@ export function AlgarveFounders() {
             {TEAM.map((p) => (
               <div key={p.name} data-team-tile className="flex min-h-0 flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
                 <div className="min-h-0 flex-1 overflow-clip" style={{ borderRadius: "0.9vw", background: "#e8e6df" }}>
-                  <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
+                  <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }} />
                 </div>
                 <div data-team-meta className="flex flex-col" style={{ gap: "0.1vw", willChange: "transform, opacity" }}>
                   <div className="text-black" style={NAME}>
@@ -144,25 +179,45 @@ export function AlgarveFounders() {
         </div>
       </div>
 
-      {/* ── Mobile: sauberes 2-Spalten-Grid ──────────────────────────────── */}
+      {/* ── Mobile: 2-Spalten-Grid mit variierenden Kachelgrößen (Algarve
+          team-grid-2: eine Kachel spannt volle Breite) → lebendiger Rhythmus
+          statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
+          Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        <h2 className="m-0 mb-8 uppercase text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "12vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
+        <h2 className="m-0 mb-8 uppercase text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
           Team
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
-          {LEADERSHIP.slice(0, 11).map((p) => (
-            <div key={p.name} className="flex flex-col gap-3">
-              <div className="overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
-                <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
-              </div>
-              <div>
-                <div className="text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 500, fontSize: "3.6vw", lineHeight: "120%" }}>
-                  {p.name}
+          {LEADERSHIP.slice(0, 11).map((p, i) => {
+            // Erste Kachel (CEO) als Feature über volle Breite; jede 5. Kachel als
+            // Querformat-Feature → die Bildcontainer werden mal größer, mal kleiner.
+            const feature = i === 0 || i === 5;
+            return (
+              <div
+                key={p.name}
+                data-team-mtile
+                className={`flex flex-col gap-3 ${feature ? "col-span-2" : ""}`}
+              >
+                <div
+                  className="overflow-clip"
+                  style={{ borderRadius: "4vw", aspectRatio: feature ? "16 / 10" : "4 / 5", background: "#e8e6df" }}
+                >
+                  <img
+                    src={p.img}
+                    alt={p.name}
+                    className="h-full w-full object-cover"
+                    style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }}
+                  />
                 </div>
-                <div style={{ color: "#000000a3", fontSize: "3vw", lineHeight: "125%" }}>{p.role}</div>
+                <div>
+                  <div className="text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 500, fontSize: feature ? "5vw" : "3.6vw", lineHeight: "120%" }}>
+                    {p.name}
+                  </div>
+                  <div style={{ color: "#000000a3", fontSize: feature ? "3.6vw" : "3vw", lineHeight: "125%" }}>{p.role}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

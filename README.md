@@ -31,12 +31,15 @@ src/
     cinematic/           AlgarveHome (Hero) & Home-Sektionen (Preloader auf der
                          Home entfernt — Hero startet direkt)
     cinematic/algarve/   Nachgebaute Algarve-Module: CompaniesScroller, CompanyCards,
-                         CeoTestimonial, Founders/Team, LogoReveal, NewsStack,
-                         WorksCards, PageHero, AboutIntro, ProofVideo (About:
-                         Zahlen→Video-Aufskalierung), CareerRoleStack,
-                         CareerTomorrowStack (Standorte→Tomorrow, gepinnte
-                         Fächer-Sequenz: bunte Streifen layern nach unten, dann
-                         schwarze Karte + Content-Fade), CareerSocial…
+                         CeoTestimonial (combo-4-Optik: Portrait + Accent/Zitat/CTA),
+                         Founders/Team, LogoReveal, NewsStack, WorksCards, PageHero
+                         (mit Magenta-Wort-Highlights im Statement), AboutIntro,
+                         ProofVideo (About: das Video wächst nach Scroll-In aus einer
+                         grauen Stat-Kachel auf Full-Screen), PartnerGrid (News-Optik),
+                         CareerRoleStack, CareerTomorrowStack (Standorte→Tomorrow,
+                         gepinnte Fächer-Sequenz mit Scale-to-Fit: bunte Streifen
+                         layern nach unten, dann schwarze Karte + Content-Fade),
+                         CareerSocial…
     layout/              SiteHeader, SiteFooter
   data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
 public/

@@ -22,6 +22,7 @@ export function AlgarvePageHero({
   body,
   image,
   video = "/video/showreel.mp4",
+  highlights = [],
 }: {
   headline: string;
   /** Optional — Seiten übergeben es noch; das seitliche Hero-Label wurde entfernt. */
@@ -29,8 +30,14 @@ export function AlgarvePageHero({
   body: string;
   image: string;
   video?: string;
+  /** Wörter, die im Body-Statement magenta hervorgehoben werden (Wortkern-Match,
+   *  Satzzeichen werden ignoriert). */
+  highlights?: string[];
 }) {
   const root = useRef<HTMLDivElement>(null);
+  // Wortkern (nur Buchstaben + Bindestrich, lowercase) → für Highlight-Abgleich.
+  const core = (w: string) => w.replace(/[^\p{L}-]/gu, "").toLowerCase();
+  const hlSet = new Set(highlights.map(core));
 
   useGSAP(
     () => {
@@ -179,7 +186,11 @@ export function AlgarvePageHero({
           }}
         >
           {words.map((w, i) => (
-            <span key={i} data-hero-word style={{ display: "inline-block", whiteSpace: "pre" }}>
+            <span
+              key={i}
+              data-hero-word
+              style={{ display: "inline-block", whiteSpace: "pre", color: hlSet.has(core(w)) ? "#ff4370" : undefined }}
+            >
               {w}
               {i < words.length - 1 ? " " : ""}
             </span>

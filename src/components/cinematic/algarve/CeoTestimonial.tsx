@@ -4,19 +4,17 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-// CEO-/Testimonial-Section nach dem testimonials-5-Template: eine 2-Spalten-Card —
-// links ein dunkles Content-Panel (Label · Divider · großes Zitat · Autor · Divider
-// · zwei Kennzahlen · Divider · CTA), rechts ein hohes, gerundetes Portrait.
-// Banijay-Adaption: Ink-Panel, Paper-Typo, Sharp-Grotesk. Entrance via
-// IntersectionObserver (fade + slide-up).
+// CEO-/Führungs-Section nach dem Nimbus „combo-4 / features-11"-Template: ein
+// kontaindiertes, großzügig gesetztes 2-Spalten-Grid — links das Portrait mit
+// einem Overlay, das beim In-View-Kommen nach oben wegskaliert (Reveal), rechts
+// der Content (kleiner Magenta-Accent · große Headline = Zitat · Copy = Name).
+// Bewusst luftig (große Gaps, begrenzte Breite), damit der Content vernünftig
+// sitzt — statt im engen dunklen Panel auszulaufen. CTA bleibt erhalten.
 
 const SHARP = "var(--font-sharp), sans-serif";
 const INK = "#0e0d0b";
 const PAPER = "#f8f7f3";
-
-function Divider() {
-  return <div style={{ height: "1px", width: "100%", background: "rgba(248,247,243,0.16)" }} />;
-}
+const MAGENTA = "#ff4370";
 
 export function AlgarveCeoTestimonial({
   role,
@@ -24,7 +22,6 @@ export function AlgarveCeoTestimonial({
   name,
   image,
   cta,
-  stats,
 }: {
   heading?: string;
   role: string;
@@ -32,6 +29,8 @@ export function AlgarveCeoTestimonial({
   name: string;
   image: string;
   cta?: { text: string; href: string };
+  /** Wird in dieser Variante nicht mehr gerendert (Zahlen stehen bereits in der
+   *  Hard-Facts-Section darüber) — Prop bleibt für Aufrufkompatibilität. */
   stats?: { value: string; label: string }[];
 }) {
   const root = useRef<HTMLElement>(null);
@@ -48,81 +47,78 @@ export function AlgarveCeoTestimonial({
           obs.disconnect();
         }
       },
-      { threshold: reduce ? 0 : 0.12 },
+      { threshold: reduce ? 0 : 0.25 },
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
-  const enter: React.CSSProperties = {
-    opacity: visible ? 1 : 0,
-    transform: visible ? "translateY(0)" : "translateY(40px)",
-    transition: "opacity 800ms cubic-bezier(0.22,1,0.36,1), transform 800ms cubic-bezier(0.22,1,0.36,1)",
-  };
-
   return (
-    <section ref={root} style={{ background: PAPER, paddingTop: "6.94vw", paddingBottom: "6.94vw" }}>
-      <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
-        <div className="grid items-stretch md:grid-cols-2 max-[767px]:!grid-cols-1" style={{ ...enter, gap: "1.2vw" }}>
-          {/* ── Content-Panel (dunkel) ─────────────────────────────────────── */}
+    <section ref={root} style={{ background: PAPER, paddingTop: "8.33vw", paddingBottom: "8.33vw" }}>
+      <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1180px" }}>
+        <div
+          className="grid items-center md:grid-cols-[0.95fr_1.05fr] max-[767px]:!grid-cols-1"
+          style={{ columnGap: "5.5vw", rowGap: "9vw" }}
+        >
+          {/* ── Portrait links, mit Overlay-Reveal (skaliert nach oben weg) ──── */}
+          <div className="relative overflow-hidden" style={{ borderRadius: "0.9vw", aspectRatio: "4 / 5" }}>
+            <img
+              src={image}
+              alt={name}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 22%" }}
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background: PAPER,
+                transformOrigin: "50% 100%",
+                transform: visible ? "scaleY(0)" : "scaleY(1)",
+                transition: "transform 900ms cubic-bezier(0.65,0,0.35,1)",
+              }}
+            />
+          </div>
+
+          {/* ── Content rechts (Accent · Headline/Zitat · Name · CTA) ────────── */}
           <div
-            className="flex flex-col justify-between max-[767px]:!p-[8vw]"
-            style={{ background: INK, color: PAPER, borderRadius: "1.11vw", padding: "3.33vw", gap: "2.5vw" }}
+            className="flex max-w-[560px] flex-col items-start"
+            style={{
+              gap: "3vw",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(32px)",
+              transition: "opacity 800ms cubic-bezier(0.22,1,0.36,1) 120ms, transform 800ms cubic-bezier(0.22,1,0.36,1) 120ms",
+            }}
           >
-            <div className="flex flex-col" style={{ gap: "2vw" }}>
+            <div className="flex flex-col items-start" style={{ gap: "1.4vw" }}>
               <span
                 className="max-[767px]:!text-[3vw]"
-                style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: "rgba(248,247,243,0.55)" }}
+                style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: MAGENTA }}
               >
                 {role}
               </span>
-              <Divider />
               <blockquote
-                className="m-0 max-[767px]:!text-[6vw]"
-                style={{ fontFamily: SHARP, fontSize: "2.4vw", lineHeight: "122%", fontWeight: 500, letterSpacing: "-0.06vw" }}
+                className="m-0 max-[767px]:!text-[6.4vw]"
+                style={{ fontFamily: SHARP, fontSize: "2.4vw", lineHeight: "124%", fontWeight: 500, letterSpacing: "-0.06vw", color: INK }}
               >
                 „{quote}“
               </blockquote>
-              {/* Nur der Name — die Rolle steht bereits oben als Eyebrow über der
-                  Linie (keine Doppelung). */}
-              <span className="max-[767px]:!text-[4.4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500 }}>
-                {name}
-              </span>
-
-              {stats && stats.length > 0 && (
-                <>
-                  <Divider />
-                  <div className="grid grid-cols-2" style={{ gap: "2vw" }}>
-                    {stats.slice(0, 2).map((s) => (
-                      <div key={s.label} className="flex flex-col" style={{ gap: "0.6vw" }}>
-                        <span className="max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "2.8vw", fontWeight: 500, lineHeight: 1, letterSpacing: "-0.1vw" }}>
-                          {s.value}
-                        </span>
-                        <span className="max-[767px]:!text-[3.2vw]" style={{ fontSize: "0.95vw", lineHeight: "135%", color: "rgba(248,247,243,0.6)" }}>
-                          {s.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
             </div>
+
+            <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500, color: INK }}>
+              {name}
+            </span>
 
             {cta && (
               <a
                 href={cta.href}
-                className="inline-flex w-fit items-center gap-2 rounded-full border text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0e0d0b] max-[767px]:!text-[3.4vw]"
-                style={{ borderColor: "rgba(248,247,243,0.6)", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw" }}
+                className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
+                style={{ border: "0.12vw solid #0e0d0b", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", marginTop: "0.8vw" }}
               >
                 {cta.text}
                 <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />
               </a>
             )}
-          </div>
-
-          {/* ── Portrait rechts ────────────────────────────────────────────── */}
-          <div className="overflow-clip max-[767px]:!h-[110vw]" style={{ borderRadius: "1.11vw" }}>
-            <img src={image} alt={name} className="h-full w-full object-cover" style={{ objectPosition: "center 22%" }} />
           </div>
         </div>
       </div>

@@ -43,9 +43,10 @@ export function AlgarveServicesStack() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // 3D-Wegkippen nur auf Desktop (≥768px) mit Sticky-Stack; auf Mobile stehen die
-      // Cards im Normalfluss (static, halbe Höhe, Video unter der Headline).
-      if (!window.matchMedia("(min-width: 768px)").matches) return;
+      // 3D-Wegkippen mit Sticky-Stack — auf Desktop UND Mobile: sobald die nächste
+      // Card hochscrollt, kippt die aktuelle um ihre Oberkante nach hinten weg
+      // (bunte Karten flippen weg, die nächste kommt). Mobile nutzt dasselbe
+      // Prinzip, nur mit mobil angepasstem Innenlayout (Video unter der Headline).
       const cards = gsap.utils.toArray<HTMLElement>("[data-service-card]");
       // Echtes 3D-Wegkippen (wie auf der Companies-Seite): sobald die nächste Card
       // hochscrollt, kippt die aktuelle um ihre Oberkante nach hinten weg + faded.
@@ -120,7 +121,7 @@ export function AlgarveServicesStack() {
             <div
               key={card.index}
               data-service-card
-              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!static max-[767px]:!h-auto max-[767px]:!p-[6vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!p-[7vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
