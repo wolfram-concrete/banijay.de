@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Preloader-/Video-Feinschliff (02.07., 2. Runde)
+- **Bessere Videoqualität:** `preloader-bg` und `hero-bg` waren zu hart komprimiert
+  → aus Rohquellen neu in crf 23 / 1080p (Preloader 2,7 MB, Hero 2,2 MB).
+- **Preloader ruhiger:** neue Ruhephase (~1,7 s), in der nur das Video läuft, bevor
+  sich die Partikel bilden; danach fährt der Weißbereich langsamer auf (gesamt ~5 s).
+- **b-Cutout korrigiert:** kein Merge/Steg mehr — das b bleibt mit ZWEI Einzelkörpern
+  (offener Zwischenraum) als echter Cutout, durch den man in die Hero-Section blickt
+  (Solid-Variante verworfen).
+- **Companies-Section (Home):** erste Ansicht jetzt **Magenta**; von dort morpht der
+  Grund beim Scrollen in die dominanten Card-Farben.
+- Hinweis: schwerste Videos bleiben `kompetenz-reel` (13 MB) & `hero` (11 MB) —
+  primäre Kandidaten für weitere Verkleinerung/kürzere Loops.
+
 ### Deploy-Fix: Videos im Repo (02.07.)
 - **Ursache:** genutzte Videos waren gitignored → fehlten im Vercel-Build
   (Preloader-Video spielte nicht, Videos generell weg).

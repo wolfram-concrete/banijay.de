@@ -12,9 +12,9 @@ import { ParticleB } from "./ParticleB";
 // gesperrt und die Seite startet am Home-Hero (ganz oben).
 
 const ACCENT = "#ff4370";
-// Cutout-Maske: Solid-Variante (Steg zwischen den Balken geschlossen), damit beim
-// Aufzoomen kein magentafarbener Zwischenstreifen stehen bleibt.
-const SIGN = "url(/brand/banijay-sign-solid.svg)";
+// Cutout-Maske: das echte b mit ZWEI Einzelkörpern (Steg bleibt offen) — man
+// guckt durch beide b-Körper in die Hero-Section. NICHT die Solid-Variante.
+const SIGN = "url(/brand/banijay-sign.svg)";
 
 let PLAYED = false;
 

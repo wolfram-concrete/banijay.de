@@ -48,6 +48,9 @@ const STEP_VH = 40; // Scroll-Weg pro weiterer Card
 const TOTAL_VH = 300 + Math.max(0, N - 3) * STEP_VH;
 
 const OFF_WHITE: [number, number, number] = [248, 247, 243];
+// Basisfarbe der Companies-Section: erste Ansicht = Banijay-Magenta; von hier aus
+// verfärbt sich der Grund beim Scrollen in die dominanten Card-Farben.
+const BASE_BG: [number, number, number] = [255, 67, 112];
 
 // „Gebrannte" Variante der dominanten Bildfarbe: Sättigung deutlich anheben und
 // leicht abdunkeln → satte, warme Töne statt milchig-heller Durchschnitt.
@@ -136,8 +139,8 @@ export function AlgarveCompaniesScroller() {
     if (!window.matchMedia("(min-width: 768px)").matches) return;
     const rootEl = root.current;
     if (!rootEl) return;
-    const cur: [number, number, number] = [...OFF_WHITE];
-    const target: [number, number, number] = [...OFF_WHITE];
+    const cur: [number, number, number] = [...BASE_BG];
+    const target: [number, number, number] = [...BASE_BG];
     const setT = (c: [number, number, number]) => {
       target[0] = c[0];
       target[1] = c[1];
@@ -176,9 +179,9 @@ export function AlgarveCompaniesScroller() {
       trigger: rootEl,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: (self) => (self.progress > 0.16 ? focus() : setT(OFF_WHITE)),
-      onLeave: () => setT(OFF_WHITE),
-      onLeaveBack: () => setT(OFF_WHITE),
+      onUpdate: (self) => (self.progress > 0.16 ? focus() : setT(BASE_BG)),
+      onLeave: () => setT(BASE_BG),
+      onLeaveBack: () => setT(BASE_BG),
     });
     const tick = () => {
       let moved = false;
@@ -272,7 +275,7 @@ export function AlgarveCompaniesScroller() {
       <section
         ref={root}
         className="relative overflow-clip max-[767px]:hidden"
-        style={{ background: "#f8f7f3", height: `${TOTAL_VH}vh` }}
+        style={{ background: "#ff4370", height: `${TOTAL_VH}vh` }}
       >
         <div className="sticky top-0 flex w-screen items-end" style={{ height: "100vh" }}>
           <div className="flex h-full w-full flex-col justify-center" style={{ padding: "2vw" }}>

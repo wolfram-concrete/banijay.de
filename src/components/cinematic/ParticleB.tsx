@@ -107,49 +107,56 @@ export function ParticleB({ onComplete }: { onComplete?: () => void }) {
       }));
     };
 
-    const APPEAR = 900; // LED-Grid schaltet sich an
-    const FILL = 1700; // b füllt sich von unten solid schwarz (Ladebalken)
+    const HOLD = 1700; // ruhige Video-Phase, BEVOR sich die Partikel bilden
+    const APPEAR = 1300; // Partikel bilden sich und stehen kurz, dann füllt der Weißbereich
+    const FILL = 2000; // b füllt sich von unten weiß (Ladebalken), ruhig
     let start = 0;
 
     const frame = (t: number) => {
       if (!start) start = t;
       const el = t - start;
       const now = el / 1000;
+      const afterHold = (el - HOLD) / 1000; // Sekunden seit Partikelstart (kann < 0 sein)
       ctx.clearRect(0, 0, W, H);
 
-      // Mini-Satelliten — dezent, fest schwarz.
-      ctx.save();
-      ctx.fillStyle = PARTICLE;
-      ctx.globalAlpha = 0.7;
-      for (const s of sats) {
-        s.ang += s.spd * 0.01;
-        const r = s.rad + Math.sin(now * 0.6 + s.drift) * bw * 0.03;
-        const sx = W / 2 + Math.cos(s.ang) * r;
-        const sy = H / 2 + Math.sin(s.ang) * r;
-        ctx.beginPath();
-        ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
-        ctx.fill();
+      // Mini-Satelliten — erst NACH der Ruhephase, sanft eingeblendet.
+      if (afterHold > 0) {
+        const sfade = Math.min(1, afterHold / 0.8);
+        ctx.save();
+        ctx.fillStyle = PARTICLE;
+        ctx.globalAlpha = 0.7 * sfade;
+        for (const s of sats) {
+          s.ang += s.spd * 0.01;
+          const r = s.rad + Math.sin(now * 0.6 + s.drift) * bw * 0.03;
+          const sx = W / 2 + Math.cos(s.ang) * r;
+          const sy = H / 2 + Math.sin(s.ang) * r;
+          ctx.beginPath();
+          ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
       }
-      ctx.restore();
 
-      // LED-Grid: feste Position, nur Größe pulsiert um den Mittelpunkt.
-      ctx.save();
-      ctx.fillStyle = PARTICLE;
-      for (const d of dots) {
-        const intro = Math.min(1, Math.max(0, (now - d.delay) / 0.45));
-        if (intro <= 0) continue;
-        const pulse = 0.62 + 0.38 * Math.sin(now * 2.4 + d.phase);
-        const size = d.base * intro * pulse;
-        if (size <= 0.1) continue;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
-        ctx.fill();
+      // LED-Grid: erst nach der Ruhephase; feste Position, Größe pulsiert.
+      if (afterHold > 0) {
+        ctx.save();
+        ctx.fillStyle = PARTICLE;
+        for (const d of dots) {
+          const intro = Math.min(1, Math.max(0, (afterHold - d.delay) / 0.6));
+          if (intro <= 0) continue;
+          const pulse = 0.62 + 0.38 * Math.sin(now * 2.4 + d.phase);
+          const size = d.base * intro * pulse;
+          if (size <= 0.1) continue;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
       }
-      ctx.restore();
 
-      // Ladebalken: schwarze Fläche steigt von unten durch die b-Maske.
-      if (el > APPEAR && blackB) {
-        const cp = Math.min(1, (el - APPEAR) / FILL);
+      // Ladebalken: weiße Fläche steigt von unten durch die b-Maske.
+      if (el > HOLD + APPEAR && blackB) {
+        const cp = Math.min(1, (el - HOLD - APPEAR) / FILL);
         const fillH = cp * bh;
         ctx.save();
         ctx.beginPath();
@@ -159,7 +166,7 @@ export function ParticleB({ onComplete }: { onComplete?: () => void }) {
         ctx.restore();
       }
 
-      if (el > APPEAR + FILL) {
+      if (el > HOLD + APPEAR + FILL) {
         finish();
         return;
       }
