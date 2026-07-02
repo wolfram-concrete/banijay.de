@@ -9,10 +9,11 @@ import { HOME } from "@/data/home";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // section_about-intro (Algarve 1:1): 220vh-Scroll-Sektion mit 100vh-Sticky-Panel.
-// Zentriertes Statement (h4, max 7 Spalten), das sich Wort für Wort enthüllt.
-// Echte Timeline t-5d1221df: SplitText nach Wörtern (ohne Maske), pro Wort
-// x 1000%→0 (fliegt von rechts rein) + opacity 0→100% + y 20px→0, Stagger
-// amount 1 from start, scrub .8. Inhalt: HOME.world.text.
+// Zentriertes Statement (h4), das sich Wort für Wort enthüllt. Optional
+// (magentaExit): nachdem das Statement steht, layert im selben Sticky-Panel eine
+// gerundete Magenta-Fläche von unten über das (stehende) Statement — rechts stark
+// gerundet als „b"-Körper-Andeutung — und faltet dann auf Full-Size auf. Danach
+// übergibt sie nahtlos an die Companies-Section (gleiches Magenta).
 
 const H4 = {
   fontFamily: "var(--font-sharp), sans-serif",
@@ -22,33 +23,44 @@ const H4 = {
   letterSpacing: "-0.104vw",
 } as const;
 
-export function AlgarveAboutIntro({ text }: { text?: string }) {
+const ACCENT = "#ff4370";
+
+export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string; magentaExit?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
   const words = (text ?? HOME.world.text).split(" ");
 
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const wordEls = gsap.utils.toArray<HTMLElement>("[data-word]");
-      // Stabilen GPU-Layer erzwingen → kein Subpixel-Flimmern beim Scrub (Lenis).
       gsap.set(wordEls, { willChange: "transform, opacity", backfaceVisibility: "hidden" });
-      // Ruhiger, gerichteter Aufbau in Leserichtung: Wörter enthüllen sich in
-      // DOM-Reihenfolge (from: "start" = oben-links → unten-rechts), nur Opacity
-      // + leichtes Anheben. Kein Partikel-/Puzzle-Effekt.
+      // Wort-für-Wort-Reveal in der ERSTEN Hälfte der Sektion.
       gsap.from(wordEls, {
         opacity: 0,
         yPercent: 30,
         ease: "none",
         stagger: { amount: 1, from: "start" },
-        scrollTrigger: {
-          // Startet erst, wenn das Statement mittig gepinnt ist, und läuft über
-          // ~90vh → deutlich langsamer/deliberater.
-          trigger: root.current,
-          start: "top top",
-          end: "+=90%",
-          scrub: 1,
-        },
+        scrollTrigger: { trigger: root.current, start: "top top", end: "+=90%", scrub: 1 },
       });
+
+      // magentaExit: gerundete Magenta-Fläche steigt über das stehende Statement
+      // und faltet dann auf Full-Size auf. Die Section ist dafür höher (320vh) →
+      // das Sticky-Panel bleibt bis ~progress 0.69 gepinnt; Rise+Unfold liegen
+      // sauber INNERHALB dieses Pin-Fensters (Timeline-Total = 1 → 1:1-Mapping).
+      const ov = overlay.current;
+      if (magentaExit && ov) {
+        gsap.set(ov, { yPercent: 100, borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
+        });
+        // 1) Aufsteigen über das (stehende) Statement.
+        tl.to(ov, { yPercent: 0, ease: "power2.out", duration: 0.15 }, 0.4);
+        // 2) Radiale Ober-Ecken (b-Körper) falten auf → volle Magenta-Fläche.
+        tl.to(ov, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw", ease: "power2.inOut", duration: 0.12 }, 0.55);
+        // Halte-Beat bis Timeline-Ende (hält 1:1-Scroll-Mapping).
+        tl.to(ov, { yPercent: 0, duration: 0.32 }, 0.68);
+      }
     },
     { scope: root },
   );
@@ -58,7 +70,7 @@ export function AlgarveAboutIntro({ text }: { text?: string }) {
       ref={root}
       style={{
         background: "#f8f7f3",
-        height: "220vh",
+        height: magentaExit ? "320vh" : "220vh",
         paddingTop: "5.56vw",
         paddingBottom: "5.56vw",
         position: "relative",
@@ -83,6 +95,16 @@ export function AlgarveAboutIntro({ text }: { text?: string }) {
             ))}
           </p>
         </div>
+
+        {/* Gerundete Magenta-Blende (nur magentaExit) — layert über das Statement */}
+        {magentaExit && (
+          <div
+            ref={overlay}
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{ zIndex: 5, background: ACCENT, willChange: "transform" }}
+          />
+        )}
       </div>
     </section>
   );

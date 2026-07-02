@@ -19,8 +19,11 @@ export default function HomePage() {
       {/* Hero (Video + weiße Typo) + Entertainment Portfolio (Sticky-Grid) */}
       <AlgarveHome />
 
-      {/* Statement-Reveal (section_about-intro) */}
-      <AlgarveAboutIntro text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt." />
+      {/* Statement-Reveal (section_about-intro) — mit Magenta-Blenden-Übergang in Companies */}
+      <AlgarveAboutIntro
+        magentaExit
+        text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
+      />
 
       {/* Alle Companies als horizontaler Snap-Scroll-Slider (erweitert works-home) */}
       <AlgarveCompaniesScroller />

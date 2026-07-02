@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home Companies-Übergang (robuste Variante) (02.07., 17. Runde)
+- **Home – Statement → Companies:** die AboutIntro (mit `magentaExit`) ist jetzt
+  320vh hoch (mehr Pin-Raum). Nachdem das Statement steht, layert im selben
+  Sticky-Panel eine **gerundete Magenta-Fläche** von unten über das (stehende)
+  Statement — rechts stark gerundet als „b"-Körper-Andeutung — und **faltet dann
+  auf Full-Size auf**, bevor die Companies-Section übernimmt. Robuste Nicht-Masken-
+  Variante (keine fragile SVG-b-Silhouette). Numerisch verifiziert (Rise translateY
+  1264px→0, Radius 807px→~0 über das Pin-Fenster).
+
 ### CoC-Statement-Section + Body-Paper vereinheitlicht (02.07., 16. Runde)
 - **Code-of-Conduct-Section** neu nach text-section-1: großer, linksbündiger
   Statement-Text mit einem Magenta-Akzentwort („kreative") + Magenta-Pill-CTA
