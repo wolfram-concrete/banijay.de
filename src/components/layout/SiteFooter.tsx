@@ -49,10 +49,10 @@ export function SiteFooter() {
         paddingTop: "2.22vw",
         paddingBottom: "2.22vw",
         position: "relative",
-        // Über den Content-Sections (zIndex ~2), aber UNTER dem Menü-Overlay
-        // (z-[98]) und der Nav-Bar (z-[99]) — sonst legt sich das geöffnete Menü
-        // hinter den Footer statt full-size darüber.
-        zIndex: 40,
+        // Der Footer liegt ÜBER der geschlossenen Top-Nav (z-45) — am Seitenende
+        // verschwindet die redundante Top-Nav also hinter dem Footer. Das geöffnete
+        // Menü-Overlay (z-200) + Nav (z-201) legen sich weiterhin komplett darüber.
+        zIndex: 50,
       }}
     >
       <style>{`
@@ -75,8 +75,8 @@ export function SiteFooter() {
           {/* Kontakt/Folgen (links) · Nav-Links (rechts, rechtsbündig wie Hauptnav) */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
             <div className="grid gap-14 md:grid-cols-2 lg:gap-24">
-              {/* Links: Folgen + Kontakt */}
-              <div className="flex flex-col gap-10">
+              {/* Links: Folgen + Kontakt — auf Mobile UNTER die Nav-Links (order-2) */}
+              <div className="flex flex-col gap-10 max-[767px]:order-2">
                 <div className="flex flex-col gap-3">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
                     Folgen
@@ -130,8 +130,9 @@ export function SiteFooter() {
                 </div>
               </div>
 
-              {/* Rechts: Nav-Links rechtsbündig (wie in der Hauptnavigation) */}
-              <nav className="flex flex-col items-start text-left md:items-end md:text-right" style={{ gap: "0.4vw" }}>
+              {/* Rechts: Nav-Links rechtsbündig — auf Mobile ganz OBEN (order-1) und
+                  ebenfalls rechtsbündig. */}
+              <nav className="flex flex-col items-end text-right max-[767px]:order-1" style={{ gap: "0.4vw" }}>
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.href}
@@ -161,7 +162,7 @@ export function SiteFooter() {
                   {marqueeWords.map((w, i) => (
                     <span
                       key={i}
-                      className="uppercase"
+                      className="uppercase max-[767px]:!text-[33vw]"
                       style={{
                         fontFamily: "var(--font-sharp), sans-serif",
                         fontSize: "22vw",

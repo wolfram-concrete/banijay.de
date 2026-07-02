@@ -25,7 +25,18 @@ export function AlgarveNewsStack() {
   return (
     <section
       data-nav-theme="magenta"
-      style={{ background: "#ff4370", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
+      className="relative max-[767px]:!mt-0"
+      style={{
+        background: "#ff4370",
+        paddingTop: "5.56vw",
+        paddingBottom: "8.33vw",
+        // Überlappt die LogoReveal-Endphase (volle Magenta-Blende) und liegt
+        // dahinter (zIndex 1 < LogoReveal z-2): sobald das Video/​b als volle
+        // Magenta-Fläche hochscrollt, wird darunter nahtlos die News-Section frei
+        // (magenta auf magenta) → der Content kommt sofort hoch statt erst danach.
+        marginTop: "-100vh",
+        zIndex: 1,
+      }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         <div
@@ -37,15 +48,15 @@ export function AlgarveNewsStack() {
             className="flex flex-col items-start self-start md:sticky"
             style={{ gap: "1.67vw", top: "10vw" }}
           >
-            <h2 className="uppercase text-black" style={H2}>
+            <h2 className="uppercase text-black max-[767px]:!text-[9.6vw]" style={H2}>
               Latest news
             </h2>
-            <p className="m-0" style={{ color: "#000000a3", fontSize: "1.39vw", lineHeight: "135%" }}>
+            <p className="m-0 max-[767px]:!text-[3.8vw]" style={{ color: "#000000a3", fontSize: "1.39vw", lineHeight: "135%" }}>
               Premieren, Podcasts, Interviews und Erfolge aus der Banijay-Welt.
             </p>
             <Link
               href="/news"
-              className="inline-flex items-center text-black"
+              className="inline-flex items-center text-black max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
               style={{
                 padding: "0.83vw 1.39vw",
                 borderRadius: "2.22vw",
@@ -71,9 +82,9 @@ export function AlgarveNewsStack() {
                   color: "#0e0d0b",
                 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr]" style={{ gap: "1vw" }}>
+                <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>
                   <div
-                    className="overflow-clip"
+                    className="overflow-clip max-[767px]:!h-[56vw] max-[767px]:!rounded-[4vw]"
                     style={{
                       borderRadius: "1.11vw",
                       height: "15vw",
@@ -86,9 +97,10 @@ export function AlgarveNewsStack() {
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
                   </div>
-                  <div className="flex flex-col justify-between" style={{ maxWidth: "31.11vw", gap: "1.11vw" }}>
-                    <div className="flex flex-col items-start" style={{ gap: "0.83vw" }}>
+                  <div className="flex flex-col justify-between max-[767px]:!max-w-full max-[767px]:!gap-[3vw]" style={{ maxWidth: "31.11vw", gap: "1.11vw" }}>
+                    <div className="flex flex-col items-start max-[767px]:!gap-[2vw]" style={{ gap: "0.83vw" }}>
                       <span
+                        className="max-[767px]:!text-[2.8vw]"
                         style={{
                           fontFamily: "var(--font-sharp), sans-serif",
                           fontSize: "0.9vw",
@@ -100,12 +112,12 @@ export function AlgarveNewsStack() {
                       >
                         {item.date}
                       </span>
-                      <span style={{ fontSize: "1.6vw", lineHeight: "125%", fontWeight: 500 }}>
+                      <span className="max-[767px]:!text-[5vw]" style={{ fontSize: "1.6vw", lineHeight: "125%", fontWeight: 500 }}>
                         {item.title}
                       </span>
                     </div>
                     <span
-                      className="inline-flex items-center gap-[0.4vw] transition-transform duration-300 group-hover:translate-x-1"
+                      className="inline-flex items-center gap-[0.4vw] transition-transform duration-300 group-hover:translate-x-1 max-[767px]:!text-[3.4vw]"
                       style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.05vw", fontWeight: 500 }}
                     >
                       Mehr erfahren <ArrowUpRight size={16} />

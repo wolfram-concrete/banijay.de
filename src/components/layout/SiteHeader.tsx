@@ -251,7 +251,10 @@ export function SiteHeader() {
     <div className="relative">
       {/* Bar */}
       <nav
-        className="fixed inset-x-0 top-0 z-[99] bg-transparent"
+        // Geschlossen liegt die Nav UNTER dem Footer (z-45 < Footer z-50) — am Seiten-
+        // ende verschwindet die Top-Nav also hinter dem Footer (der hat eigene Links).
+        // Sobald das Menü geöffnet wird, springt die Nav samt Overlay über alles (z-201).
+        className={`fixed inset-x-0 top-0 bg-transparent ${open ? "z-[201]" : "z-[45]"}`}
         style={{ paddingTop: "1.5vw", paddingBottom: "1.5vw" }}
       >
         <div className="flex items-center justify-between" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
@@ -338,7 +341,7 @@ export function SiteHeader() {
 
       {/* Fullscreen-Overlay */}
       <div
-        className="fixed inset-0 z-[98] overflow-hidden transition-[height] duration-500 ease-in-out"
+        className="fixed inset-0 z-[200] overflow-hidden transition-[height] duration-500 ease-in-out"
         style={{ height: open ? "100vh" : 0, background: CORAL }}
       >
         <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>

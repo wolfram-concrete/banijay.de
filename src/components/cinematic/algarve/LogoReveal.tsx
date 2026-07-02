@@ -75,7 +75,7 @@ export function AlgarveLogoReveal() {
     // marginTop -100vh + z-2: die Video-Fläche schiebt sich beim Scrollen von unten
     // über die Team-Section (die dahinter gepinnt fertig aufgebaut ist) — analog zur
     // Magenta-Fläche über dem Statement. Hintergrund Ink, falls kurz sichtbar.
-    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "300vh", marginTop: "-100vh", zIndex: 2, background: "#0e0d0b" }}>
+    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "260vh", marginTop: "-70vh", zIndex: 2, background: "#0e0d0b" }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">

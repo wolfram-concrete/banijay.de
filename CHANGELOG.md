@@ -5,6 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Footer-z, News-Mobile, Home-Übergangs-Timing (02.07., 29. Runde)
+- **Footer über der Top-Nav:** Am Seitenende verschwand die (redundante) Top-Nav
+  hinter dem Footer nicht — jetzt liegt der Footer (z-50) über der geschlossenen Nav
+  (z-45). Beim Öffnen springt Menü-Overlay (z-200) + Nav (z-201) wieder komplett
+  darüber.
+- **Footer mobil neu geordnet:** Nav-Links ganz oben, rechtsbündig; darunter
+  linksbündig Kontakt + Folgen (order-Swap). BANIJAY-Marquee mobil ~50 % größer
+  (22vw → 33vw).
+- **News-Section mobil** an das Algarve-Template angeglichen: größere Schriften
+  (Headline 9.6vw, Titel 5vw, Label 2.8vw, „Mehr erfahren" 3.4vw) und deutlich höhere
+  Bildcontainer (15vw → 56vw statt zu flach).
+- **Team→Video mehr Abstand:** Team-Namen faden jetzt in der ersten Pin-Hälfte ein +
+  Halte-Beat (Pin +160 % → +200 %); LogoReveal-Overlap -100vh → -70vh. Verifiziert:
+  Namen voll sichtbar (opacity 1) BEVOR das Video die Team-Section deckt.
+- **News schneller:** News-Section überlappt jetzt die LogoReveal-Endphase (marginTop
+  -100vh, z-1 dahinter) → sobald der Screen voll Magenta ist, kommt der News-Content
+  nahtlos hoch (verifiziert: Headline bei voller Magenta-Fülle bereits im Bild).
+
 ### Home Team→Video→News: Overlay wie die Magenta-Fläche (02.07., 28. Runde)
 - **LogoReveal (Team→Video→News) neu getaktet:** Vorher schob sich das Video per
   Transform in der eigenen Sektion hoch (marginTop nur -18vh) → kein sichtbarer

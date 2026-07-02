@@ -73,7 +73,7 @@ export function AlgarveFounders() {
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: "+=160%",
+          end: "+=200%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
@@ -86,16 +86,20 @@ export function AlgarveFounders() {
         rotation: 0,
         opacity: 1,
         ease: "power2.out",
-        stagger: 0.06,
-        duration: 0.7,
+        stagger: 0.045,
+        duration: 0.5,
       });
-      // Erst NACHDEM alle Karten eingerastet sind (Ende der Entfaltung), faden
-      // Name + Titel gestaffelt von unten ein.
+      // Erst NACHDEM alle Karten eingerastet sind, faden Name + Titel gestaffelt
+      // von unten ein — bewusst in der ERSTEN Hälfte des Pins, damit das voll
+      // aufgebaute Team samt Namen danach noch steht (Halte-Beat), BEVOR im
+      // LogoReveal das Video darüber aufsteigt.
       tl.to(
         metas,
-        { opacity: 1, y: 0, ease: "power2.out", stagger: 0.05, duration: 0.4 },
-        ">-0.05",
+        { opacity: 1, y: 0, ease: "power2.out", stagger: 0.03, duration: 0.32 },
+        0.62,
       );
+      // Halte-Beat: fertig aufgebautes Team + Namen bleiben stehen.
+      tl.to({}, { duration: 0.9 }, 1.25);
     },
     { scope: root },
   );
