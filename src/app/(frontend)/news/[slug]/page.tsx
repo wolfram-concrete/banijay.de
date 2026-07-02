@@ -39,7 +39,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const item = getNewsBySlug(slug);
   if (!item) notFound();
 
-  const more = NEWS.filter((n) => n.slug !== slug).slice(0, 2);
+  const more = NEWS.filter((n) => n.slug !== slug).slice(0, 3);
 
   return (
     <div style={{ background: PAPER }}>
@@ -139,7 +139,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           >
             Mehr News
           </h2>
-          <div className="grid grid-cols-2 max-[767px]:!grid-cols-1" style={{ gap: "1vw" }}>
+          <div className="grid grid-cols-3 max-[767px]:!grid-cols-1" style={{ gap: "1vw" }}>
             {more.map((n) => (
               <Link
                 key={n.slug}

@@ -113,7 +113,7 @@ export function AlgarveCompanyCards() {
               style={{
                 position: "sticky",
                 top: "1.39vw",
-                height: "90vh",
+                height: "96vh",
                 padding: "4.44vw",
                 borderRadius: "1.67vw",
                 backgroundColor: card.bg,
@@ -186,25 +186,29 @@ export function AlgarveCompanyCards() {
                 </h4>
                 <p
                   className="m-0 max-[767px]:!text-[3.6vw]"
-                  style={{ fontSize: "1.25vw", lineHeight: "138%", color: card.soft }}
+                  style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.25vw", lineHeight: "138%", color: card.soft }}
                 >
                   {card.body}
                 </p>
 
-                {/* Tags (max 3) — als Kicker-Schlagworte (keine Button-Optik):
-                    kleine, gesperrte Versalien mit dünnem „/"-Trenner. */}
-                <div className="flex flex-wrap items-center max-[767px]:!text-[2.8vw]" style={{ gap: "0.83vw", marginTop: "0.28vw" }}>
-                  {card.tags.slice(0, 3).map((t, ti) => (
-                    <span key={t} className="flex items-center" style={{ gap: "0.83vw" }}>
-                      {ti > 0 && <span aria-hidden style={{ color: card.soft, opacity: 0.55 }}>/</span>}
+                {/* Tags (max 3) — Kategorie-Marker: kleines Quadrat + gesperrte
+                    Versalie. Klar als Meta-Element erkennbar, aber kein Button und
+                    kein Hashtag. */}
+                <div className="flex flex-wrap items-center max-[767px]:!text-[2.8vw]" style={{ gap: "1.25vw", marginTop: "0.4vw" }}>
+                  {card.tags.slice(0, 3).map((t) => (
+                    <span key={t} className="flex items-center" style={{ gap: "0.5vw" }}>
+                      <span
+                        aria-hidden
+                        style={{ width: "0.42vw", height: "0.42vw", minWidth: "5px", minHeight: "5px", background: card.fg, display: "inline-block", borderRadius: "1px" }}
+                      />
                       <span
                         style={{
                           fontFamily: "var(--font-sharp), sans-serif",
                           fontSize: "0.82vw",
                           fontWeight: 700,
-                          letterSpacing: "0.12vw",
+                          letterSpacing: "0.1vw",
                           textTransform: "uppercase",
-                          color: card.soft,
+                          color: card.fg,
                         }}
                       >
                         {t}
@@ -218,11 +222,11 @@ export function AlgarveCompanyCards() {
                 {card.id !== "cologne-comedy-festival" && (
                   <div
                     className="flex flex-wrap items-center max-[767px]:!text-[3vw]"
-                    style={{ gap: "0.56vw", fontSize: "1.05vw", color: card.soft }}
+                    style={{ fontFamily: "var(--font-sharp), sans-serif", gap: "0.56vw", fontSize: "1.05vw", color: card.soft }}
                   >
                     <span
                       className="max-[767px]:!text-[2.6vw]"
-                      style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "0.8vw", letterSpacing: "0.06vw" }}
+                      style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 700, textTransform: "uppercase", fontSize: "0.8vw", letterSpacing: "0.06vw", color: card.fg }}
                     >
                       Bekannt für
                     </span>

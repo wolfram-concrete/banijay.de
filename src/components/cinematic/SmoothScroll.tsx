@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 // Globaler Smooth-Scroll (Lenis), gekoppelt an GSAP ScrollTrigger.
 // Sorgt für das immersive, „schwebende" Scroll-Gefühl (drinksom-Referenz).
 export function SmoothScroll() {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -27,6 +30,18 @@ export function SmoothScroll() {
       lenis.destroy();
     };
   }, []);
+
+  // Bei jedem Routenwechsel zuverlässig an den Seitenanfang (Artikel-Header) —
+  // Lenis behält sonst seine interne Scrollposition und der Next-Scroll-Reset
+  // greift nicht. Nach dem Paint ausführen, damit die neue Seite gemountet ist.
+  useEffect(() => {
+    const l = (window as unknown as { __lenis?: Lenis }).__lenis;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      l?.scrollTo(0, { immediate: true });
+      ScrollTrigger.refresh();
+    });
+  }, [pathname]);
 
   return null;
 }

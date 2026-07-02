@@ -18,6 +18,7 @@ export default function CompaniesPage() {
         label="Companies"
         body="25+ Companies und Labels, jede mit eigener Handschrift. Gemeinsam entwickeln sie Shows, Reality, Fiction, Comedy, Digital und Live-Erlebnisse für den deutschen Markt."
         image="/grid/g03.png"
+        video="/video/companies-hero.mp4"
       />
 
       {/* Companies-Vorstellung — farbige Teaser-Card-Bühne (Algarve-Fold-away) */}

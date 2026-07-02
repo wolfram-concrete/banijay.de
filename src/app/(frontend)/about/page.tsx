@@ -59,28 +59,44 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-[3.5vw] grid gap-x-[2vw] gap-y-[3vw] sm:grid-cols-2 lg:grid-cols-3">
-              {STATS.map((s) => (
-                <div key={s.label} style={{ borderTop: "0.12vw solid rgba(0,0,0,0.16)", paddingTop: "1.4vw" }}>
-                  <div className="flex items-baseline gap-2">
-                    <span
-                      className="max-[767px]:!text-[12vw]"
-                      style={{ fontFamily: SHARP, fontSize: "4vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw", color: "#0e0d0b" }}
-                    >
-                      <CountUp value={s.value} />
-                    </span>
-                    {s.aboutOnly && (
-                      <span className="text-[10px] uppercase tracking-[0.15em]" style={{ color: "#fb4b68", fontWeight: 700 }}>
-                        Freigabe nötig
+            {/* Bento-Kennzahlen: getönte Rundkarten (wie das Home-Kennzahlen-Modul),
+                zwei größere farbige Akzent-Kacheln (Coral + Ink) für Bento-Rhythmus. */}
+            <div className="mt-[3.5vw] grid grid-cols-2 gap-[1vw] md:grid-cols-4">
+              {STATS.map((s, i) => {
+                const accent = i === 0;
+                const dark = i === STATS.length - 1;
+                const wide = accent || dark;
+                const bg = accent ? "#fb4b68" : dark ? "#0e0d0b" : "rgba(14,13,11,0.05)";
+                const fg = dark ? "#f8f7f3" : "#0e0d0b";
+                const soft = dark ? "rgba(248,247,243,0.6)" : "rgba(0,0,0,0.55)";
+                return (
+                  <div
+                    key={s.label}
+                    className={`flex flex-col justify-between max-[767px]:!min-h-[38vw] ${wide ? "col-span-2" : ""}`}
+                    style={{ background: bg, color: fg, borderRadius: "1.11vw", padding: "2vw", minHeight: "12vw" }}
+                  >
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className="max-[767px]:!text-[12vw]"
+                        style={{ fontFamily: SHARP, fontSize: wide ? "5vw" : "3.6vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw" }}
+                      >
+                        <CountUp value={s.value} />
                       </span>
-                    )}
+                      {s.aboutOnly && (
+                        <span className="text-[10px] uppercase tracking-[0.15em]" style={{ color: accent ? "#0e0d0b" : "#fb4b68", fontWeight: 700 }}>
+                          Freigabe nötig
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-[1.4vw]">
+                      <p className="max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "1vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase" }}>
+                        {s.label}
+                      </p>
+                      {s.note && <p className="mt-1.5 text-sm leading-relaxed" style={{ color: soft }}>{s.note}</p>}
+                    </div>
                   </div>
-                  <p className="mt-3 max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "1vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", color: "#0e0d0b" }}>
-                    {s.label}
-                  </p>
-                  {s.note && <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "rgba(0,0,0,0.55)" }}>{s.note}</p>}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Reveal>
         </div>

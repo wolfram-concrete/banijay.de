@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Company-/About-/News-Feinschliff (02.07., 3. Runde)
+- **Company-Hero-Video:** eigener Clip (`companies-hero.mp4`) im Companies-Hero.
+- **Subpage-Hero-Aura:** emotionale, radial atmende Farb-Animation im Hintergrund
+  (rotiert durch die Rainbow-Cardfarben) — Video/Typo bleiben davor (`.hero-aura`).
+- **PageHero-Body-Text:** Wort-für-Wort-Enthüllung jetzt wie die Home-AboutIntro.
+- **Company-Cards:** Keyword-Tags als Quadrat-Marker + Versalie (kein Hashtag/Button),
+  „Bekannt für" & Fließtext einheitlich in Sharp Grotesk, Karten höher (90→96vh).
+- **News-Detail:** „Mehr News" jetzt 3 Karten; Lenis springt bei Navigation
+  zuverlässig zum Artikel-Header (Scroll-Reset pro Routenwechsel).
+- **About „Proof":** Bento-Grid aus getönten Rundkarten mit zwei farbigen
+  Akzent-Kacheln (Coral + Ink) statt Trennlinien.
+
 ### Preloader-/Video-Feinschliff (02.07., 2. Runde)
 - **Bessere Videoqualität:** `preloader-bg` und `hero-bg` waren zu hart komprimiert
   → aus Rohquellen neu in crf 23 / 1080p (Preloader 2,7 MB, Hero 2,2 MB).

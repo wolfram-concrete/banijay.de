@@ -277,3 +277,43 @@ html.lenis body { height: auto; }
   position: relative;
   z-index: 1;
 }
+
+/* Subpage-Hero-Aura: emotionale Farbanimation im Hintergrund (Video + Typo bleiben
+   davor). Ein radialer Verlauf aus den Banijay-/Rainbow-Cardfarben skaliert von
+   innen nach außen (Atmen) und rotiert dabei durch den Farbkreis — „Spektakel"
+   ohne die Lesbarkeit zu stören (außen transparent → Paper bleibt an den Rändern). */
+@keyframes heroAura {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.5;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.82;
+    filter: hue-rotate(140deg);
+  }
+  100% {
+    transform: scale(0.55);
+    opacity: 0.5;
+    filter: hue-rotate(320deg);
+  }
+}
+.hero-aura {
+  background: radial-gradient(
+    circle at 50% 44%,
+    #ff4370 0%,
+    #fb4b68 22%,
+    #ff7a3d 42%,
+    #7b5cff 60%,
+    rgba(248, 247, 243, 0) 74%
+  );
+  transform-origin: 50% 44%;
+  animation: heroAura 16s ease-in-out infinite;
+  will-change: transform, filter, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-aura {
+    animation: none;
+  }
+}

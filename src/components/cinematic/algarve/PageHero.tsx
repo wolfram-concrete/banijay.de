@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -78,12 +77,15 @@ export function AlgarvePageHero({
         //    kleine rote Docked-Label unter MENU (siehe SiteHeader).
         .to("[data-hero-label]", { autoAlpha: 0, ease: "none", duration: 0.1 }, 0.9);
 
-      // 3) Body-Statement darunter: schwarze Typo scrollt Wort für Wort rein.
+      // 3) Body-Statement darunter: Wort-für-Wort-Enthüllung wie die Home-AboutIntro
+      //    (opacity 0→1 + leichtes Anheben, stagger amount 1 in Leserichtung, scrub).
+      gsap.set("[data-hero-word]", { willChange: "transform, opacity", backfaceVisibility: "hidden" });
       gsap.from("[data-hero-word]", {
-        opacity: 0.14,
+        opacity: 0,
+        yPercent: 30,
         ease: "none",
-        stagger: 0.04,
-        scrollTrigger: { trigger: "[data-hero-body]", start: "top 82%", end: "top 32%", scrub: true },
+        stagger: { amount: 1, from: "start" },
+        scrollTrigger: { trigger: "[data-hero-body]", start: "top 80%", end: "top 30%", scrub: 1 },
       });
     },
     { scope: root },
@@ -97,6 +99,11 @@ export function AlgarvePageHero({
       {/* ── Gepinnte Bühne ─────────────────────────────────────────────── */}
       <section data-hero-stage style={{ position: "relative", height: "300vh" }}>
         <div className="sticky top-0 overflow-hidden" style={{ height: "100vh" }}>
+          {/* Emotionale Farb-Aura im Hintergrund (radial, atmet + rotiert durch die
+              Rainbow-Cardfarben). Video/Typo liegen darüber; Aura verschwindet, sobald
+              das Video auf Full-Screen wächst. */}
+          <div data-hero-aura className="hero-aura pointer-events-none absolute inset-0" style={{ zIndex: 0 }} aria-hidden />
+
           {/* Headline (liegt über dem Video, invertiert beim Aufwachsen) */}
           <div
             data-hero-h1
