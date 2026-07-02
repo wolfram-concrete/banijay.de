@@ -40,10 +40,7 @@ export function AlgarveCeoTestimonial({
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -51,7 +48,7 @@ export function AlgarveCeoTestimonial({
           obs.disconnect();
         }
       },
-      { threshold: 0.12 },
+      { threshold: reduce ? 0 : 0.12 },
     );
     obs.observe(el);
     return () => obs.disconnect();

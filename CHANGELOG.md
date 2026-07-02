@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### #workatBanijay Social-Feed (02.07., 14. Runde)
+- **Career:** neue Social-Feed-Section „#workatBanijay" — zieht die Posts
+  **server-seitig** aus dem **Juicer-JSON** (`www.juicer.io/api/feeds/banijaygermany`,
+  derselbe Feed wie die bestehende Live-Karriereseite), `revalidate: 3600` (1 h ISR),
+  und rendert sie als **eigene Banijay-Cards** (3/2/1-Grid, Bild 4:5, Quellen-Badge
+  LinkedIn/Instagram, Textauszug HTML-gestrippt, externer Link target=_blank). Kein
+  Drittanbieter-Script; bei Fetch-Fehler wird die Section ausgeblendet.
+  - **Quelle:** Juicer JSON (nicht Elfsight). Keine Env-Variable nötig.
+  - Elfsight bleibt als Interims-Fallback verfügbar (`ElfsightFeed`, App-ID
+    d46ee32f-1dd4-4015-b240-4ba3940c497a).
+- Aufräumen: ungenutzte MissionStatement-Komponente entfernt; CeoTestimonial-Effect
+  lint-sauber (kein setState direkt im Effect).
+
 ### Code-of-Conduct zurück + Preloader raus (02.07., 13. Runde)
 - **Career:** Code-of-Conduct-Section wieder ergänzt (über der Kontakt-CTA, mit
   hinterlegter CoC-PDF).

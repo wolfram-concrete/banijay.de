@@ -5,6 +5,7 @@ import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJ
 import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
 import { AlgarveTomorrowCallout } from "@/components/cinematic/algarve/TomorrowCallout";
 import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
+import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { CAREER } from "@/data/career";
 
@@ -45,6 +46,9 @@ export default function CareerPage() {
 
       {/* 06 Code of Conduct */}
       <AlgarveCodeOfConductBand />
+
+      {/* 06b #workatBanijay — Social-Feed (Juicer-JSON, eigene Cards) */}
+      <AlgarveCareerSocialFeed />
 
       {/* 07 Bewerbungs-/Kontaktformular (Eingabetemplate, wie About/Companies) */}
       <AlgarveContactForm
