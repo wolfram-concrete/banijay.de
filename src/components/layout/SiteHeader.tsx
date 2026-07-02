@@ -279,7 +279,7 @@ export function SiteHeader() {
                 fontFamily: "var(--font-sharp), sans-serif",
                 fontWeight: 700,
                 fontSize: "3.5rem",
-                lineHeight: 0.75,
+                lineHeight: 0.86,
                 letterSpacing: "-0.01em",
                 color: open || onMagenta ? INK : MAGENTA,
                 boxShadow: "none",
