@@ -46,12 +46,22 @@ export function AlgarvePageHero({
         delay: 0.15,
       });
 
-      if (reduce) return;
+      if (reduce) {
+        gsap.set("[data-hero-card]", { display: "none" });
+        return;
+      }
 
       gsap.set("[data-hero-label]", { autoAlpha: 0 });
 
-      // 2) Gepinnte Choreografie: Höhe → über die H1 (invert weiß) → Breite →
-      //    Full-Screen → halten. scrub über die gesamte Section-Höhe.
+      // 2) Gepinnte Choreografie (Mockup): Aus dem kleinen Video-Container skalieren
+      //    sich nacheinander, schnell und in unterschiedlichen Abständen mehrere
+      //    Farbcontainer auf FULL-SCREEN (Orchid → Gelb → Blau → MAGENTA zuletzt).
+      //    Der letzte Move: der Video-Container zieht selbst auf Full-Screen. Harte
+      //    Kanten (borderRadius 0), keine weichen Übergänge.
+      const START = { left: "30vw", top: "56vh", width: "40vw", height: "30vh" };
+      const FULL = { left: "0vw", top: "0vh", width: "100vw", height: "100vh" };
+      gsap.set(["[data-hero-card]", "[data-hero-media]"], START);
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: "[data-hero-stage]",
@@ -62,20 +72,22 @@ export function AlgarvePageHero({
         },
       });
 
+      // Farbkarten der Reihe nach auf Full-Screen (unterschiedliche Startpunkte).
+      const cards = gsap.utils.toArray<HTMLElement>("[data-hero-card]");
+      const starts = [0, 0.16, 0.34, 0.52];
+      cards.forEach((card, i) => {
+        tl.to(card, { ...FULL, ease: "power2.in", duration: 0.28 }, starts[i] ?? i * 0.16);
+      });
+
       tl
-        // A) Container wächst zunächst nur in die HÖHE (schmal, unter der H1).
-        .to("[data-hero-media]", { top: "36vh", height: "52vh", ease: "none", duration: 0.28 }, 0)
-        // B) Steigt über die H1 UND wächst in die Breite; die H1 invertiert dabei
-        //    auf Weiß (jetzt liegt das breite Video dahinter) und bleibt stehen.
-        .to("[data-hero-media]", { top: "8vh", left: "0vw", width: "100vw", height: "84vh", ease: "none", duration: 0.34 }, 0.3)
-        .to("[data-hero-scrim]", { opacity: 0.5, ease: "none", duration: 0.34 }, 0.3)
-        .to("[data-hero-h1]", { color: PAPER, ease: "none", duration: 0.16 }, 0.38)
-        .to("[data-hero-label]", { autoAlpha: 1, ease: "none", duration: 0.12 }, 0.42)
-        // C) Container zoomt auf Full-Screen.
-        .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.22 }, 0.66)
-        // D) Das weiße Hero-Label blendet zum Ende aus — es „übergibt" an das
-        //    kleine rote Docked-Label unter MENU (siehe SiteHeader).
-        .to("[data-hero-label]", { autoAlpha: 0, ease: "none", duration: 0.1 }, 0.9);
+        // H1 invertiert auf Weiß, sobald die Farbflächen dahinterliegen.
+        .to("[data-hero-h1]", { color: PAPER, ease: "none", duration: 0.12 }, 0.62)
+        .to("[data-hero-label]", { autoAlpha: 1, ease: "none", duration: 0.1 }, 0.7)
+        // Letzter Move: der Video-Container zieht auf Full-Screen.
+        .to("[data-hero-media]", { ...FULL, ease: "power2.in", duration: 0.34 }, 0.78)
+        .to("[data-hero-scrim]", { opacity: 0.45, ease: "none", duration: 0.34 }, 0.78)
+        // Weißes Hero-Label blendet aus → Übergabe ans Docked-Label unter MENU.
+        .to("[data-hero-label]", { autoAlpha: 0, ease: "none", duration: 0.1 }, 1.02);
 
       // 3) Body-Statement darunter: Wort-für-Wort-Enthüllung wie die Home-AboutIntro
       //    (opacity 0→1 + leichtes Anheben, stagger amount 1 in Leserichtung, scrub).
@@ -103,6 +115,19 @@ export function AlgarvePageHero({
               Rainbow-Cardfarben). Video/Typo liegen darüber; Aura verschwindet, sobald
               das Video auf Full-Screen wächst. */}
           <div data-hero-aura className="hero-aura pointer-events-none absolute inset-0" style={{ zIndex: 0 }} aria-hidden />
+
+          {/* Farbcontainer: skalieren nacheinander aus dem Video-Container auf
+              Full-Screen (harte Kanten). Reihenfolge = DOM-Reihenfolge, Magenta
+              zuletzt (oben). Startlage wird per GSAP auf den Video-Rect gesetzt. */}
+          {["#c77dff", "#ffd60a", "#4361ee", "#ff4370"].map((c) => (
+            <div
+              key={c}
+              data-hero-card
+              aria-hidden
+              className="absolute"
+              style={{ left: "30vw", top: "56vh", width: "40vw", height: "30vh", background: c, zIndex: 1, borderRadius: 0 }}
+            />
+          ))}
 
           {/* Headline (liegt über dem Video, invertiert beim Aufwachsen) */}
           <div
@@ -132,7 +157,7 @@ export function AlgarvePageHero({
           <div
             data-hero-media
             className="absolute overflow-hidden"
-            style={{ zIndex: 2, left: "30vw", top: "56vh", width: "40vw", height: "30vh", borderRadius: "1.67vw" }}
+            style={{ zIndex: 2, left: "30vw", top: "56vh", width: "40vw", height: "30vh", borderRadius: 0 }}
           >
             <video autoPlay muted loop playsInline poster={image} className="absolute inset-0 h-full w-full object-cover">
               <source src={video} type="video/mp4" />

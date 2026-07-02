@@ -44,17 +44,10 @@ export default function AboutPage() {
       <section style={{ background: "#f8f7f3", paddingTop: "6.5vw", paddingBottom: "6.5vw" }}>
         <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
           <Reveal>
-            <div className="max-w-[52vw] max-[767px]:!max-w-full">
-              <Kicker>Proof</Kicker>
-              <h2
-                className="m-0 uppercase max-[767px]:!text-[8vw]"
-                style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.12vw", color: "#0e0d0b" }}
-              >
-                {ABOUT.proof.headline}
-              </h2>
+            <div className="max-w-[62vw] max-[767px]:!max-w-full">
               <p
-                className="max-[767px]:!text-[4vw] md:max-w-[40vw]"
-                style={{ marginTop: "1.11vw", fontSize: "1.3vw", lineHeight: "145%", color: "rgba(0,0,0,0.64)" }}
+                className="max-[767px]:!text-[5vw] md:max-w-[52vw]"
+                style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: "#0e0d0b", letterSpacing: "-0.03vw" }}
               >
                 {ABOUT.proof.text}
               </p>

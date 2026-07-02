@@ -5,6 +5,13 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Subpage-Hero-Choreografie + Proof (02.07., 4. Runde)
+- **Subpage-Hero (PageHero):** neue Reveal-Choreografie nach Mockup — aus dem kleinen
+  Video-Container skalieren nacheinander (schnell, versetzt) Farbcontainer auf
+  Full-Screen (Orchid → Gelb → Blau → Magenta zuletzt), danach zieht das Video
+  selbst auf Full-Screen. Harte Kanten (borderRadius 0), keine weichen Übergänge.
+- **About „Proof":** Eyebrow + Headline entfernt — nur noch die Copy (als Statement).
+
 ### Company-/About-/News-Feinschliff (02.07., 3. Runde)
 - **Company-Hero-Video:** eigener Clip (`companies-hero.mp4`) im Companies-Hero.
 - **Subpage-Hero-Aura:** emotionale, radial atmende Farb-Animation im Hintergrund
