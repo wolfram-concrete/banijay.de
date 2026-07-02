@@ -42,7 +42,7 @@ export function AlgarveFounders() {
       // Reihen faden beim Scrollen von unten rein (Tile für Tile beim Eintreten).
       gsap.set(tiles, { opacity: 0, y: "4vw" });
       ScrollTrigger.batch("[data-team-tile]", {
-        start: "top 90%",
+        start: "top 82%",
         onEnter: (batch) =>
           gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09, ease: "power3.out" }),
       });

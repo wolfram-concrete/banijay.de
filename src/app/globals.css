@@ -110,7 +110,9 @@ html.lenis body { height: auto; }
   .reveal {
     animation: reveal-in 1s var(--ease-out-expo) both;
     animation-timeline: view();
-    animation-range: entry 0% entry 35%;
+    /* Erst starten, wenn die Sektion wirklich im Bild angekommen ist (nicht
+       schon beim ersten Reinlugen von unten). */
+    animation-range: entry 22% entry 62%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
