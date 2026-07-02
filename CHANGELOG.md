@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Career: RoleStack-Copy + Social-Feed als Horizontal-Slider (02.07., 15. Runde)
+- **RoleStack-Intro:** Headline + Copy zu EINEM linksbündigen Copy-Text
+  zusammengefügt (über den Flip-Card-Modulen).
+- **#workatBanijay:** vom statischen Grid zu einem **gepinnten Horizontal-Slider**
+  umgebaut — beim Scrollen in die Section pinnt sie, der weitere Scroll schiebt die
+  Cards horizontal durch (scrub), danach geht's normal weiter. Daten weiterhin
+  server-seitig aus Juicer (1 h ISR); Mobile = nativer Swipe (scroll-snap).
+
 ### #workatBanijay Social-Feed (02.07., 14. Runde)
 - **Career:** neue Social-Feed-Section „#workatBanijay" — zieht die Posts
   **server-seitig** aus dem **Juicer-JSON** (`www.juicer.io/api/feeds/banijaygermany`,

@@ -89,19 +89,13 @@ export function AlgarveCareerRoleStack() {
       style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        {/* Intro */}
-        <div className="max-w-[63vw] max-[767px]:!max-w-full" style={{ marginBottom: "3.33vw" }}>
-          <h2
-            className="m-0 max-[767px]:!text-[8vw]"
-            style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "110%", fontWeight: 500, letterSpacing: "-0.139vw", color: "#0e0d0b" }}
-          >
-            {CAREER.roleIntro.headline}
-          </h2>
+        {/* Intro — Headline + Copy zu EINEM linksbündigen Copy-Text zusammengefügt */}
+        <div className="max-w-[64vw] max-[767px]:!max-w-full" style={{ marginBottom: "3.33vw" }}>
           <p
-            className="max-[767px]:!text-[4vw]"
-            style={{ marginTop: "1.11vw", fontSize: "1.39vw", lineHeight: "140%", color: "rgba(0,0,0,0.64)", maxWidth: "44vw" }}
+            className="m-0 max-[767px]:!text-[5.5vw]"
+            style={{ fontFamily: SHARP, fontSize: "2.1vw", lineHeight: "134%", fontWeight: 500, letterSpacing: "-0.05vw", color: "#0e0d0b" }}
           >
-            {CAREER.roleIntro.text}
+            {CAREER.roleIntro.headline} {CAREER.roleIntro.text}
           </p>
         </div>
 
