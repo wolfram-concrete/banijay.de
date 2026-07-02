@@ -291,7 +291,7 @@ export function SiteHeader() {
               aria-label={open ? "Menü schließen" : "Menü öffnen"}
               // Mobile: 25 % kleiner (3.5rem → 2.625rem) — auf schmalen Screens
               // war die Wortmarke zu groß.
-              className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[2.625rem]"
+              className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[12vw]"
               style={{
                 // Kein Pill mehr — reine Wortmarke rechtsbündig, in Magenta wie das Logo.
                 // Über Magenta-Flächen bzw. im offenen Overlay invertiert sie auf Ink.
@@ -356,7 +356,7 @@ export function SiteHeader() {
                 const labelText = item.label === "Banijay" ? "Home" : item.label;
                 const inner = (
                   <span
-                    className="block uppercase max-[767px]:!text-[8.5vw]"
+                    className="block uppercase max-[767px]:!text-[12vw]"
                     style={{
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontWeight: 500,
@@ -447,17 +447,18 @@ export function SiteHeader() {
                   </a>
                 </div>
               </div>
-              <div className="flex flex-col gap-3 max-[767px]:!gap-1.5">
+              {/* Büro + Kontakt nur Desktop — auf Mobile steht alles im Footer. */}
+              <div className="flex flex-col gap-3 max-[767px]:!hidden">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Büro</div>
-                <div className="text-xl leading-relaxed max-[767px]:!text-base">
+                <div className="text-xl leading-relaxed">
                   {CONTACT.street}
                   <br />
                   {CONTACT.city}
                 </div>
               </div>
-              <div className="flex flex-col gap-3 max-[767px]:!gap-1.5">
+              <div className="flex flex-col gap-3 max-[767px]:!hidden">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Kontakt</div>
-                <a href={`mailto:${CONTACT.email}`} className="text-xl hover:underline max-[767px]:!text-base">
+                <a href={`mailto:${CONTACT.email}`} className="text-xl hover:underline">
                   {CONTACT.email}
                 </a>
               </div>
@@ -465,9 +466,10 @@ export function SiteHeader() {
           </div>
         </div>
 
-        {/* Impressum / Datenschutz — subtil unten rechts */}
+        {/* Impressum / Datenschutz — subtil unten rechts; auf Mobile ausgeblendet
+            (steht im Footer). */}
         <div
-          className="absolute bottom-[3vh] right-[2vw] flex gap-6 transition-opacity duration-500 max-[767px]:bottom-6 max-[767px]:right-[3vw]"
+          className="absolute bottom-[3vh] right-[2vw] flex gap-6 transition-opacity duration-500 max-[767px]:!hidden"
           style={{ opacity: infoVisible ? 1 : 0, color: INK }}
         >
           {LEGAL_ITEMS.map((l) => (

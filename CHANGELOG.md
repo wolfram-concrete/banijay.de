@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Menü-Overlay mobil: Nav = MENU-Größe, Kontakt raus (02.07., 32. Runde)
+- **Mobile-Menü-Typo maximiert:** Nav-Punkte und der MENU/CLOSE-Button jetzt gleich
+  groß (12vw ≈ 45px). Verifiziert: „COMPANIES" bleibt einzeilig (255px), Nav-Font ==
+  MENU-Font.
+- **Kontakt-Redundanz raus (Mobile):** Büro, Kontakt (E-Mail) sowie Impressum/
+  Datenschutz im Overlay auf Mobile ausgeblendet (steht alles im Footer) — bleibt nur
+  Nav + Spotify + Folgen. Content passt jetzt exakt in einen Screen (812/812).
+  Desktop unverändert.
+
 ### Neue Company-Poster (lokal) + WE/ARE mobil größer (02.07., 31. Runde)
 - **Home-Company-Bildcontainer** neu bestückt: hochauflösende Poster aus der
   Recherche (banijay-company-media-recherche.md) **lokal kopiert, optimiert**
