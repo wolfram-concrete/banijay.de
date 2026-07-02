@@ -92,6 +92,10 @@ export default function AboutPage() {
         name={ABOUT.ceo.name}
         image="/people/marcus-wolter-2022.jpg"
         cta={{ text: "Kontakt aufnehmen", href: "mailto:hello@banijay.de" }}
+        stats={[
+          { value: "25+", label: "Companies & Labels" },
+          { value: "1.300", label: "Mitarbeitende" },
+        ]}
       />
 
       {/* 05 Internationalität — reines Text-Statement (Panel ohne Hintergrundbild),

@@ -5,6 +5,20 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Logo/Footer/Career-Umbauten + CEO-Template + LogoReveal-b (02.07., 12. Runde)
+- **Logo** links oben global um 25% größer (2.1rem → 2.625rem).
+- **Footer-B** wieder oben rechts (absolut) statt unten.
+- **Career:** Rollen-Headline in gemischter Schreibweise; Standort-Modul als
+  gerundete Magenta-Card auf Off-White; „Wie wir zusammenarbeiten"-Band entfernt;
+  BANIJAY TOMORROW neu als value-features-4-Callout (dunkler Block + Bild rechts)
+  auf Magenta-Grund mit unten gerundeten Kanten → Off-White-Kontaktsektion.
+- **Team-Grid:** volle Gridbreite (Karten größer).
+- **CEO-Modul:** neu nach testimonials-5 — dunkles Panel (Label · Divider · Zitat
+  · Autor · Divider · 2 Kennzahlen · Divider · CTA), Portrait rechts.
+- **LogoReveal (Home):** b-Masken-Blende wieder da — das Video schiebt hoch, dann
+  wächst aus der Mitte das magenta „b" auf Full-Size → kompletter Magenta-Grund →
+  Übergang in die News.
+
 ### Team-Section spiral-team, About-Video-Statement, CEO-Feinschliff (02.07., 11. Runde)
 - **Home Team-Section:** neu als Algarve `section_spiral-team` — „TEAM" als große
   Headline ÜBER den Cards; die Cards starten als verdichtetes, rotiertes,
