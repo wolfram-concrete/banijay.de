@@ -7,10 +7,12 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Bild-zu-Logo-Section: Full-Size-Bild in einem radialen (abgerundeten) Kasten.
-// Beim Scrollen wächst aus der Bildmitte ein kleines magenta „b" immer weiter,
-// bis es als komplette Magenta-Fläche alles einfärbt → Übergang in die News.
-// Das „b" wächst per transform:scale (GPU-günstig, kein Neu-Rastern der Maske).
+// Team-→-Video-→-News-Übergang: KEIN Magenta zwischen Team und Video. Der
+// full-bleed Video-Container sitzt unter der Team-Section, schiebt sich beim
+// Scrollen nach oben, überlagert die komplette Team-Section und fadet auf, bis er
+// fullscreen ist (wie der Videocontainer in den Subpage-Heros). Danach wächst aus
+// der Mitte das kleine „b" immer größer, bis es als komplette Magenta-Fläche alles
+// einfärbt → Übergang in die News. Das „b" wächst scharf über mask-size (SVG).
 
 const ACCENT = "#ff4370";
 const SIGN = "url(/brand/banijay-sign.svg)";
@@ -33,17 +35,15 @@ export function AlgarveLogoReveal() {
           invalidateOnRefresh: true,
         },
       });
-      // A) Das Fullscreen-Video schiebt sich von unten hoch und skaliert auf, legt
-      //    sich dabei über die (nach oben wegscrollende) Team-Section.
+      // A) Video schiebt sich von unten hoch, fadet auf und überlagert die
+      //    Team-Section — bis full-bleed (kein Magenta dazwischen).
       tl.fromTo(
         media.current,
-        { yPercent: 62, scale: 0.9, borderRadius: "3vw" },
-        { yPercent: 0, scale: 1, borderRadius: "1.67vw", ease: "power2.out", duration: 0.6 },
+        { yPercent: 100, scale: 0.94, opacity: 0.4 },
+        { yPercent: 0, scale: 1, opacity: 1, ease: "power2.out", duration: 0.6 },
         0,
       );
-      // B) ERST wenn das Video-Hochschieben komplett abgeschlossen ist (+ ein
-      //    Halte-Beat, in dem das Fullscreen-Video ruhig steht), wächst das „b" aus
-      //    der Mitte — SCHARF über mask-size (SVG re-rastert, kein Verpixeln).
+      // B) Danach wächst das „b" aus der Mitte scharf über mask-size auf.
       const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.2;
       const bEnd = Math.max(window.innerWidth, window.innerHeight) * 6;
       growB.current?.style.setProperty("--bs", `${bStart}px`);
@@ -58,8 +58,7 @@ export function AlgarveLogoReveal() {
         },
         0.95,
       )
-        // … die Magenta-Kreis-Blende schließt die b-Binnenlücke (den Steg) synchron
-        //    zum Wachsen — kein stehender Video-Streifen zwischen den Körpern.
+        // Magenta-Kreis-Blende schließt die b-Binnenlücke synchron zum Wachsen.
         .fromTo(
           solid.current,
           { "--r": "0%" },
@@ -71,53 +70,46 @@ export function AlgarveLogoReveal() {
   );
 
   return (
-    <section ref={root} className="relative" style={{ height: "300vh", background: ACCENT, marginTop: "-18vh", zIndex: 2 }}>
+    // Transparent (kein Magenta) + negativer Margin + zIndex: das aufsteigende
+    // Video legt sich sichtbar über die dahinter durchscheinende Team-Section.
+    <section ref={root} className="relative" style={{ height: "300vh", marginTop: "-18vh", zIndex: 2 }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
-        <div className="h-full w-full" style={{ padding: "2vw" }}>
-          {/* Radialer (abgerundeter) Kasten mit dem Fullscreen-Video */}
-          <div ref={media} className="relative h-full w-full overflow-clip" style={{ borderRadius: "1.67vw", transformOrigin: "50% 100%", willChange: "transform" }}>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/brand/team-poster.jpg"
-              className="absolute inset-0 h-full w-full object-cover"
-            >
-              <source src="/video/team-fullscreen.mp4" type="video/mp4" />
-            </video>
+        {/* Full-bleed Video-Container (kein Rahmen, kein Magenta-Padding) */}
+        <div ref={media} className="absolute inset-0 overflow-clip" style={{ transformOrigin: "50% 100%", willChange: "transform, opacity" }}>
+          <video autoPlay muted loop playsInline poster="/brand/team-poster.jpg" className="absolute inset-0 h-full w-full object-cover">
+            <source src="/video/team-fullscreen.mp4" type="video/mp4" />
+          </video>
 
-            {/* magenta „b" — wächst SCHARF über mask-size (2 Körper bleiben knackig) */}
-            <div
-              ref={growB}
-              className="absolute inset-0"
-              style={{
-                background: ACCENT,
-                willChange: "mask-size",
-                ["--bs" as string]: "180px",
-                WebkitMaskImage: SIGN,
-                maskImage: SIGN,
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                maskPosition: "center",
-                WebkitMaskSize: "var(--bs) auto",
-                maskSize: "var(--bs) auto",
-              }}
-            />
+          {/* magenta „b" — wächst SCHARF über mask-size */}
+          <div
+            ref={growB}
+            className="absolute inset-0"
+            style={{
+              background: ACCENT,
+              willChange: "mask-size",
+              ["--bs" as string]: "180px",
+              WebkitMaskImage: SIGN,
+              maskImage: SIGN,
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+              WebkitMaskSize: "var(--bs) auto",
+              maskSize: "var(--bs) auto",
+            }}
+          />
 
-            {/* Magenta-Kreis-Blende (schließt ab der Mitte die b-Binnenlücke) */}
-            <div
-              ref={solid}
-              className="absolute inset-0"
-              style={{
-                background: ACCENT,
-                ["--r" as string]: "0%",
-                clipPath: "circle(var(--r) at 50% 50%)",
-                WebkitClipPath: "circle(var(--r) at 50% 50%)",
-              }}
-            />
-          </div>
+          {/* Magenta-Kreis-Blende (schließt ab der Mitte die b-Binnenlücke) */}
+          <div
+            ref={solid}
+            className="absolute inset-0"
+            style={{
+              background: ACCENT,
+              ["--r" as string]: "0%",
+              clipPath: "circle(var(--r) at 50% 50%)",
+              WebkitClipPath: "circle(var(--r) at 50% 50%)",
+            }}
+          />
         </div>
       </div>
     </section>

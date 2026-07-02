@@ -274,11 +274,13 @@ export function SiteHeader() {
               style={{
                 // Kein Pill mehr — reine Wortmarke rechtsbündig, in Magenta wie das Logo.
                 // Über Magenta-Flächen bzw. im offenen Overlay invertiert sie auf Ink.
+                // Maximiert: Versalhöhe ≈ Logo-Höhe (sitzt an Ober-, schließt an
+                // Unterlänge des Banijay-Logos). Logo = 2.625rem → fontSize ~3.5rem.
                 fontFamily: "var(--font-sharp), sans-serif",
                 fontWeight: 700,
-                fontSize: "1.2rem",
-                lineHeight: 1,
-                letterSpacing: "0.02em",
+                fontSize: "3.5rem",
+                lineHeight: 0.75,
+                letterSpacing: "-0.01em",
                 color: open || onMagenta ? INK : MAGENTA,
                 boxShadow: "none",
                 padding: 0,

@@ -72,47 +72,17 @@ export function SiteFooter() {
             overflow: "hidden",
           }}
         >
-          {/* Banijay-Bildmarke oben rechts. Auf invertierten (magenta) Cards auf
-              Ink umfärben (brightness 0). */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/brand/banijay-sign.svg"
-            alt="Banijay"
-            className="absolute"
-            style={{ top: "4.44vw", right: "4.44vw", height: "2.4rem", width: "auto", filter: inverted ? "brightness(0)" : undefined }}
-          />
-
-          {/* Nav-Links + Kontakt/Folgen */}
+          {/* Kontakt/Folgen (links) · Nav-Links (rechts, rechtsbündig wie Hauptnav) */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
-            <div className="grid gap-14 md:grid-cols-[1.2fr_1fr] lg:gap-24">
-              <nav className="flex flex-col" style={{ gap: "0.4vw" }}>
-                {NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="uppercase transition-opacity hover:opacity-60"
-                    style={{
-                      fontFamily: "var(--font-sharp), sans-serif",
-                      fontSize: "clamp(1.75rem, 2.6vw, 3.2rem)",
-                      fontWeight: 500,
-                      letterSpacing: "-0.02em",
-                      lineHeight: "118%",
-                      color: FG,
-                    }}
-                  >
-                    {item.label === "Banijay" ? "Home" : item.label}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="flex flex-col gap-10 md:pl-[6vw]">
+            <div className="grid gap-14 md:grid-cols-2 lg:gap-24">
+              {/* Links: Folgen + Kontakt */}
+              <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-3">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
                     Folgen
                   </span>
                   {/* Social-Buttons: Farbe/Border über die CSS-Vars (--fg/--bg), damit
-                      der Hover Text + Icon zuverlässig invertiert (kein Inline-Color,
-                      das den Hover überschreibt). */}
+                      der Hover Text + Icon zuverlässig invertiert. */}
                   <div className="flex flex-wrap gap-3">
                     <a
                       href={SOCIAL.instagram.url}
@@ -159,6 +129,27 @@ export function SiteFooter() {
                   </a>
                 </div>
               </div>
+
+              {/* Rechts: Nav-Links rechtsbündig (wie in der Hauptnavigation) */}
+              <nav className="flex flex-col items-start text-left md:items-end md:text-right" style={{ gap: "0.4vw" }}>
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="uppercase transition-opacity hover:opacity-60"
+                    style={{
+                      fontFamily: "var(--font-sharp), sans-serif",
+                      fontSize: "clamp(1.75rem, 2.6vw, 3.2rem)",
+                      fontWeight: 500,
+                      letterSpacing: "-0.02em",
+                      lineHeight: "118%",
+                      color: FG,
+                    }}
+                  >
+                    {item.label === "Banijay" ? "Home" : item.label}
+                  </Link>
+                ))}
+              </nav>
             </div>
           </div>
 

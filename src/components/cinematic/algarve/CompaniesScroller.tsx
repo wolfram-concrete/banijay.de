@@ -205,20 +205,9 @@ export function AlgarveCompaniesScroller() {
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Kante auffalten: Während die Magenta-Fläche über die Typo hochsteigt,
-      // laufen die radialen Ober-Ecken (links + rechts, rechts als Logo-Körper)
-      // von stark gerundet auf 0 → aus der „b"-Andeutung wird die volle Fläche.
-      gsap.fromTo(
-        root.current,
-        { borderTopLeftRadius: "10vw", borderTopRightRadius: "26vw" },
-        {
-          borderTopLeftRadius: "0vw",
-          borderTopRightRadius: "0vw",
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top bottom", end: "top 10%", scrub: true },
-        },
-      );
-
+      // Die b-Form-Blende + das Auffalten übernimmt jetzt die AboutIntro davor
+      // (magentaExit). Diese Section übergibt nur nahtlos die volle Magenta-Fläche
+      // samt Content — daher hier keine eigene Radius-Auffaltung mehr.
       const els = gsap.utils.toArray<HTMLElement>("[data-work]");
       if (els.length < 3) return;
 
@@ -299,10 +288,10 @@ export function AlgarveCompaniesScroller() {
         style={{
           background: "#ff4370",
           height: `${TOTAL_VH}vh`,
-          marginTop: "-16vh",
+          // Starker Overlap: die Section (Magenta + Content) kommt genau dann hoch,
+          // wenn die AboutIntro-Blende voll magenta ist → kein Leer-Magenta dazwischen.
+          marginTop: "-100vh",
           zIndex: 2,
-          borderTopLeftRadius: "10vw",
-          borderTopRightRadius: "26vw",
         }}
       >
         <div className="sticky top-0 flex w-screen items-end" style={{ height: "100vh" }}>
