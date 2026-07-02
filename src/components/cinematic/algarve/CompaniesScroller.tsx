@@ -221,12 +221,19 @@ export function AlgarveCompaniesScroller() {
         },
       });
 
-      // Wörter fahren groß rein → klein.
-      tl.fromTo(wordL.current, { x: "26vw", scale: 2.4 }, { x: "0vw", scale: 1, ease: "none", duration: 2.2 }, 1.33)
-        .fromTo(wordR.current, { x: "-26vw", scale: 2.4 }, { x: "0vw", scale: 1, ease: "none", duration: 2.2 }, 1.33);
+      // Intro-Choreografie in drei Beats:
+      // 1) Die Wörter stehen zunächst als normale Zeilen NEBENEINANDER in der Mitte
+      //    (via Translate zusammengerückt) und faden ruhig ein.
+      gsap.set(wordL.current, { x: "24vw", scale: 1, opacity: 0 });
+      gsap.set(wordR.current, { x: "-24vw", scale: 1, opacity: 0 });
+      tl.to([wordL.current, wordR.current], { opacity: 1, ease: "power1.out", duration: 1.0 }, 0.5);
 
-      // Aufbau: die ersten drei Cards skalieren nacheinander weich aus der Mitte auf.
-      tl.to(els.slice(0, 3), { scale: 1, duration: 1.4, stagger: 1.3, ease: "power2.out" }, 1.52);
+      // 2) Dann ziehen sie auseinander → öffnen die Mitte (das „Loch").
+      tl.to(wordL.current, { x: "0vw", ease: "power2.inOut", duration: 1.8 }, 2.0)
+        .to(wordR.current, { x: "0vw", ease: "power2.inOut", duration: 1.8 }, 2.0);
+
+      // 3) ERST danach steigen die ersten drei Cards aus dem mittleren Loch auf.
+      tl.to(els.slice(0, 3), { scale: 1, duration: 0.7, stagger: 0.3, ease: "power2.out" }, 3.9);
 
       // Fächern: Card 1 links, Card 3 rechts, Card 2 mittig — weiches Ease.
       tl.to(els[0], { xPercent: -100, scale: 0.8, rotation: -4, duration: 1.1, ease: "power2.inOut" }, 5.32)
