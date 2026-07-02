@@ -54,14 +54,14 @@ export function AlgarveAnimatedHeading({ lines }: { lines: [string, string, stri
         className="flex items-center justify-center overflow-clip"
         style={{ width: "100vw", height: "100vh" }}
       >
-        <div className="flex flex-col">
-          <h2 ref={first} className="text-black overflow-hidden" style={LINE}>
+        <div className="flex flex-col max-[767px]:!px-[4vw]">
+          <h2 ref={first} className="text-black overflow-hidden max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
             {lines[0]}
           </h2>
-          <h2 ref={middle} className="text-black overflow-hidden" style={LINE}>
+          <h2 ref={middle} className="text-black overflow-hidden max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
             {lines[1]}
           </h2>
-          <h2 ref={last} className="text-black overflow-hidden" style={LINE}>
+          <h2 ref={last} className="text-black overflow-hidden max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
             {lines[2]}
           </h2>
         </div>

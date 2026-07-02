@@ -249,23 +249,28 @@ export function AlgarveHome() {
       //   • Video (data-showreel): erst width → 100% (pos 1.11, dur 1.32), dann
       //     height → 100% (pos 2.0, dur .93) → das KONTURIERTE Panel zieht auf
       //     Vollbild auf (Breite zuerst, dann Höhe). Kein Scale → Rahmen bleibt.
-      const gridTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: gridSection.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-        },
-      });
+      // Das gepinnte 5×3-Scaling-Grid nur auf Desktop — auf Mobile wäre es unbrauchbar
+      // (5 Spalten → winzige, sehr hohe Kacheln). Mobile bekommt ein eigenes 2-Spalten-
+      // Grid (statisches Markup, keine Animation).
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        const gridTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: gridSection.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        });
 
-      gridTl
-        .to(
-          "[data-tile]",
-          { rotationY: -180, opacity: 0, ease: "power1.inOut", duration: 2.82, stagger: { each: 0.1 } },
-          0.3,
-        )
-        .to("[data-showreel]", { width: "100%", ease: "none", duration: 1.32 }, 1.11)
-        .to("[data-showreel]", { height: "100%", ease: "none", duration: 0.93 }, 2.0);
+        gridTl
+          .to(
+            "[data-tile]",
+            { rotationY: -180, opacity: 0, ease: "power1.inOut", duration: 2.82, stagger: { each: 0.1 } },
+            0.3,
+          )
+          .to("[data-showreel]", { width: "100%", ease: "none", duration: 1.32 }, 1.11)
+          .to("[data-showreel]", { height: "100%", ease: "none", duration: 0.93 }, 2.0);
+      }
     },
     { scope: root },
   );
@@ -351,7 +356,9 @@ export function AlgarveHome() {
                 ).map(({ h, key }, i) => (
                   // Letzte Zeile (volles Wort) NICHT clippen → „Y"-Tinte, die durch
                   // das negative Letter-Spacing über die Box ragt, bleibt sichtbar.
-                  <div key={key} data-slice={key} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
+                  // Mobile: die 3 partiellen Clip-Zeilen ausblenden (sie geisterten
+                  // über dem vollen Wort) → nur EIN sauberes BANIJAY.
+                  <div key={key} data-slice={key} className={i < 3 ? "max-[767px]:!hidden" : ""} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
                     <h1 data-strip className="m-0 p-0 uppercase text-white" style={BIG}>
                       Banijay
                     </h1>
@@ -387,8 +394,8 @@ export function AlgarveHome() {
       {/* ── Sticky-Grid-Sektion (400vh) ───────────────────────────────── */}
       {/* WICHTIG: overflow NICHT auf die Section (das bräche das Sticky-Pinning) —
           das Clipping des Zooms läuft über den Sticky-Container. */}
-      <section ref={gridSection} className="relative" style={{ background: PAPER, height: "400vh" }}>
-        <div className="sticky top-0 w-screen overflow-clip" style={{ height: "100vh" }}>
+      <section ref={gridSection} className="relative max-[767px]:!h-auto" style={{ background: PAPER, height: "400vh" }}>
+        <div className="sticky top-0 w-screen overflow-clip max-[767px]:hidden" style={{ height: "100vh" }}>
           <div className="h-full w-full" style={{ padding: "2vw" }}>
             <div
               className="relative h-full w-full"
@@ -468,6 +475,40 @@ export function AlgarveHome() {
                 </video>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ── Mobile: statisches 2-Spalten-Portfolio (Showreel groß + Format-Kacheln
+            im 3:4-Container). Ersetzt das für Mobile unbrauchbare 5×3-Scaling-Grid. */}
+        <div className="hidden max-[767px]:block" style={{ padding: "12vw 3vw" }}>
+          <div className="relative overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "16 / 10", marginBottom: "3vw" }}>
+            <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
+              <source src="/video/hero.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div className="grid grid-cols-2 gap-[3vw]">
+            {CELLS.filter((c): c is NonNullable<typeof c> => c !== null).map((cell, i) => (
+              <div key={i} className="relative overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "3 / 4", background: "#e8e6df" }}>
+                {cell.video ? (
+                  <video autoPlay muted loop playsInline poster={cell.src} className="absolute inset-0 h-full w-full object-cover">
+                    <source src={cell.video} type="video/mp4" />
+                  </video>
+                ) : (
+                  <img src={cell.src} alt={cell.fmt.title} className="absolute inset-0 h-full w-full object-cover" />
+                )}
+                <div
+                  className="absolute inset-x-0 bottom-0 flex flex-col"
+                  style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.85), rgba(0,0,0,0) 78%)", padding: "5vw 4vw 4vw" }}
+                >
+                  <span className="uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", color: "#fff", fontWeight: 600, fontSize: "3.6vw", lineHeight: "112%" }}>
+                    {cell.fmt.title}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "2.6vw", marginTop: "1vw", lineHeight: "118%" }}>
+                    {cell.fmt.company}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

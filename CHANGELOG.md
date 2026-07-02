@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home mobil: Hero, Portfolio-Grid, Statement-Heading (02.07., 36. Runde)
+- **Hero-Typo mobil:** Die 3 partiellen BANIJAY-Clip-Zeilen „geisterten" auf Mobile
+  über dem vollen Wort → auf Mobile ausgeblendet, es bleibt EIN sauberes „BANIJAY"
+  (WE links / ARE rechts / BANIJAY groß). Desktop unverändert (4 Slices).
+- **Portfolio-Grid mobil:** Das 5×3-Scaling-Grid war auf Mobile unbrauchbar (Kacheln
+  69×263px, viel zu schmal/hoch). Grid-Animation nur noch ≥768px; Mobile bekommt ein
+  **statisches 2-Spalten-Portfolio** (Showreel-Video groß oben + 12 Format-Kacheln im
+  3:4-Container mit Titel/Company). Section-Höhe 400vh → auto (~215vh).
+- **Statement-Heading (AnimatedHeading) mobil:** 7vw (≈26px) → 13vw (≈49px) — deutlich
+  plakativer, füllt den Screen (lange Zeilen brechen um). Gilt für beide Instanzen
+  auf der Home.
+
 ### Companies-Slider mobil = Desktop-Idee + MENU-Gewicht (02.07., 35. Runde)
 - **Companies mobil komplett neu — gepinnter Coverflow-Slider:** Die Section rastet
   ein (pin), der vertikale Scroll wird zum **horizontalen Slide** (scrub + card-snap);
