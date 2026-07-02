@@ -1,9 +1,9 @@
 # banijay.de — Website Relaunch
 
 Cinematischer Website-Relaunch für **Banijay Germany**. Die Umsetzung adaptiert die
-Sektions-Choreografie des Algarve-Webflow-Templates (Preloader, kinetischer Hero,
-gepinnte Scroll-Bühnen, Logo-Reveal) und füllt sie mit den echten Inhalten der
-Banijay-Welt — Companies, Formate, Kompetenzfelder, Team und News.
+Sektions-Choreografie des Algarve-Webflow-Templates (kinetischer Hero, gepinnte
+Scroll-Bühnen, Logo-Reveal, clip-path-/Peel-Übergänge) und füllt sie mit den echten
+Inhalten der Banijay-Welt — Companies, Formate, Kompetenzfelder, Team und News.
 
 ## Stack
 
@@ -28,9 +28,13 @@ npm run lint    # ESLint
 src/
   app/(frontend)/        Seiten: Home, Companies, About, Career, Contact, News
   components/
-    cinematic/           Preloader, AlgarveHome (Hero) & Home-Sektionen
-    cinematic/algarve/   Nachgebaute Algarve-Module (Scroller, Testimonials,
-                         Founders/Team, LogoReveal, NewsStack, WorksB, PageHero …)
+    cinematic/           AlgarveHome (Hero) & Home-Sektionen (Preloader auf der
+                         Home entfernt — Hero startet direkt)
+    cinematic/algarve/   Nachgebaute Algarve-Module: CompaniesScroller, CompanyCards,
+                         CeoTestimonial, Founders/Team, LogoReveal, NewsStack,
+                         WorksCards, PageHero, AboutIntro, ProofVideo (About:
+                         Zahlen→Video-Aufskalierung), CareerRoleStack,
+                         CareerTomorrowStack (Standorte→Tomorrow-Peel), CareerSocial…
     layout/              SiteHeader, SiteFooter
   data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
 public/
@@ -42,10 +46,13 @@ public/
 
 | Token        | Wert       | Verwendung                          |
 |--------------|------------|-------------------------------------|
-| Paper        | `#f8f7f3`  | heller Grund                        |
+| Paper        | `#f8f7f3`  | heller Grund (= Body-Grund)         |
 | Ink          | `#0e0d0b`  | Schrift/dunkler Grund               |
-| Coral        | `#fb4b68`  | Akzent (CTA, MENU)                  |
-| Magenta      | `#ff4370`  | Flow-/Reveal-Flächen (= `banijay-sign.svg`) |
+| Magenta      | `#ff4370`  | Einheitlicher Akzent: CTA, MENU, Flow-/Reveal-Flächen (= `banijay-sign.svg`) |
+
+Der frühere separate Coral-Ton (`#fb4b68`) wurde auf das einheitliche Magenta
+`#ff4370` zusammengeführt. Die Career-Peel-Kaskade nutzt zusätzlich Orange
+`#ff7a3d`, Gelb `#ffd23f` und Grün `#8fd94e` als Zwischen-Layer.
 
 ## Assets & Git
 
@@ -59,9 +66,9 @@ Videos müssen separat bereitgestellt werden (weboptimierte Kopien liegen in
 
 | Datei                     | Verwendung                                  |
 |---------------------------|---------------------------------------------|
-| `preloader-bg.mp4`        | Preloader-Hintergrund                       |
 | `hero-bg.mp4`             | Home-Hero (Glas-„b")                        |
 | `team-fullscreen.mp4`     | Team-→-News-Übergang (LogoReveal)           |
+| `b-glass.mp4`             | About – Statement-Video (ProofVideo)        |
 | `grid-loop1–3.mp4`        | 3 Loop-Cutouts in der Home-Grid-Section     |
 | `showreel.mp4`, `banijay-teaser.mp4` | Showreel / Teaser (im Repo)      |
 
