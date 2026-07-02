@@ -70,6 +70,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
   return (
     <section
       ref={root}
+      className="max-[767px]:!h-[150vh]"
       style={{
         background: "#f8f7f3",
         height: magentaExit ? "230vh" : "220vh",
@@ -85,7 +86,7 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
       >
         <div style={{ padding: "2vw" }}>
           <p
-            className="m-0 mx-auto text-center text-black max-[991px]:!max-w-[80vw]"
+            className="m-0 mx-auto text-center text-black max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
             style={{ ...H4, maxWidth: "55.28vw" }}
           >
             {words.map((w, i) => (

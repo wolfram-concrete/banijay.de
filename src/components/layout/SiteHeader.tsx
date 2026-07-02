@@ -356,7 +356,7 @@ export function SiteHeader() {
                 const labelText = item.label === "Banijay" ? "Home" : item.label;
                 const inner = (
                   <span
-                    className="block uppercase max-[767px]:!text-[12vw] max-[767px]:!font-bold"
+                    className="block uppercase max-[767px]:!text-[12vw]"
                     style={{
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontWeight: 500,

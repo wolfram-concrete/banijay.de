@@ -43,6 +43,31 @@ const COMPANY_MEDIA_POSTER = new Set<string>([
   "banijay-germany-live",
 ]);
 
+// Pro Poster einzeln im echten Hochkant-Card-Container geprüfter Fokuspunkt
+// (object-position), damit Gesichter/Körper/Show-Objekte nicht abgeschnitten
+// werden. NICHT pauschal „center center" — jeder Wert ist motivspezifisch:
+//   Banijay Productions „Hast du Töne" (4 Personen): mittiges Paar + Logo, Gesichter oben.
+//   EndemolShine „WWM" (Jauch steht rechts): Fokus rechts.
+//   Brainpool „TV total" (Pufpaff sitzt links): Fokus links.
+//   MadeFor „Tatort" (3 Personen + Monitor mittig): Gesichter oben.
+//   Cape Cross (Live-Techniker mittig-rechts, sehr breites Motiv): leicht rechts.
+//   influence.vision (Porträt): mittig, Kopf oben.
+//   Banijay Germany Live (Comedian mittig auf Bühne): mittig, Kopf oben.
+const COMPANY_MEDIA_POSITION: Record<string, string> = {
+  "banijay-productions-germany": "50% 34%",
+  "endemolshine-germany": "70% 50%",
+  brainpool: "24% 50%",
+  madefor: "50% 34%",
+  "cape-cross": "58% 50%",
+  "influence-vision": "50% 20%",
+  "banijay-germany-live": "50% 26%",
+};
+
+/** Motivspezifischer object-position-Fokuspunkt (nur für neue company-media-Poster). */
+export function getCompanyImagePosition(slug: string): string {
+  return COMPANY_MEDIA_POSITION[slug] ?? "center";
+}
+
 export function getCompanyImage(company: Pick<Company, "slug" | "name">): PayloadImage | undefined {
   if (COMPANY_MEDIA_POSTER.has(company.slug)) {
     return {

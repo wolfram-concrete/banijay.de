@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { COMPANIES } from "@/data/companies";
-import { getCompanyImage } from "@/data/companyImages";
+import { getCompanyImage, getCompanyImagePosition } from "@/data/companyImages";
 import { COMPANY_CARDS } from "@/data/companyCards";
 
 // Externe Company-URLs (aus den kuratierten companyCards) je Company-Slug.
@@ -40,6 +40,9 @@ const cards = COMPANIES.map((c) => ({
   name: c.name,
   subtext: c.knownFor?.[0] ?? c.profile,
   img: getCompanyImage(c)?.url ?? "/grid/g01.jpg",
+  // Motivspezifischer Fokuspunkt, damit im Hochkant-Crop keine Gesichter/Körper
+  // abgeschnitten werden (siehe getCompanyImagePosition).
+  objectPosition: getCompanyImagePosition(c.slug),
   href: c.externalLink ?? urlForSlug(c.slug),
 }));
 
@@ -338,7 +341,7 @@ export function AlgarveCompaniesScroller() {
                   }}
                 >
                   <div className="relative flex flex-1 flex-col items-center justify-end overflow-clip">
-                    <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ borderRadius: "0.3vw" }} />
+                    <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ borderRadius: "0.3vw", objectPosition: card.objectPosition }} />
                     <div
                       className="absolute flex w-full flex-col items-center justify-end text-center"
                       style={{
@@ -384,7 +387,7 @@ export function AlgarveCompaniesScroller() {
                 className="relative flex shrink-0 snap-start flex-col overflow-clip no-underline"
                 style={{ width: "74vw", height: "104vw", borderRadius: "4vw", background: "#fff", boxShadow: "0 2vw 6vw -2vw rgba(0,0,0,0.2)" }}
               >
-                <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: card.objectPosition }} />
                 <div className="absolute bottom-0 flex w-full flex-col items-center text-center" style={{ paddingTop: "24vw", paddingBottom: "6vw", gap: "1vw", backgroundImage: "linear-gradient(0deg, #000, #0000)", color: "#f8f7f3" }}>
                   <h3 className="m-0 uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "6vw", fontWeight: 500 }}>{card.name}</h3>
                 </div>

@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Company-Fokuspunkte, AboutIntro mobil, Nav-Gewicht (02.07., 34. Runde)
+- **Company-Card-Fokuspunkte:** Jedes der 7 neuen Poster im echten Hochkant-Card-
+  Container geprüft und einen **motivspezifischen `object-position`** gesetzt
+  (kein pauschales center) — Gesichter/Körper/Show-Objekte werden nicht mehr
+  abgeschnitten: Banijay Productions `50% 34%`, EndemolShine (Jauch rechts) `70% 50%`,
+  Brainpool (Pufpaff links) `24% 50%`, MadeFor `50% 34%`, Cape Cross `58% 50%`,
+  influence.vision `50% 20%`, Banijay Germany Live `50% 26%`. Gilt für Desktop-Slider
+  + Mobile-Slider.
+- **Home-Statement (AboutIntro) mobil:** Schrift von 2.5vw (≈9px) → 6.4vw (24px),
+  Section-Höhe 220vh → 150vh — nutzt den Screen jetzt statt winziger Text mit viel
+  Leerraum. Gilt auch für die About-„International"-Section (gleiches Modul).
+- **Nav-Gewicht mobil zurück auf 500** (700 war zu fett).
+
 ### Menü-Overlay mobil: Nav-Gewicht + Social über Spotify (02.07., 33. Runde)
 - **Nav-Punkte fett wie CLOSE:** Die Nav-Punkte wirkten trotz gleicher Größe dünner
   (weight 500) als der fette CLOSE-Button (700). Jetzt auf Mobile ebenfalls **bold
