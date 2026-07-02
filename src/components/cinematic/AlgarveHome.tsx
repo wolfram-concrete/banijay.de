@@ -316,7 +316,7 @@ export function AlgarveHome() {
                       {/* Front-Ebene — sichtbar in Ruhe, rollt beim Load hoch & weg */}
                       <h1
                         data-flip-front={id}
-                        className="m-0 p-0 uppercase text-white"
+                        className="m-0 p-0 uppercase text-white max-[767px]:!text-[14vw] max-[767px]:!leading-[12vw]"
                         style={{ ...TOP, backfaceVisibility: "hidden", transformOrigin: "50% 100%" }}
                       >
                         {word}
@@ -329,7 +329,7 @@ export function AlgarveHome() {
                       <h1
                         data-flip-back={id}
                         aria-hidden
-                        className="m-0 p-0 uppercase text-white absolute inset-0"
+                        className="m-0 p-0 uppercase text-white absolute inset-0 max-[767px]:!text-[14vw] max-[767px]:!leading-[12vw]"
                         style={{ ...TOP, backfaceVisibility: "hidden", transformOrigin: "50% 0" }}
                       >
                         {word}

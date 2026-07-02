@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Neue Company-Poster (lokal) + WE/ARE mobil größer (02.07., 31. Runde)
+- **Home-Company-Bildcontainer** neu bestückt: hochauflösende Poster aus der
+  Recherche (banijay-company-media-recherche.md) **lokal kopiert, optimiert**
+  (1400px lange Kante, JPG, 160–316 KB) und unter `public/company-media/<slug>/
+  poster.jpg` abgelegt — **kein Hotlinking**. `getCompanyImage` liefert für die 7
+  Companies (Banijay Productions, EndemolShine, Brainpool, MadeFor, Cape Cross,
+  influence.vision, Banijay Germany Live) jetzt die neuen Poster; übrige Companies
+  bleiben auf den bisherigen Bildern. Verifiziert: neue Pfade in den Cards aktiv,
+  Assets laden (200/JPEG).
+- **Home-Hero WE/ARE mobil** von 8.8vw → 14vw (≈33px → 52px) vergrößert, nutzt den
+  Platz links/rechts neben BANIJAY deutlich besser.
+
 ### Menü-Overlay mobil: rechtsbündig, kompakter, Spotify-Widget (02.07., 30. Runde)
 - **Mobile-Menü-Overlay** überarbeitet: Nav-Links jetzt **rechtsbündig** (Nav mobil
   full-width, damit `items-end` an den rechten Rand schiebt) und **kleinere Schrift**
