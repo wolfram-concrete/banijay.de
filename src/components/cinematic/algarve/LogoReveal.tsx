@@ -41,10 +41,9 @@ export function AlgarveLogoReveal() {
         { yPercent: 0, scale: 1, borderRadius: "1.67vw", ease: "power2.out", duration: 0.6 },
         0,
       );
-      // B) Danach wächst das „b" aus der Mitte — SCHARF über mask-size (die SVG
-      //    wird bei jeder Größe neu gerastert, kein Verpixeln wie bei transform:scale).
-      //    ease power2.in → bleibt erst als sauberes, kleines b stehen und zieht dann
-      //    zügig auf; so „springt" der Steg nicht zu früh ins Bild.
+      // B) ERST wenn das Video-Hochschieben komplett abgeschlossen ist (+ ein
+      //    Halte-Beat, in dem das Fullscreen-Video ruhig steht), wächst das „b" aus
+      //    der Mitte — SCHARF über mask-size (SVG re-rastert, kein Verpixeln).
       const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.2;
       const bEnd = Math.max(window.innerWidth, window.innerHeight) * 6;
       growB.current?.style.setProperty("--bs", `${bStart}px`);
@@ -57,7 +56,7 @@ export function AlgarveLogoReveal() {
           duration: 1,
           onUpdate: () => growB.current?.style.setProperty("--bs", `${st.s}px`),
         },
-        0.7,
+        0.95,
       )
         // … die Magenta-Kreis-Blende schließt die b-Binnenlücke (den Steg) synchron
         //    zum Wachsen — kein stehender Video-Streifen zwischen den Körpern.
@@ -65,7 +64,7 @@ export function AlgarveLogoReveal() {
           solid.current,
           { "--r": "0%" },
           { "--r": "160%", ease: "power2.in", duration: 0.9 },
-          1.02,
+          1.3,
         );
     },
     { scope: root },

@@ -272,12 +272,35 @@ export function AlgarveCompaniesScroller() {
   return (
     <>
       {/* ── Desktop: pinned Works-Bühne ──────────────────────────────────── */}
+      {/* Negativer Margin + gerundete Oberkante + z-index: die Magenta-Fläche
+          schiebt sich beim Scrollen von unten über die Section darüber. */}
       <section
         ref={root}
         data-nav-theme="magenta"
         className="relative overflow-clip max-[767px]:hidden"
-        style={{ background: "#ff4370", height: `${TOTAL_VH}vh` }}
+        style={{
+          background: "#ff4370",
+          height: `${TOTAL_VH}vh`,
+          marginTop: "-16vh",
+          zIndex: 2,
+          borderTopLeftRadius: "2.5vw",
+          borderTopRightRadius: "2.5vw",
+        }}
       >
+        {/* Große radiale Kurve rechts — markiert die rechte „Bild-Endkante". */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 -translate-y-1/2"
+          style={{
+            right: "-24vw",
+            width: "58vw",
+            height: "130vh",
+            borderRadius: "50%",
+            background: "radial-gradient(closest-side, rgba(0,0,0,0.12), rgba(0,0,0,0) 70%)",
+            zIndex: 0,
+          }}
+        />
+
         <div className="sticky top-0 flex w-screen items-end" style={{ height: "100vh" }}>
           <div className="flex h-full w-full flex-col justify-center" style={{ padding: "2vw" }}>
             {/* Wörter */}
