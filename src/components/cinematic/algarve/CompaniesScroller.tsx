@@ -274,6 +274,7 @@ export function AlgarveCompaniesScroller() {
       {/* ── Desktop: pinned Works-Bühne ──────────────────────────────────── */}
       <section
         ref={root}
+        data-nav-theme="magenta"
         className="relative overflow-clip max-[767px]:hidden"
         style={{ background: "#ff4370", height: `${TOTAL_VH}vh` }}
       >

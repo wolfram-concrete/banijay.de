@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/cinematic/Reveal";
 import { CountUp } from "@/components/cinematic/CountUp";
 import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
-import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
+import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
+import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
@@ -125,47 +126,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 04 CEO / Führung — dunkles Panel mit Coral-Akzent */}
-      <section style={{ background: "#0e0d0b", color: "#f8f7f3", paddingTop: "6.5vw", paddingBottom: "6.5vw" }}>
-        <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
-          <Reveal>
-            <div className="grid items-center gap-[3vw] lg:grid-cols-[1fr_1.4fr] max-[767px]:!gap-[6vw]">
-              <div className="overflow-hidden" style={{ borderRadius: "1.4vw" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/people/marcus-wolter.jpg"
-                  alt="Marcus Wolter, CEO & Co-Founder Banijay Germany"
-                  className="aspect-[4/5] w-full object-cover"
-                />
-              </div>
-              <div>
-                <Kicker tone="#fb4b68">{ABOUT.ceo.headline}</Kicker>
-                <p className="max-[767px]:!text-[4vw] md:max-w-[40vw]" style={{ fontSize: "1.3vw", lineHeight: "150%", color: "rgba(248,247,243,0.7)" }}>
-                  {ABOUT.ceo.text}
-                </p>
-                <blockquote
-                  className="m-0 max-[767px]:!text-[6vw]"
-                  style={{ marginTop: "1.8vw", fontFamily: SHARP, fontSize: "2.4vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.08vw" }}
-                >
-                  „{ABOUT.ceo.quote}“
-                </blockquote>
-                <p className="mt-[1.6vw] max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontWeight: 600, fontSize: "1.15vw" }}>
-                  {ABOUT.ceo.name}
-                </p>
-                <p className="max-[767px]:!text-[3.2vw]" style={{ fontSize: "0.95vw", color: "rgba(248,247,243,0.55)" }}>{ABOUT.ceo.role}</p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 05 Internationalität — Algarve Image-Block + Glass-Card */}
-      <AlgarveImageStatement
-        eyebrow="International"
-        headline={ABOUT.international.headline}
-        text={ABOUT.international.text}
-        image="/grid/g06.jpg"
+      {/* 04 CEO / Führung — Testimonial-Section (Birkform) mit Magenta-Parallax */}
+      <AlgarveCeoTestimonial
+        heading="Führung"
+        role={ABOUT.ceo.role}
+        quote={ABOUT.ceo.quote}
+        name={ABOUT.ceo.name}
+        image="/people/marcus-wolter.jpg"
+        cta={{ text: "Kontakt aufnehmen", href: "mailto:hello@banijay.de" }}
       />
+
+      {/* 05 Internationalität — reines Text-Statement (Panel ohne Hintergrundbild),
+          Wort-für-Wort-Reveal wie die Home-AboutIntro. */}
+      <AlgarveAboutIntro text={`${ABOUT.international.headline} ${ABOUT.international.text}`} />
 
       {/* 06 Leadership — Algarve Founder-Grid */}
       <AlgarveFounders />
