@@ -130,19 +130,6 @@ export function AlgarveCeoTestimonial({
             style={{ ...enter(150), borderRadius: "1.11vw", height: "42vw", maxHeight: "80vh" }}
           >
             <img src={image} alt={name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: "center 22%" }} />
-            <div className="absolute bottom-0 left-0 flex w-full items-end justify-start" style={{ padding: "1.5vw" }}>
-              <div
-                className="flex flex-col max-[767px]:!p-[3vw]"
-                style={{ background: "rgba(14,13,11,0.34)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "0.9vw", padding: "1vw 1.3vw", gap: "0.2vw", color: PAPER }}
-              >
-                <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500, lineHeight: 1.1 }}>
-                  {name}
-                </span>
-                <span className="max-[767px]:!text-[2.8vw]" style={{ fontSize: "0.85vw", color: "rgba(248,247,243,0.72)" }}>
-                  {role}
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Team-Section spiral-team, About-Video-Statement, CEO-Feinschliff (02.07., 11. Runde)
+- **Home Team-Section:** neu als Algarve `section_spiral-team` — „TEAM" als große
+  Headline ÜBER den Cards; die Cards starten als verdichtetes, rotiertes,
+  überlappendes Cluster (Initial-State vor dem ersten Paint gesetzt → kein Flash)
+  und entfalten sich per gepinnter, gescrubter GSAP-Timeline ins saubere 5er-Grid
+  (kein batch/onEnter mehr).
+- **About:** neue Statement-auf-Video-Section — nach den Zahlen skaliert das
+  b-Glas-Video-Visual aus der Tiefe großflächig auf und überlagert die Section;
+  zentral enthüllt sich Wort für Wort das Prinzip-Statement („Kreative Freiheit
+  braucht ein starkes Dach. Jede Company behält ihre eigene Handschrift.").
+  Ersetzt die Standalone-Prinzip-Section.
+- **B-Glas-Video:** `magnific_create-a-cinematic-camera` weboptimiert
+  (13,7 MB → 1,5 MB → `public/video/b-glass.mp4`).
+- **CEO-Modul:** Caption-Karte (Name/Rolle) auf dem Bild entfernt.
+
 ### CEO-Modul-Feinschliff + Grid-Bilder (02.07., 10. Runde)
 - **CEO-Modul:** neues Marcus-Wolter-Foto (2022, Farbe, weboptimiert); die Rolle
   steht jetzt UNTER dem Namen; das magenta Quadrat („roter Kasten") ist entfernt;

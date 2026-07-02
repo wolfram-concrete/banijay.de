@@ -9,90 +9,116 @@ import { LEADERSHIP } from "@/data/leadership";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Team (Algarve section_spiral-team, adaptiert): großes, ruhiges Background-Wort
-// „TEAM" hinter der ersten Reihe, das beim Scrollen ausblendet. Die Portraits
-// stehen NICHT radial, sondern gerade in einem 5er-Raster; Reihe für Reihe faden
-// die Tiles beim Scrollen von unten rein → am Ende eine saubere Liste mit
-// gleichmäßigen Abständen. Mobile: einfaches 2-Spalten-Grid.
+// Team (Algarve section_spiral-team, adaptiert): großer Schriftzug „TEAM" als
+// eigenständige Headline OBEN, darunter die Portraits. Die Cards starten in einem
+// verdichteten Initial-State (zur Mitte kollabiert, skaliert, rotiert, leicht
+// überlappend) und entfalten sich beim Scrollen per gepinnter, gescrubter
+// GSAP-Timeline in ihr sauberes 5-Spalten-Grid. Mobile: einfaches 2-Spalten-Grid.
 
-const TEAM = LEADERSHIP.slice(0, 11);
+const TEAM = LEADERSHIP.slice(0, 10); // 10 → sauberes 5×2-Grid im Pin-Viewport
 
 const NAME = {
   fontFamily: "var(--font-sharp), sans-serif",
-  fontSize: "clamp(0.95rem, 1.05vw, 1.3rem)",
+  fontSize: "clamp(0.8rem, 0.95vw, 1.15rem)",
   fontWeight: 500,
   letterSpacing: "-0.01em",
-  lineHeight: "120%",
+  lineHeight: "118%",
 } as const;
-const ROLE = { color: "#000000a3", fontSize: "clamp(0.78rem, 0.9vw, 1.05rem)", lineHeight: "125%" } as const;
+const ROLE = { color: "#000000a3", fontSize: "clamp(0.7rem, 0.8vw, 0.95rem)", lineHeight: "122%" } as const;
 
 export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
+  const grid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
       const tiles = gsap.utils.toArray<HTMLElement>("[data-team-tile]");
+      const gridEl = grid.current;
+      if (!gridEl || !tiles.length) return;
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Verdichteter Initial-State: jede Card zur Grid-Mitte ziehen (Cluster),
+      // verkleinern + rotieren. VOR dem ersten Paint gesetzt (useGSAP =
+      // useLayoutEffect) → kein Flash des fertigen Grids.
+      const gr = gridEl.getBoundingClientRect();
+      const cx = gr.left + gr.width / 2;
+      const cy = gr.top + gr.height / 2;
+      const mid = (tiles.length - 1) / 2;
+      const initial = tiles.map((el, i) => {
+        const r = el.getBoundingClientRect();
+        return {
+          x: (cx - (r.left + r.width / 2)) * 0.86,
+          y: (cy - (r.top + r.height / 2)) * 0.86 + 40,
+          scale: 0.46,
+          rotation: (i - mid) * 4.2,
+        };
+      });
+      tiles.forEach((el, i) => gsap.set(el, { ...initial[i], opacity: reduce ? 1 : 0.82, transformOrigin: "50% 50%" }));
 
       if (reduce) {
-        gsap.set(tiles, { opacity: 1, y: 0 });
+        gsap.set(tiles, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
         return;
       }
 
-      // Reihen faden beim Scrollen von unten rein (Tile für Tile beim Eintreten).
-      gsap.set(tiles, { opacity: 0, y: "4vw" });
-      ScrollTrigger.batch("[data-team-tile]", {
-        start: "top 68%",
-        onEnter: (batch) =>
-          gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, stagger: 0.09, ease: "power3.out" }),
+      // Entfaltung per gepinnter, gescrubter Timeline in die finalen Grid-Plätze.
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top top",
+          end: "+=140%",
+          scrub: true,
+          pin: "[data-team-stage]",
+          invalidateOnRefresh: true,
+        },
       });
-
-      // Background-Wort „TEAM" blendet aus, sobald man in die Section scrollt.
-      const word = root.current?.querySelector<HTMLElement>("[data-team-word]");
-      if (word) {
-        gsap.to(word, {
-          opacity: 0,
-          ease: "none",
-          scrollTrigger: { trigger: word, start: "top 34%", end: "top -6%", scrub: true },
-        });
-      }
+      tl.to(tiles, {
+        x: 0,
+        y: 0,
+        scale: 1,
+        rotation: 0,
+        opacity: 1,
+        ease: "power2.out",
+        stagger: 0.06,
+      });
     },
     { scope: root },
   );
 
   return (
     <section ref={root} style={{ background: "#f8f7f3" }}>
-      {/* ── Desktop: 5er-Raster mit Background-Wort hinter Reihe 1 ─────────── */}
-      <div className="relative max-[767px]:hidden" style={{ padding: "6.94vw 2vw 8.33vw" }}>
-        {/* Background-Wort „TEAM" — liegt hinter der ersten Reihe, blendet aus */}
-        <div
-          data-team-word
-          className="pointer-events-none absolute inset-x-0 flex justify-center"
-          style={{ top: "9vw", zIndex: 2 }}
-        >
+      {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
+      <div data-team-stage className="relative max-[767px]:hidden" style={{ height: "100vh", overflow: "hidden" }}>
+        <div className="flex h-full w-full flex-col" style={{ padding: "6vw 2vw 3vw" }}>
+          {/* TEAM — eigenständige Headline über der Portrait-Animation (z-3) */}
           <h2
             className="m-0 uppercase text-black"
-            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "18vw", fontWeight: 500, letterSpacing: "-0.5vw", lineHeight: 1 }}
+            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "9vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 0.9, position: "relative", zIndex: 3 }}
           >
             Team
           </h2>
-        </div>
 
-        {/* 5er-Raster, gleiche Abstände */}
-        <div className="relative grid grid-cols-5" style={{ columnGap: "1.2vw", rowGap: "3vw", zIndex: 1 }}>
-          {TEAM.map((p) => (
-            <div key={p.name} data-team-tile className="flex flex-col" style={{ gap: "0.9vw" }}>
-              <div className="overflow-clip" style={{ borderRadius: "1.11vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
-                <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
-              </div>
-              <div className="flex flex-col" style={{ gap: "0.1vw" }}>
-                <div className="text-black" style={NAME}>
-                  {p.name}
+          {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP) */}
+          <div
+            ref={grid}
+            className="mx-auto grid w-full flex-1 grid-cols-5 content-center"
+            style={{ columnGap: "1.2vw", rowGap: "1.6vw", maxWidth: "72vw", zIndex: 1 }}
+          >
+            {TEAM.map((p) => (
+              <div key={p.name} data-team-tile className="flex flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
+                <div className="overflow-clip" style={{ borderRadius: "0.9vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
+                  <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
                 </div>
-                <div style={ROLE}>{p.role}</div>
+                <div className="flex flex-col" style={{ gap: "0.1vw" }}>
+                  <div className="text-black" style={NAME}>
+                    {p.name}
+                  </div>
+                  <div style={ROLE}>{p.role}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
@@ -102,7 +128,7 @@ export function AlgarveFounders() {
           Team
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
-          {TEAM.map((p) => (
+          {LEADERSHIP.slice(0, 11).map((p) => (
             <div key={p.name} className="flex flex-col gap-3">
               <div className="overflow-clip" style={{ borderRadius: "4vw", aspectRatio: "4 / 5", background: "#e8e6df" }}>
                 <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />

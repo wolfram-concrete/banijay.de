@@ -5,7 +5,7 @@ import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
-import { AlgarveMissionStatement } from "@/components/cinematic/algarve/MissionStatement";
+import { AlgarveStatementVideo } from "@/components/cinematic/algarve/StatementVideo";
 import { AlgarvePartnerGrid } from "@/components/cinematic/algarve/PartnerGrid";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
@@ -78,8 +78,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 03 Prinzip — Mission-Statement-Template (Label + Wort-Reveal-Headline) */}
-      <AlgarveMissionStatement label="Prinzip" headline={ABOUT.principle.headline} body={ABOUT.principle.text} />
+      {/* 03 Prinzip — als Statement auf einem großflächig aufskalierenden Video-
+          Container, der sich über die Zahlen legt (b-Glas-Visual). */}
+      <AlgarveStatementVideo
+        statement={`${ABOUT.principle.headline} ${ABOUT.principle.text.split(". ")[0]}.`}
+      />
 
       {/* 04 CEO / Führung — Testimonial-Section (Birkform) mit Magenta-Parallax */}
       <AlgarveCeoTestimonial
