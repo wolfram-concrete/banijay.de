@@ -71,7 +71,10 @@ export function AlgarveCompanyCards() {
 
   useGSAP(
     () => {
-      if (!window.matchMedia("(min-width: 768px)").matches) return;
+      // 3D-Wegkippen nur auf echtem Desktop (≥992px), wo die Cards sticky
+      // gestapelt sind. Ab ≤991px stehen sie im Normalfluss (Querformat-Bild) —
+      // dort würde das Kippen/Faden nur stören.
+      if (!window.matchMedia("(min-width: 992px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-company-card]");
       // Echtes 3D-Wegkippen: sobald die NÄCHSTE Card hochscrollt und diese
@@ -109,7 +112,7 @@ export function AlgarveCompanyCards() {
             <article
               key={card.id}
               data-company-card
-              className="relative flex flex-col justify-between overflow-clip max-[767px]:!static max-[767px]:!h-auto"
+              className="relative flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[6vw] max-[767px]:!p-[8vw]"
               style={{
                 position: "sticky",
                 top: "1.39vw",
@@ -169,7 +172,7 @@ export function AlgarveCompanyCards() {
 
               {/* Bottom: Claim + Body + Tags + Known-for + CTA */}
               <div
-                className="relative flex flex-col items-start max-[767px]:!mt-[8vw] max-[767px]:!max-w-full"
+                className="relative flex flex-col items-start max-[991px]:!mt-[3vw] max-[991px]:!max-w-full max-[991px]:!gap-[2vw] max-[767px]:!mt-[6vw]"
                 style={{ maxWidth: "42vw", gap: "1.39vw" }}
               >
                 <h4
@@ -269,9 +272,12 @@ export function AlgarveCompanyCards() {
                 </a>
               </div>
 
-              {/* Schwebendes Media-Panel (Company-Bild) rechts unten */}
+              {/* Schwebendes Media-Panel (Company-Bild) rechts unten — nur Desktop.
+                  Ab ≤991px (Tablet/Mobile) würde das schmale Hochformat die Card
+                  unnötig hoch machen; dort greift stattdessen das Querformat-Bild
+                  weiter unten in-flow. */}
               <div
-                className="absolute overflow-clip max-[767px]:!hidden"
+                className="absolute overflow-clip max-[991px]:!hidden"
                 style={{
                   zIndex: 2,
                   width: "26vw",
@@ -288,6 +294,24 @@ export function AlgarveCompanyCards() {
                   src={card.image}
                   alt={card.imageAlt}
                   className="h-full w-full object-cover"
+                />
+              </div>
+
+              {/* Querformat-Bild in-flow — nur Tablet/Mobile (≤991px). Volle
+                  Card-Breite, festes Landscape-Verhältnis, sitzt unter dem Text
+                  statt als schmales Hochformat rechts. So bleibt die Card kompakt. */}
+              <div
+                className="hidden w-full overflow-clip max-[991px]:!block"
+                style={{
+                  marginTop: "5vw",
+                  borderRadius: "3vw",
+                  boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)",
+                }}
+              >
+                <img
+                  src={card.image}
+                  alt={card.imageAlt}
+                  className="block w-full object-cover max-[991px]:!h-[34vw] max-[767px]:!h-[52vw]"
                 />
               </div>
             </article>

@@ -65,6 +65,9 @@ export function AlgarveCareerRoleStack() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      // 3D-Wegkippen nur auf echtem Desktop (≥992px) mit Sticky-Stack; ab ≤991px
+      // stehen die Cards im Normalfluss (Querformat-Bild).
+      if (!window.matchMedia("(min-width: 992px)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-role-card]");
       // Echtes 3D-Wegkippen (wie auf der Companies-Seite).
       cards.forEach((card, i) => {
@@ -105,7 +108,7 @@ export function AlgarveCareerRoleStack() {
             <div
               key={card.index}
               data-role-card
-              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!h-auto max-[767px]:!p-[8vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[6vw] max-[767px]:!p-[8vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
@@ -129,7 +132,7 @@ export function AlgarveCareerRoleStack() {
 
               {/* Bottom: Claim + Text */}
               <div
-                className="relative flex flex-col items-start max-[767px]:!mt-[10vw]"
+                className="relative flex flex-col items-start max-[991px]:!mt-[3vw] max-[991px]:!max-w-full max-[991px]:!gap-[2vw] max-[767px]:!mt-[6vw]"
                 style={{ zIndex: 3, maxWidth: "42vw", gap: "1.11vw" }}
               >
                 <h4
@@ -139,16 +142,17 @@ export function AlgarveCareerRoleStack() {
                   {card.claim}
                 </h4>
                 <p
-                  className="m-0 max-[767px]:!text-[3.8vw]"
+                  className="m-0 max-[991px]:!max-w-full max-[767px]:!text-[3.8vw]"
                   style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "140%", color: card.soft, maxWidth: "34vw" }}
                 >
                   {card.text}
                 </p>
               </div>
 
-              {/* Schwebendes Bildmodul (Career-Foto) rechts unten */}
+              {/* Schwebendes Bildmodul (Career-Foto) rechts unten — nur Desktop.
+                  Ab ≤991px greift stattdessen das Querformat-Bild in-flow. */}
               <div
-                className="absolute overflow-clip max-[767px]:!hidden"
+                className="absolute overflow-clip max-[991px]:!hidden"
                 style={{
                   zIndex: 2,
                   width: "26vw",
@@ -162,6 +166,18 @@ export function AlgarveCareerRoleStack() {
                 }}
               >
                 <img src={card.image} alt={card.title} className="h-full w-full object-cover" />
+              </div>
+
+              {/* Querformat-Bild in-flow — nur Tablet/Mobile (≤991px). */}
+              <div
+                className="hidden w-full overflow-clip max-[991px]:!block"
+                style={{ marginTop: "5vw", borderRadius: "3vw", boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)" }}
+              >
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="block w-full object-cover max-[991px]:!h-[34vw] max-[767px]:!h-[52vw]"
+                />
               </div>
             </div>
           ))}

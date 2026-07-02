@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Flip-Cards responsive: Querformat statt zu hoch (02.07., 18. Runde)
+- **Company-Cards & Career-RoleStack:** auf Tablet/Mobile (≤991px) wurden die
+  Sticky-Flip-Cards unnötig hoch (feste 96vh/90vh) und das schwebende
+  Hochformat-Bild (26vw) zu schmal. Jetzt: ab ≤991px stehen die Cards im
+  **Normalfluss** (`position:static`, Höhe `auto`, reduziertes Padding), das
+  schmale Hochformat-Panel entfällt und stattdessen sitzt **ein Querformat-Bild
+  in-flow** volle Card-Breite unter dem Text (Höhe 34vw Tablet / 52vw Mobile →
+  ~2.4:1 bzw. ~1.5:1 Landscape). Die **3D-Kipp-Animation läuft nur noch ≥992px**
+  (echter Sticky-Stack) — darunter würde sie im Normalfluss nur stören. Verifiziert:
+  Company-Card 1085→716px (Tablet), Role-Card static, Bild 630×261.
+
 ### Home Companies-Übergang (robuste Variante) (02.07., 17. Runde)
 - **Home – Statement → Companies:** die AboutIntro (mit `magentaExit`) ist jetzt
   320vh hoch (mehr Pin-Raum). Nachdem das Statement steht, layert im selben
