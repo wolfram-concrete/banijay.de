@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Menü-Overlay mobil: Nav-Gewicht + Social über Spotify (02.07., 33. Runde)
+- **Nav-Punkte fett wie CLOSE:** Die Nav-Punkte wirkten trotz gleicher Größe dünner
+  (weight 500) als der fette CLOSE-Button (700). Jetzt auf Mobile ebenfalls **bold
+  (700)** → optisch konsistent mit MENU/CLOSE. Verifiziert: closeWeight == navWeight
+  == 700.
+- **Social über Spotify:** Instagram/LinkedIn (Folgen) auf Mobile jetzt **über** dem
+  Spotify-Widget (order-Swap); beides im unteren Bereich der Navigation. Verifiziert:
+  Folgen (top 486) über Spotify (top 580).
+
 ### Menü-Overlay mobil: Nav = MENU-Größe, Kontakt raus (02.07., 32. Runde)
 - **Mobile-Menü-Typo maximiert:** Nav-Punkte und der MENU/CLOSE-Button jetzt gleich
   groß (12vw ≈ 45px). Verifiziert: „COMPANIES" bleibt einzeilig (255px), Nav-Font ==

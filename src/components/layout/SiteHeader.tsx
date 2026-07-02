@@ -356,7 +356,7 @@ export function SiteHeader() {
                 const labelText = item.label === "Banijay" ? "Home" : item.label;
                 const inner = (
                   <span
-                    className="block uppercase max-[767px]:!text-[12vw]"
+                    className="block uppercase max-[767px]:!text-[12vw] max-[767px]:!font-bold"
                     style={{
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontWeight: 500,
@@ -417,10 +417,11 @@ export function SiteHeader() {
                 src="https://open.spotify.com/embed/show/1DNETtYd9Y197eAQ45xMdh?utm_source=generator&theme=0"
                 loading="lazy"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                className="h-[352px] w-[20rem] max-[767px]:!h-[152px] max-[767px]:w-full max-[767px]:max-w-full"
+                className="h-[352px] w-[20rem] max-[767px]:order-2 max-[767px]:!h-[152px] max-[767px]:w-full max-[767px]:max-w-full"
                 style={{ borderRadius: 12, border: 0 }}
               />
-              <div className="flex flex-col gap-3">
+              {/* Folgen (Instagram/LinkedIn) — auf Mobile ÜBER dem Spotify-Widget. */}
+              <div className="flex flex-col gap-3 max-[767px]:order-1">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Folgen</div>
                 <div className="flex flex-wrap gap-3">
                   <a
