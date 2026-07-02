@@ -54,10 +54,10 @@ const BODY = {
 // (Mitte Reihe 2) fürs Showreel-Video. Beim Hover erscheint Titel · Company ·
 // Genre — der „Aha-Moment": bekannte Formate, dahinter die Banijay-Companies.
 type Fmt = { title: string; company: string; genre: string };
-type Cell = { src: string; origin: string; fmt: Fmt } | null;
+type Cell = { src: string; origin: string; fmt: Fmt; video?: string } | null;
 const CELLS: Cell[] = [
   { src: "/grid/g01.jpg", origin: "0% 0%", fmt: { title: "The Masked Singer", company: "EndemolShine Germany", genre: "Show & Entertainment" } },
-  { src: "/grid/g02.jpg", origin: "50% 0%", fmt: { title: "Wer wird Millionär?", company: "EndemolShine Germany", genre: "Quiz" } },
+  { src: "/grid/g02.jpg", origin: "50% 0%", video: "/video/grid-loop1.mp4", fmt: { title: "Wer wird Millionär?", company: "EndemolShine Germany", genre: "Quiz" } },
   { src: "/grid/g03.png", origin: "50% 0%", fmt: { title: "TV total", company: "Brainpool", genre: "Comedy & Live" } },
   { src: "/grid/g04.jpeg", origin: "50% 0%", fmt: { title: "Temptation Island", company: "Banijay Productions Germany", genre: "Reality & Factual" } },
   { src: "/reels/wolter-talks.jpg", origin: "100% 0%", fmt: { title: "Marcus Wolter", company: "Banijay Germany", genre: "Podcast & Social" } },
@@ -65,10 +65,10 @@ const CELLS: Cell[] = [
   null,
   null,
   null,
-  { src: "/grid/g07.png", origin: "100% 50%", fmt: { title: "Promi Big Brother", company: "EndemolShine Germany", genre: "Reality & Factual" } },
+  { src: "/grid/g07.png", origin: "100% 50%", video: "/video/grid-loop2.mp4", fmt: { title: "Promi Big Brother", company: "EndemolShine Germany", genre: "Reality & Factual" } },
   { src: "/grid/g08.jpg", origin: "0% 100%", fmt: { title: "Das große Promibüßen", company: "Banijay Productions Germany", genre: "Reality & Factual" } },
   { src: "/grid/g09.jpg", origin: "50% 100%", fmt: { title: "LEGO Masters", company: "EndemolShine Germany", genre: "Show & Entertainment" } },
-  { src: "/grid/g10.jpeg", origin: "50% 100%", fmt: { title: "Tatort Dresden", company: "MadeFor", genre: "Fiction & Scripted" } },
+  { src: "/grid/g10.jpeg", origin: "50% 100%", video: "/video/grid-loop3.mp4", fmt: { title: "Tatort Dresden", company: "MadeFor", genre: "Fiction & Scripted" } },
   { src: "/grid/g11.png", origin: "50% 100%", fmt: { title: "NightWash", company: "Banijay Germany Live", genre: "Comedy & Live" } },
   { src: "/grid/g12.jpg", origin: "100% 100%", fmt: { title: "Cologne Comedy Festival", company: "Cologne Comedy Festival", genre: "Comedy & Live" } },
 ];
@@ -379,7 +379,20 @@ export function AlgarveHome() {
                     className="group relative w-full overflow-hidden"
                     style={{ borderRadius: "1.11vw", backfaceVisibility: "hidden", transformOrigin: cell.origin }}
                   >
-                    <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
+                    {cell.video ? (
+                      <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster={cell.src}
+                        className="block h-full w-full object-cover"
+                      >
+                        <source src={cell.video} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
+                    )}
                     {/* Hover: Format · Company · Genre */}
                     <div
                       className="absolute inset-0 flex flex-col justify-end opacity-0 transition-opacity duration-300 group-hover:opacity-100"
