@@ -3,8 +3,7 @@ import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveCareerRoleStack } from "@/components/cinematic/algarve/CareerRoleStack";
 import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJobsPreview";
 import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
-import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
-import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
+import { AlgarveTomorrowCallout } from "@/components/cinematic/algarve/TomorrowCallout";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { CAREER } from "@/data/career";
 
@@ -34,17 +33,14 @@ export default function CareerPage() {
       {/* 04 Standorte */}
       <AlgarveCareerLocations />
 
-      {/* 05 BANIJAY TOMORROW */}
-      <AlgarveImageStatement
+      {/* 05 BANIJAY TOMORROW — Callout-Block (value-features-4) auf Magenta-Grund */}
+      <AlgarveTomorrowCallout
         eyebrow={CAREER.tomorrow.eyebrow}
         headline={CAREER.tomorrow.headline}
         text={CAREER.tomorrow.text}
         image={CAREER.tomorrow.image}
         cta={CAREER.tomorrow.cta}
       />
-
-      {/* 06 Code of Conduct */}
-      <AlgarveCodeOfConductBand />
 
       {/* 07 Bewerbungs-/Kontaktformular (Eingabetemplate, wie About/Companies) */}
       <AlgarveContactForm

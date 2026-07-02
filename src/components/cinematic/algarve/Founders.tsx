@@ -102,8 +102,8 @@ export function AlgarveFounders() {
           {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP) */}
           <div
             ref={grid}
-            className="mx-auto grid w-full flex-1 grid-cols-5 content-center"
-            style={{ columnGap: "1.2vw", rowGap: "1.6vw", maxWidth: "72vw", zIndex: 1 }}
+            className="grid w-full flex-1 grid-cols-5 content-center"
+            style={{ columnGap: "1.2vw", rowGap: "1.6vw", zIndex: 1 }}
           >
             {TEAM.map((p) => (
               <div key={p.name} data-team-tile className="flex flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>

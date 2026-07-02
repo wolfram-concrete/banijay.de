@@ -259,7 +259,7 @@ export function SiteHeader() {
             <img
               src="/brand/banijay-logo.png"
               alt="Banijay Germany"
-              className="h-[2.1rem] w-auto origin-left transition-[filter] duration-300"
+              className="h-[2.625rem] w-auto origin-left transition-[filter] duration-300"
               style={{ filter: blackLogo ? "brightness(0)" : undefined }}
             />
           </Link>

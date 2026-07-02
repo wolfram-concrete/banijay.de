@@ -7,10 +7,13 @@ import { CAREER } from "@/data/career";
 
 const SHARP = "var(--font-sharp), sans-serif";
 
+// Magenta-Standort-Card auf Off-White (radial gerundete Kanten).
 export function AlgarveCareerLocations() {
   return (
-    <section style={{ background: "#ff4370", color: "#0e0d0b", paddingTop: "5.2vw", paddingBottom: "5.2vw" }}>
-      <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
+    <section style={{ background: "#f8f7f3", color: "#0e0d0b", paddingTop: "2.5vw", paddingBottom: "2.5vw" }}>
+      {/* Magenta-Box als gerundete Card (radiale Kanten ringsum) auf Off-White. */}
+      <div style={{ background: "#ff4370", borderRadius: "2.5vw", marginLeft: "2vw", marginRight: "2vw", paddingTop: "5.2vw", paddingBottom: "5.2vw" }}>
+      <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw", maxWidth: "1440px" }}>
         <p
           className="max-w-[47vw] max-[767px]:!max-w-full max-[767px]:!text-[5vw]"
           style={{ fontFamily: SHARP, fontSize: "2.1vw", lineHeight: "122%", fontWeight: 500, letterSpacing: "-0.07vw", marginBottom: "2.8vw" }}
@@ -64,6 +67,7 @@ export function AlgarveCareerLocations() {
             );
           })}
         </div>
+      </div>
       </div>
     </section>
   );

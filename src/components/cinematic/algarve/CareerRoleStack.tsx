@@ -92,7 +92,7 @@ export function AlgarveCareerRoleStack() {
         {/* Intro */}
         <div className="max-w-[63vw] max-[767px]:!max-w-full" style={{ marginBottom: "3.33vw" }}>
           <h2
-            className="m-0 uppercase max-[767px]:!text-[8vw]"
+            className="m-0 max-[767px]:!text-[8vw]"
             style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "110%", fontWeight: 500, letterSpacing: "-0.139vw", color: "#0e0d0b" }}
           >
             {CAREER.roleIntro.headline}
