@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Code-of-Conduct zurück + Preloader raus (02.07., 13. Runde)
+- **Career:** Code-of-Conduct-Section wieder ergänzt (über der Kontakt-CTA, mit
+  hinterlegter CoC-PDF).
+- **Home:** Preloader vor dem Hero entfernt — die Hero-Typo-Animation startet
+  jetzt direkt beim Laden.
+- **Offen (bewusst nicht blind gebaut):** die b-Form-Morph-Übergänge (Home
+  Companies, Career Standorte→Tomorrow) sowie das About-Stat-Karten-Video —
+  brauchen Live-Tuning (SVG-Masken-Morph rendert im Headless-Preview nicht sauber).
+
 ### Logo/Footer/Career-Umbauten + CEO-Template + LogoReveal-b (02.07., 12. Runde)
 - **Logo** links oben global um 25% größer (2.1rem → 2.625rem).
 - **Footer-B** wieder oben rechts (absolut) statt unten.
