@@ -74,8 +74,9 @@ export function AlgarvePageHero({
         .to("[data-hero-label]", { autoAlpha: 1, ease: "none", duration: 0.12 }, 0.42)
         // C) Container zoomt auf Full-Screen.
         .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.22 }, 0.66)
-        // Halten (letztes Stück ohne Änderung).
-        .to("[data-hero-media]", { opacity: 1, ease: "none", duration: 0.12 }, 0.88);
+        // D) Das weiße Hero-Label blendet zum Ende aus — es „übergibt" an das
+        //    kleine rote Docked-Label unter MENU (siehe SiteHeader).
+        .to("[data-hero-label]", { autoAlpha: 0, ease: "none", duration: 0.1 }, 0.9);
 
       // 3) Body-Statement darunter: schwarze Typo scrollt Wort für Wort rein.
       gsap.from("[data-hero-word]", {

@@ -145,13 +145,25 @@ export function SiteHeader() {
   const previousPathname = useRef(pathname);
   const pageLabel = labelForPath(pathname);
 
-  // Seiten-Label rastet ein, sobald man ein Stück gescrollt hat.
+  // Seiten-Label rastet ein — auf Subpages mit gepinntem Hero ERST am Ende der
+  // Hero-Bühne (sonst überlagern sich weißes Hero-Label und rotes Docked-Label →
+  // Dopplung). Ohne Hero-Bühne (z. B. News-Liste): schon nach kurzem Scrollen.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 120);
+    const onScroll = () => {
+      const stage = document.querySelector("[data-hero-stage]") as HTMLElement | null;
+      const dockAt = stage
+        ? stage.offsetTop + stage.offsetHeight - window.innerHeight * 1.15
+        : 120;
+      setScrolled(window.scrollY > dockAt);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
 
   // Overlay-Staffelung + Scroll-Lock (Lenis) beim Öffnen.
   useEffect(() => {
@@ -279,9 +291,10 @@ export function SiteHeader() {
             {pageLabel && !open && (
               <span
                 aria-hidden
-                className="pointer-events-none absolute right-0 top-full uppercase transition-all duration-300"
+                className="pointer-events-none absolute right-0 top-full uppercase transition-all duration-[450ms] ease-out"
                 style={{
                   marginTop: "0.4rem",
+                  transformOrigin: "top right",
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontWeight: 400,
                   fontSize: "0.75rem",
@@ -289,8 +302,10 @@ export function SiteHeader() {
                   letterSpacing: "0.06em",
                   color: onMagenta ? INK : MAGENTA,
                   whiteSpace: "nowrap",
+                  // Das weiße Hero-Label „übergibt" hierher: es rastet mit
+                  // Shift + Herunterskalieren als kleine rote Wortmarke ein.
                   opacity: scrolled ? 1 : 0,
-                  transform: scrolled ? "translateY(0)" : "translateY(-0.35rem)",
+                  transform: scrolled ? "translateY(0) scale(1)" : "translateY(-0.6rem) scale(1.6)",
                 }}
               >
                 {pageLabel}
