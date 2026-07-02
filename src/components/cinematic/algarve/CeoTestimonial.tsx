@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -103,17 +104,18 @@ export function AlgarveCeoTestimonial({
                 >
                   „{quote}“
                 </blockquote>
-                <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 600 }}>
+                <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 400 }}>
                   {name}
                 </span>
               </div>
               {cta && (
                 <a
                   href={cta.href}
-                  className="inline-flex w-fit items-center justify-center rounded-full border border-[#0e0d0b] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!text-[3.4vw]"
-                  style={{ padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw" }}
+                  className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!text-[3.4vw]"
+                  style={{ border: "1px solid #0e0d0b", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw" }}
                 >
                   {cta.text}
+                  <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />
                 </a>
               )}
             </div>

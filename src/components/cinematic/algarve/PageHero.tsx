@@ -19,13 +19,13 @@ const SHARP = "var(--font-sharp), sans-serif";
 
 export function AlgarvePageHero({
   headline,
-  label,
   body,
   image,
   video = "/video/showreel.mp4",
 }: {
   headline: string;
-  label: string;
+  /** Optional — Seiten übergeben es noch; das seitliche Hero-Label wurde entfernt. */
+  label?: string;
   body: string;
   image: string;
   video?: string;
@@ -50,8 +50,6 @@ export function AlgarvePageHero({
         gsap.set("[data-hero-card]", { display: "none" });
         return;
       }
-
-      gsap.set("[data-hero-label]", { autoAlpha: 0 });
 
       // 2) Gepinnte Choreografie: Aus dem kleinen Video-Container skalieren sich
       //    nacheinander (versetzt) Farbcontainer auf FULL-SCREEN (Orchid → Gelb →
@@ -82,16 +80,13 @@ export function AlgarvePageHero({
       tl
         // H1 invertiert auf Weiß, sobald die Farbflächen dahinterliegen.
         .to("[data-hero-h1]", { color: PAPER, ease: "none", duration: 0.12 }, 0.58)
-        .to("[data-hero-label]", { autoAlpha: 1, ease: "none", duration: 0.1 }, 0.66)
         // Video-Container: erst in die HÖHE …
         .to("[data-hero-media]", { top: "36vh", height: "52vh", ease: "none", duration: 0.16 }, 0.72)
         // … dann in die BREITE (steigt hoch) …
         .to("[data-hero-media]", { top: "8vh", left: "0vw", width: "100vw", height: "84vh", ease: "none", duration: 0.2 }, 0.9)
         .to("[data-hero-scrim]", { opacity: 0.45, ease: "none", duration: 0.2 }, 0.9)
         // … dann Full-Screen (harte Kante).
-        .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.16 }, 1.12)
-        // Weißes Hero-Label blendet aus → Übergabe ans Docked-Label unter MENU.
-        .to("[data-hero-label]", { autoAlpha: 0, ease: "none", duration: 0.1 }, 1.24);
+        .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.16 }, 1.12);
 
       // 3) Body-Statement darunter: Wort-für-Wort-Enthüllung wie die Home-AboutIntro
       //    (opacity 0→1 + leichtes Anheben, stagger amount 1 in Leserichtung, scrub).
@@ -162,26 +157,6 @@ export function AlgarvePageHero({
               <source src={video} type="video/mp4" />
             </video>
             <div data-hero-scrim className="absolute inset-0" style={{ background: "#000", opacity: 0.2 }} />
-          </div>
-
-          {/* Label rechtsbündig auf der Bildachse (erscheint erst breit) */}
-          <div
-            data-hero-label
-            className="absolute text-right uppercase max-[767px]:!text-[2.6vw]"
-            style={{
-              zIndex: 4,
-              right: "3vw",
-              top: "50%",
-              transform: "translateY(-50%)",
-              color: PAPER,
-              fontFamily: SHARP,
-              fontWeight: 700,
-              fontSize: "0.9vw",
-              letterSpacing: "0.16em",
-              textShadow: "0 1px 14px rgba(0,0,0,0.55)",
-            }}
-          >
-            {label}
           </div>
         </div>
       </section>
