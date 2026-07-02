@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home Statement→Companies: eine Magenta-Ebene statt zwei (02.07., 27. Runde)
+- **Fix „zwei pinke Ebenen":** Es liefen zwei Magenta-Flächen übereinander — die
+  AboutIntro-Blende (radiale Ecke, z-auto) UND die aufsteigende CompaniesScroller-
+  Fläche (flach, z-2) — leicht versetzt → doppelte Kante. Jetzt trägt **nur die
+  CompaniesScroller-Fläche** den Übergang: `magentaExit` der Home-AboutIntro entfernt;
+  die Companies-Section steigt als **einzige** Magenta-Ebene mit radial gekurvter
+  Oberkante (rechts stärker, b-Andeutung) auf und faltet sich beim Aufsteigen auf.
+- **Companies-Typo schneller:** „Unsere Companies" fadet jetzt kurz nach dem Andocken
+  ein (Timeline-Position 0.5 → 0.15) statt mit spürbarem Versatz. Verifiziert: nur
+  eine Magenta-Fläche, radTR 194→0 beim Aufsteigen, Wörter-Opacity ab ~140px, Nav
+  invertiert (MENU schwarz).
+
 ### Career-Fächer: gestapelte Streifen zurück, gepinnt gestaffelt (02.07., 26. Runde)
 - **`CareerTomorrowStack` final:** Full-Viewport-Sweeps (Runde 23) verwarfen den
   „Fächer"-Look — zurück zum **gestapelten Karten-Layout** (Magenta-Karte + dünne

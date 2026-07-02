@@ -205,9 +205,21 @@ export function AlgarveCompaniesScroller() {
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Die b-Form-Blende + das Auffalten übernimmt jetzt die AboutIntro davor
-      // (magentaExit). Diese Section übergibt nur nahtlos die volle Magenta-Fläche
-      // samt Content — daher hier keine eigene Radius-Auffaltung mehr.
+      // EINE Magenta-Ebene: Diese Section ist die einzige magentafarbene Fläche, die
+      // über das Statement (AboutIntro davor) aufsteigt — mit radial gekurvter
+      // Oberkante (rechts stärker als links → b-Körper-Andeutung), die sich beim
+      // Aufsteigen auffaltet. Keine zweite Blende mehr, die sich überlagert.
+      const sec = root.current;
+      if (sec) {
+        gsap.set(sec, { borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+        gsap.to(sec, {
+          borderTopLeftRadius: "0vw",
+          borderTopRightRadius: "0vw",
+          ease: "none",
+          scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: 1, invalidateOnRefresh: true },
+        });
+      }
+
       const els = gsap.utils.toArray<HTMLElement>("[data-work]");
       if (els.length < 3) return;
 
@@ -233,7 +245,7 @@ export function AlgarveCompaniesScroller() {
       //    (via Translate zusammengerückt) und faden ruhig ein.
       gsap.set(wordL.current, { x: "24vw", scale: 1, opacity: 0 });
       gsap.set(wordR.current, { x: "-24vw", scale: 1, opacity: 0 });
-      tl.to([wordL.current, wordR.current], { opacity: 1, ease: "power1.out", duration: 1.0 }, 0.5);
+      tl.to([wordL.current, wordR.current], { opacity: 1, ease: "power1.out", duration: 0.7 }, 0.15);
 
       // 2) Dann ziehen sie auseinander → öffnen die Mitte (das „Loch").
       tl.to(wordL.current, { x: "0vw", ease: "power2.inOut", duration: 1.8 }, 2.0)

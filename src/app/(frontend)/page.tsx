@@ -19,9 +19,10 @@ export default function HomePage() {
       {/* Hero (Video + weiße Typo) + Entertainment Portfolio (Sticky-Grid) */}
       <AlgarveHome />
 
-      {/* Statement-Reveal (section_about-intro) — mit Magenta-Blenden-Übergang in Companies */}
+      {/* Statement-Reveal (section_about-intro). Der Magenta-Übergang in die
+          Companies wird jetzt von der CompaniesScroller-Fläche selbst getragen
+          (eine radial aufsteigende Ebene) — daher hier KEIN magentaExit mehr. */}
       <AlgarveAboutIntro
-        magentaExit
         text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
       />
 
