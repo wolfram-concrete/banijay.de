@@ -364,25 +364,29 @@ export function AlgarveCompaniesScroller() {
         </div>
       </section>
 
-      {/* ── Mobile: ruhige vertikale Liste ───────────────────────────────── */}
-      <section className="hidden max-[767px]:block" style={{ background: "#f8f7f3", padding: "12.8vw 3vw" }}>
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="uppercase text-black" style={{ ...H5, fontSize: "7vw" }}>Unsere</h2>
-          <h2 className="uppercase text-black" style={{ ...H5, fontSize: "7vw" }}>Companies</h2>
+      {/* ── Mobile: „Unsere" oben, „Companies" darunter, dann horizontaler
+          Slider (links → rechts, native Scroll-Snap). ───────────────────────── */}
+      <section className="hidden max-[767px]:block" style={{ background: "#f8f7f3", paddingTop: "16vw", paddingBottom: "16vw" }}>
+        <div className="mb-8 flex flex-col" style={{ paddingLeft: "3vw", paddingRight: "3vw", lineHeight: 0.98 }}>
+          <h2 className="m-0 uppercase text-black" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Unsere</h2>
+          <h2 className="m-0 uppercase text-black" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Companies</h2>
         </div>
-        <div className="flex flex-col gap-8">
+        <div
+          className="flex snap-x snap-mandatory gap-[4vw] overflow-x-auto"
+          style={{ paddingLeft: "3vw", paddingRight: "3vw", scrollPaddingLeft: "3vw", WebkitOverflowScrolling: "touch" }}
+        >
           {cards.map((card) => {
             const Wrap = card.href ? "a" : "div";
             return (
               <Wrap
                 key={card.name}
                 {...(card.href ? { href: card.href, target: "_blank", rel: "noreferrer" } : {})}
-                className="relative flex flex-col overflow-clip no-underline"
-                style={{ height: "78vw", borderRadius: "4vw", background: "#fff", boxShadow: "0 2vw 6vw -2vw rgba(0,0,0,0.2)" }}
+                className="relative flex shrink-0 snap-start flex-col overflow-clip no-underline"
+                style={{ width: "74vw", height: "104vw", borderRadius: "4vw", background: "#fff", boxShadow: "0 2vw 6vw -2vw rgba(0,0,0,0.2)" }}
               >
                 <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute bottom-0 flex w-full flex-col items-center text-center" style={{ paddingTop: "20vw", paddingBottom: "5vw", gap: "1vw", backgroundImage: "linear-gradient(0deg, #000, #0000)", color: "#f8f7f3" }}>
-                  <h3 className="m-0 uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "5.5vw", fontWeight: 500 }}>{card.name}</h3>
+                <div className="absolute bottom-0 flex w-full flex-col items-center text-center" style={{ paddingTop: "24vw", paddingBottom: "6vw", gap: "1vw", backgroundImage: "linear-gradient(0deg, #000, #0000)", color: "#f8f7f3" }}>
+                  <h3 className="m-0 uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "6vw", fontWeight: 500 }}>{card.name}</h3>
                 </div>
               </Wrap>
             );

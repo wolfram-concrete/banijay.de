@@ -5,7 +5,13 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
-### Footer-z, News-Mobile, Home-Übergangs-Timing (02.07., 29. Runde)
+### Companies-Slider mobil + Footer-z, News-Mobile, Timing (02.07., 29. Runde)
+- **Companies mobil neu:** „UNSERE" oben / „COMPANIES" darunter (gestapelt) + echter
+  **horizontaler Scroll-Snap-Slider** (links → rechts, native `overflow-x-auto`),
+  Karten 74vw×104vw. Vorher war die Mobile-Companies eine ruhige vertikale Liste,
+  die „überhaupt nicht" der gewünschten Slider-Idee entsprach. Verifiziert:
+  scrollWidth 5858 > clientWidth 375, 20 Karten.
+
 - **Footer über der Top-Nav:** Am Seitenende verschwand die (redundante) Top-Nav
   hinter dem Footer nicht — jetzt liegt der Footer (z-50) über der geschlossenen Nav
   (z-45). Beim Öffnen springt Menü-Overlay (z-200) + Nav (z-201) wieder komplett
