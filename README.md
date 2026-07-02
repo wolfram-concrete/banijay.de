@@ -35,7 +35,8 @@ src/
                          WorksCards, PageHero, AboutIntro, ProofVideo (About:
                          Zahlen→Video-Aufskalierung), CareerRoleStack,
                          CareerTomorrowStack (Standorte→Tomorrow, gepinnte
-                         Emerge-Sequenz), CareerSocial…
+                         Fächer-Sequenz: bunte Streifen layern nach unten, dann
+                         schwarze Karte + Content-Fade), CareerSocial…
     layout/              SiteHeader, SiteFooter
   data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
 public/
@@ -52,7 +53,7 @@ public/
 | Magenta      | `#ff4370`  | Einheitlicher Akzent: CTA, MENU, Flow-/Reveal-Flächen (= `banijay-sign.svg`) |
 
 Der frühere separate Coral-Ton (`#fb4b68`) wurde auf das einheitliche Magenta
-`#ff4370` zusammengeführt. Die Career-Emerge-Kaskade nutzt zusätzlich Orange
+`#ff4370` zusammengeführt. Die Career-Fächer-Kaskade nutzt zusätzlich Orange
 `#ff7a3d`, Gelb `#ffd23f` und Grün `#8fd94e` als Zwischen-Layer.
 
 ## Assets & Git

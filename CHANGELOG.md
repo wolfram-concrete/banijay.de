@@ -14,6 +14,8 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   schwarze Karte** heraus, **erst danach** fadet der Content ein. Größen kompaktiert,
   damit das Stack in die Pin-Bühne passt (Stack ~1060px). Verifiziert über den
   Scrollverlauf: Streifen wischen einzeln (88→0 %), Schwarz bei ~78 %, Content 0→0.99.
+  Mobile (375px) gegengecheckt: statische gestapelte Variante sauber; Home
+  Statement→Companies mobil ebenfalls ok (Magenta voll, MENU invertiert schwarz).
 
 ### Menü-Overlay schließen: Nav-Farbe synchronisiert (02.07., 25. Runde)
 - **Fix „MENU verschwindet kurz beim Schließen":** Beim Schließen sprang die Nav-Farbe
