@@ -161,7 +161,7 @@ export function AlgarveCareerTomorrowStack() {
                       href={tomorrow.cta.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex w-fit items-center gap-2 rounded-full bg-[#f8f7f3] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-white max-[767px]:!text-[3.4vw]"
+                      className="inline-flex w-fit items-center gap-2 rounded-full bg-[#f8f7f3] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!text-[3.4vw]"
                       style={{ padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
                     >
                       {tomorrow.cta.text}
