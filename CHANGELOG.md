@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Fixes (02.07.)
+- **Preloader-Partikel sichtbar:** Das absolut positionierte Hintergrundvideo
+  überdeckte die statisch gemalten Partikel (CSS-Paint-Reihenfolge). Canvas liegt
+  jetzt in einem `absolute z-index:1`-Wrapper über dem Video → Animation sichtbar.
+- **Grid-Videos spielen zuverlässig:** Browser pausieren autoplay-Videos, die beim
+  Laden offscreen sind. IntersectionObserver startet die Tile-/Showreel-Videos,
+  sobald sie sichtbar werden (offscreen pausieren spart Decode).
+
 ### Große Choreografie-Reworks (02.07.)
 - **Scroll-Start global:** Section-Reveals (`.reveal`) starten erst, wenn wirklich
   im Bild (`animation-range entry 22%–62%`); Team-Fade-Batch auf `top 82%`.

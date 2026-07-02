@@ -49,10 +49,23 @@ public/
 
 ## Assets & Git
 
-Große Platzhalter-Videos und Marken-Rohmaterial (`hero.mp4`, `hero-cinematic.mp4`,
-`kompetenz-reel.mp4`, `preloader.png`, `stage-portrait.png`) sowie `design-source/`,
-`assets/` und `scraped_content/` sind **bewusst gitignored** — zu groß für GitHub und
-nur lokal als Quellmaterial vorhanden. Genutzte, optimierte Kopien liegen in `public/`.
-`.env.local` wird nie committet.
+Große Videos und Marken-Rohmaterial sowie `design-source/`, `assets/` und
+`scraped_content/` sind **bewusst gitignored** — zu groß für GitHub und nur lokal
+als Quellmaterial vorhanden. `.env.local` wird nie committet.
+
+**Wichtig für Deploy/Clone:** Diese in `public/video/` genutzten, gitignorten
+Videos müssen separat bereitgestellt werden (weboptimierte Kopien liegen in
+`assets/Videos/weboptimiert/`):
+
+| Datei                     | Verwendung                                  |
+|---------------------------|---------------------------------------------|
+| `preloader-bg.mp4`        | Preloader-Hintergrund                       |
+| `hero-bg.mp4`             | Home-Hero (Glas-„b")                        |
+| `team-fullscreen.mp4`     | Team-→-News-Übergang (LogoReveal)           |
+| `grid-loop1–3.mp4`        | 3 Loop-Cutouts in der Home-Grid-Section     |
+| `showreel.mp4`, `banijay-teaser.mp4` | Showreel / Teaser (im Repo)      |
+
+Ältere Platzhalter (`hero.mp4`, `hero-cinematic.mp4`, `kompetenz-reel.mp4`,
+`preloader.png`, `stage-portrait.png`) ebenfalls gitignored.
 
 Die Leadership-/People-Bilder sind aktuell **Platzhalter**.
