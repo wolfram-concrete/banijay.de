@@ -137,6 +137,10 @@ const labelForPath = (path: string): string | undefined =>
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  // Bleibt auch während der Schließ-Transition (Overlay-Höhe 100vh→0, 500ms) true,
+  // damit Logo + MENU schwarz bleiben, solange das Magenta-Overlay den oberen Rand
+  // noch bedeckt — erst wenn es wirklich weg ist, invertiert die Nav zurück.
+  const [overlayPresent, setOverlayPresent] = useState(false);
   const [linksVisible, setLinksVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const [onMagenta, setOnMagenta] = useState(false);
@@ -187,6 +191,18 @@ export function SiteHeader() {
     return () => clearTimeout(resetTimer);
   }, [open]);
 
+  // Overlay-Präsenz inkl. Schließ-Transition: beim Öffnen sofort true; beim
+  // Schließen erst nach Ablauf der Höhen-Transition (500ms) false → die Nav bleibt
+  // schwarz, bis das Magenta-Overlay den oberen Rand freigegeben hat.
+  useEffect(() => {
+    if (open) {
+      const on = window.setTimeout(() => setOverlayPresent(true), 0);
+      return () => clearTimeout(on);
+    }
+    const off = window.setTimeout(() => setOverlayPresent(false), 520);
+    return () => clearTimeout(off);
+  }, [open]);
+
   // Bei Routenwechsel schließen.
   useEffect(() => {
     if (previousPathname.current === pathname) return;
@@ -229,7 +245,7 @@ export function SiteHeader() {
   }, [pathname]);
 
   // Im offenen Coral-Overlay und auf Magenta-Flächen läuft das Logo schwarz.
-  const blackLogo = open || onMagenta;
+  const blackLogo = open || overlayPresent || onMagenta;
 
   return (
     <div className="relative">
@@ -283,7 +299,7 @@ export function SiteHeader() {
                 fontSize: "3.5rem",
                 lineHeight: 0.86,
                 letterSpacing: "-0.01em",
-                color: open || onMagenta ? INK : MAGENTA,
+                color: open || overlayPresent || onMagenta ? INK : MAGENTA,
                 boxShadow: "none",
                 padding: 0,
               }}
@@ -305,7 +321,7 @@ export function SiteHeader() {
                   fontSize: "0.9rem",
                   lineHeight: 1,
                   letterSpacing: "0.06em",
-                  color: onMagenta ? INK : MAGENTA,
+                  color: open || overlayPresent || onMagenta ? INK : MAGENTA,
                   whiteSpace: "nowrap",
                   // Das weiße Hero-Label „übergibt" hierher: es rastet mit
                   // Shift + Herunterskalieren als kleine rote Wortmarke ein.

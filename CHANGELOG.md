@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Menü-Overlay schließen: Nav-Farbe synchronisiert (02.07., 25. Runde)
+- **Fix „MENU verschwindet kurz beim Schließen":** Beim Schließen sprang die Nav-Farbe
+  sofort auf Magenta, während das (magentafarbene) Overlay noch 500 ms nach oben
+  einfuhr → rote Schrift auf rotem Grund, kurz unsichtbar. Neuer State
+  `overlayPresent` bleibt über die Schließ-Transition (520 ms) true; Logo + MENU +
+  Docked-Label bleiben **schwarz, bis das Overlay den oberen Rand freigegeben hat**,
+  und invertieren erst danach zurück. Verifiziert (Inline-Style): offen → schwarz,
+  schließen@180ms → weiterhin schwarz, nach 880ms → magenta.
+
 ### Home Statement→Companies: Nav-Invert + Timing (02.07., 24. Runde)
 - **Nav invertiert über der Magenta-Fläche:** Das aufsteigende Magenta-Overlay der
   AboutIntro (Home) trägt jetzt `data-nav-theme="magenta"` → sobald es oben liegt,
