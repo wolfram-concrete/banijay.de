@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Mobile-Feinschliff neue Module (02.07., 21. Runde)
+- **About `ProofVideo` mobil:** Die gepinnte clip-path-Aufskalierung lief auf Mobile
+  ins Leere (Bento-Grid überlief die 100vh-Bühne, Video-Modul rausgedrückt, Video
+  stand sofort fullscreen). Jetzt eigene, ruhige **Mobile-Variante ohne Pin/Scale**:
+  Proof-Text + Kennzahlen normal gestapelt (größere Rundungen/Padding), darunter eine
+  **statische Video-Statement-Karte** (3:4, Statement zentriert). GSAP läuft nur noch
+  ≥768px. Desktop-Sequenz unverändert verifiziert (Start am Modul → Fullscreen →
+  Statement).
+- **Career `CareerTomorrowStack` mobil:** Tomorrow-Copy hatte `max-width:34vw` inline
+  → quetschte den Text auf Mobile auf ~1 Wort/Zeile. Auf Mobile jetzt `max-w-full`
+  (Text 100 %). Regenbogen-Layer + schwarze Tomorrow-Section sauber verifiziert.
+- **MENU** `line-height` 0.75 → 0.86 (weniger gedrungen, weiter bündig zum Logo).
+
 ### Team-Grid-Fit, Career-Regenbogen-Übergang, Flip-Cards enger (02.07., 20. Runde)
 - **About/Home – Team-Grid überlief die Pin-Bühne:** Auf niedrigeren/breiteren
   Viewports wuchsen die Portraits (festes 4:5) über die fixe 100vh-Bühne hinaus,

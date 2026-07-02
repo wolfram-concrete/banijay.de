@@ -17,6 +17,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // Aufskalierung läuft über einen animierten clip-path (inset), damit das Video
 // nie verzerrt. Erst wenn das Video full-size steht, kommt das Statement Wort für
 // Wort rein. Danach scrollt es weiter zur CEO-Section.
+//
+// Mobile: KEINE Pin-/Scale-Mechanik (dort passt weder das Grid in eine 100vh-
+// Bühne, noch trägt die „aus dem Modul wachsen"-Idee). Stattdessen ruhige,
+// gestapelte Variante — Zahlen normal untereinander, danach eine statische
+// Video-Statement-Karte.
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
@@ -43,6 +48,8 @@ export function AlgarveProofVideo({
 
   useGSAP(
     () => {
+      // Nur Desktop: die gepinnte clip-path-Aufskalierung.
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
       const stageEl = stage.current;
       const tileEl = tile.current;
       const overlayEl = overlay.current;
@@ -107,80 +114,117 @@ export function AlgarveProofVideo({
   const parts = statement.split(" ");
   const nonAbout = stats.filter((s) => !s.aboutOnly);
 
+  // Bento-Kennzahlen (erste Kachel Coral, col-span-2) — in Desktop- und Mobile-
+  // Variante identisch verwendet.
+  const bento = (
+    <div className="grid grid-cols-2 gap-[1vw] md:grid-cols-3 max-[767px]:!gap-[3vw]">
+      {nonAbout.map((s, i) => {
+        const accent = i === 0;
+        const bg = accent ? ACCENT : "rgba(14,13,11,0.05)";
+        return (
+          <div
+            key={s.label}
+            className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] ${accent ? "col-span-2" : ""}`}
+            style={{ background: bg, color: INK, borderRadius: "1.11vw", padding: "1.6vw", minHeight: "9vw" }}
+          >
+            <span
+              className="max-[767px]:!text-[12vw]"
+              style={{ fontFamily: SHARP, fontSize: accent ? "4.4vw" : "3.2vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw" }}
+            >
+              <CountUp value={s.value} />
+            </span>
+            <p className="mt-[1vw] max-[767px]:!mt-[2vw] max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}>
+              {s.label}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <section ref={root} className="relative" style={{ height: "300vh", background: PAPER }}>
-      <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
-        {/* ── Fakten-Bühne (Proof-Text + Bento-Zahlen + Video-Modul) ───────── */}
-        <div
-          className="mx-auto flex h-full flex-col max-[767px]:!px-[3vw]"
-          style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
-        >
+    <>
+      {/* ── Desktop: gepinnte Bühne mit clip-path-Aufskalierung ──────────── */}
+      <section ref={root} className="relative max-[767px]:hidden" style={{ height: "300vh", background: PAPER }}>
+        <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
+          <div
+            className="mx-auto flex h-full flex-col"
+            style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
+          >
+            <p
+              className="md:max-w-[52vw]"
+              style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
+            >
+              {proofText}
+            </p>
+
+            <div className="mt-[2.5vw]">{bento}</div>
+
+            {/* Video-Modul — gerundetes Modul, das gleich full-screen aufskaliert.
+                In-flow reserviert es hier seinen Platz; das eigentliche (wachsende)
+                Video liegt als Overlay exakt darüber. */}
+            <div
+              ref={tile}
+              className="mt-[1.5vw] w-full flex-1"
+              style={{ minHeight: "10vh", borderRadius: "1.11vw", background: "#0b0a0d" }}
+            />
+          </div>
+
+          {/* Wachsender Video-Container (clip-path von Grid-Platz → full) */}
+          <div ref={overlay} className="absolute inset-0 overflow-clip" style={{ willChange: "clip-path" }}>
+            <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
+              <source src={video} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0" style={{ background: "rgba(8,7,10,0.42)" }} />
+
+            {/* Statement zentral über dem Video (erscheint erst full-screen) */}
+            <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "6vw", paddingRight: "6vw" }}>
+              <p
+                className="m-0 flex flex-wrap justify-center text-center"
+                style={{ maxWidth: "64vw", columnGap: "0.7vw", rowGap: 0, fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.09vw", color: PAPER }}
+              >
+                {parts.map((w, i) => (
+                  <span key={i} className="overflow-hidden" style={{ display: "inline-block", paddingTop: "0.5vw", paddingBottom: "0.5vw", marginTop: "-0.5vw", marginBottom: "-0.5vw" }}>
+                    <span data-pv-word style={{ display: "inline-block" }}>
+                      {w}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Mobile: ruhige gestapelte Variante (kein Pin/Scale) ──────────── */}
+      <section className="hidden max-[767px]:block" style={{ background: PAPER, paddingTop: "12vw", paddingBottom: "12vw" }}>
+        <div style={{ paddingLeft: "4vw", paddingRight: "4vw" }}>
           <p
-            className="max-[767px]:!text-[5vw] md:max-w-[52vw]"
-            style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
+            className="text-[5vw]"
+            style={{ fontFamily: SHARP, lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
           >
             {proofText}
           </p>
 
-          {/* Bento-Kennzahlen (erste Kachel Coral, col-span-2) */}
-          <div className="mt-[2.5vw] grid grid-cols-2 gap-[1vw] md:grid-cols-3">
-            {nonAbout.map((s, i) => {
-              const accent = i === 0;
-              const bg = accent ? ACCENT : "rgba(14,13,11,0.05)";
-              return (
-                <div
-                  key={s.label}
-                  className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] ${accent ? "col-span-2" : ""}`}
-                  style={{ background: bg, color: INK, borderRadius: "1.11vw", padding: "1.6vw", minHeight: "9vw" }}
-                >
-                  <span
-                    className="max-[767px]:!text-[12vw]"
-                    style={{ fontFamily: SHARP, fontSize: accent ? "4.4vw" : "3.2vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw" }}
-                  >
-                    <CountUp value={s.value} />
-                  </span>
-                  <p className="mt-[1vw] max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}>
-                    {s.label}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          <div className="mt-[7vw]">{bento}</div>
 
-          {/* Video-Modul — gerundetes Modul, das gleich full-screen aufskaliert.
-              In-flow reserviert es hier seinen Platz; das eigentliche (wachsende)
-              Video liegt als Overlay exakt darüber. */}
-          <div
-            ref={tile}
-            className="mt-[1.5vw] w-full flex-1 max-[767px]:!min-h-[42vw]"
-            style={{ minHeight: "10vh", borderRadius: "1.11vw", background: "#0b0a0d" }}
-          />
-        </div>
-
-        {/* ── Wachsender Video-Container (clip-path von Grid-Platz → full) ──── */}
-        <div ref={overlay} className="absolute inset-0 overflow-clip" style={{ willChange: "clip-path" }} aria-hidden={false}>
-          <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
-            <source src={video} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0" style={{ background: "rgba(8,7,10,0.42)" }} />
-
-          {/* Statement zentral über dem Video (erscheint erst full-screen) */}
-          <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "6vw", paddingRight: "6vw" }}>
-            <p
-              className="m-0 flex flex-wrap justify-center text-center max-[767px]:!text-[7vw]"
-              style={{ maxWidth: "64vw", columnGap: "0.7vw", rowGap: 0, fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.09vw", color: PAPER }}
-            >
-              {parts.map((w, i) => (
-                <span key={i} className="overflow-hidden" style={{ display: "inline-block", paddingTop: "0.5vw", paddingBottom: "0.5vw", marginTop: "-0.5vw", marginBottom: "-0.5vw" }}>
-                  <span data-pv-word style={{ display: "inline-block" }}>
-                    {w}
-                  </span>
-                </span>
-              ))}
-            </p>
+          {/* Statische Video-Statement-Karte */}
+          <div className="relative mt-[7vw] overflow-clip" style={{ borderRadius: "5vw", aspectRatio: "3 / 4" }}>
+            <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
+              <source src={video} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0" style={{ background: "rgba(8,7,10,0.5)" }} />
+            <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "7vw", paddingRight: "7vw" }}>
+              <p
+                className="m-0 text-center text-[7vw]"
+                style={{ fontFamily: SHARP, lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.03vw", color: PAPER }}
+              >
+                {statement}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
