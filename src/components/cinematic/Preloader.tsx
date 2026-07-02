@@ -128,6 +128,7 @@ export function Preloader() {
       {phase === "particles" && (
         <video
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ zIndex: 0 }}
           src="/video/preloader-bg.mp4"
           autoPlay
           muted
@@ -136,7 +137,13 @@ export function Preloader() {
           preload="auto"
         />
       )}
-      {phase === "particles" && <ParticleB onComplete={onParticlesDone} />}
+      {/* Partikel-Canvas MUSS über dem Video liegen — sonst überdeckt das absolut
+          positionierte Video die (statisch gemalten) Partikel. */}
+      {phase === "particles" && (
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
+          <ParticleB onComplete={onParticlesDone} />
+        </div>
+      )}
       {/* Cutout-/Blenden-Phase: Magenta-Fläche mit b-Loch (Übergang zum Hero). */}
       {phase === "cutout" && (
         <div ref={knock} className="absolute inset-0" style={{ background: ACCENT }} />

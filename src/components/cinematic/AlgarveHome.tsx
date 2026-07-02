@@ -108,6 +108,28 @@ export function AlgarveHome() {
     return () => v.removeEventListener("timeupdate", onTime);
   }, []);
 
+  // Grid-Videos (Tile-Loops + Showreel) zuverlässig abspielen: Browser pausieren
+  // autoplay-Videos, die beim Laden außerhalb des Viewports liegen, und nehmen sie
+  // nicht zuverlässig wieder auf → man sähe nur ein eingefrorenes Bild. Daher per
+  // IntersectionObserver starten, sobald sichtbar (offscreen pausieren spart Decode).
+  useEffect(() => {
+    const sec = gridSection.current;
+    if (!sec) return;
+    const vids = Array.from(sec.querySelectorAll("video"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        });
+      },
+      { threshold: 0.15 },
+    );
+    vids.forEach((v) => io.observe(v));
+    return () => io.disconnect();
+  }, []);
+
   // „BANIJAY" auf volle Grid-Breite skalieren: gemessene Wortbreite → font-size,
   // die die verfügbare Breite (+1vw für den margin-left-Versatz) exakt füllt.
   // Nur bei Breitenänderung neu rechnen (Höhenänderung würde sonst loopen).
