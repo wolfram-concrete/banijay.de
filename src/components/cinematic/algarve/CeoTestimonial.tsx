@@ -83,14 +83,11 @@ export function AlgarveCeoTestimonial({
               >
                 „{quote}“
               </blockquote>
-              <div className="flex flex-col" style={{ gap: "0.2vw" }}>
-                <span className="max-[767px]:!text-[4.4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500 }}>
-                  {name}
-                </span>
-                <span className="max-[767px]:!text-[3.2vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 400, color: "rgba(248,247,243,0.6)" }}>
-                  {name === "Marcus Wolter" ? "CEO & Co-Founder Banijay Germany" : role}
-                </span>
-              </div>
+              {/* Nur der Name — die Rolle steht bereits oben als Eyebrow über der
+                  Linie (keine Doppelung). */}
+              <span className="max-[767px]:!text-[4.4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500 }}>
+                {name}
+              </span>
 
               {stats && stats.length > 0 && (
                 <>

@@ -5,6 +5,20 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Career-Peel-Animation, CEO-Titel entdoppelt, MENU mobil (02.07., 22. Runde)
+- **Career `CareerTomorrowStack` – Peel-Animation (Desktop):** Der Übergang ist jetzt
+  animiert. Die Section wird gepinnt („aufs Stop"); der Magenta-Standorte-Layer liegt
+  oben, darunter im z-Stack Orange → Gelb → Grün und ganz unten der schwarze Tomorrow-
+  Layer. Beim Scrollen **fädeln sich die Layer nacheinander nach unten weg** (yPercent,
+  leicht überlappend), bis der schwarze Layer freiliegt und der **Tomorrow-Content
+  einläuft**. Peel-Reihenfolge nach z-index (oberster zuerst). Mobile bleibt die
+  statische gestapelte Variante. Verifiziert: Start Magenta full, mid Orange/Gelb-
+  Kaskade, Ende Schwarz + Content (opacity ~1).
+- **CEO-Testimonial – Titel entdoppelt:** Rolle stand doppelt (Eyebrow oben + unter
+  dem Namen). Jetzt nur noch oben über der Linie; unter dem Namen entfernt.
+- **MENU mobil −25 %:** `font-size` auf ≤767px von 3.5rem → 2.625rem (war auf schmalen
+  Screens zu groß). Desktop unverändert.
+
 ### Mobile-Feinschliff neue Module (02.07., 21. Runde)
 - **About `ProofVideo` mobil:** Die gepinnte clip-path-Aufskalierung lief auf Mobile
   ins Leere (Bento-Grid überlief die 100vh-Bühne, Video-Modul rausgedrückt, Video

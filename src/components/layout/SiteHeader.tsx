@@ -270,7 +270,9 @@ export function SiteHeader() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Menü schließen" : "Menü öffnen"}
-              className="appearance-none border-0 bg-transparent uppercase transition-colors"
+              // Mobile: 25 % kleiner (3.5rem → 2.625rem) — auf schmalen Screens
+              // war die Wortmarke zu groß.
+              className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[2.625rem]"
               style={{
                 // Kein Pill mehr — reine Wortmarke rechtsbündig, in Magenta wie das Logo.
                 // Über Magenta-Flächen bzw. im offenen Overlay invertiert sie auf Ink.
