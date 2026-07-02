@@ -101,6 +101,25 @@ export function AlgarveTestimonials() {
     { scope: root },
   );
 
+  // Mobile: die Zitate + Facts sind sonst statisch — sie faden beim Scrollen
+  // gestaffelt von unten ein (attraktiver Aufbau der ansonsten ruhigen Section).
+  useGSAP(
+    () => {
+      if (window.matchMedia("(min-width: 992px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const items = gsap.utils.toArray<HTMLElement>("[data-tmob], [data-tstat]");
+      if (!items.length) return;
+      gsap.set(items, { autoAlpha: 0, y: 44 });
+      ScrollTrigger.batch(items, {
+        start: "top 88%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" }),
+      });
+    },
+    { scope: root },
+  );
+
   // Hover: „set all" (robust gegen Sibling-Konflikte). Gehoverte Karte gerade +
   // groß + Overlay weg; direkte Nachbarn weichen aus; passender Text blendet ein.
   const applyHover = (idx: number) => {
@@ -192,35 +211,44 @@ export function AlgarveTestimonials() {
             ))}
           </div>
 
-          {/* Mobile: einfache Liste (keine Desktop-Fächer-Interaktion) */}
-          <div className="hidden flex-col gap-8 max-[991px]:flex" style={{ paddingLeft: "5vw", paddingRight: "5vw" }}>
-            {STATEMENTS.slice(0, 3).map((s, i) => (
-              <figure key={i} className="m-0 flex flex-col gap-3">
-                <div className="overflow-hidden" style={{ height: "34vw", borderRadius: "12px" }}>
-                  <img src={CARDS[i].url} alt={CARDS[i].name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
+          {/* Mobile: Liste im Original-Layout (Bild links / Text rechts, 4fr/8fr).
+              Bild als Portrait mit Fokuspunkt auf das Gesicht (nicht abgeschnitten). */}
+          <div className="hidden flex-col gap-[8vw] max-[991px]:flex" style={{ paddingLeft: "5vw", paddingRight: "5vw" }}>
+            {STATEMENTS.map((s, i) => (
+              <figure key={i} data-tmob className="m-0 grid items-start gap-[4vw]" style={{ gridTemplateColumns: "4fr 8fr" }}>
+                <div className="overflow-hidden" style={{ borderRadius: "3vw", aspectRatio: "4 / 5" }}>
+                  <img
+                    src={CARDS[i].url}
+                    alt={CARDS[i].name}
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: "center 14%", filter: "grayscale(1)" }}
+                  />
                 </div>
-                <blockquote className="m-0" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "4.2vw", lineHeight: "135%", fontWeight: 500 }}>
-                  „{s.quote}“
-                </blockquote>
-                <figcaption className="flex flex-wrap items-center gap-2" style={{ opacity: 0.6, fontSize: "3.2vw" }}>
-                  <span>{s.name}</span>
-                  <span>·</span>
-                  <span>{s.role}</span>
-                </figcaption>
+                <div className="flex flex-col gap-[3vw]">
+                  <blockquote className="m-0" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "3.6vw", lineHeight: "134%", fontWeight: 500 }}>
+                    „{s.quote}“
+                  </blockquote>
+                  <figcaption className="flex flex-col gap-[0.5vw]" style={{ fontSize: "3vw", lineHeight: "128%" }}>
+                    <span style={{ fontWeight: 600 }}>{s.name}</span>
+                    <span style={{ opacity: 0.6 }}>{s.role}</span>
+                  </figcaption>
+                </div>
               </figure>
             ))}
           </div>
         </div>
 
-        {/* Zähler-Grid (echte Zahlen) */}
-        <div className="grid grid-cols-2 md:grid-cols-4" style={{ marginTop: "1vw", gap: "1vw" }}>
+        {/* Zähler-Grid (echte Zahlen) — Mobile einspaltig, deutlich größere Facts. */}
+        <div className="grid grid-cols-1 md:grid-cols-4 max-[767px]:!gap-[3vw] max-[767px]:!mt-[6vw]" style={{ marginTop: "1vw", gap: "1vw" }}>
           {STATS.map((s) => (
             <div
               key={s.label}
-              className="flex flex-col items-center justify-center text-center"
+              data-tstat
+              className="flex flex-col items-center justify-center text-center max-[767px]:!flex-row max-[767px]:!justify-between max-[767px]:!gap-[4vw] max-[767px]:!p-[6vw] max-[767px]:!rounded-[4vw]"
               style={{ padding: "3.33vw 1.39vw", gap: "1.67vw", borderRadius: "1.11vw", backgroundColor: "#00000014" }}
             >
               <span
+                className="max-[767px]:!text-[13vw]"
                 style={{
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontSize: "4.44vw",
@@ -232,6 +260,7 @@ export function AlgarveTestimonials() {
                 <CountUp value={s.value} />
               </span>
               <span
+                className="max-[767px]:!text-[3.2vw] max-[767px]:!text-right"
                 style={{
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontSize: "0.9vw",

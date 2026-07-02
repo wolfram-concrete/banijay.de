@@ -43,6 +43,9 @@ export function AlgarveServicesStack() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      // 3D-Wegkippen nur auf Desktop (≥768px) mit Sticky-Stack; auf Mobile stehen die
+      // Cards im Normalfluss (static, halbe Höhe, Video unter der Headline).
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-service-card]");
       // Echtes 3D-Wegkippen (wie auf der Companies-Seite): sobald die nächste Card
       // hochscrollt, kippt die aktuelle um ihre Oberkante nach hinten weg + faded.
@@ -117,7 +120,7 @@ export function AlgarveServicesStack() {
             <div
               key={card.index}
               data-service-card
-              className="sticky flex flex-col justify-between overflow-clip"
+              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!static max-[767px]:!h-auto max-[767px]:!p-[6vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
@@ -129,20 +132,20 @@ export function AlgarveServicesStack() {
               }}
             >
               {/* Top: Titel + Index (auf voll eingefärbtem Grund, schwarze Typo) */}
-              <div className="relative flex items-center justify-between" style={{ zIndex: 3 }}>
-                <h3 className="uppercase" style={H1}>
+              <div className="relative flex items-center justify-between max-[767px]:!order-1" style={{ zIndex: 3 }}>
+                <h3 className="uppercase max-[767px]:!text-[8.5vw]" style={H1}>
                   {card.title}
                 </h3>
-                <h3 style={{ ...H1, color: "rgba(0,0,0,0.28)" }}>{card.index}</h3>
+                <h3 className="max-[767px]:!text-[8.5vw]" style={{ ...H1, color: "rgba(0,0,0,0.28)" }}>{card.index}</h3>
               </div>
 
-              {/* Bottom: Claim + Text */}
+              {/* Bottom: Claim + Text — auf Mobile UNTER dem Video (order-3), voll breit */}
               <div
-                className="relative flex flex-col items-start"
+                className="relative flex flex-col items-start max-[767px]:!order-3 max-[767px]:!mt-[5vw] max-[767px]:!max-w-full max-[767px]:!gap-[3vw]"
                 style={{ zIndex: 3, maxWidth: "39.17vw", gap: "1.11vw" }}
               >
                 <h4
-                  className="m-0"
+                  className="m-0 max-[767px]:!text-[6vw]"
                   style={{
                     fontFamily: "var(--font-sharp), sans-serif",
                     fontSize: "2.5vw",
@@ -154,16 +157,17 @@ export function AlgarveServicesStack() {
                   {card.claim}
                 </h4>
                 <p
-                  className="m-0"
+                  className="m-0 max-[767px]:!text-[4vw]"
                   style={{ fontSize: "1.39vw", lineHeight: "135%", opacity: 0.85 }}
                 >
                   {card.text}
                 </p>
               </div>
 
-              {/* Rotiertes Glass-Video */}
+              {/* Glass-Video — Desktop: rotiert absolut rechts unten. Mobile: in-flow
+                  DIREKT UNTER der Headline (order-2), volle Breite, Querformat, gerade. */}
               <div
-                className="absolute overflow-hidden"
+                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[5vw] max-[767px]:!h-[56vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none max-[767px]:!rounded-[4vw]"
                 style={{
                   zIndex: 3,
                   width: "27vw",

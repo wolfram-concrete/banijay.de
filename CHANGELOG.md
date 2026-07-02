@@ -5,6 +5,20 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-02
 
+### Home mobil: Kernkompetenzen, Heading-Umbruch, Testimonials (02.07., 37. Runde)
+- **Kernkompetenzen (ServicesStack) mobil:** Cards waren 90vh hoch mit winziger Schrift
+  und schmalem, gedrehtem Video. Jetzt ab ≤767px **static, ~halbe Höhe**, das Video als
+  **Querformat DIREKT unter der Headline** (order 1→2→3: Titel → Video → Claim/Text),
+  Fonts größer (Titel 8.5vw, Claim 6vw, Text 4vw). 3D-Kipp-Animation nur noch ≥768px.
+- **AnimatedHeading-Umbruch:** Lange Wörter (HANDSCHRIFTEN) liefen über den Rand — jetzt
+  **deutsche Silbentrennung** (`hyphens:auto`, Bindestrich, lang="de") → bricht sauber
+  zweizeilig, kein Überlauf.
+- **Testimonials mobil überarbeitet:** Layout wie Original (**Bild links / Text rechts**,
+  4fr/8fr), Bild als 4:5-Portrait mit **Fokuspunkt aufs Gesicht** (`object-position 50%
+  14%`, nicht mehr abgeschnitten), alle 5 Statements, größere Typo. **Facts einspaltig**
+  (statt 2-spaltig) mit großen Zahlen (13vw). Section war „unbewegt" → **gestaffelte
+  Reveal-Animation** (Zitate + Facts faden beim Scrollen von unten ein).
+
 ### Home mobil: Hero, Portfolio-Grid, Statement-Heading (02.07., 36. Runde)
 - **Hero-Typo mobil:** Die 3 partiellen BANIJAY-Clip-Zeilen „geisterten" auf Mobile
   über dem vollen Wort → auf Mobile ausgeblendet, es bleibt EIN sauberes „BANIJAY"

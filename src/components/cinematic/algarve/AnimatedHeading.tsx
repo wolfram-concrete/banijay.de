@@ -21,6 +21,11 @@ const LINE = {
   textAlign: "center",
   textTransform: "uppercase",
   margin: 0,
+  // Auf schmalen Screens lange Wörter (z. B. HANDSCHRIFTEN) mit Bindestrich
+  // umbrechen statt über den Rand laufen zu lassen (deutsche Trennung via lang="de").
+  hyphens: "auto",
+  WebkitHyphens: "auto",
+  overflowWrap: "break-word",
 } as const;
 
 export function AlgarveAnimatedHeading({ lines }: { lines: [string, string, string] }) {
