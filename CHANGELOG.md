@@ -3,6 +3,20 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [Unreleased] — 2026-07-03
+
+### Home-Desktop: Statement-Standzeit + News-Schiebe-Stack (03.07., 44. Runde)
+- **AboutIntro (3. Section) — Statement bleibt länger stehen:** Der Magenta-Layer der
+  Companies-Section schob sich auf Desktop zu schnell über das weiße Statement. Die
+  Section ist jetzt auf Desktop **275vh** (statt 230vh) → nach dem Word-Reveal (~60vh)
+  bleibt das Statement deutlich länger GEPINNT stehen, bevor die Companies-Fläche
+  (`marginTop -100vh`) überlappt. Mobile bleibt via Klassen-Override bei 230vh.
+- **News-Modul (letzte Section) — Schiebe-Effekt auch auf Desktop:** Der sticky-Stack
+  war nur mobil aktiv; Desktop war eine flache Liste. Jetzt tragen die Tiles auch auf
+  Desktop `position: sticky; bottom: 10vw` mit z-Index-Staffelung (erste Kachel vorn,
+  jede weitere rastet darunter ein) — opake Magenta-Karten mit oberer Schattenkante,
+  wie im Algarve-`blog-home`-Template.
+
 ## [Unreleased] — 2026-07-02
 
 ### Zahlen-Section, Career-Fächer, Site-QA (02.07., 43. Runde)

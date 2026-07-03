@@ -72,20 +72,22 @@ export function AlgarveNewsStack() {
             </Link>
           </div>
 
-          {/* Rechte Spalte: Desktop eine ruhige Liste; Mobile stapeln sich die
-              Tiles ineinander (Algarve blog-home: position:sticky bottom +
-              z-Index-Staffelung — die erste Kachel liegt vorn, jede weitere
-              schiebt sich beim Scrollen darunter). */}
+          {/* Rechte Spalte: die Tiles schieben sich beim Scrollen übereinander
+              (Algarve blog-home: position:sticky bottom + z-Index-Staffelung — die
+              erste Kachel liegt vorn, jede weitere rastet darunter/dahinter ein).
+              Gilt Desktop UND Mobile; jede Kachel ist eine opake Magenta-Karte mit
+              oberer Schattenkante, damit die Schiebe-Ebenen klar lesbar sind. */}
           <div className="relative flex flex-col">
             {ITEMS.map((item, i) => (
               <Link
                 key={item.title}
                 href={`/news/${item.slug}`}
-                className="group flex flex-col no-underline max-[767px]:!sticky max-[767px]:!bottom-[9vw] max-[767px]:!border-t-0 max-[767px]:!bg-[#ff4370] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] max-[767px]:!shadow-[0_-1.5vw_4vw_-1vw_rgba(0,0,0,0.32)]"
+                className="group sticky bottom-[10vw] flex flex-col rounded-[1.11vw] bg-[#ff4370] no-underline shadow-[0_-1vw_3.5vw_-0.9vw_rgba(0,0,0,0.3)] max-[767px]:!bottom-[9vw] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] max-[767px]:!shadow-[0_-1.5vw_4vw_-1vw_rgba(0,0,0,0.32)]"
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
-                  borderTop: i === 0 ? "none" : "0.08vw solid rgba(0,0,0,0.2)",
+                  paddingLeft: "1.67vw",
+                  paddingRight: "1.67vw",
                   color: "#0e0d0b",
                   zIndex: ITEMS.length - i,
                 }}

@@ -74,10 +74,13 @@ export function AlgarveAboutIntro({ text, magentaExit = false }: { text?: string
   return (
     <section
       ref={root}
-      className={magentaExit ? undefined : "max-[767px]:!h-[150vh]"}
+      className={magentaExit ? "max-[767px]:!h-[230vh]" : "max-[767px]:!h-[150vh]"}
       style={{
-        background: "#f8f7f3",
-        height: magentaExit ? "230vh" : "220vh",
+        // Desktop (magentaExit): höher (275vh) → nach dem Word-Reveal (~60vh) bleibt
+        // das weiße Statement deutlich länger GEPINNT stehen, bevor die Companies-
+        // Section (marginTop -100vh) mit ihrer Magenta-Fläche darüberschiebt. Mobile
+        // bleibt via Klassen-Override bei 230vh (dortiges magentaExit-Overlay-Timing).
+        height: magentaExit ? "275vh" : "220vh",
         paddingTop: "5.56vw",
         paddingBottom: "5.56vw",
         position: "relative",
