@@ -67,22 +67,21 @@ export function AlgarveCareerRoleStack() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Intro-Copy: Wort-für-Wort-Parallax-Reveal, sobald der Block in den Viewport
-      // scrollt — baut sich gestaffelt von unten auf (alle Viewports).
+      // Intro-Typo: Wort-für-Wort-Parallax, SCROLL-GEKOPPELT (scrub) — Headline + Copy
+      // steigen gestaffelt aus dem Grund herein, während der Block durch den Viewport
+      // scrollt (alle Viewports).
       gsap.from("[data-roleintro-word]", {
         opacity: 0,
         yPercent: 60,
-        ease: "power2.out",
-        duration: 0.7,
-        stagger: { amount: 0.6, from: "start" },
-        scrollTrigger: { trigger: "[data-roleintro]", start: "top 82%", once: true },
+        ease: "none",
+        stagger: { amount: 1, from: "start" },
+        scrollTrigger: { trigger: "[data-roleintro]", start: "top 85%", end: "top 35%", scrub: 1 },
       });
 
-      // 3D-Wegkippen nur auf echtem Desktop (≥992px) mit Sticky-Stack; ab ≤991px
-      // stehen die Cards im Normalfluss (Querformat-Bild).
-      if (!window.matchMedia("(min-width: 992px)").matches) return;
+      // 3D-Wegkippen — EXAKT wie die Home-Kernkompetenzen (ServicesStack): auf ALLEN
+      // Viewports (auch Mobile), Sticky-Stack, jede Card kippt um die Oberkante nach
+      // hinten weg + faded, sobald die nächste hochscrollt.
       const cards = gsap.utils.toArray<HTMLElement>("[data-role-card]");
-      // Echtes 3D-Wegkippen (wie auf der Companies-Seite).
       cards.forEach((card, i) => {
         if (i === cards.length - 1) return;
         gsap.set(card, { transformPerspective: 2000, transformOrigin: "50% 0%" });
@@ -105,15 +104,19 @@ export function AlgarveCareerRoleStack() {
       style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        {/* Intro — Headline + Copy zu EINEM linksbündigen Copy-Text zusammengefügt */}
-        <div className="max-w-[64vw] max-[767px]:!max-w-full" style={{ marginBottom: "3.33vw" }}>
-          <p
-            data-roleintro
-            className="m-0 flex flex-wrap max-[767px]:!text-[5.5vw]"
-            style={{ fontFamily: SHARP, fontSize: "2.1vw", lineHeight: "134%", fontWeight: 500, letterSpacing: "-0.05vw", color: "#0e0d0b", columnGap: "0.5ch" }}
-          >
-            {`${CAREER.roleIntro.headline} ${CAREER.roleIntro.text}`.split(" ").map((w, i) => (
-              <span key={i} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
+        {/* Intro — GROSSE Headline (nutzt die Breite) + kleinere Copy darunter, beides
+            mit scroll-gekoppeltem Wort-Parallax. */}
+        <div data-roleintro className="max-w-[84vw] max-[767px]:!max-w-full" style={{ marginBottom: "4.5vw" }}>
+          <h2 className="m-0 flex flex-wrap max-[767px]:!text-[8.5vw]" style={{ fontFamily: SHARP, fontSize: "3.7vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.13vw", color: "#0e0d0b", columnGap: "0.5ch" }}>
+            {CAREER.roleIntro.headline.split(" ").map((w, i) => (
+              <span key={`h${i}`} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
+                {w}
+              </span>
+            ))}
+          </h2>
+          <p className="m-0 mt-[1.6vw] flex max-w-[48vw] flex-wrap max-[767px]:!mt-[5vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.3vw", lineHeight: "142%", fontWeight: 500, color: "rgba(14,13,11,0.58)", columnGap: "0.4ch" }}>
+            {CAREER.roleIntro.text.split(" ").map((w, i) => (
+              <span key={`t${i}`} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
                 {w}
               </span>
             ))}
@@ -126,7 +129,7 @@ export function AlgarveCareerRoleStack() {
             <div
               key={card.index}
               data-role-card
-              className="sticky flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[4vw] max-[767px]:!p-[6vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!h-[74vh] max-[767px]:!justify-start max-[767px]:!p-[6vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
@@ -138,9 +141,9 @@ export function AlgarveCareerRoleStack() {
                 transform: "perspective(2000px)",
               }}
             >
-              {/* Top: Titel + Index */}
-              <div className="relative flex items-start justify-between" style={{ zIndex: 3, gap: "2vw" }}>
-                <h3 className="uppercase max-[767px]:!text-[8vw]" style={H1}>
+              {/* Top: Titel + Index (Mobile order-1) */}
+              <div className="relative flex items-center justify-between max-[767px]:!order-1" style={{ zIndex: 3, gap: "2vw" }}>
+                <h3 className="uppercase max-[767px]:!text-[8vw]" style={{ ...H1, color: card.fg }}>
                   {card.title}
                 </h3>
                 <h3 className="max-[767px]:!text-[8vw]" style={{ ...H1, color: card.soft }}>
@@ -148,31 +151,31 @@ export function AlgarveCareerRoleStack() {
                 </h3>
               </div>
 
-              {/* Bottom: Claim + Text */}
+              {/* Claim + Text (Mobile order-3, unter dem Bild) */}
               <div
-                className="relative flex flex-col items-start max-[991px]:!mt-[1.6vw] max-[991px]:!max-w-full max-[991px]:!gap-[1.3vw] max-[767px]:!mt-[3vw]"
-                style={{ zIndex: 3, maxWidth: "42vw", gap: "1.11vw" }}
+                className="relative flex flex-col items-start max-[767px]:!order-3 max-[767px]:!mt-[5vw] max-[767px]:!max-w-full max-[767px]:!gap-[3vw]"
+                style={{ zIndex: 3, maxWidth: "39.17vw", gap: "1.11vw" }}
               >
                 <h4
-                  className="m-0 max-[767px]:!text-[5.5vw]"
-                  style={{ fontFamily: SHARP, fontSize: "2.5vw", lineHeight: "115%", fontWeight: 500, letterSpacing: "-0.104vw" }}
+                  className="m-0 max-[767px]:!text-[6vw]"
+                  style={{ fontFamily: SHARP, fontSize: "2.5vw", lineHeight: "115%", fontWeight: 500, letterSpacing: "-0.104vw", color: card.fg }}
                 >
                   {card.claim}
                 </h4>
                 <p
-                  className="m-0 max-[991px]:!max-w-full max-[767px]:!text-[3.8vw]"
-                  style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "140%", color: card.soft, maxWidth: "34vw" }}
+                  className="m-0 max-[767px]:!text-[4vw]"
+                  style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "140%", color: card.soft }}
                 >
                   {card.text}
                 </p>
               </div>
 
-              {/* Schwebendes Bildmodul (Career-Foto) rechts unten — nur Desktop.
-                  Ab ≤991px greift stattdessen das Querformat-Bild in-flow. */}
+              {/* Bildmodul — Desktop: schwebend rechts unten. Mobile: in-flow (order-2),
+                  full-width, direkt unter der Headline (Home-ServicesStack-Optik). */}
               <div
-                className="absolute overflow-clip max-[991px]:!hidden"
+                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[6vw] max-[767px]:!h-[74vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none max-[767px]:!rounded-[4vw]"
                 style={{
-                  zIndex: 2,
+                  zIndex: 3,
                   width: "26vw",
                   maxWidth: "460px",
                   height: "46vh",
@@ -184,18 +187,6 @@ export function AlgarveCareerRoleStack() {
                 }}
               >
                 <img src={card.image} alt={card.title} className="h-full w-full object-cover" />
-              </div>
-
-              {/* Querformat-Bild in-flow — nur Tablet/Mobile (≤991px). */}
-              <div
-                className="hidden w-full overflow-clip max-[991px]:!block"
-                style={{ marginTop: "2.5vw", borderRadius: "3vw", boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)" }}
-              >
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="block w-full object-cover max-[991px]:!h-[30vw] max-[767px]:!h-[46vw]"
-                />
               </div>
             </div>
           ))}

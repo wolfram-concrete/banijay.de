@@ -22,12 +22,23 @@ const SHARP = "var(--font-sharp), sans-serif";
 // Container startet in DIESER Form; beim Aufskalieren flacht der vh-fixe Radius von
 // selbst ab (die Curvings wandern in die Kanten), der finale Schritt setzt alle
 // Ecken auf 0 → Full-Screen.
-const B_RADIUS = {
+// DESKTOP (unverändert): Original-b-/„D"-Form (rechts voller Halbkreis, links kleine
+// obere + scharfe untere Ecke). MOBILE: normaler Kasten mit dezent radialen Ecken.
+// Auswahl passiert per matchMedia in useGSAP (SSR-Default = Desktop = B_SHAPE_RADIUS).
+const B_SHAPE_RADIUS = {
   borderTopLeftRadius: "1.8vh",
   borderBottomLeftRadius: "0vh",
   borderTopRightRadius: "15vh",
   borderBottomRightRadius: "15vh",
 } as const;
+const ROUND_RADIUS = {
+  borderTopLeftRadius: "2.4vh",
+  borderBottomLeftRadius: "2.4vh",
+  borderTopRightRadius: "2.4vh",
+  borderBottomRightRadius: "2.4vh",
+} as const;
+// SSR-/Reduced-Motion-Default (Desktop-Form).
+const B_RADIUS = B_SHAPE_RADIUS;
 const FLAT_RADIUS = {
   borderTopLeftRadius: "0vh",
   borderTopRightRadius: "0vh",
@@ -81,9 +92,15 @@ export function AlgarvePageHero({
       //    Blau → MAGENTA zuletzt) — mit radialen (abgerundeten) Kanten. Danach macht
       //    der Video-Container seinen bekannten Zoom: erst in die HÖHE, dann in die
       //    BREITE, dann Full-Screen (borderRadius am Ende 0).
-      const START = { left: "30vw", top: "56vh", width: "40vw", height: "30vh" };
+      // Desktop bleibt exakt wie zuvor (kleiner b-Container, 40vw×30vh, b-Form).
+      // Nur Mobile: größerer, zentrierter Kasten mit runden Ecken.
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const START = isMobile
+        ? { left: "20vw", top: "46vh", width: "60vw", height: "45vh" }
+        : { left: "30vw", top: "56vh", width: "40vw", height: "30vh" };
+      const START_RADIUS = isMobile ? ROUND_RADIUS : B_SHAPE_RADIUS;
       const FULL = { left: "0vw", top: "0vh", width: "100vw", height: "100vh" };
-      gsap.set(["[data-hero-card]", "[data-hero-media]"], START);
+      gsap.set(["[data-hero-card]", "[data-hero-media]"], { ...START, ...START_RADIUS });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -167,7 +184,7 @@ export function AlgarvePageHero({
                 style={{ paddingTop: "clamp(0.45rem, 1.6vw, 2rem)", marginTop: "calc(-1 * clamp(0.45rem, 1.6vw, 2rem))" }}
               >
                 <span
-                  className="block uppercase"
+                  className="block uppercase max-[767px]:!text-[14vw]"
                   style={{
                     fontFamily: SHARP,
                     fontWeight: 500,

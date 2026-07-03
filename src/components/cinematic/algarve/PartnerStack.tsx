@@ -34,13 +34,13 @@ export function AlgarvePartnerStack() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const desktop = window.matchMedia("(min-width: 768px)").matches;
       const sec = root.current;
 
-      if (desktop && sec) {
-        // Aufstieg über die (gepinnte) Team-Section — wie auf der Home der Video-
-        // container: die volle Magenta-Fläche schiebt sich mit -100vh-Overlap über
-        // das Team; die gerundete Oberkante (rechts stärker → b-Körper) faltet auf.
+      if (sec) {
+        // Aufstieg über die (gepinnte) Team-Section — Desktop UND Mobile identisch:
+        // die volle Magenta-Fläche schiebt sich mit -100vh-Overlap über das (gepinnte,
+        // still stehende) Team; die gerundete Oberkante (rechts stärker → b-Körper)
+        // faltet beim Aufsteigen auf.
         gsap.set(sec, { borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
         gsap.to(sec, {
           borderTopLeftRadius: "0vw",
@@ -50,26 +50,14 @@ export function AlgarvePartnerStack() {
         });
 
         // Content-Parallax: ERST wenn die Magenta-Fläche voll gedeckt hat (top top),
-        // ziehen Headline · Copy · CTA gestaffelt von unten herein. Der Block ist NICHT
-        // gepinnt (scrollt mit), darum muss der Reveal KURZ sein und FRÜH fertig werden
-        // — sonst wandert der noch halb aufgebaute Text bereits oben aus dem Bild.
+        // ziehen Headline · Copy · CTA gestaffelt von unten herein — kurz & früh fertig.
         gsap.set("[data-partner-reveal]", { opacity: 0, y: 48 });
         gsap.to("[data-partner-reveal]", {
           opacity: 1,
           y: 0,
           ease: "power2.out",
           stagger: 0.06,
-          scrollTrigger: { trigger: sec, start: "top top", end: "+=16%", scrub: 1, invalidateOnRefresh: true },
-        });
-      } else {
-        // Mobile: kein Overlap — ruhiger gestaffelter Reveal beim Eintritt.
-        gsap.from("[data-partner-reveal]", {
-          opacity: 0,
-          y: 26,
-          duration: 0.7,
-          ease: "power2.out",
-          stagger: 0.08,
-          scrollTrigger: { trigger: "[data-partner-headline]", start: "top 85%", once: true },
+          scrollTrigger: { trigger: sec, start: "top top", end: "+=18%", scrub: 1, invalidateOnRefresh: true },
         });
       }
 
@@ -93,9 +81,10 @@ export function AlgarvePartnerStack() {
     <section
       ref={root}
       data-nav-theme="magenta"
-      // Desktop: -100vh-Overlap + z-2 → die Magenta-Fläche schiebt sich über die
-      // (gepinnte) Team-Section. Mobile: kein Overlap, ruhige gerundete Oberkante.
-      className="relative max-[767px]:!mt-0 max-[767px]:!rounded-t-[6vw]"
+      // -100vh-Overlap + z-2 → die Magenta-Fläche schiebt sich über die (gepinnte)
+      // Team-Section. Desktop UND Mobile identisch (die Team-Section pinnt jetzt auch
+      // mobil am Ende).
+      className="relative"
       style={{ background: MAGENTA, color: INK, paddingTop: "13vw", paddingBottom: "16vw", marginTop: "-100vh", zIndex: 2 }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>

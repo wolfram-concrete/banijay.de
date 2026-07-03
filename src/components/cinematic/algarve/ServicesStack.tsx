@@ -152,7 +152,7 @@ export function AlgarveServicesStack() {
             <div
               key={card.index}
               data-service-card
-              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!p-[7vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!h-[74vh] max-[767px]:!justify-start max-[767px]:!p-[7vw]"
               style={{
                 top: "1.39vw",
                 height: "90vh",
@@ -207,7 +207,7 @@ export function AlgarveServicesStack() {
               {/* Glass-Video — Desktop: rotiert absolut rechts unten. Mobile: in-flow
                   DIREKT UNTER der Headline (order-2), volle Breite, Querformat, gerade. */}
               <div
-                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[5vw] max-[767px]:!h-[56vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none max-[767px]:!rounded-[4vw]"
+                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[6vw] max-[767px]:!h-[74vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none max-[767px]:!rounded-[4vw]"
                 style={{
                   zIndex: 3,
                   width: "27vw",
@@ -228,7 +228,7 @@ export function AlgarveServicesStack() {
                   muted
                   playsInline
                   preload="metadata"
-                  className="absolute inset-0 h-full w-full"
+                  className="absolute inset-0 h-full w-full max-[767px]:!static"
                   style={{ objectFit: "cover" }}
                 />
               </div>

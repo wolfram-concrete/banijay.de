@@ -16,6 +16,12 @@ const META = {
 } as const;
 
 export function AlgarveCareerJobsPreview() {
+  // Liste kürzen: Desktop ~1/3 weniger, Mobile ~halbiert (Rest via „Alle Jobs
+  // ansehen"). Die über den Mobile-Count hinausgehenden Zeilen werden mobil geblendet.
+  const total = CAREER_JOBS.length;
+  const desktopCount = Math.max(3, Math.ceil((total * 2) / 3));
+  const mobileCount = Math.max(3, Math.ceil(total / 2));
+  const jobs = CAREER_JOBS.slice(0, desktopCount);
   return (
     <section id="jobs" style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "5.56vw" }}>
       <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
@@ -38,26 +44,27 @@ export function AlgarveCareerJobsPreview() {
               {CAREER.jobs.text}
             </p>
           </div>
+          {/* Kopf-CTA nur Desktop/Tablet — auf Mobile sitzt der CTA UNTER der Liste. */}
           <a
             href={CAREER.jobs.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370]"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!hidden"
           >
             {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
           </a>
         </div>
 
-        {/* Liste */}
+        {/* Liste (gekürzt: Mobile ~halbiert via Blenden der Extra-Zeilen) */}
         <div className="flex flex-col">
-          {CAREER_JOBS.map((job) => (
+          {jobs.map((job, i) => (
             <a
               key={job.url}
               href={job.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${job.title} bei ${job.company} — in neuem Tab öffnen`}
-              className="group flex items-center justify-between text-[#0e0d0b] no-underline transition-colors hover:text-[#ff4370] max-[767px]:!flex-col max-[767px]:!items-start max-[767px]:!gap-3"
+              className={`group flex items-center justify-between text-[#0e0d0b] no-underline transition-colors hover:text-[#ff4370] max-[767px]:!flex-col max-[767px]:!items-start max-[767px]:!gap-3 ${i >= mobileCount ? "max-[767px]:!hidden" : ""}`}
               style={{
                 gap: "2vw",
                 paddingTop: "1.94vw",
@@ -87,6 +94,16 @@ export function AlgarveCareerJobsPreview() {
             </a>
           ))}
         </div>
+
+        {/* Mobile-CTA — sitzt UNTER der (gekürzten) Liste, voll breit zentriert. */}
+        <a
+          href={CAREER.jobs.cta.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden items-center justify-center gap-2 rounded-full bg-[#0e0d0b] font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
+        >
+          {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
+        </a>
       </div>
     </section>
   );

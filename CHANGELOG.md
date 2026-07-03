@@ -5,6 +5,43 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-Runde: Hero, Companies-Choreo, Cards, Formular-Master, Übergänge (03.07., 50. Runde)
+
+**Home**
+- **Testimonials-Panel:** leuchtendes Magenta-„b" als Hintergrund (weboptimiert →
+  `public/brand/testimonials-b-glow.jpg`, 1,7 MB → 108 KB) mit Verlaufs-Scrim.
+- **Companies-Bilder:** die Home-„Unsere Companies"-Poster jetzt auch auf der
+  Companies-Seite (CompanyCards via `getCompanyImage` + Fokuspunkt).
+- **Mobile-Hero:** fullsize, gefächerter BANIJAY auch mobil, Copy am unteren Rand +
+  blendet nach der h1-Choreografie ein; B-Video weniger gezoomt (fixe `46vh`).
+- **Mobile „Unsere Companies":** neue Intro-Choreografie — Wörter erscheinen → fahren
+  auseinander (Leerraum) → erste Card wächst aus der Mitte → dann Slide; Doppel-BG
+  gefixt (Paper-Seam via `pb-0`, Farb-Reset auf Magenta in der Intro).
+- **Kernkompetenz-Cards mobil:** Video-Escape-Bug gefixt (Headline war überdeckt),
+  Card kürzer (`90vh → 74vh`).
+
+**Career**
+- **Job-Liste gekürzt:** Mobile ~halbiert, Desktop ~⅓ weniger, CTA auf Mobile unter
+  der Liste.
+- **RoleStack:** Cards = Home-Kernkompetenz-Physik/Optik (sticky, flippen auf allen
+  Viewports), Intro getrennt (große Headline + kleinere Copy) + scroll-gekoppelter
+  Wort-Parallax.
+
+**Formular-Master (Algarve-Template)**
+- ContactForm nach dem Algarve-`contact-1`-Template neu gebaut — **mobiler Stack-Bug
+  gefixt** (Inline-Grid überschrieb die Responsive-Regel → Headline/Formular klebten
+  nebeneinander), Copy voll breit, Halbspalten, Unterkanten-Felder, Wort-Parallax,
+  Select auf 3 Optionen. Master für **Career/About/Companies** (geteilte Komponente).
+
+**PageHero (andere Seiten)**
+- Änderungen (h1 größer, Box größer/rund) jetzt **nur Mobile**; Desktop per `matchMedia`
+  auf den Original-Stand zurückgebaut (b-/„D"-Form, 40vw×30vh, h1 122px).
+
+**Mobile-Übergänge (Foundation)**
+- Founders-Team **pinnt jetzt auch mobil** am Ende; PartnerStack (About) steigt mobil
+  mit `-100vh`-Overlap + Kurven-Unfold + Content-Reveal über das gepinnte Team
+  (Desktop-Logik auf Mobile übertragen). Visuelles Feintuning ausstehend.
+
 ### Feinschliff: Hero-Timing, News-Masonry, Layout-Luft, Magenta-Fix (03.07., 49. Runde)
 
 **Home-Hero – weicherer Auftakt**

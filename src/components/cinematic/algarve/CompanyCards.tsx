@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { COMPANY_CARDS, CARD_KIND_LABEL } from "@/data/companyCards";
+import { getCompanyImage, getCompanyImagePosition } from "@/data/companyImages";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -60,12 +61,22 @@ function cardTheme(i: number): { bg: string; fg: string; soft: string } {
   return { bg, fg, soft };
 }
 
-const CARDS = COMPANY_CARDS.map((c, i) => ({
-  ...c,
-  ...cardTheme(i),
-  badge: CARD_KIND_LABEL[c.kind],
-  rotate: i % 2 === 1 ? "rotate(-6deg)" : "rotate(5deg)",
-}));
+const CARDS = COMPANY_CARDS.map((c, i) => {
+  // Gleiche Bildquelle wie die Home-„Unsere Companies"-Section: die hochauflösenden
+  // company-media-Poster (bzw. derselbe Scrape-Fallback) via getCompanyImage — statt
+  // der alten /companies/<id>-Scrapes. Card-id == Company-slug; nur „only-good-people"
+  // heißt in den Company-Daten „ogp-only-good-people".
+  const slug = c.id === "only-good-people" ? "ogp-only-good-people" : c.id;
+  const img = getCompanyImage({ slug, name: c.name });
+  return {
+    ...c,
+    ...cardTheme(i),
+    badge: CARD_KIND_LABEL[c.kind],
+    rotate: i % 2 === 1 ? "rotate(-6deg)" : "rotate(5deg)",
+    image: img?.url ?? c.image,
+    objectPosition: getCompanyImagePosition(slug),
+  };
+});
 
 export function AlgarveCompanyCards() {
   const root = useRef<HTMLElement>(null);
@@ -298,6 +309,7 @@ export function AlgarveCompanyCards() {
                   src={card.image}
                   alt={card.imageAlt}
                   className="h-full w-full object-cover"
+                  style={{ objectPosition: card.objectPosition }}
                 />
               </div>
 
@@ -316,6 +328,7 @@ export function AlgarveCompanyCards() {
                   src={card.image}
                   alt={card.imageAlt}
                   className="block w-full object-cover max-[991px]:!h-[30vw] max-[767px]:!h-[46vw]"
+                  style={{ objectPosition: card.objectPosition }}
                 />
               </div>
             </article>

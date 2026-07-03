@@ -149,7 +149,9 @@ export function AlgarveTestimonials() {
   return (
     <section ref={root} style={{ background: "#f8f7f3", paddingBottom: "5.56vw" }}>
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        {/* Dunkles Panel */}
+        {/* Dunkles Panel — Hintergrund: leuchtendes Magenta-„b" (b-Glow), per dunklem
+            Verlaufs-Scrim gedämpft, damit die Grayscale-Karten + der weiße Text lesbar
+            bleiben und der Glow nur atmosphärisch durchscheint. */}
         <div
           className="relative"
           style={{
@@ -157,6 +159,11 @@ export function AlgarveTestimonials() {
             paddingBottom: "8.33vw",
             borderRadius: "1.67vw",
             backgroundColor: "#0a0a0a",
+            backgroundImage:
+              "linear-gradient(180deg, rgba(10,10,10,0.42) 0%, rgba(10,10,10,0.58) 46%, rgba(10,10,10,0.86) 100%), url(/brand/testimonials-b-glow.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
             color: "#f8f7f3",
           }}
         >

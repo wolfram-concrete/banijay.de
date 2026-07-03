@@ -45,6 +45,7 @@ const focus = (img: string) => FOCUS[img] ?? "50% 20%";
 export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
+  const mTeam = useRef<HTMLDivElement>(null); // Mobile-Team-Container (für End-Pin)
 
   useGSAP(
     () => {
@@ -138,6 +139,23 @@ export function AlgarveFounders() {
         onEnter: (batch) =>
           gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out", stagger: 0.1 }),
       });
+
+      // END-PIN: sobald der letzte Team-Screen erreicht ist (Container-Unterkante an
+      // Viewport-Unterkante), rastet das Team ein und HÄLT STILL — über diese Strecke
+      // schiebt sich die nächste Section (PartnerStack/LogoReveal, marginTop -100vh)
+      // von unten voll darüber. Analog zum Desktop-Team-Pin. pinSpacing ergänzt den
+      // Scrollweg; die -100vh der Folgesection überlagern die letzten 100vh des Pins.
+      if (mTeam.current) {
+        ScrollTrigger.create({
+          trigger: mTeam.current,
+          start: "bottom bottom",
+          end: "+=100%",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+      }
     },
     { scope: root },
   );
@@ -186,7 +204,7 @@ export function AlgarveFounders() {
           team-grid-2: eine Kachel spannt volle Breite) → lebendiger Rhythmus
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
-      <div className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
+      <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
         <h2 className="m-0 mb-8 uppercase text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
           Team
         </h2>

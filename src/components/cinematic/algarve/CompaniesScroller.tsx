@@ -77,6 +77,8 @@ export function AlgarveCompaniesScroller() {
   const wordR = useRef<HTMLHeadingElement>(null);
   const mRoot = useRef<HTMLElement>(null); // Mobile-Slider-Section
   const mTrack = useRef<HTMLDivElement>(null); // Mobile-Card-Track
+  const mWordT = useRef<HTMLHeadingElement>(null); // Mobile „Unsere" (oben)
+  const mWordB = useRef<HTMLHeadingElement>(null); // Mobile „Companies" (unten)
   // Dominante Bildfarbe je Card (für den lebendigen Hintergrund).
   const colorsRef = useRef<([number, number, number] | null)[]>([]);
 
@@ -240,7 +242,7 @@ export function AlgarveCompaniesScroller() {
       const distance = () => Math.max(1, trackEl.scrollWidth - window.innerWidth);
 
       // Coverflow-Transform je Card nach Abstand zur Bildschirmmitte + Fokus-Farbe.
-      const coverflow = () => {
+      const coverflow = (withColor: boolean) => {
         const cX = window.innerWidth / 2;
         let bi = -1;
         let bd = 1e9;
@@ -255,7 +257,8 @@ export function AlgarveCompaniesScroller() {
             bi = i;
           }
         });
-        if (bi >= 0) {
+        // Farbe erst ab dem Slide übernehmen (Intro bleibt Magenta).
+        if (withColor && bi >= 0) {
           const col = colorsRef.current[bi] ?? BASE_BG;
           target[0] = col[0];
           target[1] = col[1];
@@ -263,19 +266,59 @@ export function AlgarveCompaniesScroller() {
         }
       };
 
+      // Choreografie NACHEINANDER (Wunsch):
+      //   1) die Wörter „Unsere/Companies" ERSCHEINEN (nah beieinander, mittig),
+      //   2) sie fahren AUSEINANDER (Unsere hoch, Companies runter) → Leerraum in der Mitte,
+      //   3) die erste Card WÄCHST aus der leeren Mitte auf (scale 0→1) auf Full-Size,
+      //   4) ERST DANN slidet der Track durch (Coverflow übernimmt alle Cards).
+      // Die CARDS werden ausschließlich in onUpdate gesteuert (kein Timeline-Tween auf
+      // den Karten) → kein Konflikt zwischen dem Intro-Scale-in und dem Coverflow.
+      const WORDS = 0.22; // Wörter fahren auseinander
+      const CARD = 0.22; // erste Card wächst
+      const INTRO = WORDS + CARD; // Intro-Ende = Slide-Start
+      const TOTAL = INTRO + 1; // + Slide (Dauer 1)
+      const slideFrac = INTRO / TOTAL; // Progress-Schwelle Slide
+      const cardStartFrac = WORDS / TOTAL; // Progress, ab dem die Card wächst
+      const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
+
+      // Startlagen: Wörter unsichtbar + nah beieinander (über der leeren Mitte),
+      // alle Cards auf scale 0 (verborgen).
+      gsap.set(mWordT.current, { autoAlpha: 0, y: "20vh", scale: 1.12, transformOrigin: "50% 50%" });
+      gsap.set(mWordB.current, { autoAlpha: 0, y: "-18vh", scale: 1.12, transformOrigin: "50% 50%" });
+      gsap.set(els, { scale: 0 });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootEl,
           start: "top top",
-          end: () => "+=" + distance() * 1.15,
+          end: () => "+=" + (distance() * 1.15 + window.innerHeight * 0.9),
           scrub: 0.5,
           pin: true,
           invalidateOnRefresh: true,
-          snap: els.length > 1 ? { snapTo: 1 / (els.length - 1), duration: 0.25, ease: "power1.inOut" } : undefined,
-          onUpdate: coverflow,
+          onUpdate: (self) => {
+            const p = self.progress;
+            if (p >= slideFrac) {
+              // Slide: Coverflow steuert alle Cards + die Farbe.
+              coverflow(true);
+            } else {
+              // Intro: nur die erste Card wächst aus der Mitte (0→1), Rest verborgen;
+              // Grund bleibt Magenta.
+              const cardP = Math.min(1, Math.max(0, (p - cardStartFrac) / (slideFrac - cardStartFrac)));
+              gsap.set(els[0], { scale: easeOut(cardP), rotationZ: 0, transformOrigin: "50% 60%" });
+              for (let i = 1; i < els.length; i++) gsap.set(els[i], { scale: 0 });
+              target[0] = BASE_BG[0];
+              target[1] = BASE_BG[1];
+              target[2] = BASE_BG[2];
+            }
+          },
         },
       });
-      tl.to(trackEl, { x: () => -distance(), ease: "none" }, 0);
+      // 1) Wörter erscheinen (Fade), 2) fahren auseinander → Leerraum.
+      tl.to([mWordT.current, mWordB.current], { autoAlpha: 1, duration: 0.05 }, 0);
+      tl.to(mWordT.current, { y: "0vh", scale: 1, ease: "power2.out", duration: WORDS }, 0.03);
+      tl.to(mWordB.current, { y: "0vh", scale: 1, ease: "power2.out", duration: WORDS }, 0.03);
+      // 4) Slide: der Track fährt horizontal durch.
+      tl.to(trackEl, { x: () => -distance(), ease: "none", duration: 1 }, INTRO);
 
       const tick = () => {
         let moved = false;
@@ -288,7 +331,6 @@ export function AlgarveCompaniesScroller() {
       };
       rootEl.style.backgroundColor = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
       gsap.ticker.add(tick);
-      coverflow();
       return () => {
         gsap.ticker.remove(tick);
         // Basis-Magenta statt "" — sonst transparente Fläche nach Cleanup.
@@ -462,17 +504,16 @@ export function AlgarveCompaniesScroller() {
         </div>
       </section>
 
-      {/* ── Mobile: gepinnter Coverflow-Slider (Scroll → Slide) ──────────────── */}
+      {/* ── Mobile: gepinnter Intro-Slider (Wörter auseinander → erste Card → Slide) ── */}
       <section
         ref={mRoot}
         className="hidden h-screen w-screen flex-col justify-center overflow-clip max-[767px]:flex"
         style={{ background: `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`, color: "#0e0d0b" }}
       >
-        <div className="flex flex-col" style={{ paddingLeft: "5vw", paddingRight: "5vw", marginBottom: "7vw", lineHeight: 0.98 }}>
-          <h2 className="m-0 uppercase" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Unsere</h2>
-          <h2 className="m-0 uppercase" style={{ ...H5, fontSize: "12vw", letterSpacing: "-0.4vw" }}>Companies</h2>
-        </div>
-        <div ref={mTrack} className="flex items-center gap-[5vw]" style={{ paddingLeft: "13vw", paddingRight: "13vw" }}>
+        {/* „Unsere" — zentriert oben; skaliert in der Intro nach oben auseinander */}
+        <h2 ref={mWordT} className="relative m-0 w-full text-center uppercase" style={{ ...H5, fontSize: "13vw", letterSpacing: "-0.5vw", lineHeight: 0.95, zIndex: 30 }}>Unsere</h2>
+        {/* Card-Track (erste Card mittig) — zwischen den Wörtern */}
+        <div ref={mTrack} className="flex items-center gap-[5vw]" style={{ paddingLeft: "13vw", paddingRight: "13vw", marginTop: "5vw", marginBottom: "5vw" }}>
           {cards.map((card) => {
             const Wrap = card.href ? "a" : "div";
             return (
@@ -493,6 +534,8 @@ export function AlgarveCompaniesScroller() {
             );
           })}
         </div>
+        {/* „Companies" — zentriert unten; skaliert in der Intro nach unten auseinander */}
+        <h2 ref={mWordB} className="relative m-0 w-full text-center uppercase" style={{ ...H5, fontSize: "13vw", letterSpacing: "-0.5vw", lineHeight: 0.95, zIndex: 30 }}>Companies</h2>
       </section>
     </>
   );

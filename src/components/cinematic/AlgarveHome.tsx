@@ -236,26 +236,21 @@ export function AlgarveHome() {
         .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.85)
         .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 1.1)
         .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 1.1);
-      if (isMobile) {
-        // Mobile: nur das VOLLE Wort ist sichtbar (Slats ausgeblendet). Es fährt per
-        // Clip-Wipe von oben nach unten herein — „fächert herab" — begleitet von
-        // einem kurzen Settle nach unten. Kein Venetian-Blind-Geistern.
-        tl.fromTo(
-          '[data-strip-mob]',
-          { clipPath: "inset(0% 0% 100% 0%)", y: "-6vw" },
-          { clipPath: "inset(0% 0% 0% 0%)", y: "0vw", duration: 0.9, ease: "power4.out" },
-          1.0,
-        );
-      } else {
-        tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 1.35)
-          .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 1.35)
-          .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 1.35);
-      }
+      // BANIJAY „fächert herab" — die gestaffelten Slices settlen von oben in Position
+      // (Venetian-Blind-Kaskade). Desktop UND Mobile identisch, damit der Fächer auch
+      // auf dem Handy sichtbar ist.
+      tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 1.35)
+        .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 1.35)
+        .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 1.35);
 
-      // Die unteren Zeilen (Factsheet + Subline) bleiben zunächst verborgen — sie
-      // erscheinen erst beim Scrollen (siehe Scroll-Reveal-Effekt unten), damit der
-      // Hero anfangs ruhig nur aus der Headline besteht.
+      // Die untere Copy (Subline) bleibt zunächst verborgen.
       gsap.set("[data-heroline]", { autoAlpha: 0, y: 26 });
+
+      // Mobile: die Copy blendet ein, SOBALD die h1-Choreografie durch ist (in die
+      // Timeline gekettet, nicht scroll-getriggert) — sie sitzt am unteren Rand.
+      if (isMobile) {
+        tl.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out" }, 2.35);
+      }
 
       // Die H1-Animation startet ERST, wenn der Preloader-Übergang vollständig
       // abgeschlossen ist — das Event „banijay:introdone" feuert im onComplete NACH
@@ -270,15 +265,17 @@ export function AlgarveHome() {
         gsap.delayedCall(1.4, startHero);
       }
 
-      // Untere Zeilen (Factsheet + Subline) erscheinen erst beim Scrollen — ganz
-      // entspannt, nachdem der Hero-Fuß ein Stück gewachsen ist.
-      ScrollTrigger.create({
-        trigger: root.current,
-        start: "top top-=70",
-        once: true,
-        onEnter: () =>
-          gsap.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.16, ease: "power2.out" }),
-      });
+      // Desktop: untere Zeilen (Factsheet + Subline) erscheinen beim Scrollen. (Mobile
+      // wird die Copy oben bereits per Timeline nach der h1 eingeblendet.)
+      if (!isMobile) {
+        ScrollTrigger.create({
+          trigger: root.current,
+          start: "top top-=20",
+          once: true,
+          onEnter: () =>
+            gsap.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }),
+        });
+      }
 
       // Sticky-Grid — EXAKT nach der Algarve-Referenz (custom GSAP, Timeline
       // t-df357d83, Trigger auf section_grid-home, scrub 1). Positionen/Dauern
@@ -338,7 +335,7 @@ export function AlgarveHome() {
       {/* Video full-bleed (auch hinter der fixen Nav). Weiße Typo direkt darüber,
           kein Wash. paddingTop hält WE/ARE frei unter der überlagernden Nav. */}
       <section
-        className="relative flex min-h-[112vh] flex-col overflow-clip"
+        className="relative flex min-h-[112vh] flex-col overflow-clip max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
         style={{ background: "#0a0a0a", paddingTop: "6.5rem", paddingBottom: "3.5vw" }}
       >
         {/* Hintergrund: cinematisches Kamera-Video, langsam abgespielt (0.5×) */}
@@ -347,7 +344,7 @@ export function AlgarveHome() {
           autoPlay
           muted
           playsInline
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[479px]:!h-[46vh]"
         >
           <source src="/video/hero-bg.mp4" type="video/mp4" />
         </video>
@@ -356,8 +353,15 @@ export function AlgarveHome() {
             kein weißer Layer). */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0"
+          className="pointer-events-none absolute inset-x-0 bottom-0 max-[479px]:!hidden"
           style={{ height: "38%", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%)" }}
+        />
+        {/* Mobile: die Video-Unterkante (46 %) blendet weich in die dunkle Hero-
+            Verlängerung — kein harter Schnitt zwischen Video und Schwarzfläche. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 hidden max-[479px]:!block"
+          style={{ height: "46vh", background: "linear-gradient(180deg, rgba(10,10,10,0) 68%, #0a0a0a 100%)" }}
         />
         <div ref={content} className="relative flex flex-1 flex-col" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div className="flex flex-1 flex-col justify-between text-center" style={{ gap: "0.83vw" }}>
@@ -418,7 +422,7 @@ export function AlgarveHome() {
                 ).map(({ h, key }, i) => (
                   // Letzte Zeile (volles Wort) NICHT clippen → „Y"-Tinte, die durch
                   // das negative Letter-Spacing über die Box ragt, bleibt sichtbar.
-                  <div key={key} data-slice={key} className={i < 3 ? "max-[767px]:!hidden" : ""} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
+                  <div key={key} data-slice={key} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
                     <h1 data-strip data-strip-mob={i === 3 ? "" : undefined} className="m-0 p-0 uppercase text-white" style={BIG}>
                       Banijay
                     </h1>
@@ -427,12 +431,15 @@ export function AlgarveHome() {
               </div>
             </div>
 
-            {/* Fuß: 4-Zeilen-Factsheet links / kurze Subline rechts (Algarve-Ref) */}
+            {/* Fuß: 4-Zeilen-Factsheet links / kurze Subline rechts (Algarve-Ref).
+                Mobile (max-479): Facts ausgeblendet — nur die Subline, mittelachsig
+                unter dem Video, erscheint per Scroll-Reveal auf der dunklen Hero-
+                Verlängerung. */}
             <div
-              className="flex flex-row items-end justify-between text-left max-[479px]:flex-col max-[479px]:gap-6"
+              className="flex flex-row items-end justify-between text-left max-[479px]:!absolute max-[479px]:!inset-x-0 max-[479px]:!bottom-[7vh] max-[479px]:!flex-col max-[479px]:!items-stretch max-[479px]:!gap-5"
               style={{ gap: "1.39vw" }}
             >
-              <div className="flex flex-col items-start max-[479px]:hidden" style={{ maxWidth: "39.17vw" }}>
+              <div className="flex flex-col items-start max-[479px]:!hidden" style={{ maxWidth: "39.17vw" }}>
                 {STAT_LINES.map((line) => (
                   <div key={line} data-heroline className="m-0" style={{ ...BODY, color: "#fff" }}>
                     {line}
@@ -441,7 +448,7 @@ export function AlgarveHome() {
               </div>
               <p
                 data-heroline
-                className="m-0 text-right max-[479px]:mx-auto max-[479px]:text-center"
+                className="m-0 text-right max-[479px]:!mx-auto max-[479px]:!max-w-[82vw] max-[479px]:!text-center max-[479px]:!text-[4.4vw] max-[479px]:!leading-[1.34]"
                 style={{ ...BODY, color: "#fff", maxWidth: "31.11vw" }}
               >
                 {HOME.hero.subline}
