@@ -144,6 +144,7 @@ export function SiteHeader() {
   const [linksVisible, setLinksVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const [onMagenta, setOnMagenta] = useState(false);
+  const [onDark, setOnDark] = useState(false); // dunkle Section unter der Nav → Logo weiß
   const [newsOpen, setNewsOpen] = useState(false); // News-Slider im Overlay
   const [scrolled, setScrolled] = useState(false); // steuert das eingerastete Seiten-Label
   const pathname = usePathname();
@@ -211,15 +212,30 @@ export function SiteHeader() {
     return () => clearTimeout(closeTimer);
   }, [pathname]);
 
-  // Logo & Menu invertieren, sobald eine magentafarbene Section direkt unter der
-  // Nav liegt (Detektions-Linie auf Logo-Höhe via IntersectionObserver).
+  // Logo & Menu invertieren, sobald eine getönte Section (magenta ODER dunkel)
+  // direkt unter der Nav liegt (Detektions-Linie auf Logo-Höhe via
+  // IntersectionObserver). magenta → schwarzes Logo; dark → weißes Logo.
   useEffect(() => {
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-theme="magenta"]'));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-theme]"));
     if (!sections.length) {
-      const themeTimer = window.setTimeout(() => setOnMagenta(false), 0);
+      const themeTimer = window.setTimeout(() => {
+        setOnMagenta(false);
+        setOnDark(false);
+      }, 0);
       return () => clearTimeout(themeTimer);
     }
     const active = new Set<Element>();
+    const recompute = () => {
+      let mag = false;
+      let dark = false;
+      active.forEach((el) => {
+        const t = el.getAttribute("data-nav-theme");
+        if (t === "magenta") mag = true;
+        else if (t === "dark") dark = true;
+      });
+      setOnMagenta(mag);
+      setOnDark(dark);
+    };
     let io: IntersectionObserver | null = null;
     const build = () => {
       io?.disconnect();
@@ -230,7 +246,7 @@ export function SiteHeader() {
             if (e.isIntersecting) active.add(e.target);
             else active.delete(e.target);
           });
-          setOnMagenta(active.size > 0);
+          recompute();
         },
         { rootMargin: `-${line}px 0px ${-(window.innerHeight - line - 1)}px 0px`, threshold: 0 },
       );
@@ -279,7 +295,7 @@ export function SiteHeader() {
               src="/brand/banijay-logo.png"
               alt="Banijay Germany"
               className="h-[2.625rem] w-auto origin-left transition-[filter] duration-300"
-              style={{ filter: blackLogo ? "brightness(0)" : undefined }}
+              style={{ filter: blackLogo ? "brightness(0)" : onDark ? "brightness(0) invert(1)" : undefined }}
             />
           </Link>
 

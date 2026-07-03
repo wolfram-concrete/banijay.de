@@ -179,7 +179,6 @@ export function AlgarveProofVideo({
             <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
               <source src={video} type="video/mp4" />
             </video>
-            <div className="absolute inset-0" style={{ background: "rgba(8,7,10,0.42)" }} />
 
             {/* Statement zentral über dem Video (erscheint erst full-screen) */}
             <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "6vw", paddingRight: "6vw" }}>
@@ -217,7 +216,6 @@ export function AlgarveProofVideo({
             <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
               <source src={video} type="video/mp4" />
             </video>
-            <div className="absolute inset-0" style={{ background: "rgba(8,7,10,0.5)" }} />
             <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "7vw", paddingRight: "7vw" }}>
               <p
                 className="m-0 text-center text-[7vw]"

@@ -211,12 +211,21 @@ export function AlgarveHome() {
       gsap.set('[data-flip-front="one"], [data-flip-front="second"]', { yPercent: 0, rotateX: 0 });
       gsap.set('[data-flip-back="one"], [data-flip-back="second"]', { yPercent: 100, rotateX: -90 });
 
+      // Beim Neu-Laden: das Hintergrund-Video fängt RUHIG an (blendet langsam ein und
+      // läuft), während die Typo zunächst KOMPLETT ausgeblendet ist. Erst danach (nach
+      // einer kurzen Vorlaufzeit, siehe startHero-Delay) kommt die Typo herein.
+      gsap.set("[data-hero-typo]", { autoAlpha: 0 });
+      if (heroVideo.current) gsap.fromTo(heroVideo.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.6, ease: "power2.out" });
+
       // Timeline PAUSIERT bauen — sie startet erst nach dem Preloader-Cut (Event
       // „banijay:introdone"), damit die Hero-Animation nicht unsichtbar hinter dem
       // Overlay abläuft. Die gsap.set-Startlagen oben greifen sofort → der Hero
       // steht während des Preloaders bereits korrekt (Front sichtbar, Back verdeckt).
       const isMobile = !window.matchMedia("(min-width: 768px)").matches;
       const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+      // Die Typo blendet zuerst ruhig herein (aus dem versteckten Startzustand),
+      // dann läuft die WE/ARE/BANIJAY-Choreografie.
+      tl.to("[data-hero-typo]", { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 0);
       tl.to('[data-flip-front="one"]', { yPercent: -100, rotateX: 90, duration: 0.45 }, 0.06)
         .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.06)
         .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 0.3)
@@ -247,11 +256,12 @@ export function AlgarveHome() {
       // dem Cutout-Aufziehen. Fallback nach 5s, falls kein Preloader läuft.
       // Kein Preloader mehr → die H1-Animation startet kurz nach dem Mount. (Das
       // introdone-Event bleibt als Kompatibilität erhalten, falls doch ein Intro läuft.)
+      // Vorlaufzeit, damit das Video erst „anläuft", bevor die Typo hereinkommt.
       const startHero = () => tl.play();
-      if ((window as { __introDone?: boolean }).__introDone) startHero();
+      if ((window as { __introDone?: boolean }).__introDone) gsap.delayedCall(0.9, startHero);
       else {
-        window.addEventListener("banijay:introdone", startHero, { once: true });
-        gsap.delayedCall(0.35, startHero);
+        window.addEventListener("banijay:introdone", () => gsap.delayedCall(0.9, startHero), { once: true });
+        gsap.delayedCall(1.4, startHero);
       }
 
       // Untere Zeilen (Factsheet + Subline) erscheinen erst beim Scrollen — ganz
@@ -346,7 +356,7 @@ export function AlgarveHome() {
         <div ref={content} className="relative flex flex-1 flex-col" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div className="flex flex-1 flex-col justify-between text-center" style={{ gap: "0.83vw" }}>
             {/* Kopfgruppe (WE/ARE + BANIJAY) oben */}
-            <div className="flex flex-col" style={{ gap: "0.83vw" }}>
+            <div data-hero-typo className="flex flex-col" style={{ gap: "0.83vw" }}>
               {/* Top-Row: WE | ARE — zweiseitiger 3D-Box-Flip (Algarve-Referenz:
                   wrap-heading-3d_front/back). Der Kasten klappt um die eigene
                   Achse auf. */}

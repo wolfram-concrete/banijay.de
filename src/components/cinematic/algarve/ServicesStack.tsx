@@ -22,17 +22,28 @@ const H1 = {
   margin: 0,
 } as const;
 
-// Sechs Kompetenzfelder als Sticky-Card-Stack. Claim kommt aus der Datenschicht.
-// Jede Videobox spielt einen anderen Ausschnitt desselben Reels (videoStart =
-// Bruchteil der Videolänge) → wirkt wie 6 unterschiedliche Clips (Platzhalter).
-// Kernkompetenz-Karten alle in Banijay-Magenta, Typo schwarz.
-const MAGENTA = "#ff4370";
+// Sechs Kompetenzfelder als „Spektrum"-Flip-Card-Stack. Claim/Text aus der Daten-
+// schicht; je Karte eine eigene Farbe aus dem Banijay-Spektrum (Indigo → Violett →
+// Magenta → Coral → Amber). Dunkle Bühne, diagonaler Farbverlauf + Dark-Overlay für
+// Lesbarkeit, farbiger Glow (C1), warmweiße Grotesk-Typo. Jede Videobox spielt einen
+// anderen Ausschnitt desselben Reels (videoStart) → wirkt wie 6 Clips.
+const PAPER = "#f4ece7"; // warmweiße Typo
+// Spektrum je Karte: C0 (dunkel) → C1 (hell).
+const SPECTRUM = [
+  { c0: "#2b27a0", c1: "#5a2fae" }, // 01 Show & Entertainment
+  { c0: "#5c2fb0", c1: "#9c2f9e" }, // 02 Reality & Factual
+  { c0: "#a82f88", c1: "#ff4370" }, // 03 Comedy & Live
+  { c0: "#c2384f", c1: "#ff6a3d" }, // 04 Fiction & Scripted
+  { c0: "#c8501f", c1: "#ffa23d" }, // 05 Digital & Social
+  { c0: "#9c2f9e", c1: "#5a2fae" }, // 06 Talent & Artists
+];
 const CARDS = HOME.competenceFields.fields.slice(0, 6).map((f, i) => ({
   index: `0${i + 1}`,
   title: f.title,
   claim: f.claim,
   text: f.text,
-  tint: MAGENTA,
+  c0: SPECTRUM[i].c0,
+  c1: SPECTRUM[i].c1,
   rotate: i % 2 === 1 ? "rotate(-7deg)" : "rotate(6deg)",
   videoStart: (i + 0.5) / 6,
 }));
@@ -116,7 +127,7 @@ export function AlgarveServicesStack() {
       style={{ background: "#f8f7f3", paddingTop: "8.33vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div className="flex flex-col" style={{ gap: "2.22vw", color: "#0e0d0b" }}>
+        <div className="flex flex-col" style={{ gap: "2.22vw", color: PAPER }}>
           {CARDS.map((card) => (
             <div
               key={card.index}
@@ -127,7 +138,13 @@ export function AlgarveServicesStack() {
                 height: "90vh",
                 padding: "4.44vw",
                 borderRadius: "1.67vw",
-                backgroundColor: card.tint,
+                // Diagonaler Spektrum-Verlauf (C0→C1) + Dark-Overlay für Lesbarkeit.
+                backgroundImage:
+                  `linear-gradient(155deg, ${card.c0} 0%, ${card.c1} 100%),` +
+                  `linear-gradient(200deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%)`,
+                border: "1px solid rgba(255,255,255,0.14)",
+                // Feine Innenkante + Tiefen-Schatten + farbiger Glow (C1).
+                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.18), 0 34px 80px -34px rgba(0,0,0,0.9), 0 0 90px -30px ${card.c1}`,
                 transformOrigin: "50% 0",
                 transform: "perspective(2000px)",
               }}
@@ -137,7 +154,7 @@ export function AlgarveServicesStack() {
                 <h3 className="uppercase max-[767px]:!text-[8.5vw]" style={H1}>
                   {card.title}
                 </h3>
-                <h3 className="max-[767px]:!text-[8.5vw]" style={{ ...H1, color: "rgba(0,0,0,0.28)" }}>{card.index}</h3>
+                <h3 className="max-[767px]:!text-[8.5vw]" style={{ ...H1, color: "rgba(255,255,255,0.34)" }}>{card.index}</h3>
               </div>
 
               {/* Bottom: Claim + Text — auf Mobile UNTER dem Video (order-3), voll breit */}

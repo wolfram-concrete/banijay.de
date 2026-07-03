@@ -65,6 +65,18 @@ export function AlgarveCareerRoleStack() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // Intro-Copy: Wort-für-Wort-Parallax-Reveal, sobald der Block in den Viewport
+      // scrollt — baut sich gestaffelt von unten auf (alle Viewports).
+      gsap.from("[data-roleintro-word]", {
+        opacity: 0,
+        yPercent: 60,
+        ease: "power2.out",
+        duration: 0.7,
+        stagger: { amount: 0.6, from: "start" },
+        scrollTrigger: { trigger: "[data-roleintro]", start: "top 82%", once: true },
+      });
+
       // 3D-Wegkippen nur auf echtem Desktop (≥992px) mit Sticky-Stack; ab ≤991px
       // stehen die Cards im Normalfluss (Querformat-Bild).
       if (!window.matchMedia("(min-width: 992px)").matches) return;
@@ -95,10 +107,15 @@ export function AlgarveCareerRoleStack() {
         {/* Intro — Headline + Copy zu EINEM linksbündigen Copy-Text zusammengefügt */}
         <div className="max-w-[64vw] max-[767px]:!max-w-full" style={{ marginBottom: "3.33vw" }}>
           <p
-            className="m-0 max-[767px]:!text-[5.5vw]"
-            style={{ fontFamily: SHARP, fontSize: "2.1vw", lineHeight: "134%", fontWeight: 500, letterSpacing: "-0.05vw", color: "#0e0d0b" }}
+            data-roleintro
+            className="m-0 flex flex-wrap max-[767px]:!text-[5.5vw]"
+            style={{ fontFamily: SHARP, fontSize: "2.1vw", lineHeight: "134%", fontWeight: 500, letterSpacing: "-0.05vw", color: "#0e0d0b", columnGap: "0.5ch" }}
           >
-            {CAREER.roleIntro.headline} {CAREER.roleIntro.text}
+            {`${CAREER.roleIntro.headline} ${CAREER.roleIntro.text}`.split(" ").map((w, i) => (
+              <span key={i} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
+                {w}
+              </span>
+            ))}
           </p>
         </div>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
 import { AlgarveCareerRoleStack } from "@/components/cinematic/algarve/CareerRoleStack";
 import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJobsPreview";
+import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
 import { AlgarveCareerTomorrowStack } from "@/components/cinematic/algarve/CareerTomorrowStack";
 import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
@@ -23,6 +24,7 @@ export default function CareerPage() {
         headline={CAREER.hero.headline}
         body={CAREER.hero.body}
         image={CAREER.hero.image}
+        video="/video/career-hero.mp4"
       />
 
       {/* 02 Rollenwelt */}
@@ -31,10 +33,10 @@ export default function CareerPage() {
       {/* 03 Aktuelle Jobs */}
       <AlgarveCareerJobsPreview />
 
-      {/* 04+05 Standorte → BANIJAY TOMORROW als gestapeltes Layer-System: der
-          Magenta-Kasten sendet bunte gerundete Schichten nach unten aus und endet
-          im schwarzen Layer, der die Tomorrow-Section bildet (Hintergrund von oben
-          gebaut, dann läuft der Content ein). */}
+      {/* 04 Standorte — Magenta-Modulbox (Köln + weitere Companies-Städte) */}
+      <AlgarveCareerLocations />
+
+      {/* 05 BANIJAY TOMORROW — ruhige Feature-Section (Bild + Text + CTA, Parallax) */}
       <AlgarveCareerTomorrowStack />
 
       {/* 06 Code of Conduct */}

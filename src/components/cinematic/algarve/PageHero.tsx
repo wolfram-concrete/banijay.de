@@ -137,7 +137,17 @@ export function AlgarvePageHero({
             style={{ top: "10vh", paddingLeft: "2vw", paddingRight: "2vw", zIndex: 3, color: INK }}
           >
             {lines.map((ln, i) => (
-              <span key={i} data-h1-line className="block overflow-hidden">
+              <span
+                key={i}
+                data-h1-line
+                className="block overflow-hidden"
+                // Das overflow-hidden (für die Clip-Reveal-Animation) würde die
+                // Umlaut-Striche von Großbuchstaben (Ä/Ö/Ü, z. B. „LÄUFT") oben
+                // abschneiden. paddingTop gibt der Clip-Box oben Luft, das negative
+                // marginTop zieht die Zeile wieder an ihre Position — Umlaut bleibt
+                // sichtbar, Zeilenabstand unverändert. Skaliert mit der Font-Größe.
+                style={{ paddingTop: "clamp(0.45rem, 1.6vw, 2rem)", marginTop: "calc(-1 * clamp(0.45rem, 1.6vw, 2rem))" }}
+              >
                 <span
                   className="block uppercase"
                   style={{

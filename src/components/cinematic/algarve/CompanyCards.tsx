@@ -194,16 +194,19 @@ export function AlgarveCompanyCards() {
                   {card.body}
                 </p>
 
-                {/* Tags (max 3) — Kategorie-Marker: kleines Quadrat + gesperrte
-                    Versalie. Klar als Meta-Element erkennbar, aber kein Button und
-                    kein Hashtag. */}
+                {/* Tags (max 3) — Kategorie-Marker: kleiner Stern-Glyph (gleiche
+                    Glyph-Optik wie der ↗-Pfeil im CTA) + gesperrte Versalie. Klar als
+                    Meta-Element erkennbar, aber kein Button und kein Hashtag. */}
                 <div className="flex flex-wrap items-center max-[767px]:!text-[2.8vw]" style={{ gap: "1.25vw", marginTop: "0.4vw" }}>
                   {card.tags.slice(0, 3).map((t) => (
-                    <span key={t} className="flex items-center" style={{ gap: "0.5vw" }}>
+                    <span key={t} className="flex items-center" style={{ gap: "0.4vw" }}>
                       <span
                         aria-hidden
-                        style={{ width: "0.42vw", height: "0.42vw", minWidth: "5px", minHeight: "5px", background: card.fg, display: "inline-block", borderRadius: "1px" }}
-                      />
+                        className="max-[767px]:!text-[2.8vw]"
+                        style={{ color: card.fg, fontSize: "0.82vw", lineHeight: 1, display: "inline-block", transform: "translateY(0.02em)" }}
+                      >
+                        ✦
+                      </span>
                       <span
                         style={{
                           fontFamily: "var(--font-sharp), sans-serif",

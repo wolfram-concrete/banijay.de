@@ -25,12 +25,6 @@ export function AlgarveCareerJobsPreview() {
           style={{ marginBottom: "2.8vw" }}
         >
           <div className="max-w-[47vw] max-[767px]:!max-w-full">
-            <span
-              className="mb-[0.8vw] block max-[767px]:!text-[3vw]"
-              style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: "#ff4370" }}
-            >
-              Aktuelle Einstiege
-            </span>
             <h2
               className="m-0 uppercase max-[767px]:!text-[8vw]"
               style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.12vw", color: "#0e0d0b" }}

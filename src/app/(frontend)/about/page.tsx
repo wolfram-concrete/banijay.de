@@ -4,7 +4,8 @@ import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
-import { AlgarvePartnerGrid } from "@/components/cinematic/algarve/PartnerGrid";
+import { AlgarveWorldNetwork } from "@/components/cinematic/algarve/WorldNetwork";
+import { AlgarvePartnerStack } from "@/components/cinematic/algarve/PartnerStack";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
 import { STATS } from "@/data/site";
@@ -50,17 +51,23 @@ export default function AboutPage() {
         ]}
       />
 
-      {/* 05 Internationalität — reines Text-Statement (Panel ohne Hintergrundbild),
-          Wort-für-Wort-Reveal wie die Home-AboutIntro. */}
-      <AlgarveAboutIntro text={`${ABOUT.international.headline} ${ABOUT.international.text}`} />
+      {/* 05 Internationalität — Text-Statement mit Standraum (tall): das Statement
+          steht gepinnt, dann schiebt sich die WorldNetwork-Section (unten, -100vh-
+          Overlap) mit eigener gerundeter Oberkante darüber. Keine eigene Blende hier
+          → kein doppelter Layer (exakt wie Home AboutIntro → CompaniesScroller). */}
+      <AlgarveAboutIntro text={`${ABOUT.international.headline} ${ABOUT.international.text}`} tall />
 
-      {/* 06 Leadership — Algarve Founder-Grid */}
+      {/* 06 Banijay World — Territory-Holdings/Netzwerk (dunkler Farb-Break) */}
+      <AlgarveWorldNetwork />
+
+      {/* 07 Leadership — Algarve Founder-Grid */}
       <AlgarveFounders />
 
-      {/* 07 Partnerverständnis — als blog-home-Grid (Algarve News-Template) */}
-      <AlgarvePartnerGrid />
+      {/* 08 Partnerverständnis — BYQ-Stacking-Cards auf Magenta (Farb-Break;
+          der Team-Magenta-Exit übergibt nahtlos hierher) */}
+      <AlgarvePartnerStack />
 
-      {/* 08 Kontakt-Formular (Eingabetemplate) */}
+      {/* 09 Kontakt-Formular (Eingabetemplate) */}
       <AlgarveContactForm
         headline="Lass uns über Entertainment sprechen, das Menschen erreicht."
         copy="Für Projekte, Presse, Partnerschaften oder einfach ein Hallo."

@@ -5,6 +5,62 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Overlay-Choreografie, News-Ausbau, Spektrum-Flip-Cards, Video-Feinschliff (03.07., 46. Runde)
+
+**Home**
+- **Team → Video/News-Übergang:** Das magenta Founders-Overlay (unerwünschte
+  Zwischenebene) entfernt. Der LogoReveal-Videocontainer schiebt sich jetzt direkt
+  über das Team; der Team-Pin (`+=210%`) hält, bis das Video mit `-100vh`-Overlap
+  **komplett gedeckt** hat — das Team steht die ganze Zeit still (kein Mitwandern),
+  und alle Namen sind vollständig aufgebaut, bevor das Video aufsteigt.
+- **b-Blende (Video → News):** Der mittige Kreis-Füller entfällt. Die b-Maske wächst
+  jetzt UND verschiebt sich beim Zoomen nach oben (`mask-position-Y 50% → 118%`), der
+  horizontale Binnenspalt wandert aus dem Viewport — Logo-Proportionen unverändert.
+- **Kernkompetenzen als „Spektrum"-Flip-Cards:** Statt 6× Magenta jetzt je Karte eine
+  Spektrum-Farbe (Indigo → Amber) als Verlauf + Glow, warmweiße Typo — auf Off-White-
+  Bühne (kein schwarzer Grund).
+- **Hero-Start:** Typo zunächst ausgeblendet, das Video blendet ruhig ein und läuft an,
+  danach kommt die Typo herein.
+- **CompaniesScroller-Fix:** Der Hintergrund-Ticker fällt nicht mehr auf Off-White
+  zurück (Magenta-Layer „verschwand", solange die Bild-Farbanalyse lief) → Fallback ist
+  jetzt Magenta.
+- **Zentrales Hero-Video (`hero.mp4`):** entrauscht, auf 1440p Lanczos-hochskaliert,
+  dezent geschärft — sichtbar sauberer im Fullscreen.
+
+**About**
+- **„Local Everywhere" (WorldNetwork):** magentafarben mit invertierter Schrift,
+  Scroll-Stop (Pin) mit horizontalem Logo-Slide, der zusätzlich manuell zieh-/swipebar
+  ist. Reihenfolge: leerer Magenta-Grund schiebt sich über das Statement → dann zieht
+  der Content per Parallax herein. Logo-Bahn linksbündig zur Schrift (blutet rechts
+  über den Rand). Eyebrow entfernt, Video-Container größer.
+- **AboutIntro (international):** statt eigener Blende jetzt „tall" (Standraum) — die
+  WorldNetwork-Section steigt selbst mit `-100vh`-Overlap darüber (kein Doppel-Layer).
+- **„Partner für Entertainment" (PartnerStack):** schiebt sich wie auf der Home über die
+  gepinnte Team-Section (`-100vh`); erst deckt Magenta voll, dann Content per Parallax.
+  Stacking-Cards-Bühne auf 300vh (letzte Card wird nicht mehr abgeschnitten).
+- **Code-of-Conduct-Section entfernt** (bleibt auf Career).
+
+**Career**
+- **Standorte-Box** (Köln u. a.) als eigene, ruhige Magenta-Modulbox zurück (ohne bunte
+  Fächer). **BANIJAY TOMORROW** als ruhige Parallax-Feature-Section.
+- **Rollen-Intro-Copy** („Viele Companies …") mit Wort-für-Wort-Parallax-Reveal.
+- **Jobs-Eyebrow** „Aktuelle Einstiege" entfernt (Doppelung).
+- **Hero-Video** gesetzt (magnific, weboptimiert → `career-hero.mp4`).
+
+**News-Seite**
+- **122 gescrapte banijay.de-Artikel** ausgewertet → 30 reale Beiträge in `news.ts`
+  (Lead/Body aus dem Original-Fließtext), Listenbilder lokal weboptimiert
+  (`public/news/scraped/`).
+- **5-Spalten-Grid** mit breiten **Querformat-Containern** (16/10), locker gesetzt,
+  je Beitrag Datum · Titel · „Zum Beitrag"-CTA, **Parallax-Aufbau** beim Reinscrollen.
+- **„Weitere News laden"-Button** (batchweise, ersetzt „Alle News auf banijay.de").
+
+**Übergreifend**
+- **PageHero-Umlaute:** `LÄUFT` u. a. werden oben nicht mehr abgeschnitten (paddingTop/
+  marginTop-Trick an der Clip-Reveal-Zeile).
+- **Companies-Karten:** Skill-Marker vom Quadrat auf kleinen **Stern-Glyph** ✦ (Optik
+  wie der ↗-CTA-Pfeil).
+
 ### About-Feinschliff: News/Partner-Stack, CEO-Bild, Video-Statement (03.07., 45. Runde)
 - **News- & Partner-Modul — Schiebe-Effekt ohne Schatten:** Die vorher gesetzten
   Karten-Schatten erzeugten eine unnatürliche dunkle Halo-Kante. Jetzt wie im

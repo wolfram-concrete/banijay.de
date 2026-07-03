@@ -21,9 +21,6 @@ const H2 = {
   margin: 0,
 } as const;
 
-// Ein passendes Standbild je Partner-Feld (aus dem vorhandenen Grid-/Reel-Pool).
-const IMAGES = ["/grid/g01.jpg", "/grid/g05.jpg", "/reels/r2.jpg", "/grid/g11.png"];
-
 export function AlgarvePartnerGrid() {
   const items = ABOUT.partnership.cards;
 
@@ -76,9 +73,10 @@ export function AlgarvePartnerGrid() {
                     style={{ borderRadius: "1.11vw", height: "15vw" }}
                   >
                     <img
-                      src={IMAGES[i % IMAGES.length]}
-                      alt={card.title}
+                      src={card.image}
+                      alt={card.imageAlt ?? card.title}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      style={{ objectPosition: card.objectPosition ?? "50% 50%" }}
                     />
                   </div>
                   <div className="flex flex-col max-[767px]:!max-w-full max-[767px]:!gap-[3vw]" style={{ maxWidth: "31.11vw", gap: "1.11vw" }}>

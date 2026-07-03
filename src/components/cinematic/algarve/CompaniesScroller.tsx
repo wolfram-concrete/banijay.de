@@ -50,9 +50,10 @@ const N = cards.length;
 const STEP_VH = 40; // Scroll-Weg pro weiterer Card
 const TOTAL_VH = 300 + Math.max(0, N - 3) * STEP_VH;
 
-const OFF_WHITE: [number, number, number] = [248, 247, 243];
 // Basisfarbe der Companies-Section: erste Ansicht = Banijay-Magenta; von hier aus
-// verfärbt sich der Grund beim Scrollen in die dominanten Card-Farben.
+// verfärbt sich der Grund beim Scrollen in die dominanten Card-Farben. Auch der
+// Fallback (Bildfarbe noch nicht analysiert) ist Magenta — NIE Off-White, sonst
+// „verschwindet" der magentafarbene Layer, solange die Farbanalyse noch läuft.
 const BASE_BG: [number, number, number] = [255, 67, 112];
 
 // „Gebrannte" Variante der dominanten Bildfarbe: Sättigung deutlich anheben und
@@ -175,7 +176,7 @@ export function AlgarveCompaniesScroller() {
         }
       });
       if (b < 0) return;
-      const c1 = colorsRef.current[b] ?? OFF_WHITE;
+      const c1 = colorsRef.current[b] ?? BASE_BG;
       const c2 = colorsRef.current[s] ?? c1;
       const tb = bd / (bd + sd + 1); // näher = mehr Gewicht
       setT([c1[0] * (1 - tb) + c2[0] * tb, c1[1] * (1 - tb) + c2[1] * tb, c1[2] * (1 - tb) + c2[2] * tb]);

@@ -20,7 +20,6 @@ const SIGN = "url(/brand/banijay-sign.svg)";
 export function AlgarveLogoReveal() {
   const root = useRef<HTMLElement>(null);
   const growB = useRef<HTMLDivElement>(null);
-  const solid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -47,35 +46,39 @@ export function AlgarveLogoReveal() {
       growB.current?.style.setProperty("--bs", `${bStart}px`);
       gsap.set(growB.current, { opacity: 0 });
 
-      const st = { s: bStart };
-      // Kurzer Halte-Beat (Video eingerastet), dann das „b" einblenden + aufwachsen.
+      // Das „b" wächst (mask-size, Proportionen bleiben durch `auto`) UND verschiebt
+      // sich dabei nach oben (mask-position-Y 50% → 118%): der dünne horizontale
+      // Binnenspalt zwischen den beiden b-Balken wandert so aus dem Viewport, der
+      // untere Balken deckt die Fläche voll — KEIN Kreis-Füller mehr nötig, und die
+      // Logo-Proportionen bleiben unverändert (nur Position/Größe animieren).
+      growB.current?.style.setProperty("--bp", "50%");
+      const st = { s: bStart, p: 50 };
       tl.set(growB.current, { opacity: 1 }, 0.18);
       tl.to(
         st,
         {
           s: bEnd,
+          p: 118,
           ease: "power2.in",
           duration: 1,
-          onUpdate: () => growB.current?.style.setProperty("--bs", `${st.s}px`),
+          onUpdate: () => {
+            growB.current?.style.setProperty("--bs", `${st.s}px`);
+            growB.current?.style.setProperty("--bp", `${st.p}%`);
+          },
         },
         0.2,
-      )
-        // Magenta-Kreis-Blende schließt die b-Binnenlücke synchron zum Wachsen.
-        .fromTo(
-          solid.current,
-          { "--r": "0%" },
-          { "--r": "160%", ease: "power2.in", duration: 0.9 },
-          0.6,
-        );
+      );
     },
     { scope: root },
   );
 
   return (
     // marginTop -100vh + z-2: die Video-Fläche schiebt sich beim Scrollen von unten
-    // über die Team-Section (die dahinter gepinnt fertig aufgebaut ist) — analog zur
-    // Magenta-Fläche über dem Statement. Hintergrund Ink, falls kurz sichtbar.
-    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "260vh", marginTop: "-70vh", zIndex: 2, background: "#0e0d0b" }}>
+    // über die (gepinnt still stehende) Team-Section. Der Overlap entspricht der
+    // vollen Deck-Distanz (100vh) → das Video deckt KOMPLETT, WÄHREND das Team noch
+    // gepinnt ist; erst wenn voll gedeckt, löst der Team-Pin (Team unsichtbar
+    // dahinter, wandert also nie sichtbar mit). BG Ink.
+    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "260vh", marginTop: "-100vh", zIndex: 2, background: "#0e0d0b" }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">
@@ -92,26 +95,15 @@ export function AlgarveLogoReveal() {
               opacity: 0, // Start unsichtbar (Desktop-GSAP blendet ein; Mobile bleibt aus)
               willChange: "mask-size, opacity",
               ["--bs" as string]: "120px",
+              ["--bp" as string]: "50%",
               WebkitMaskImage: SIGN,
               maskImage: SIGN,
               WebkitMaskRepeat: "no-repeat",
               maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
+              WebkitMaskPosition: "50% var(--bp)",
+              maskPosition: "50% var(--bp)",
               WebkitMaskSize: "var(--bs) auto",
               maskSize: "var(--bs) auto",
-            }}
-          />
-
-          {/* Magenta-Kreis-Blende (schließt ab der Mitte die b-Binnenlücke) */}
-          <div
-            ref={solid}
-            className="absolute inset-0"
-            style={{
-              background: ACCENT,
-              ["--r" as string]: "0%",
-              clipPath: "circle(var(--r) at 50% 50%)",
-              WebkitClipPath: "circle(var(--r) at 50% 50%)",
             }}
           />
         </div>

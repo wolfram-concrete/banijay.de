@@ -85,11 +85,18 @@ export function AlgarveFounders() {
       }
 
       // Entfaltung per gepinnter, gescrubter Timeline in die finalen Grid-Plätze.
+      // Danach ein kurzer Halte-Beat: das komplette Team steht, BEVOR der Pin löst
+      // (auf der Home steigt danach im LogoReveal das Video darüber; auf About folgt
+      // die Partner-Section). KEINE Magenta-Zwischenebene mehr.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
+          // Lang genug, dass der Pin erst LÖST, wenn das Video (LogoReveal, -100vh)
+          // die Bühne komplett gedeckt hat → das Team steht die ganze Zeit still
+          // (Namen fertig in der ersten Hälfte, danach langer Halte-Beat, über den
+          // das Video von unten voll drüberzieht).
           start: "top top",
-          end: "+=200%",
+          end: "+=210%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
@@ -102,20 +109,16 @@ export function AlgarveFounders() {
         rotation: 0,
         opacity: 1,
         ease: "power2.out",
-        stagger: 0.045,
-        duration: 0.5,
+        stagger: 0.04,
+        duration: 0.45,
       });
-      // Erst NACHDEM alle Karten eingerastet sind, faden Name + Titel gestaffelt
-      // von unten ein — bewusst in der ERSTEN Hälfte des Pins, damit das voll
-      // aufgebaute Team samt Namen danach noch steht (Halte-Beat), BEVOR im
-      // LogoReveal das Video darüber aufsteigt.
-      tl.to(
-        metas,
-        { opacity: 1, y: 0, ease: "power2.out", stagger: 0.03, duration: 0.32 },
-        0.62,
-      );
-      // Halte-Beat: fertig aufgebautes Team + Namen bleiben stehen.
-      tl.to({}, { duration: 0.9 }, 1.25);
+      // Erst NACHDEM alle Karten eingerastet sind, faden Name + Titel gestaffelt ein
+      // — bewusst KOMPAKT (kleiner Stagger/kurze Dauer), damit ALLE Namen früh
+      // vollständig stehen (bis ~55 % des Pins), lange bevor das Video aufsteigt.
+      tl.to(metas, { opacity: 1, y: 0, ease: "power2.out", stagger: 0.02, duration: 0.26 }, 0.48);
+      // Langer Halte-Beat: komplett aufgebautes Team + alle Namen stehen still, BEVOR
+      // im LogoReveal der Videocontainer von unten darüber aufsteigt.
+      tl.to({}, { duration: 0.9 }, 0.9);
     },
     { scope: root },
   );

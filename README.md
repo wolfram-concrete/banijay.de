@@ -41,7 +41,14 @@ src/
                          layern nach unten, dann schwarze Karte + Content-Fade),
                          CareerSocial…
     layout/              SiteHeader, SiteFooter
-  data/                  CMS-fähige Datenschicht (companies, home, news, leadership …)
+                         WorldNetwork (About „Local Everywhere": magenta Scroll-Stop
+                         mit ziehbarem Logo-Slider), PartnerStack (schiebt sich über die
+                         Team-Section), CareerLocations (Standorte-Box), NewsGrid
+                         (5-Spalten-Querformat-Grid mit „Weitere laden"), ServicesStack
+                         (Spektrum-Flip-Cards) …
+  data/                  CMS-fähige Datenschicht (companies, home, leadership …);
+                         news.ts = 30 reale banijay.de-Meldungen (aus scraped_content
+                         ausgewertet, Listenbilder lokal in public/news/scraped/)
 public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
   company-media/<slug>/  Hochauflösende, lokal optimierte Company-Poster (poster.jpg,
