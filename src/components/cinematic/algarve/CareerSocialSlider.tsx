@@ -28,33 +28,33 @@ function Card({ post }: { post: SocialPost }) {
       target="_blank"
       rel="noopener noreferrer"
       className="group flex shrink-0 flex-col overflow-clip no-underline max-[767px]:!w-[78vw]"
-      style={{ width: "26vw", background: "#fff", borderRadius: "1.11vw", boxShadow: "0 0.6vw 2vw -0.6vw rgba(0,0,0,0.16)", color: INK }}
+      style={{ width: "19.5vw", background: "#fff", borderRadius: "0.83vw", boxShadow: "0 0.5vw 1.6vw -0.5vw rgba(0,0,0,0.16)", color: INK }}
     >
       <div className="relative overflow-clip" style={{ aspectRatio: "4 / 5", background: "#e8e6df" }}>
         <img src={post.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
         <span
           className="absolute max-[767px]:!text-[2.8vw]"
-          style={{ top: "0.9vw", left: "0.9vw", background: "rgba(14,13,11,0.55)", color: "#f8f7f3", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", borderRadius: "999px", padding: "0.3vw 0.8vw", fontFamily: SHARP, fontSize: "0.72vw", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}
+          style={{ top: "0.7vw", left: "0.7vw", background: "rgba(14,13,11,0.55)", color: "#f8f7f3", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", borderRadius: "999px", padding: "0.22vw 0.6vw", fontFamily: SHARP, fontSize: "0.55vw", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}
         >
           {post.source}
         </span>
       </div>
-      <div className="flex flex-1 flex-col justify-between max-[767px]:!p-[5vw]" style={{ padding: "1.4vw", gap: "1vw" }}>
+      <div className="flex flex-1 flex-col justify-between max-[767px]:!p-[5vw]" style={{ padding: "1.05vw", gap: "0.75vw" }}>
         <p
           className="m-0 max-[767px]:!text-[3.8vw]"
-          style={{ fontFamily: SHARP, fontSize: "1vw", lineHeight: "142%", fontWeight: 500, display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+          style={{ fontFamily: SHARP, fontSize: "0.78vw", lineHeight: "142%", fontWeight: 500, display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}
         >
           {post.text}
         </p>
-        <div className="flex items-center justify-between" style={{ gap: "1vw" }}>
-          <span className="max-[767px]:!text-[3vw]" style={{ fontSize: "0.8vw", color: "rgba(14,13,11,0.5)", fontFamily: SHARP }}>
+        <div className="flex items-center justify-between" style={{ gap: "0.75vw" }}>
+          <span className="max-[767px]:!text-[3vw]" style={{ fontSize: "0.62vw", color: "rgba(14,13,11,0.5)", fontFamily: SHARP }}>
             {post.date}
           </span>
           <span
             className="inline-flex items-center gap-[0.3vw] transition-transform duration-300 group-hover:translate-x-1 max-[767px]:!text-[3.2vw]"
-            style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, color: MAGENTA }}
+            style={{ fontFamily: SHARP, fontSize: "0.7vw", fontWeight: 700, color: MAGENTA }}
           >
-            Ansehen <ArrowUpRight className="h-[0.9vw] w-[0.9vw] max-[767px]:!h-[3.2vw] max-[767px]:!w-[3.2vw]" />
+            Ansehen <ArrowUpRight className="h-[0.7vw] w-[0.7vw] max-[767px]:!h-[3.2vw] max-[767px]:!w-[3.2vw]" />
           </span>
         </div>
       </div>

@@ -45,7 +45,11 @@ src/
                          mit ziehbarem Logo-Slider), PartnerStack (schiebt sich über die
                          Team-Section), CareerLocations (Standorte-Box), NewsGrid
                          (5-Spalten-Querformat-Grid mit „Weitere laden"), ServicesStack
-                         (Spektrum-Flip-Cards) …
+                         (flache Flipcards in der Video-Palette), AboutDrift (frei
+                         schwebende Video-Snippets mit Scroll-/Maus-Parallax) …
+                         Farbwelt: „Video Color Coding" (Night + Neon: Magenta bleibt
+                         Main, dazu Blau/Cyan/Violett/Aubergine/Coral, kein Gelb/Grün)
+                         — Tokens --bj-video-* in globals.css.
   data/                  CMS-fähige Datenschicht (companies, home, leadership …);
                          news.ts = 30 reale banijay.de-Meldungen (aus scraped_content
                          ausgewertet, Listenbilder lokal in public/news/scraped/)

@@ -92,6 +92,23 @@ body {
   --bj-paper: #f8f7f3;   /* Off-White = Section-Paper (keine Farbdifferenz) */
   --bj-ink: #0e0d0b;     /* fast-schwarz */
   --bj-coral: #ff4370;   /* Banijay Coral */
+
+  /* Video Color Coding:
+     Night + Neon — abgeleitet aus dem Farb-Coding der produzierten Videos:
+     Ink/Aubergine/Violett-Tiefen + Magenta/Pink/Coral als warmes Licht +
+     Blau/Cyan/Ice als kaltes Gegenlicht. KEINE Gelb-/Grün-Rainbow-Flächen als
+     UI-System. Magenta (#ff4370) bleibt Main-Farbe. */
+  --bj-video-ink: #05030a;
+  --bj-video-aubergine: #170725;
+  --bj-video-violet: #31105a;
+  --bj-video-indigo: #2e37c9;
+  --bj-video-blue: #065dff;
+  --bj-video-cyan: #16c8ff;
+  --bj-video-ice: #d9f3ff;
+  --bj-video-magenta: #ff4370;
+  --bj-video-pink: #e71d7d;
+  --bj-video-coral: #ff5a47;
+
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -305,10 +322,11 @@ html.lenis body { height: auto; }
   background: radial-gradient(
     circle at 50% 44%,
     #ff4370 0%,
-    #ff4370 22%,
-    #ff7a3d 42%,
-    #7b5cff 60%,
-    rgba(248, 247, 243, 0) 74%
+    #ff4370 20%,
+    #e71d7d 38%,
+    #2e37c9 56%,
+    #16c8ff 66%,
+    rgba(248, 247, 243, 0) 76%
   );
   transform-origin: 50% 44%;
   animation: heroAura 16s ease-in-out infinite;

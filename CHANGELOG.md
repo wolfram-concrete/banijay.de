@@ -5,6 +5,43 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Drift-Sektion, Video-Color-Coding, flache Flipcards, Hero-b-Form (03.07., 47. Runde)
+
+**Neu: „Drift"-Sektion (About)**
+- Frei schwebende **Video-Container** (11 lose Snippets aus dem Banijay-Unternehmens-
+  trailer, weboptimiert → `public/video/about-drift/`) mit Scroll- + Maus-Parallax,
+  Grain-Textur, Off-White-Bühne. Formatfüllend (`object-cover`), weiche Ecken (12px),
+  ruhige Speeds + mehr Spacing. Platziert zwischen WorldNetwork und Founders.
+
+**Video Color Coding (Night + Neon)**
+- Neue Palette aus dem Farb-Coding der Videos in `globals.css` (Tokens
+  `--bj-video-*`): Ink/Aubergine/Violett + Magenta/Pink/Coral + Blau/Cyan/Ice.
+  Magenta (`#ff4370`) bleibt Main-Farbe.
+- **CompanyCards / CareerRoleStack / ServicesStack:** HSL-Rainbow-Sweep bzw. Amber-
+  Spektrum → feste Video-Palette (Magenta · Pink · Coral · Violett · Indigo · Blau ·
+  Cyan · Aubergine), Textfarbe adaptiv per Luminanz. **Kein Gelb/Grün/Amber** mehr als
+  UI-Fläche. PageHero-Dots + Hero-Aura-Gradient angepasst.
+- **ServicesStack-Flipcards flach:** Gradient/Glow/Dark-Overlay raus → solide Farbe,
+  genau wie die Card-Stacks auf den anderen Seiten.
+
+**Hero-Video-Container in b-Logo-Form (PageHero, alle Subpages)**
+- Der Video-/Farb-Container startet jetzt in der Form des Banijay-Logo-Elements
+  (rechts voller Halbkreis, links kleine obere/scharfe untere Ecke). Beim Aufskalieren
+  flachen die Curvings in die Kanten aus → Full-Screen.
+
+**Fixes**
+- **Home Video→News-Übergang:** die b-Blende wurde am Ende auf `mask-position 118%`
+  komplett aus dem Container geschoben → Video tauchte wieder auf. Shift auf max. ~82%
+  begrenzt (unterer b-Balken deckt voll), Section-BG → Magenta → nahtlos in die News.
+- **Career:** `data-nav-theme` von der zentrierten Standorte-Magenta-Box entfernt —
+  Logo/MENU über der Off-White-Fläche invertieren nicht mehr fälschlich.
+- **Career Social-Feed:** Slide-Container ~25 % kleiner (26vw → 19.5vw), passt wieder
+  ins Screen-Format.
+- **News-Grid:** 5-Spalten mit Querformat-Bildcontainern + „Zum Beitrag"-CTA, lockerer.
+- **PageHero-Umlaute** (Ä/Ö/Ü) werden oben nicht mehr abgeschnitten.
+
+
+
 ### Overlay-Choreografie, News-Ausbau, Spektrum-Flip-Cards, Video-Feinschliff (03.07., 46. Runde)
 
 **Home**

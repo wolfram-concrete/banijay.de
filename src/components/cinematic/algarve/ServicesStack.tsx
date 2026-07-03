@@ -22,31 +22,51 @@ const H1 = {
   margin: 0,
 } as const;
 
-// Sechs Kompetenzfelder als „Spektrum"-Flip-Card-Stack. Claim/Text aus der Daten-
-// schicht; je Karte eine eigene Farbe aus dem Banijay-Spektrum (Indigo → Violett →
-// Magenta → Coral → Amber). Dunkle Bühne, diagonaler Farbverlauf + Dark-Overlay für
-// Lesbarkeit, farbiger Glow (C1), warmweiße Grotesk-Typo. Jede Videobox spielt einen
-// anderen Ausschnitt desselben Reels (videoStart) → wirkt wie 6 Clips.
-const PAPER = "#f4ece7"; // warmweiße Typo
-// Spektrum je Karte: C0 (dunkel) → C1 (hell).
-const SPECTRUM = [
-  { c0: "#2b27a0", c1: "#5a2fae" }, // 01 Show & Entertainment
-  { c0: "#5c2fb0", c1: "#9c2f9e" }, // 02 Reality & Factual
-  { c0: "#a82f88", c1: "#ff4370" }, // 03 Comedy & Live
-  { c0: "#c2384f", c1: "#ff6a3d" }, // 04 Fiction & Scripted
-  { c0: "#c8501f", c1: "#ffa23d" }, // 05 Digital & Social
-  { c0: "#9c2f9e", c1: "#5a2fae" }, // 06 Talent & Artists
-];
-const CARDS = HOME.competenceFields.fields.slice(0, 6).map((f, i) => ({
-  index: `0${i + 1}`,
-  title: f.title,
-  claim: f.claim,
-  text: f.text,
-  c0: SPECTRUM[i].c0,
-  c1: SPECTRUM[i].c1,
-  rotate: i % 2 === 1 ? "rotate(-7deg)" : "rotate(6deg)",
-  videoStart: (i + 0.5) / 6,
-}));
+// Sechs Kompetenzfelder als Flip-Card-Stack — FLACH, wie die Karten auf den anderen
+// Seiten (CompanyCards/CareerRoleStack): je Karte eine SOLIDE Farbe aus der festen
+// Video-Palette (kein Gradient, kein Glow, kein Dark-Overlay). Textfarbe adaptiv per
+// Luminanz. Jede Videobox spielt einen anderen Ausschnitt desselben Reels.
+const VIDEO_CARD_COLORS = [
+  "#ff4370", // Main Magenta
+  "#e71d7d", // Laser Pink
+  "#ff5a47", // Hot Coral
+  "#31105a", // Midnight Violet
+  "#2e37c9", // Electric Indigo
+  "#065dff", // Video Blue
+  "#16c8ff", // Neon Cyan
+  "#170725", // Deep Aubergine
+] as const;
+function hexToRgb(hex: string): [number, number, number] {
+  const c = hex.replace("#", "");
+  return [parseInt(c.slice(0, 2), 16), parseInt(c.slice(2, 4), 16), parseInt(c.slice(4, 6), 16)];
+}
+function relLuminance([r, g, b]: [number, number, number]): number {
+  const lin = [r, g, b].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+}
+function cardTheme(i: number): { bg: string; fg: string; soft: string } {
+  const bg = VIDEO_CARD_COLORS[i % VIDEO_CARD_COLORS.length];
+  const fg = relLuminance(hexToRgb(bg)) > 0.42 ? "#0e0d0b" : "#f8f7f3";
+  const soft = fg === "#f8f7f3" ? "rgba(248,247,243,0.72)" : "rgba(14,13,11,0.66)";
+  return { bg, fg, soft };
+}
+const CARDS = HOME.competenceFields.fields.slice(0, 6).map((f, i) => {
+  const t = cardTheme(i);
+  return {
+    index: `0${i + 1}`,
+    title: f.title,
+    claim: f.claim,
+    text: f.text,
+    bg: t.bg,
+    fg: t.fg,
+    soft: t.soft,
+    rotate: i % 2 === 1 ? "rotate(-7deg)" : "rotate(6deg)",
+    videoStart: (i + 0.5) / 6,
+  };
+});
 
 export function AlgarveServicesStack() {
   const root = useRef<HTMLElement>(null);
@@ -127,7 +147,7 @@ export function AlgarveServicesStack() {
       style={{ background: "#f8f7f3", paddingTop: "8.33vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div className="flex flex-col" style={{ gap: "2.22vw", color: PAPER }}>
+        <div className="flex flex-col" style={{ gap: "2.22vw" }}>
           {CARDS.map((card) => (
             <div
               key={card.index}
@@ -138,23 +158,24 @@ export function AlgarveServicesStack() {
                 height: "90vh",
                 padding: "4.44vw",
                 borderRadius: "1.67vw",
-                // Diagonaler Spektrum-Verlauf (C0→C1) + Dark-Overlay für Lesbarkeit.
-                backgroundImage:
-                  `linear-gradient(155deg, ${card.c0} 0%, ${card.c1} 100%),` +
-                  `linear-gradient(200deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%)`,
-                border: "1px solid rgba(255,255,255,0.14)",
-                // Feine Innenkante + Tiefen-Schatten + farbiger Glow (C1).
-                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.18), 0 34px 80px -34px rgba(0,0,0,0.9), 0 0 90px -30px ${card.c1}`,
+                // SOLIDE Farbe (kein Gradient/Glow) — flach wie die anderen Card-Stacks.
+                backgroundColor: card.bg,
+                color: card.fg,
                 transformOrigin: "50% 0",
                 transform: "perspective(2000px)",
               }}
             >
-              {/* Top: Titel + Index (auf voll eingefärbtem Grund, schwarze Typo) */}
+              {/* Top: Titel + Index (auf voll eingefärbtem Grund, adaptive Typo) */}
               <div className="relative flex items-center justify-between max-[767px]:!order-1" style={{ zIndex: 3 }}>
-                <h3 className="uppercase max-[767px]:!text-[8.5vw]" style={H1}>
+                <h3 className="uppercase max-[767px]:!text-[8.5vw]" style={{ ...H1, color: card.fg }}>
                   {card.title}
                 </h3>
-                <h3 className="max-[767px]:!text-[8.5vw]" style={{ ...H1, color: "rgba(255,255,255,0.34)" }}>{card.index}</h3>
+                <h3
+                  className="max-[767px]:!text-[8.5vw]"
+                  style={{ ...H1, color: card.fg === "#f8f7f3" ? "rgba(248,247,243,0.34)" : "rgba(14,13,11,0.26)" }}
+                >
+                  {card.index}
+                </h3>
               </div>
 
               {/* Bottom: Claim + Text — auf Mobile UNTER dem Video (order-3), voll breit */}
@@ -170,13 +191,14 @@ export function AlgarveServicesStack() {
                     lineHeight: "115%",
                     fontWeight: 500,
                     letterSpacing: "-0.104vw",
+                    color: card.fg,
                   }}
                 >
                   {card.claim}
                 </h4>
                 <p
                   className="m-0 max-[767px]:!text-[4vw]"
-                  style={{ fontSize: "1.39vw", lineHeight: "135%", opacity: 0.85 }}
+                  style={{ fontSize: "1.39vw", lineHeight: "135%", color: card.soft }}
                 >
                   {card.text}
                 </p>

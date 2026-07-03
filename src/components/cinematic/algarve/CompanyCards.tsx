@@ -26,15 +26,23 @@ const H1 = {
 
 // ── Farb-Choreografie ──────────────────────────────────────────────────────
 // Card 0 = Banijay-Magenta (#ff4370), danach gleichmäßiger Hue-Sweep über den
-// Farbkreis bei konstanter Sättigung/Helligkeit → jede Card eine andere Farbe,
-// aber als eine Familie. Textfarbe wird per Luminanz auf Kontrast gewählt.
-function hslToRgb(h: number, s: number, l: number): [number, number, number] {
-  s /= 100;
-  l /= 100;
-  const k = (n: number) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
+// Feste Video-Palette (Night + Neon) statt HSL-Rainbow: Magenta bleibt Card 1,
+// danach Laser-Pink/Coral/Violett/Indigo/Blau/Cyan/Aubergine. Kein Gelb/Grün/
+// Rainbow. Textfarbe wird per Luminanz auf Kontrast gewählt.
+const VIDEO_CARD_COLORS = [
+  "#ff4370", // Main Magenta
+  "#e71d7d", // Laser Pink
+  "#ff5a47", // Hot Coral
+  "#31105a", // Midnight Violet
+  "#2e37c9", // Electric Indigo
+  "#065dff", // Video Blue
+  "#16c8ff", // Neon Cyan
+  "#170725", // Deep Aubergine
+] as const;
+
+function hexToRgb(hex: string): [number, number, number] {
+  const c = hex.replace("#", "");
+  return [parseInt(c.slice(0, 2), 16), parseInt(c.slice(2, 4), 16), parseInt(c.slice(4, 6), 16)];
 }
 
 function relLuminance([r, g, b]: [number, number, number]): number {
@@ -45,16 +53,9 @@ function relLuminance([r, g, b]: [number, number, number]): number {
   return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
 }
 
-const N = COMPANY_CARDS.length;
-const START_HUE = 340; // Nähe Banijay-Magenta
-
 function cardTheme(i: number): { bg: string; fg: string; soft: string } {
-  const hue = (START_HUE + (360 / N) * i) % 360;
-  const s = 74;
-  const l = 55;
-  const rgb = i === 0 ? ([255, 67, 112] as [number, number, number]) : hslToRgb(hue, s, l);
-  const bg = i === 0 ? "#ff4370" : `hsl(${hue}, ${s}%, ${l}%)`;
-  const fg = relLuminance(rgb) > 0.42 ? "#0e0d0b" : "#f8f7f3";
+  const bg = VIDEO_CARD_COLORS[i % VIDEO_CARD_COLORS.length];
+  const fg = relLuminance(hexToRgb(bg)) > 0.42 ? "#0e0d0b" : "#f8f7f3";
   const soft = fg === "#f8f7f3" ? "rgba(248,247,243,0.72)" : "rgba(14,13,11,0.66)";
   return { bg, fg, soft };
 }

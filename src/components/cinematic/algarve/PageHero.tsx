@@ -17,6 +17,24 @@ const PAPER = "#f8f7f3";
 const INK = "#0e0d0b";
 const SHARP = "var(--font-sharp), sans-serif";
 
+// b-Balken-Startform (Banijay-Logo-Element „Element 1.svg"): rechts eine volle
+// Halbkreis-Rundung, links kleine obere + scharfe untere Ecke. Der Video-/Farb-
+// Container startet in DIESER Form; beim Aufskalieren flacht der vh-fixe Radius von
+// selbst ab (die Curvings wandern in die Kanten), der finale Schritt setzt alle
+// Ecken auf 0 → Full-Screen.
+const B_RADIUS = {
+  borderTopLeftRadius: "1.8vh",
+  borderBottomLeftRadius: "0vh",
+  borderTopRightRadius: "15vh",
+  borderBottomRightRadius: "15vh",
+} as const;
+const FLAT_RADIUS = {
+  borderTopLeftRadius: "0vh",
+  borderTopRightRadius: "0vh",
+  borderBottomRightRadius: "0vh",
+  borderBottomLeftRadius: "0vh",
+} as const;
+
 export function AlgarvePageHero({
   headline,
   body,
@@ -81,7 +99,7 @@ export function AlgarvePageHero({
       const cards = gsap.utils.toArray<HTMLElement>("[data-hero-card]");
       const starts = [0, 0.14, 0.28, 0.42];
       cards.forEach((card, i) => {
-        tl.to(card, { ...FULL, ease: "power2.in", duration: 0.26 }, starts[i] ?? i * 0.14);
+        tl.to(card, { ...FULL, ...FLAT_RADIUS, ease: "power2.in", duration: 0.26 }, starts[i] ?? i * 0.14);
       });
 
       tl
@@ -92,8 +110,8 @@ export function AlgarvePageHero({
         // … dann in die BREITE (steigt hoch) …
         .to("[data-hero-media]", { top: "8vh", left: "0vw", width: "100vw", height: "84vh", ease: "none", duration: 0.2 }, 0.9)
         .to("[data-hero-scrim]", { opacity: 0.45, ease: "none", duration: 0.2 }, 0.9)
-        // … dann Full-Screen (harte Kante).
-        .to("[data-hero-media]", { top: "0vh", height: "100vh", borderRadius: "0vw", ease: "none", duration: 0.16 }, 1.12);
+        // … dann Full-Screen: die letzten b-Curvings flachen in die Kanten aus.
+        .to("[data-hero-media]", { top: "0vh", height: "100vh", ...FLAT_RADIUS, ease: "none", duration: 0.16 }, 1.12);
 
       // 3) Body-Statement darunter: Wort-für-Wort-Enthüllung wie die Home-AboutIntro
       //    (opacity 0→1 + leichtes Anheben, stagger amount 1 in Leserichtung, scrub).
@@ -120,13 +138,13 @@ export function AlgarvePageHero({
           {/* Farbcontainer: skalieren nacheinander aus dem Video-Container auf
               Full-Screen — mit radialen (abgerundeten) Kanten. Reihenfolge =
               DOM-Reihenfolge, Magenta zuletzt (oben). Startlage per GSAP. */}
-          {["#c77dff", "#ffd60a", "#4361ee", "#ff4370"].map((c) => (
+          {["#e71d7d", "#2e37c9", "#065dff", "#16c8ff", "#ff4370"].map((c) => (
             <div
               key={c}
               data-hero-card
               aria-hidden
               className="absolute"
-              style={{ left: "30vw", top: "56vh", width: "40vw", height: "30vh", background: c, zIndex: 1, borderRadius: "1.67vw" }}
+              style={{ left: "30vw", top: "56vh", width: "40vw", height: "30vh", background: c, zIndex: 1, ...B_RADIUS }}
             />
           ))}
 
@@ -168,7 +186,7 @@ export function AlgarvePageHero({
           <div
             data-hero-media
             className="absolute overflow-hidden"
-            style={{ zIndex: 2, left: "30vw", top: "56vh", width: "40vw", height: "30vh", borderRadius: "1.67vw" }}
+            style={{ zIndex: 2, left: "30vw", top: "56vh", width: "40vw", height: "30vh", ...B_RADIUS }}
           >
             <video autoPlay muted loop playsInline poster={image} className="absolute inset-0 h-full w-full object-cover">
               <source src={video} type="video/mp4" />
