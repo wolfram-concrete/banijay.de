@@ -228,7 +228,15 @@ export function SiteHeader() {
     const recompute = () => {
       let mag = false;
       let dark = false;
+      const vw = window.innerWidth;
       active.forEach((el) => {
+        // Theme nur anwenden, wenn das Element horizontal (nahezu) die volle Breite
+        // unter der Nav einnimmt — Logo liegt links, MENU rechts. Zentrierte Boxen
+        // mit Off-White-Rändern (z. B. Career-Standorte-Box auf Desktop) sollen die
+        // Nav NICHT invertieren; full-bleed Sections (und dieselbe Box auf Mobile)
+        // schon.
+        const r = el.getBoundingClientRect();
+        if (r.left > 24 || r.right < vw - 24) return;
         const t = el.getAttribute("data-nav-theme");
         if (t === "magenta") mag = true;
         else if (t === "dark") dark = true;

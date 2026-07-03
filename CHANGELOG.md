@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-QA + Nav-Theme-Span-Fix (03.07., 48. Runde)
+- **Nav-Theme nur bei voller Breite:** Der SiteHeader wendet ein `data-nav-theme`
+  jetzt nur an, wenn das Element horizontal (nahezu) die volle Breite unter der Nav
+  einnimmt. Damit invertiert die zentrierte Career-Standorte-Magenta-Box auf Desktop
+  die Nav/Logo NICHT mehr fälschlich (Off-White-Ränder → Logo bleibt Magenta-„b"),
+  auf Mobile (Box full-width) invertiert das Logo korrekt auf Schwarz.
+- **Mobile-QA:** Home-Hero, About (Hero-b-Form + Drift-Sektion), News-Grid (1-Spalten
+  mit Querformat + CTA), Career geprüft — keine Overflows, Layouts sauber.
+
 ### Drift-Sektion, Video-Color-Coding, flache Flipcards, Hero-b-Form (03.07., 47. Runde)
 
 **Neu: „Drift"-Sektion (About)**

@@ -38,10 +38,13 @@ export function AlgarveCareerLocations() {
 
   return (
     <section ref={root} style={{ paddingTop: "6vw", paddingBottom: "6vw", paddingLeft: "2vw", paddingRight: "2vw" }}>
-      {/* KEIN data-nav-theme: die Magenta-Box ist zentriert (max-w-1440), die Nav
-          (Logo/MENU) liegt über der Off-White-Fläche links/rechts → darf NICHT auf
-          das Magenta-Theme invertieren (sonst schwarzes statt Magenta-„b"-Logo). */}
+      {/* data-nav-theme="magenta": greift nur, wenn die Box horizontal (nahezu) die
+          volle Breite unter der Nav einnimmt (SiteHeader prüft den Span). Desktop:
+          Box zentriert (Off-White-Ränder) → Nav bleibt default. Mobile: Box fast
+          full-width → Nav invertiert korrekt auf Schwarz (Magenta-„b" wäre sonst
+          unsichtbar). */}
       <div
+        data-nav-theme="magenta"
         className="mx-auto max-[767px]:!rounded-[6vw] max-[767px]:!px-[7vw] max-[767px]:!py-[10vw]"
         style={{
           maxWidth: "1440px",
