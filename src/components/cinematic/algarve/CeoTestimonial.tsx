@@ -54,14 +54,17 @@ export function AlgarveCeoTestimonial({
   }, []);
 
   return (
-    <section ref={root} style={{ background: PAPER, paddingTop: "8.33vw", paddingBottom: "8.33vw" }}>
-      <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1180px" }}>
+    <section ref={root} style={{ background: PAPER, paddingTop: "6.94vw", paddingBottom: "6.94vw" }}>
+      <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1560px" }}>
+        {/* Nimbus features-11: 0.95fr/1.05fr, großzügiger Gap, KEIN items-center →
+            das Portrait füllt die Spaltenhöhe (großes Bild); der Content spreizt per
+            space-between (Accent+Zitat oben, Name+CTA unten) über die Bildhöhe. */}
         <div
-          className="grid items-center md:grid-cols-[0.95fr_1.05fr] max-[767px]:!grid-cols-1"
-          style={{ columnGap: "5.5vw", rowGap: "9vw" }}
+          className="grid items-stretch md:grid-cols-[0.95fr_1.05fr] max-[767px]:!grid-cols-1"
+          style={{ columnGap: "5vw", rowGap: "8vw" }}
         >
-          {/* ── Portrait links, mit Overlay-Reveal (skaliert nach oben weg) ──── */}
-          <div className="relative overflow-hidden" style={{ borderRadius: "0.9vw", aspectRatio: "4 / 5" }}>
+          {/* ── Portrait links, groß, mit Overlay-Reveal (skaliert nach oben weg) ── */}
+          <div className="relative overflow-hidden max-[767px]:!aspect-[4/5]" style={{ borderRadius: "0.6vw", aspectRatio: "5 / 6" }}>
             <img
               src={image}
               alt={name}
@@ -80,17 +83,17 @@ export function AlgarveCeoTestimonial({
             />
           </div>
 
-          {/* ── Content rechts (Accent · Headline/Zitat · Name · CTA) ────────── */}
+          {/* ── Content rechts: Accent+Zitat oben, Name+CTA unten (space-between) ── */}
           <div
-            className="flex max-w-[560px] flex-col items-start"
+            className="flex h-full max-w-[640px] flex-col items-start justify-between max-[767px]:!max-w-full max-[767px]:!gap-[7vw]"
             style={{
-              gap: "3vw",
+              gap: "4vw",
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(32px)",
               transition: "opacity 800ms cubic-bezier(0.22,1,0.36,1) 120ms, transform 800ms cubic-bezier(0.22,1,0.36,1) 120ms",
             }}
           >
-            <div className="flex flex-col items-start" style={{ gap: "1.4vw" }}>
+            <div className="flex flex-col items-start max-[767px]:!gap-[3vw]" style={{ gap: "1.6vw" }}>
               <span
                 className="max-[767px]:!text-[3vw]"
                 style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: MAGENTA }}
@@ -99,26 +102,28 @@ export function AlgarveCeoTestimonial({
               </span>
               <blockquote
                 className="m-0 max-[767px]:!text-[6.4vw]"
-                style={{ fontFamily: SHARP, fontSize: "2.4vw", lineHeight: "124%", fontWeight: 500, letterSpacing: "-0.06vw", color: INK }}
+                style={{ fontFamily: SHARP, fontSize: "2.08vw", lineHeight: "128%", fontWeight: 500, letterSpacing: "-0.04vw", color: INK }}
               >
                 „{quote}“
               </blockquote>
             </div>
 
-            <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.2vw", fontWeight: 500, color: INK }}>
-              {name}
-            </span>
+            <div className="flex flex-col items-start max-[767px]:!gap-[5vw]" style={{ gap: "1.6vw" }}>
+              <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.25vw", fontWeight: 500, color: INK }}>
+                {name}
+              </span>
 
-            {cta && (
-              <a
-                href={cta.href}
-                className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
-                style={{ border: "0.12vw solid #0e0d0b", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", marginTop: "0.8vw" }}
-              >
-                {cta.text}
-                <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />
-              </a>
-            )}
+              {cta && (
+                <a
+                  href={cta.href}
+                  className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
+                  style={{ border: "0.12vw solid #0e0d0b", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.05vw" }}
+                >
+                  {cta.text}
+                  <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

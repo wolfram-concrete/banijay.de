@@ -53,23 +53,27 @@ export function AlgarvePartnerGrid() {
             </a>
           </div>
 
-          {/* Rechte Spalte: Tile-Liste (Bild links, Titel + Copy rechts) */}
-          <div className="flex flex-col">
+          {/* Rechte Spalte: die Tiles schieben sich beim Scrollen übereinander
+              (Algarve blog-home, wie das News-Modul): position:sticky bottom +
+              z-Index-Staffelung, opake Fläche (= Section-Paper) deckt die untere
+              Ebene ab — getrennt nur durch eine feine dünne Linie, KEINE Schatten. */}
+          <div className="relative flex flex-col">
             {items.map((card, i) => (
               <div
                 key={card.title}
-                className="group flex flex-col"
+                className="group sticky bottom-[10vw] flex flex-col bg-[#f8f7f3] max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw]"
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
-                  borderTop: i === 0 ? "none" : "0.08vw solid rgba(0,0,0,0.2)",
+                  borderTop: "0.08vw solid rgba(14,13,11,0.2)",
                   color: INK,
+                  zIndex: items.length - i,
                 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>
                   <div
                     className="overflow-clip max-[767px]:!h-[56vw] max-[767px]:!rounded-[4vw]"
-                    style={{ borderRadius: "1.11vw", height: "15vw", boxShadow: "0 0.8vw 2.4vw -0.4vw rgba(0,0,0,0.28)" }}
+                    style={{ borderRadius: "1.11vw", height: "15vw" }}
                   >
                     <img
                       src={IMAGES[i % IMAGES.length]}

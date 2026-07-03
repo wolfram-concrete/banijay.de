@@ -74,20 +74,20 @@ export function AlgarveNewsStack() {
 
           {/* Rechte Spalte: die Tiles schieben sich beim Scrollen übereinander
               (Algarve blog-home: position:sticky bottom + z-Index-Staffelung — die
-              erste Kachel liegt vorn, jede weitere rastet darunter/dahinter ein).
-              Gilt Desktop UND Mobile; jede Kachel ist eine opake Magenta-Karte mit
-              oberer Schattenkante, damit die Schiebe-Ebenen klar lesbar sind. */}
+              erste Kachel liegt vorn, jede weitere rastet dahinter ein). Wie im
+              Original: KEINE Schatten, KEINE Karten-Rundung — die opake Fläche
+              (= Section-Magenta) deckt die untere Ebene ab, getrennt nur durch eine
+              feine dünne Linie oben. So gleiten die Karten smooth übereinander. */}
           <div className="relative flex flex-col">
             {ITEMS.map((item, i) => (
               <Link
                 key={item.title}
                 href={`/news/${item.slug}`}
-                className="group sticky bottom-[10vw] flex flex-col rounded-[1.11vw] bg-[#ff4370] no-underline shadow-[0_-1vw_3.5vw_-0.9vw_rgba(0,0,0,0.3)] max-[767px]:!bottom-[9vw] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] max-[767px]:!shadow-[0_-1.5vw_4vw_-1vw_rgba(0,0,0,0.32)]"
+                className="group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw]"
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
-                  paddingLeft: "1.67vw",
-                  paddingRight: "1.67vw",
+                  borderTop: "0.08vw solid rgba(14,13,11,0.32)",
                   color: "#0e0d0b",
                   zIndex: ITEMS.length - i,
                 }}
@@ -98,7 +98,6 @@ export function AlgarveNewsStack() {
                     style={{
                       borderRadius: "1.11vw",
                       height: "15vw",
-                      boxShadow: "0 0.8vw 2.4vw -0.4vw rgba(0,0,0,0.28)",
                     }}
                   >
                     <img

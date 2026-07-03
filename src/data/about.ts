@@ -13,8 +13,10 @@ export const ABOUT = {
   },
   principle: {
     headline: "Kreative Freiheit braucht ein starkes Dach.",
+    // Der ProofVideo-Statement-Overlay auf der About-Seite nutzt headline + den
+    // ERSTEN Satz von text (siehe about/page.tsx).
     text:
-      "Jede Company behält ihre eigene Handschrift. Banijay Germany verbindet Strategie, Reichweite, Erfahrung und operative Kraft.",
+      "So entstehen Geschichten, die Millionen erreichen. Banijay Germany verbindet Strategie, Reichweite, Erfahrung und operative Kraft.",
   },
   ceo: {
     headline: "Geführt von Menschen, die Entertainment verstehen.",

@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### About-Feinschliff: News/Partner-Stack, CEO-Bild, Video-Statement (03.07., 45. Runde)
+- **News- & Partner-Modul — Schiebe-Effekt ohne Schatten:** Die vorher gesetzten
+  Karten-Schatten erzeugten eine unnatürliche dunkle Halo-Kante. Jetzt wie im
+  Algarve-`blog-home`-Original: **keine Schatten, keine Karten-Rundung** — die opake
+  Fläche (= Section-Grund) deckt die untere Ebene ab, getrennt nur durch eine **feine
+  dünne Linie**. Der Partner-Bereich (About) bekommt denselben sticky-Stack wie das
+  News-Modul (war vorher eine flache Liste ohne Schiebe-Effekt).
+- **CEO-/Co-Founder-Section (About) ans Nimbus-`features-11`-Original angepasst:**
+  Container 1180 → **1560px**, `items-stretch` statt `items-center`, Portrait-Aspekt
+  **5:6** → das **Bild füllt die Spaltenhöhe (deutlich größer)**. Content per
+  `space-between` (Accent+Zitat oben, Name+CTA unten). Zitat feiner proportioniert
+  (2.4 → 2.08vw, mehr Zeilenhöhe).
+- **About-Video-Statement neu getextet:** „Kreative Freiheit braucht ein starkes Dach.
+  So entstehen Geschichten, die Millionen erreichen." (`ABOUT.principle.text`).
+
 ### Home-Desktop: Statement-Standzeit + News-Schiebe-Stack (03.07., 44. Runde)
 - **AboutIntro (3. Section) — Statement bleibt länger stehen:** Der Magenta-Layer der
   Companies-Section schob sich auf Desktop zu schnell über das weiße Statement. Die
