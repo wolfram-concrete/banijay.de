@@ -5,6 +5,38 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Feinschliff: Hero-Timing, News-Masonry, Layout-Luft, Magenta-Fix (03.07., 49. Runde)
+
+**Home-Hero – weicherer Auftakt**
+- Die initiale Typo blendet nicht mehr hart in 0,6 s ein, sondern **sanft über 1,25 s**
+  (`sine.out` + leichter Aufwärts-Drift) und steht kurz still, **bevor** die
+  WE/ARE/BANIJAY-Choreografie (Flips/Slices) startet — kein Überlapp mehr.
+
+**News-Page – Masonry statt symmetrischem Raster**
+- Das gleichförmige 5-Spalten-Grid ist jetzt ein **redaktionelles Masonry** (CSS-
+  Multi-Column, `break-inside-avoid`, responsive 1→2→3→4 Spalten). Pro Karte ein
+  **wechselndes Seitenverhältnis** (`4/5 · 16/11 · 1/1 · 3/4 · 16/10 · 5/6`, zyklisch),
+  die Palette teilt sich bewusst nicht glatt durch die Spaltenzahl → asymmetrischer
+  Rhythmus statt Gleichförmigkeit.
+- **CTA-Hover:** „Zum Beitrag" bekommt eine von links einlaufende **Underline** (+ Pfeil-
+  Diagonalbewegung). Der „Weitere News laden"-Button erhielt die fehlende `group`-Klasse,
+  damit seine Pfeil-Animation greift.
+
+**Layout-Luft (MacBook-Pro-Format)**
+- **WorldNetwork (About):** Slider-Tiles flacher (`22vh→16vh`), Brand-Video kompakter
+  (`50vh→42vh`), Copy breiter (weniger Zeilen) → die Section klebt nicht mehr an der Nav.
+- **PartnerStack (About):** Der Intro-Reveal war zu lang (`+=45%`) und scrollte halb
+  aufgebaut oben raus → **kurz & früh fertig** (`+=16%`, weniger Weg), Block tiefer
+  angesetzt (`paddingTop 8vw→13vw`) und kompakter (Copy 2 statt 3 Zeilen).
+- **Career-Social-Feed:** `paddingTop 5.56vw→11vw` → der gepinnte Slider steht mittig
+  (Nav-Abstand 80→158 px) statt oben angeklebt. Mobile via Override unverändert.
+
+**Bugfix: Companies-Magenta-Grundfläche (Home)**
+- Der Hintergrund-Treiber schrieb `background-color` nur bei Farbänderung und setzte ihn
+  im Cleanup auf `""`. In React-19-StrictMode/HMR (mount→cleanup→mount) blieb die Fläche
+  danach transparent → off-white schien durch. Jetzt wird sie beim Effect-Start **auf
+  Magenta geprimt** und im Cleanup auf die Basis-Magenta zurückgesetzt (Desktop + Mobile).
+
 ### Mobile-QA + Nav-Theme-Span-Fix (03.07., 48. Runde)
 - **Nav-Theme nur bei voller Breite:** Der SiteHeader wendet ein `data-nav-theme`
   jetzt nur an, wenn das Element horizontal (nahezu) die volle Breite unter der Nav

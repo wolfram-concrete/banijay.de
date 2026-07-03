@@ -50,14 +50,16 @@ export function AlgarvePartnerStack() {
         });
 
         // Content-Parallax: ERST wenn die Magenta-Fläche voll gedeckt hat (top top),
-        // ziehen Headline · Copy · CTA gestaffelt von unten herein (scroll-gekoppelt).
-        gsap.set("[data-partner-reveal]", { opacity: 0, y: 80 });
+        // ziehen Headline · Copy · CTA gestaffelt von unten herein. Der Block ist NICHT
+        // gepinnt (scrollt mit), darum muss der Reveal KURZ sein und FRÜH fertig werden
+        // — sonst wandert der noch halb aufgebaute Text bereits oben aus dem Bild.
+        gsap.set("[data-partner-reveal]", { opacity: 0, y: 48 });
         gsap.to("[data-partner-reveal]", {
           opacity: 1,
           y: 0,
           ease: "power2.out",
-          stagger: 0.12,
-          scrollTrigger: { trigger: sec, start: "top top", end: "+=45%", scrub: 1, invalidateOnRefresh: true },
+          stagger: 0.06,
+          scrollTrigger: { trigger: sec, start: "top top", end: "+=16%", scrub: 1, invalidateOnRefresh: true },
         });
       } else {
         // Mobile: kein Overlap — ruhiger gestaffelter Reveal beim Eintritt.
@@ -94,19 +96,19 @@ export function AlgarvePartnerStack() {
       // Desktop: -100vh-Overlap + z-2 → die Magenta-Fläche schiebt sich über die
       // (gepinnte) Team-Section. Mobile: kein Overlap, ruhige gerundete Oberkante.
       className="relative max-[767px]:!mt-0 max-[767px]:!rounded-t-[6vw]"
-      style={{ background: MAGENTA, color: INK, paddingTop: "8vw", paddingBottom: "16vw", marginTop: "-100vh", zIndex: 2 }}
+      style={{ background: MAGENTA, color: INK, paddingTop: "13vw", paddingBottom: "16vw", marginTop: "-100vh", zIndex: 2 }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* ── Intro-Block (schwarz auf Magenta) ────────────────────────────── */}
         <div
           data-partner-headline
-          className="mx-auto flex max-w-[64vw] flex-col items-center text-center max-[767px]:!max-w-full"
-          style={{ gap: "1.6vw", marginBottom: "6vw" }}
+          className="mx-auto flex max-w-[68vw] flex-col items-center text-center max-[767px]:!max-w-full"
+          style={{ gap: "1.2vw", marginBottom: "4.5vw" }}
         >
           <h2 data-partner-reveal className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "3.6vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.11vw", color: INK }}>
             {partnership.headline}
           </h2>
-          <p data-partner-reveal className="m-0 max-w-[48vw] max-[767px]:!max-w-full max-[767px]:!text-[4.2vw]" style={{ fontSize: "1.35vw", lineHeight: "145%", color: "rgba(14,13,11,0.72)" }}>
+          <p data-partner-reveal className="m-0 max-w-[56vw] max-[767px]:!max-w-full max-[767px]:!text-[4.2vw]" style={{ fontSize: "1.35vw", lineHeight: "142%", color: "rgba(14,13,11,0.72)" }}>
             {partnership.text}
           </p>
           <a

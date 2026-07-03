@@ -183,7 +183,7 @@ export function AlgarveWorldNetwork() {
       <div
         ref={panel}
         className="flex h-screen w-full flex-col justify-center max-[767px]:!h-auto max-[767px]:!py-[16vw]"
-        style={{ paddingTop: "3vh", paddingBottom: "3vh", rowGap: "clamp(24px, 4vh, 56px)" }}
+        style={{ paddingTop: "3vh", paddingBottom: "3vh", rowGap: "clamp(20px, 3vh, 44px)" }}
       >
         {/* ── Kopf: Textblock links, Brand-Video rechts (mittig im Grid) ─────── */}
         <div className="mx-auto w-full max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1560px" }}>
@@ -198,8 +198,8 @@ export function AlgarveWorldNetwork() {
               </h2>
               <p
                 data-wn-reveal
-                className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
-                style={{ fontSize: "1.2vw", lineHeight: "148%", color: "rgba(14,13,11,0.72)" }}
+                className="m-0 max-w-[43vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
+                style={{ fontSize: "1.2vw", lineHeight: "146%", color: "rgba(14,13,11,0.72)" }}
               >
                 {world.text}
               </p>
@@ -220,7 +220,7 @@ export function AlgarveWorldNetwork() {
             <div
               data-wn-reveal
               className="overflow-clip max-[767px]:!aspect-[16/10] max-[767px]:!h-auto"
-              style={{ borderRadius: "0.8vw", height: "clamp(340px, 50vh, 560px)" }}
+              style={{ borderRadius: "0.8vw", height: "clamp(300px, 42vh, 480px)" }}
             >
               <video
                 autoPlay
@@ -255,7 +255,7 @@ export function AlgarveWorldNetwork() {
                   draggable={false}
                   aria-label={`${h.name} öffnen`}
                   className="group shrink-0 snap-start overflow-clip max-[767px]:!w-[72vw]"
-                  style={{ height: "clamp(150px, 22vh, 255px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
+                  style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
                 >
                   <img
                     src={h.image}

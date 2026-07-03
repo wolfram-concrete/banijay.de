@@ -223,13 +223,19 @@ export function AlgarveHome() {
       // steht während des Preloaders bereits korrekt (Front sichtbar, Back verdeckt).
       const isMobile = !window.matchMedia("(min-width: 768px)").matches;
       const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-      // Die Typo blendet zuerst ruhig herein (aus dem versteckten Startzustand),
-      // dann läuft die WE/ARE/BANIJAY-Choreografie.
-      tl.to("[data-hero-typo]", { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 0);
-      tl.to('[data-flip-front="one"]', { yPercent: -100, rotateX: 90, duration: 0.45 }, 0.06)
-        .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.06)
-        .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 0.3)
-        .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 0.3);
+      // Die Typo blendet zuerst SANFT herein (weiche, längere Blende aus dem
+      // versteckten Startzustand, mit leichtem Aufwärts-Drift), bekommt einen
+      // kurzen Moment Ruhe — und ERST DANN läuft die WE/ARE/BANIJAY-Choreografie.
+      tl.fromTo(
+        "[data-hero-typo]",
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, duration: 1.25, ease: "sine.out" },
+        0,
+      );
+      tl.to('[data-flip-front="one"]', { yPercent: -100, rotateX: 90, duration: 0.45 }, 0.85)
+        .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.85)
+        .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 1.1)
+        .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 1.1);
       if (isMobile) {
         // Mobile: nur das VOLLE Wort ist sichtbar (Slats ausgeblendet). Es fährt per
         // Clip-Wipe von oben nach unten herein — „fächert herab" — begleitet von
@@ -238,12 +244,12 @@ export function AlgarveHome() {
           '[data-strip-mob]',
           { clipPath: "inset(0% 0% 100% 0%)", y: "-6vw" },
           { clipPath: "inset(0% 0% 0% 0%)", y: "0vw", duration: 0.9, ease: "power4.out" },
-          0.5,
+          1.0,
         );
       } else {
-        tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 0.68)
-          .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 0.68)
-          .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 0.68);
+        tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 1.35)
+          .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 1.35)
+          .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 1.35);
       }
 
       // Die unteren Zeilen (Factsheet + Subline) bleiben zunächst verborgen — sie

@@ -145,6 +145,12 @@ export function AlgarveCompaniesScroller() {
     if (!window.matchMedia("(min-width: 768px)").matches) return;
     const rootEl = root.current;
     if (!rootEl) return;
+    // Grundfläche SOFORT auf Magenta primen. Der Ticker unten schreibt background-
+    // Color nur bei Farbänderung (`moved`) — ohne dieses Priming bliebe die Fläche
+    // nach einem StrictMode/HMR-Cleanup (der background-color auf "" setzt und damit
+    // auch die Inline-`background`-Kurzform löscht) transparent → off-white scheint
+    // durch. Priming garantiert: NIE transparent.
+    rootEl.style.backgroundColor = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
     const cur: [number, number, number] = [...BASE_BG];
     const target: [number, number, number] = [...BASE_BG];
     const setT = (c: [number, number, number]) => {
@@ -202,7 +208,9 @@ export function AlgarveCompaniesScroller() {
     return () => {
       st.kill();
       gsap.ticker.remove(tick);
-      rootEl.style.backgroundColor = "";
+      // NICHT auf "" (das entfernte die Magenta-Grundfläche → off-white scheint
+      // durch). Auf die Basis-Magenta zurück.
+      rootEl.style.backgroundColor = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
     };
   }, []);
 
@@ -278,11 +286,13 @@ export function AlgarveCompaniesScroller() {
         }
         if (moved) rootEl.style.backgroundColor = `rgb(${Math.round(cur[0])},${Math.round(cur[1])},${Math.round(cur[2])})`;
       };
+      rootEl.style.backgroundColor = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
       gsap.ticker.add(tick);
       coverflow();
       return () => {
         gsap.ticker.remove(tick);
-        rootEl.style.backgroundColor = "";
+        // Basis-Magenta statt "" — sonst transparente Fläche nach Cleanup.
+        rootEl.style.backgroundColor = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
       };
     },
     { scope: mRoot },

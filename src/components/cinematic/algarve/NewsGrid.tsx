@@ -18,8 +18,15 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // batchweise nachlädt (CMS-ready: wächst automatisch mit mehr Einträgen).
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INITIAL = 15; // drei volle Reihen im 5-Spalten-Raster
+const INITIAL = 15;
 const BATCH = 10;
+
+// Masonry-Rhythmus: pro Karte ein wechselndes Seitenverhältnis (Hoch-, Quer- und
+// Quadratformate im Wechsel). Die 6er-Palette teilt sich nicht glatt durch die
+// Spaltenzahl (2/3/4) → die Spalten versetzen sich gegeneinander, das Raster wirkt
+// redaktionell-asymmetrisch statt gleichförmig. Der CSS-Multi-Column-Flow packt die
+// unterschiedlich hohen Karten dicht (Pinterest-Prinzip).
+const RATIOS = ["4 / 5", "16 / 11", "1 / 1", "3 / 4", "16 / 10", "5 / 6"];
 
 export function NewsGrid({ items }: { items: NewsItem[] }) {
   const [count, setCount] = useState(Math.min(INITIAL, items.length));
@@ -46,17 +53,19 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
 
   return (
     <>
-      <div ref={grid} className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {visible.map((item) => (
+      {/* Masonry via CSS-Multi-Column: unterschiedlich hohe Karten packen sich dicht,
+          break-inside-avoid hält jede Karte zusammen. Spaltenzahl responsiv. */}
+      <div ref={grid} className="columns-1 gap-x-6 sm:columns-2 lg:columns-3 xl:columns-4">
+        {visible.map((item, i) => (
           <Link
             key={item.slug}
             data-news-card
             href={`/news/${item.slug}`}
-            className="group flex flex-col no-underline"
+            className="group mb-11 block break-inside-avoid no-underline"
             style={{ willChange: "transform, opacity" }}
           >
-            {/* Querformat-Bildcontainer (breit, passt zu querformatigen Beiträgen) */}
-            <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "16 / 10", background: "#e8e6df" }}>
+            {/* Bildcontainer mit wechselndem Seitenverhältnis (Masonry-Rhythmus) */}
+            <div className="overflow-hidden rounded-xl" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
               <img
                 src={item.img}
                 alt=""
@@ -71,12 +80,17 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
             >
               {item.title}
             </h2>
-            {/* CTA zum Beitrag — visueller Affordance-Marker (ganze Karte ist klickbar) */}
+            {/* CTA zum Beitrag — visueller Affordance-Marker (ganze Karte ist klickbar).
+                Hover (auf der ganzen Karte): eine Underline läuft von links unter dem
+                Text ein, der Pfeil rückt diagonal nach außen. */}
             <span
               className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent"
               style={{ fontFamily: SHARP }}
             >
-              Zum Beitrag
+              <span className="relative">
+                Zum Beitrag
+                <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              </span>
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </span>
           </Link>
@@ -88,7 +102,7 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
           <button
             type="button"
             onClick={() => setCount((c) => Math.min(items.length, c + BATCH))}
-            className="inline-flex items-center gap-2 rounded-full bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
+            className="group inline-flex items-center gap-2 rounded-full bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
             style={{ padding: "0.9rem 2rem", fontFamily: SHARP, fontSize: "1rem", fontWeight: 500 }}
           >
             Weitere News laden
