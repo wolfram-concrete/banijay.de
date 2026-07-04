@@ -167,6 +167,21 @@ export function AlgarveWorldNetwork() {
             wrap.scrollLeft = slideP * maxScroll();
           },
         });
+      } else {
+        // Mobile: KEIN gepinnter Logo-Slider (nativer Swipe). ABER kurzer Pin ab
+        // „top top", damit der Panel-Content (Headline/Copy/CTA) beim Einziehen NICHT
+        // sofort hinter die Sticky-Nav wegscrollt. Pin-Länge = Reveal-Strecke + kleiner
+        // Hold; danach löst der Pin, Logo-Bahn + Pills scrollen normal nach.
+        const revealLen = Math.max(300, Math.round(maxScroll() * 0.5));
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top top",
+          end: () => "+=" + (revealLen + Math.round(window.innerHeight * 0.4)),
+          pin: panel.current,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
       }
     },
     { scope: root },
@@ -185,7 +200,7 @@ export function AlgarveWorldNetwork() {
           damit die Magenta-Fläche beim Aufsteigen das Statement voll deckt. */}
       <div
         ref={panel}
-        className="flex h-screen w-full flex-col justify-center max-[767px]:!min-h-screen max-[767px]:!h-auto max-[767px]:!py-[16vw]"
+        className="flex h-screen w-full flex-col justify-center max-[767px]:!min-h-screen max-[767px]:!h-auto max-[767px]:!justify-start max-[767px]:!pt-[24vw] max-[767px]:!pb-[14vw]"
         style={{ paddingTop: "3vh", paddingBottom: "3vh", rowGap: "clamp(20px, 3vh, 44px)" }}
       >
         {/* ── Kopf: Textblock links, Brand-Video rechts (mittig im Grid) ─────── */}
@@ -257,14 +272,14 @@ export function AlgarveWorldNetwork() {
                   rel="noopener noreferrer"
                   draggable={false}
                   aria-label={`${h.name} öffnen`}
-                  className="group shrink-0 snap-start overflow-clip max-[767px]:!w-[50vw]"
+                  className="group shrink-0 snap-start overflow-clip max-[767px]:!h-[22vw] max-[767px]:!w-[40vw]"
                   style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
                 >
                   <img
                     src={h.image}
                     alt={h.name}
                     draggable={false}
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[12%]"
+                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[6%]"
                     style={{ padding: "17%" }}
                   />
                 </a>

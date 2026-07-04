@@ -5,6 +5,30 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-04
 
+### Mobile-Feinschliff: PartnerStack-Choreo, WorldNetwork-Timing, Drift-Luft (04.07., 57. Runde)
+- **PartnerStack „Partner für Entertainment" (About mobil):** Bildkarten sind bei der
+  Magenta-Andockung zunächst unsichtbar (opacity 0) und blenden ERST ein, wenn nach
+  dem Text der Stack hochkommt → „erst Schrift, dann Bild". Die Intro-Schrift wird
+  kurz gepinnt (bleibt unter der Nav, statt sofort dahinter wegzuscrollen). Karten
+  niedriger (60vh → 52vh). WWM-Fokus `50% 44% → 66% 42%` (Jauch mittig statt am Rand).
+- **WorldNetwork-Logos (About mobil):** Kacheln noch niedriger (30vw → 22vw) → weniger
+  Leerraum über/unter dem Logo.
+
+### Mobile-Feinschliff: Career-Copytext, News-Native-Ratio, WorldNetwork, Drift (04.07., 56. Runde)
+- **CareerRoleStack (mobil):** die große Headline + die graue Copy zu EINEM Copytext
+  oberhalb der Flip-Cards zusammengefasst (Desktop bleibt geteilt).
+- **CareerTomorrowStack (mobil):** Bild sitzt jetzt oberhalb der Copy (Eyebrow →
+  Headline → Bild → Copy → CTA); Desktop bleibt 2-spaltig (Bild rechts).
+- **CareerSocialSlider (mobil):** Pin startet früher (`top top` → `top 16%`) → Headline
+  `#workatBanijay` bleibt unter der Nav; Feed von 6 auf 12 Karten erhöht.
+- **NewsGrid (mobil):** Bildcontainer übernehmen das NATIVE Verhältnis der vorbereiteten
+  Banijay-Preview-Bilder (kein Crop mehr) statt fixem 4:3; Desktop-Masonry bleibt.
+- **AboutIntro / WorldNetwork (mobil):** Statement-Standraum 150vh → 240vh, damit das
+  Statement fertig steht, BEVOR die Magenta-Fläche es deckt; WorldNetwork-Content wird
+  gepinnt (Headline/Copy nicht mehr hinter der Nav); Logo-Kacheln kleiner, Logos größer.
+- **AboutDrift (mobil):** luftiger (Bühne 112vh → 134vh, oberer Bereich entzerrt),
+  Hintergrund-Video kleiner; Container bauen sich gestaffelt auf + dezentes Wabern.
+
 ### Mobile-Feinschliff: Flip-Cards-Luft, News-4:3, About-Video-Grow (04.07., 55. Runde)
 - **CompanyCards / Flip-Cards (mobil):** Karten laufen jetzt auf **Inhaltshöhe**
   (`h-[80vh] → h-auto`) → kein zu großer Leerraum mehr unter dem Bildcontainer.

@@ -71,7 +71,9 @@ export const ABOUT = {
         text: "Produktionen, die im linearen Programm, im Stream und auf digitalen Kanälen funktionieren.",
         image: "/about-partners/sender-plattformen-wwm.jpg",
         imageAlt: "Wer wird Millionär Studio mit Moderator Günther Jauch",
-        objectPosition: "50% 44%",
+        // Fokus: Günther Jauch (Prio 1) sitzt rechts im Bild → Crop nach rechts, damit
+        // er im Container mittig steht (statt am Rand angeschnitten).
+        objectPosition: "66% 42%",
       },
       {
         label: "Marken & Unternehmen",

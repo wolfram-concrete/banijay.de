@@ -78,7 +78,7 @@ export function AlgarveAboutIntro({
   return (
     <section
       ref={root}
-      className={magentaExit ? "max-[767px]:!h-[230vh] max-[767px]:!pb-0" : "max-[767px]:!h-[150vh]"}
+      className={magentaExit ? "max-[767px]:!h-[230vh] max-[767px]:!pb-0" : "max-[767px]:!h-[240vh]"}
       style={{
         // Desktop mit Standraum (magentaExit/tall): 275vh → das Statement bleibt nach
         // dem Word-Reveal deutlich länger GEPINNT stehen, bevor die nächste Fläche

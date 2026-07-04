@@ -84,6 +84,13 @@ export function AlgarveCareerTomorrowStack() {
             >
               {tomorrow.headline}
             </h2>
+            {/* Mobil: Bild oberhalb der Copy (Desktop nutzt das Bild in der rechten Spalte). */}
+            <div
+              data-tm-item
+              className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block max-[767px]:!aspect-[4/3] max-[767px]:!rounded-[3vw]"
+            >
+              <img src={tomorrow.image} alt={tomorrow.headline} className="h-full w-full object-cover" />
+            </div>
             <p
               data-tm-item
               className="m-0 max-w-[38vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
@@ -104,8 +111,9 @@ export function AlgarveCareerTomorrowStack() {
             </a>
           </div>
 
-          {/* ── Bild rechts (mit Parallax; höher als der Container) ─────────── */}
-          <div className="relative overflow-clip max-[767px]:!aspect-[4/3]" style={{ borderRadius: "1.4vw", aspectRatio: "5 / 6" }}>
+          {/* ── Bild rechts (mit Parallax; höher als der Container) — nur Desktop.
+              Mobil sitzt das Bild oberhalb der Copy (siehe Textspalte). ─────── */}
+          <div className="relative overflow-clip max-[767px]:!hidden" style={{ borderRadius: "1.4vw", aspectRatio: "5 / 6" }}>
             <img
               ref={img}
               src={tomorrow.image}

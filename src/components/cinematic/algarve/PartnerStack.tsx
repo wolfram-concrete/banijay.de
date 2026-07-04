@@ -59,6 +59,33 @@ export function AlgarvePartnerStack() {
           stagger: 0.06,
           scrollTrigger: { trigger: sec, start: "top top", end: "+=18%", scrub: 1, invalidateOnRefresh: true },
         });
+
+        // Mobile: (1) Intro-Schrift kurz PINNEN, damit sie beim Einziehen nicht sofort
+        // hinter die Sticky-Nav wegscrollt; (2) die Bildkarten sind zunächst UNSICHTBAR
+        // und blenden ERST ein, wenn nach dem Text-Pin der Stack hochkommt — „erst die
+        // Schrift, dann das Bild".
+        if (!window.matchMedia("(min-width: 768px)").matches) {
+          const headline = sec.querySelector<HTMLElement>("[data-partner-headline]");
+          gsap.set("[data-partner-card]", { autoAlpha: 0 });
+          if (headline) {
+            ScrollTrigger.create({
+              trigger: sec,
+              start: "top top",
+              end: () => "+=" + Math.round(window.innerHeight * 0.62),
+              pin: headline,
+              pinSpacing: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            });
+          }
+          gsap.to("[data-partner-card]", {
+            autoAlpha: 1,
+            ease: "power1.out",
+            duration: 0.4,
+            stagger: 0.08,
+            scrollTrigger: { trigger: stack.current, start: "top 88%", once: true },
+          });
+        }
       }
 
       const cardEls = gsap.utils.toArray<HTMLElement>("[data-partner-card]");
@@ -84,7 +111,7 @@ export function AlgarvePartnerStack() {
       // -100vh-Overlap + z-2 → die Magenta-Fläche schiebt sich über die (gepinnte)
       // Team-Section. Desktop UND Mobile identisch (die Team-Section pinnt jetzt auch
       // mobil am Ende).
-      className="relative"
+      className="relative max-[767px]:!pt-[26vw]"
       style={{ background: MAGENTA, color: INK, paddingTop: "13vw", paddingBottom: "16vw", marginTop: "-100vh", zIndex: 2 }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
@@ -122,7 +149,7 @@ export function AlgarvePartnerStack() {
             <article
               key={card.title}
               data-partner-card
-              className="overflow-hidden max-[767px]:!h-[60vh]"
+              className="overflow-hidden max-[767px]:!h-[52vh]"
               style={{
                 position: "sticky",
                 top: CARD_TOPS[i],

@@ -5,6 +5,12 @@ Sektions-Choreografie des Algarve-Webflow-Templates (kinetischer Hero, gepinnte
 Scroll-Bühnen, Logo-Reveal, clip-path-Reveal-Übergänge) und füllt sie mit den echten
 Inhalten der Banijay-Welt — Companies, Formate, Kompetenzfelder, Team und News.
 
+Alle gepinnten Scroll-Choreografien sind zusätzlich **mobil eigens getaktet**
+(matchMedia-Branches je Sektion): Magenta-Reveals steigen erst über fertig
+aufgebaute Statements, Content-Panels werden gepinnt, damit Headlines nicht hinter
+die Sticky-Nav scrollen, Bildcontainer nutzen native Seitenverhältnisse und
+Fokuspunkte. Der vollständige Verlauf steht in `CHANGELOG.md`.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript**

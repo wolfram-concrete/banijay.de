@@ -38,8 +38,12 @@ export function AlgarveAboutDrift() {
     const vids = Array.from(sec.querySelectorAll<HTMLVideoElement>("video"));
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) vids.forEach((v) => void v.play().catch(() => {}));
-        else vids.forEach((v) => v.pause());
+        if (e.isIntersecting) {
+          // Aufbau-Reveal: sobald die Section in Sicht kommt, staffeln sich die
+          // Container herein (CSS: .drift-section.is-in .float-img). Bleibt gesetzt.
+          sec.classList.add("is-in");
+          vids.forEach((v) => void v.play().catch(() => {}));
+        } else vids.forEach((v) => v.pause());
       },
       { threshold: 0.05 },
     );
@@ -169,27 +173,46 @@ const CSS = `
 .float-img--k{width:460px;height:644px;margin-left:-230px;margin-top:-322px}
 }
 @media (max-width:767px){
-.drift-section{height:112vh;min-height:720px}
-.float-img--a{width:34vw;height:47vw;left:4%;top:9%}
-.float-img--b{width:38vw;height:25vw;left:auto;right:4%;top:7%}
-.float-img--c{width:22vw;height:30vw;left:4%;top:54%}
-.float-img--d{width:26vw;height:36vw;left:34%;top:8%}
-.float-img--e{width:42vw;height:27vw;left:auto;right:4%;top:50%}
+/* Luftiger: mehr Bühnenhöhe, kleineres Hintergrund-Video (k), obere Reihe entzerrt
+   (a/b/d weiter auseinander, d nach unten versetzt) → weniger Überlagerung oben. */
+.drift-section{height:134vh;min-height:900px}
+.float-img--a{width:30vw;height:41vw;left:3%;top:6%}
+.float-img--b{width:33vw;height:22vw;left:auto;right:3%;top:4%}
+.float-img--c{width:20vw;height:27vw;left:3%;top:57%}
+.float-img--d{width:23vw;height:31vw;left:38%;top:17%}
+.float-img--e{width:37vw;height:24vw;left:auto;right:3%;top:53%}
 .float-img--f{display:none}
-.float-img--g{width:28vw;height:18vw;left:4%;top:74%}
+.float-img--g{width:26vw;height:17vw;left:3%;top:79%}
 .float-img--h{display:none}
-.float-img--i{width:34vw;height:22vw;right:4%;top:74%}
+.float-img--i{width:31vw;height:20vw;right:3%;top:79%}
 .float-img--j{display:none}
-.float-img--k{width:72vw;height:100vw;margin-left:-36vw;margin-top:-50vw}
+.float-img--k{width:56vw;height:78vw;margin-left:-28vw;margin-top:-39vw}
 }
 @media (max-width:479px){
-.float-img--a{width:42vw;height:58vw;left:3%;top:8%}
-.float-img--b{width:44vw;height:28vw;right:3%;top:6%}
-.float-img--c{width:28vw;height:38vw;left:3%;top:56%}
-.float-img--d{width:32vw;height:44vw;left:32%;top:8%}
-.float-img--e{width:46vw;height:30vw;right:3%;top:52%}
-.float-img--g{width:30vw;height:20vw;left:3%;top:76%}
-.float-img--i{width:38vw;height:25vw;right:3%;top:76%}
-.float-img--k{width:84vw;height:117vw;margin-left:-42vw;margin-top:-58vw}
+.float-img--a{width:37vw;height:51vw;left:3%;top:6%}
+.float-img--b{width:39vw;height:25vw;right:3%;top:4%}
+.float-img--c{width:25vw;height:34vw;left:3%;top:59%}
+.float-img--d{width:28vw;height:38vw;left:36%;top:18%}
+.float-img--e{width:41vw;height:27vw;right:3%;top:55%}
+.float-img--g{width:28vw;height:18vw;left:3%;top:80%}
+.float-img--i{width:34vw;height:22vw;right:3%;top:80%}
+.float-img--k{width:66vw;height:92vw;margin-left:-33vw;margin-top:-46vw}
 }
+
+/* Aufbau-Reveal (mobil/Touch): die Container staffeln sich beim Sichtbarwerden herein
+   (opacity + leichtes Anheben/Zoom). Danach ein dezentes Dauer-Wabern (translate/rotate,
+   separate Properties → kollidiert nicht mit dem Desktop-Parallax, der transform setzt). */
+@media (max-width:767px){
+.float-img{opacity:0;transform:translateY(28px) scale(.93);transition:opacity .7s ease, transform .8s cubic-bezier(.2,.72,.2,1)}
+.drift-section.is-in .float-img{opacity:1;transform:none;animation:drift-waber 7s ease-in-out infinite alternate}
+.drift-section.is-in .float-img--k{transition-delay:0s;animation-duration:9s;animation-delay:-2s}
+.drift-section.is-in .float-img--a{transition-delay:.12s;animation-duration:6.4s;animation-delay:-1.1s}
+.drift-section.is-in .float-img--b{transition-delay:.18s;animation-duration:7.6s;animation-delay:-.4s}
+.drift-section.is-in .float-img--c{transition-delay:.30s;animation-duration:6.8s;animation-delay:-2.3s}
+.drift-section.is-in .float-img--d{transition-delay:.24s;animation-duration:8.2s;animation-delay:-1.7s}
+.drift-section.is-in .float-img--e{transition-delay:.36s;animation-duration:7.1s;animation-delay:-.9s}
+.drift-section.is-in .float-img--g{transition-delay:.42s;animation-duration:6.6s;animation-delay:-3s}
+.drift-section.is-in .float-img--i{transition-delay:.48s;animation-duration:7.9s;animation-delay:-1.4s}
+}
+@keyframes drift-waber{from{translate:0 6px;rotate:-.5deg}to{translate:0 -10px;rotate:.5deg}}
 `;

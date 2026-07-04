@@ -5,7 +5,7 @@ import { AlgarveCareerSocialSlider, type SocialPost } from "./CareerSocialSlider
 // Karriereseite), rendert sie aber über einen eigenen Banijay-Slider (kein
 // Fremd-Widget/Script). Bei Fehler wird die Section einfach ausgeblendet.
 
-const JUICER_URL = "https://www.juicer.io/api/feeds/banijaygermany?per=6";
+const JUICER_URL = "https://www.juicer.io/api/feeds/banijaygermany?per=12";
 
 type JuicerPost = {
   image?: string;
@@ -52,7 +52,7 @@ async function fetchPosts(): Promise<SocialPost[]> {
     const items = data.posts?.items ?? [];
     return items
       .filter((p) => p.image && p.full_url)
-      .slice(0, 6)
+      .slice(0, 12)
       .map((p) => ({
         image: p.image as string,
         text: toPlainText(p.message ?? p.unformatted_message ?? ""),

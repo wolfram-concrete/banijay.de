@@ -75,6 +75,12 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
       const tr = track.current;
       if (!tr) return;
 
+      // Mobile den Pin FRÜHER ansetzen: die Section rastet ein, während ihr oberer
+      // Rand noch ~16 % unter dem Viewport-Top steht — so sitzt die Headline klar
+      // UNTER der Sticky-Nav (statt von ihr überdeckt zu werden) und die Karten sind
+      // besser im Handy-Screen platziert. Desktop bleibt bei „top top".
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
       // Horizontale Distanz = Track-Überhang. Beim Scrollen wird die Section gepinnt
       // und der Track von links nach rechts durchgescrubbt, bis alle Cards da waren.
       const distance = () => Math.max(0, tr.scrollWidth - window.innerWidth + window.innerWidth * 0.04);
@@ -83,7 +89,7 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
         ease: "none",
         scrollTrigger: {
           trigger: root.current,
-          start: "top top",
+          start: isMobile ? "top 16%" : "top top",
           end: () => "+=" + distance(),
           scrub: 1,
           pin: true,

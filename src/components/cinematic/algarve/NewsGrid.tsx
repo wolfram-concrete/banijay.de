@@ -65,12 +65,15 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
             style={{ willChange: "transform, opacity" }}
           >
             {/* Bildcontainer mit wechselndem Seitenverhältnis (Masonry-Rhythmus) */}
-            <div className="overflow-hidden rounded-xl max-[767px]:!aspect-[4/3]" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
+            {/* Mobil: Container übernimmt das NATIVE Seitenverhältnis des vorbereiteten
+                Banijay-Preview-Bildes (aspect-auto + Bild in natürlicher Höhe → kein
+                Crop). Desktop behält den Masonry-Rhythmus (feste RATIOS, object-cover). */}
+            <div className="overflow-hidden rounded-xl max-[767px]:!aspect-auto" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
               <img
                 src={item.img}
                 alt=""
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05] max-[767px]:!h-auto"
               />
             </div>
             <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>
