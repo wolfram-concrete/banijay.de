@@ -598,17 +598,6 @@ export function AlgarveHome() {
                   ) : (
                     <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
                   )}
-                  <div
-                    className="absolute inset-0 flex flex-col justify-end"
-                    style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.82), rgba(0,0,0,0) 72%)", padding: "3.5vw" }}
-                  >
-                    <span className="uppercase" style={{ fontFamily: "var(--font-sharp), sans-serif", color: "#fff", fontWeight: 600, fontSize: "3.4vw", lineHeight: "112%" }}>
-                      {cell.fmt.title}
-                    </span>
-                    <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "2.6vw", marginTop: "0.8vw", lineHeight: "118%" }}>
-                      {cell.fmt.company}
-                    </span>
-                  </div>
                 </div>
               ))}
 
