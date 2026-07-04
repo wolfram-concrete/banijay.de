@@ -156,21 +156,21 @@ export function AlgarveProofVideo({
 
   return (
     <>
-      {/* ── Desktop: gepinnte Bühne mit clip-path-Aufskalierung ──────────── */}
-      <section ref={root} className="relative max-[767px]:hidden" style={{ height: "300vh", background: PAPER }}>
+      {/* ── Gepinnte Bühne mit clip-path-Aufskalierung (Desktop + Mobile) ── */}
+      <section ref={root} className="relative" style={{ height: "300vh", background: PAPER }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
           <div
-            className="flex h-full flex-col"
+            className="flex h-full flex-col max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
             style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
           >
             <p
-              className="md:max-w-[52vw]"
+              className="md:max-w-[52vw] max-[767px]:!text-[5vw]"
               style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
             >
               {proofText}
             </p>
 
-            <div className="mt-[2.5vw]">{bento}</div>
+            <div className="mt-[2.5vw] max-[767px]:!mt-[8vw]">{bento}</div>
             {/* KEIN vorab sichtbarer Video-Container mehr — das Video wächst beim
                 Scrollen aus der grauen Quell-Kachel (data-pv-source) heraus. */}
           </div>
@@ -185,7 +185,7 @@ export function AlgarveProofVideo({
             {/* Statement zentral über dem Video (erscheint erst full-screen) */}
             <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "6vw", paddingRight: "6vw" }}>
               <p
-                className="m-0 flex flex-wrap justify-center text-center"
+                className="m-0 flex flex-wrap justify-center text-center max-[767px]:!max-w-[88vw] max-[767px]:!gap-x-[1.6vw] max-[767px]:!text-[7vw]"
                 style={{ maxWidth: "64vw", columnGap: "0.7vw", rowGap: 0, fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.09vw", color: PAPER }}
               >
                 {parts.map((w, i) => (
@@ -195,35 +195,6 @@ export function AlgarveProofVideo({
                     </span>
                   </span>
                 ))}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Mobile: ruhige gestapelte Variante (kein Pin/Scale) ──────────── */}
-      <section className="hidden max-[767px]:block" style={{ background: PAPER, paddingTop: "12vw", paddingBottom: "12vw" }}>
-        <div style={{ paddingLeft: "4vw", paddingRight: "4vw" }}>
-          <p
-            className="text-[5vw]"
-            style={{ fontFamily: SHARP, lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
-          >
-            {proofText}
-          </p>
-
-          <div className="mt-[7vw]">{bento}</div>
-
-          {/* Statische Video-Statement-Karte */}
-          <div className="relative mt-[7vw] overflow-clip" style={{ borderRadius: "5vw", aspectRatio: "3 / 4" }}>
-            <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
-              <source src={video} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 flex items-center justify-center" style={{ paddingLeft: "7vw", paddingRight: "7vw" }}>
-              <p
-                className="m-0 text-center text-[7vw]"
-                style={{ fontFamily: SHARP, lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.03vw", color: PAPER }}
-              >
-                {statement}
               </p>
             </div>
           </div>

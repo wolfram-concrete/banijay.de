@@ -3,7 +3,20 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
-## [Unreleased] — 2026-07-03
+## [Unreleased] — 2026-07-04
+
+### Mobile-Feinschliff: Flip-Cards-Luft, News-4:3, About-Video-Grow (04.07., 55. Runde)
+- **CompanyCards / Flip-Cards (mobil):** Karten laufen jetzt auf **Inhaltshöhe**
+  (`h-[80vh] → h-auto`) → kein zu großer Leerraum mehr unter dem Bildcontainer.
+  Mehr Luft: größere Gaps im Textblock (`gap 3.5vw`), mehr Abstand über dem Bild
+  (`mt 7vw`). „Zur Website"-CTA luftiger (mobiles Padding `3.4vw/6vw` statt eng).
+- **News-Grid (mobil):** einheitliche Bildcontainer im festen **4:3**-Verhältnis
+  (`max-[767px]:!aspect-[4/3]`) statt der wechselnden Masonry-Ratios → ruhiges,
+  gleichmäßiges Raster.
+- **About / ProofVideo (mobil):** die statische Video-Karte ersetzt durch die
+  **gleiche gepinnte Grow-Mechanik wie Desktop** — das Video wächst per clip-path
+  aus der Stat-Kachel „130+ Companies weltweit" über den Zahlen-Content auf
+  Full-Screen, dann animiert sich das Statement Wort für Wort rein.
 
 ### Mobile-Feinschliff: News-Linien, PageHero-Hold, Body-Breite, Coverflow (03.07., 54. Runde)
 - **NewsStack (mobil):** die feinen `border-top`-Linien der News-Karten (u. a. unter

@@ -65,7 +65,7 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
             style={{ willChange: "transform, opacity" }}
           >
             {/* Bildcontainer mit wechselndem Seitenverhältnis (Masonry-Rhythmus) */}
-            <div className="overflow-hidden rounded-xl" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
+            <div className="overflow-hidden rounded-xl max-[767px]:!aspect-[4/3]" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
               <img
                 src={item.img}
                 alt=""

@@ -123,7 +123,7 @@ export function AlgarveCompanyCards() {
             <article
               key={card.id}
               data-company-card
-              className="relative flex flex-col justify-between overflow-clip max-[991px]:!p-[4vw] max-[767px]:!h-[80vh] max-[767px]:!justify-start max-[767px]:!p-[6vw]"
+              className="relative flex flex-col justify-between overflow-clip max-[991px]:!p-[4vw] max-[767px]:!h-auto max-[767px]:!justify-start max-[767px]:!p-[7vw]"
               style={{
                 position: "sticky",
                 top: "1.39vw",
@@ -183,7 +183,7 @@ export function AlgarveCompanyCards() {
 
               {/* Bottom: Claim + Body + Tags + Known-for + CTA */}
               <div
-                className="relative flex flex-col items-start max-[991px]:!mt-[1.6vw] max-[991px]:!max-w-full max-[991px]:!gap-[1.3vw] max-[767px]:!mt-[3vw]"
+                className="relative flex flex-col items-start max-[991px]:!mt-[1.6vw] max-[991px]:!max-w-full max-[991px]:!gap-[1.3vw] max-[767px]:!mt-[6vw] max-[767px]:!gap-[3.5vw]"
                 style={{ maxWidth: "42vw", gap: "1.39vw" }}
               >
                 <h4
@@ -264,7 +264,7 @@ export function AlgarveCompanyCards() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Website von ${card.name} in neuem Tab öffnen`}
-                  className="cta-invert inline-flex items-center no-underline max-[767px]:!text-[3.4vw]"
+                  className="cta-invert inline-flex items-center no-underline max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3.4vw] max-[767px]:!text-[3.4vw]"
                   style={
                     {
                       "--cta-fg": card.fg,
@@ -317,7 +317,7 @@ export function AlgarveCompanyCards() {
                   Card-Breite, festes Landscape-Verhältnis, sitzt unter dem Text
                   statt als schmales Hochformat rechts. So bleibt die Card kompakt. */}
               <div
-                className="hidden w-full overflow-clip max-[991px]:!block"
+                className="hidden w-full overflow-clip max-[991px]:!block max-[767px]:!mt-[7vw]"
                 style={{
                   marginTop: "2.5vw",
                   borderRadius: "3vw",
