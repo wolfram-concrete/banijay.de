@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-Feinschliff: News-Linien, PageHero-Hold, Body-Breite, Coverflow (03.07., 54. Runde)
+- **NewsStack (mobil):** die feinen `border-top`-Linien der News-Karten (u. a. unter
+  „Alle News" + im Stack) entfernt → cleaner.
+- **PageHero (Companies + alle Seiten außer Home, mobil):** kurzer Scroll-Break,
+  NACHDEM das Video full-size eingerastet ist (Hold-Beat am Timeline-Ende) — man
+  scrollt nicht mehr sofort weiter; danach geht's in die nächste Section.
+- **PageHero-Body (mobil):** Statement nutzt jetzt die **volle Grid-Breite**
+  (`maxWidth 63.33vw → 100%`).
+- **Companies-Coverflow (mobil):** Snap auf jede Card-Mitte, mehr Scrollweg (ruhiger),
+  `rotationZ` auf ±8° geclamped (letzte Cards „verdrehen" nicht mehr).
+
 ### Mobile-Video-Gallery: 8 Kacheln (03.07., 53. Runde)
 - Die mobile Portfolio-/Video-Gallery (Home) hat jetzt **8 Container** statt 4: oben
   2×2, unten 2×2, das große Video mittig bleibt gleich groß (Grid `1fr 1fr 2fr 1fr 1fr`

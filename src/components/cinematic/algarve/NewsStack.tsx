@@ -83,7 +83,7 @@ export function AlgarveNewsStack() {
               <Link
                 key={item.title}
                 href={`/news/${item.slug}`}
-                className="group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw]"
+                className="group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!border-t-0 max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw]"
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",

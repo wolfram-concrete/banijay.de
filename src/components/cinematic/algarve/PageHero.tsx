@@ -130,6 +130,14 @@ export function AlgarvePageHero({
         // … dann Full-Screen: die letzten b-Curvings flachen in die Kanten aus.
         .to("[data-hero-media]", { top: "0vh", height: "100vh", ...FLAT_RADIUS, ease: "none", duration: 0.16 }, 1.12);
 
+      // Mobile: kurzer Scroll-Break, NACHDEM das Video full-size eingerastet ist —
+      // damit man nicht sofort weiterscrollt. Ein leerer Hold-Beat verlängert die
+      // Timeline; die gescrubbte Pin-Strecke bekommt so am Ende ein Stück, in dem das
+      // Video full-size STEHT, bevor der Scroll in die nächste Section übergeht.
+      if (isMobile) {
+        tl.to({}, { duration: 0.35 }, 1.28);
+      }
+
       // 3) Body-Statement darunter: Wort-für-Wort-Enthüllung wie die Home-AboutIntro
       //    (opacity 0→1 + leichtes Anheben, stagger amount 1 in Leserichtung, scrub).
       gsap.set("[data-hero-word]", { willChange: "transform, opacity", backfaceVisibility: "hidden" });
@@ -219,9 +227,8 @@ export function AlgarvePageHero({
         style={{ paddingTop: "8.33vw", paddingBottom: "8.33vw", paddingLeft: "2vw", paddingRight: "2vw" }}
       >
         <p
-          className="m-0 max-[767px]:!text-[7vw]"
+          className="m-0 max-w-[63.33vw] max-[767px]:!max-w-full max-[767px]:!text-[7vw]"
           style={{
-            maxWidth: "63.33vw",
             fontFamily: SHARP,
             fontWeight: 500,
             fontSize: "3.33vw",
