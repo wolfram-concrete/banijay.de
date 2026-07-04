@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-Hero-Video (03.07., 52. Runde)
+- Eigenes **Hochformat-Reel für den Mobile-Hero** (`public/video/hero-mobile.mp4`,
+  496×864, weboptimiert 2,2 MB → 574 KB, kein Audio, faststart). Desktop/Tablet behält
+  das Landscape-Reel; ab ≤767px läuft das native Hochformat (formatfüllend, kein
+  aggressiver Crop mehr). Zwei `<video>` per Breakpoint, gemeinsamer Fade-In.
+
 ### Mobile-Übergänge + Card-/Slider-Feinschliff (03.07., 51. Runde)
 
 **Mobile-Übergänge (Desktop-Logik auf Mobile übertragen)**

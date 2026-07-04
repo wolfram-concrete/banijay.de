@@ -215,7 +215,7 @@ export function AlgarveHome() {
       // läuft), während die Typo zunächst KOMPLETT ausgeblendet ist. Erst danach (nach
       // einer kurzen Vorlaufzeit, siehe startHero-Delay) kommt die Typo herein.
       gsap.set("[data-hero-typo]", { autoAlpha: 0 });
-      if (heroVideo.current) gsap.fromTo(heroVideo.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.6, ease: "power2.out" });
+      gsap.fromTo("[data-hero-vid]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.6, ease: "power2.out" });
 
       // Timeline PAUSIERT bauen — sie startet erst nach dem Preloader-Cut (Event
       // „banijay:introdone"), damit die Hero-Animation nicht unsichtbar hinter dem
@@ -338,15 +338,28 @@ export function AlgarveHome() {
         className="relative flex min-h-[112vh] flex-col overflow-clip max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
         style={{ background: "#0a0a0a", paddingTop: "6.5rem", paddingBottom: "3.5vw" }}
       >
-        {/* Hintergrund: cinematisches Kamera-Video, langsam abgespielt (0.5×) */}
+        {/* Hintergrund-Video. Desktop/Tablet: cinematisches Landscape-Reel (langsam,
+            friert auf letztem Frame ein). Mobile (≤767): natives Hochformat-Reel
+            (496×864), das den schmalen mobilen Video-Bereich formatfüllend deckt. */}
         <video
           ref={heroVideo}
+          data-hero-vid
           autoPlay
           muted
           playsInline
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[479px]:!h-[46vh]"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[767px]:!hidden"
         >
           <source src="/video/hero-bg.mp4" type="video/mp4" />
+        </video>
+        <video
+          data-hero-vid
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover max-[767px]:!block max-[479px]:!h-[46vh]"
+        >
+          <source src="/video/hero-mobile.mp4" type="video/mp4" />
         </video>
 
         {/* Weicher Bild-Fuß nur für die Lesbarkeit von Factsheet/Subline (dunkel,
