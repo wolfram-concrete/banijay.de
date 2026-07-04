@@ -272,14 +272,14 @@ export function AlgarveWorldNetwork() {
                   rel="noopener noreferrer"
                   draggable={false}
                   aria-label={`${h.name} öffnen`}
-                  className="group shrink-0 snap-start overflow-clip max-[767px]:!h-[22vw] max-[767px]:!w-[40vw]"
+                  className="group shrink-0 snap-start overflow-clip max-[767px]:!h-[27vw] max-[767px]:!w-[27vw]"
                   style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
                 >
                   <img
                     src={h.image}
                     alt={h.name}
                     draggable={false}
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[6%]"
+                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[4%]"
                     style={{ padding: "17%" }}
                   />
                 </a>

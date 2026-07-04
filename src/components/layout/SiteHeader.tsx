@@ -281,7 +281,7 @@ export function SiteHeader() {
         className={`fixed inset-x-0 top-0 bg-transparent ${open ? "z-[201]" : "z-[45]"}`}
         style={{ paddingTop: "1.5vw", paddingBottom: "1.5vw" }}
       >
-        <div className="flex items-center justify-between" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+        <div className="flex items-center justify-between max-[767px]:!px-[4vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <Link
             href="/"
             onClick={() => {

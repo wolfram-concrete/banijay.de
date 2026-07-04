@@ -5,6 +5,32 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-04
 
+### Career-Feinschliff: Hero-Poster, Role-Intro-Highlights, Feed-Dedup (04.07., 60. Runde)
+- **Career-Hero:** Poster war ein Schwarz-Weiß-Bild (`c6.png`) → blitzte vor dem
+  farbigen Video auf. Neues Poster aus dem ersten Videoframe (`career-hero-poster.jpg`,
+  ffmpeg) → nahtloser Start, kein B/W-Flash.
+- **CareerRoleStack (mobil):** Headline + Copy wieder getrennt (Headline baut zuerst
+  auf, Copy darunter danach); Copy gekürzt + eine Stufe kleiner (4vw, About-Verhältnis);
+  Rollen-Domänen **Produktion · Redaktion · Entwicklung · Digital · Live** magenta
+  gehighlightet.
+- **CareerSocialFeed:** Deduplizierung (URL + Text) → der doppelte Juicer-Beitrag
+  (z. B. „Good Humor"-Drehstart) erscheint nur noch einmal.
+
+### Mobile-Feinschliff: Nav-Einrückung, WorldNetwork-Logos, PartnerStack-Farbcode (04.07., 59. Runde)
+- **SiteHeader (mobil):** Logo + MENU von 2vw auf 4vw eingerückt (an das innere Grid).
+- **WorldNetwork-Logos (mobil):** Kacheln quadratisch (das Logo-PNG ist 800×800) →
+  gerendertes Logo ~65px → ~93px (+43 %); Padding 6 % → 4 %.
+- **PartnerStack (mobil):** Karten rasten tiefer ein (Sticky-Top 8–17vw → 22–29,5vw)
+  → nicht mehr hinter Logo/MENU, mit Abstand zur Nav. Schwarze Text-Kacheln in die
+  Farbkodierung umgefärbt (Magenta · Indigo · Laser-Pink · Violet, je Fächer).
+
+### Mobile-Timing: Home-Statement + Companies-Slider (04.07., 58. Runde)
+- **AboutIntro Home (mobil):** Sektion 230vh → 260vh, Magenta-Blende steigt später
+  (Timeline 0.45 → 0.58) → deutliches Lese-Fenster, bevor sie über das Statement zieht.
+- **CompaniesScroller (mobil):** Intro-Anteil stark verkürzt (Slide-Timeline-Dauer
+  1 → 5) → „Unsere/Companies" + erste Card in ~1 Scroll statt 3–4; Slide träger
+  (Scrollweg 1.7 → 2.1, Scrub 0.5 → 0.7).
+
 ### Mobile-Feinschliff: PartnerStack-Choreo, WorldNetwork-Timing, Drift-Luft (04.07., 57. Runde)
 - **PartnerStack „Partner für Entertainment" (About mobil):** Bildkarten sind bei der
   Magenta-Andockung zunächst unsichtbar (opacity 0) und blenden ERST ein, wenn nach

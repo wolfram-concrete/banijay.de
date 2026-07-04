@@ -25,6 +25,25 @@ const PAPER = "#f8f7f3";
 const CARD_TOPS = ["8vw", "11vw", "14vw", "17vw"];
 const CARD_SCALES = [0.7, 0.78, 0.86, 0.94];
 
+// Mobile: die Karten rasten TIEFER ein (unter der Sticky-Nav + Abstand zum MENU),
+// statt bei 8–17vw hinter der Navigationsebene zu kleben.
+const MOBILE_CARD_TOPS = [
+  "max-[767px]:!top-[22vw]",
+  "max-[767px]:!top-[24.5vw]",
+  "max-[767px]:!top-[27vw]",
+  "max-[767px]:!top-[29.5vw]",
+];
+
+// Farbkodierung der schwarzen Text-Kacheln → je Fächer eine andere Farbe aus der
+// Banijay-Videopalette (magenta · indigo · laser-pink · midnight-violet), leicht
+// transparent + Blur (frosted). Helle Schrift bleibt lesbar.
+const TILE_COLORS = [
+  "rgba(255,67,112,0.86)", // Magenta
+  "rgba(46,55,201,0.86)", // Electric Indigo
+  "rgba(231,29,125,0.86)", // Laser Pink
+  "rgba(49,16,90,0.9)", // Midnight Violet
+];
+
 export function AlgarvePartnerStack() {
   const { partnership } = ABOUT;
   const cards = partnership.cards;
@@ -149,7 +168,7 @@ export function AlgarvePartnerStack() {
             <article
               key={card.title}
               data-partner-card
-              className="overflow-hidden max-[767px]:!h-[52vh]"
+              className={`overflow-hidden max-[767px]:!h-[52vh] ${MOBILE_CARD_TOPS[i] ?? "max-[767px]:!top-[24vw]"}`}
               style={{
                 position: "sticky",
                 top: CARD_TOPS[i],
@@ -170,7 +189,7 @@ export function AlgarvePartnerStack() {
               {/* Textkachel unten links — leicht transparentes Ink, kein Glass-Look */}
               <div
                 className="absolute max-w-[38vw] rounded-[8px] max-[767px]:!left-[4vw] max-[767px]:!right-[4vw] max-[767px]:!bottom-[4vw] max-[767px]:!max-w-none max-[767px]:!p-[5vw]"
-                style={{ left: "2vw", bottom: "2vw", padding: "1.4vw", background: "rgba(14,13,11,0.72)", color: PAPER, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+                style={{ left: "2vw", bottom: "2vw", padding: "1.4vw", background: TILE_COLORS[i] ?? "rgba(14,13,11,0.72)", color: PAPER, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
               >
                 <span
                   className="block max-[767px]:!text-[2.9vw]"

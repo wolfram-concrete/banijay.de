@@ -7,12 +7,15 @@ export const CAREER = {
     label: "Career",
     headline: "Komm\nins Team",
     body: "Arbeite dort, wo Unterhaltung entsteht: in Produktion, Redaktion, Entwicklung, Digital, Live und den Teams dahinter.",
-    image: "/career/c6.png",
+    // Poster = erster Frame des Hero-Videos (kein Schwarz-Weiß-Flash mehr vor dem Play).
+    image: "/career/career-hero-poster.jpg",
   },
 
   roleIntro: {
     headline: "Viele Companies. Viele Rollen. Ein gemeinsames Ziel.",
-    text: "Jobs bei Banijay entstehen dort, wo Entertainment gemacht wird: direkt in den Companies und Labels der Gruppe.",
+    // Gekürzt + die Rollen-Domänen als Magenta-Highlights (siehe roleIntroHighlights).
+    text: "Ob Produktion, Redaktion, Entwicklung, Digital oder Live — Jobs entstehen dort, wo Entertainment gemacht wird.",
+    highlights: ["Produktion", "Redaktion", "Entwicklung", "Digital", "Live"],
   },
 
   // Rollenwelt als Sticky-Card-Stack (value-features/ServicesStack-Prinzip).

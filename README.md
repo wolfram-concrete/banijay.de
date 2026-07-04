@@ -100,4 +100,8 @@ Videos müssen separat bereitgestellt werden (weboptimierte Kopien liegen in
 Ältere Platzhalter (`hero.mp4`, `hero-cinematic.mp4`, `kompetenz-reel.mp4`,
 `preloader.png`, `stage-portrait.png`) ebenfalls gitignored.
 
+**Hero-Poster:** Die `poster`-Bilder der gepinnten Video-Heroes werden aus dem ERSTEN
+Videoframe erzeugt (z. B. `public/career/career-hero-poster.jpg` via ffmpeg) — so
+blitzt vor dem Autoplay kein abweichendes (Schwarz-Weiß-)Platzhalterbild auf.
+
 Die Leadership-/People-Bilder sind aktuell **Platzhalter**.

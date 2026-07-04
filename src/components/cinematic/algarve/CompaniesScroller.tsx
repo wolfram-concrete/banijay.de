@@ -279,7 +279,11 @@ export function AlgarveCompaniesScroller() {
       const WORDS = 0.22; // Wörter fahren auseinander
       const CARD = 0.22; // erste Card wächst
       const INTRO = WORDS + CARD; // Intro-Ende = Slide-Start
-      const TOTAL = INTRO + 1; // + Slide (Dauer 1)
+      // Slide-Dauer im Timeline BEWUSST groß (5 statt 1): dadurch ist die Intro nur noch
+      // ein kleiner Anteil der gesamten Pin-Strecke → die Wörter/erste Card bauen sich
+      // in ~1 Scroll auf (statt über 3–4 Screens), der lange Slide bekommt den Rest.
+      const SLIDE_DUR = 5;
+      const TOTAL = INTRO + SLIDE_DUR;
       const slideFrac = INTRO / TOTAL; // Progress-Schwelle Slide
       const cardStartFrac = WORDS / TOTAL; // Progress, ab dem die Card wächst
       const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
@@ -294,9 +298,10 @@ export function AlgarveCompaniesScroller() {
         scrollTrigger: {
           trigger: rootEl,
           start: "top top",
-          // Mehr Scrollweg pro Card (1.15 → 1.7) → der Slide läuft ruhiger/gezielter.
-          end: () => "+=" + (distance() * 1.7 + window.innerHeight * 0.9),
-          scrub: 0.5,
+          // Mehr Scrollweg pro Card (1.7 → 2.1) + fixer Intro-Anteil (1.2 Screens) → der
+          // Slide läuft deutlich träger/gezielter, die Intro bleibt kurz.
+          end: () => "+=" + (distance() * 2.1 + window.innerHeight * 1.2),
+          scrub: 0.7,
           pin: true,
           invalidateOnRefresh: true,
           // Snap auf jede Card-Mitte — nur während des Slides (Progress ≥ slideFrac),
@@ -336,8 +341,8 @@ export function AlgarveCompaniesScroller() {
       tl.to([mWordT.current, mWordB.current], { autoAlpha: 1, duration: 0.05 }, 0);
       tl.to(mWordT.current, { y: "0vh", scale: 1, ease: "power2.out", duration: WORDS }, 0.03);
       tl.to(mWordB.current, { y: "0vh", scale: 1, ease: "power2.out", duration: WORDS }, 0.03);
-      // 4) Slide: der Track fährt horizontal durch.
-      tl.to(trackEl, { x: () => -distance(), ease: "none", duration: 1 }, INTRO);
+      // 4) Slide: der Track fährt horizontal durch (lange Timeline-Dauer → kleiner Intro-Anteil).
+      tl.to(trackEl, { x: () => -distance(), ease: "none", duration: SLIDE_DUR }, INTRO);
 
       const tick = () => {
         let moved = false;

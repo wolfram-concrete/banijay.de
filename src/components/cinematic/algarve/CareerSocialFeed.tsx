@@ -50,16 +50,28 @@ async function fetchPosts(): Promise<SocialPost[]> {
     if (!res.ok) return [];
     const data = (await res.json()) as { posts?: { items?: JuicerPost[] } };
     const items = data.posts?.items ?? [];
+    // Deduplizieren: der Juicer-Feed liefert gelegentlich denselben Beitrag doppelt
+    // (z. B. „Nächster Drehstart … Good Humor" am Ende). Über URL UND Text-Inhalt
+    // filtern, sonst erscheint die Karte zweimal.
+    const seen = new Set<string>();
     return items
       .filter((p) => p.image && p.full_url)
-      .slice(0, 12)
       .map((p) => ({
         image: p.image as string,
         text: toPlainText(p.message ?? p.unformatted_message ?? ""),
         url: p.full_url as string,
         source: p.source?.source ?? "Social",
         date: formatDate(p.external_created_at),
-      }));
+      }))
+      .filter((post) => {
+        const key = `${post.url}::${post.text}`;
+        if (seen.has(post.url) || seen.has(post.text) || seen.has(key)) return false;
+        seen.add(post.url);
+        seen.add(post.text);
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 12);
   } catch {
     return [];
   }

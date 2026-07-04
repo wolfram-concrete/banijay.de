@@ -67,9 +67,12 @@ export function AlgarveAboutIntro({
         const tl = gsap.timeline({
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
         });
-        tl.to(ov, { yPercent: 0, ease: "power2.out", duration: 0.18 }, 0.45);
-        tl.to(ov, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw", ease: "power2.inOut", duration: 0.22 }, 0.63);
-        tl.to(ov, { yPercent: 0, duration: 0.15 }, 0.85);
+        // Blende startet SPÄT (0.58 statt 0.45): das Statement ist ab ~38 % Scroll voll
+        // aufgebaut und bleibt (Sticky) stehen — es gibt jetzt ein deutliches Lese-Fenster,
+        // bevor die Magenta-Fläche beim Weiterscrollen hochsteigt und aufklappt.
+        tl.to(ov, { yPercent: 0, ease: "power2.out", duration: 0.16 }, 0.58);
+        tl.to(ov, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw", ease: "power2.inOut", duration: 0.18 }, 0.74);
+        tl.to(ov, { yPercent: 0, duration: 0.12 }, 0.9);
       }
     },
     { scope: root },
@@ -78,7 +81,7 @@ export function AlgarveAboutIntro({
   return (
     <section
       ref={root}
-      className={magentaExit ? "max-[767px]:!h-[230vh] max-[767px]:!pb-0" : "max-[767px]:!h-[240vh]"}
+      className={magentaExit ? "max-[767px]:!h-[260vh] max-[767px]:!pb-0" : "max-[767px]:!h-[240vh]"}
       style={{
         // Desktop mit Standraum (magentaExit/tall): 275vh → das Statement bleibt nach
         // dem Word-Reveal deutlich länger GEPINNT stehen, bevor die nächste Fläche
