@@ -76,11 +76,18 @@ const CELLS: Cell[] = [
 // Mobile-Portfolio: reduziert auf 4 Format-Kacheln (2 oben, 2 unten) + großes
 // Showreel-Video mittig. Beim Scrollen kippen die 4 Kacheln weg und das Video
 // wächst auf Vollbild — dasselbe Konzept wie das Desktop-Grid, nur schlanker.
+// 8 Kacheln: oben 2×2 (Reihen 1–2), unten 2×2 (Reihen 4–5). Reihe 3 = mittiges
+// Video (bleibt 1/3 hoch). Die kleinen Kacheln sind dadurch halb so hoch. Ein Teil
+// der Zellen hat ein Loop-Video → lebendige „Video-Gallery".
 const MOBILE_TILES = [
   { cell: CELLS[0]!, row: 1, col: 1, origin: "0% 0%" },
   { cell: CELLS[3]!, row: 1, col: 2, origin: "100% 0%" },
-  { cell: CELLS[11]!, row: 3, col: 1, origin: "0% 100%" },
-  { cell: CELLS[14]!, row: 3, col: 2, origin: "100% 100%" },
+  { cell: CELLS[1]!, row: 2, col: 1, origin: "0% 50%" },
+  { cell: CELLS[2]!, row: 2, col: 2, origin: "100% 50%" },
+  { cell: CELLS[9]!, row: 4, col: 1, origin: "0% 50%" },
+  { cell: CELLS[12]!, row: 4, col: 2, origin: "100% 50%" },
+  { cell: CELLS[11]!, row: 5, col: 1, origin: "0% 100%" },
+  { cell: CELLS[14]!, row: 5, col: 2, origin: "100% 100%" },
 ];
 
 // 4-Zeilen-Factsheet (Algarve-Referenz: Stats links im Hero-Fuß).
@@ -569,7 +576,9 @@ export function AlgarveHome() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gridTemplateRows: "1fr 1fr 1fr",
+                // 5 Reihen: oben 2 (je 1fr), Video-Reihe (2fr = 1/3, bleibt gleich),
+                // unten 2 (je 1fr). Kleine Kacheln dadurch halb so hoch.
+                gridTemplateRows: "1fr 1fr 2fr 1fr 1fr",
                 columnGap: "3vw",
                 rowGap: "3vw",
                 perspective: "1200px",
@@ -582,7 +591,13 @@ export function AlgarveHome() {
                   className="relative w-full overflow-hidden"
                   style={{ borderRadius: "4vw", backfaceVisibility: "hidden", transformOrigin: origin, gridRow: row, gridColumn: col }}
                 >
-                  <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
+                  {cell.video ? (
+                    <video autoPlay loop muted playsInline poster={cell.src} className="block h-full w-full object-cover">
+                      <source src={cell.video} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
+                  )}
                   <div
                     className="absolute inset-0 flex flex-col justify-end"
                     style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.82), rgba(0,0,0,0) 72%)", padding: "3.5vw" }}

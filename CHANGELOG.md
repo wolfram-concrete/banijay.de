@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-Video-Gallery: 8 Kacheln (03.07., 53. Runde)
+- Die mobile Portfolio-/Video-Gallery (Home) hat jetzt **8 Container** statt 4: oben
+  2×2, unten 2×2, das große Video mittig bleibt gleich groß (Grid `1fr 1fr 2fr 1fr 1fr`
+  → kleine Kacheln halb so hoch). 3 der Kacheln sind Loop-Videos (WWM, Promi BB,
+  Tatort) → lebendigere Gallery. Alle 8 laufen durch die bestehende Flip-Animation.
+
 ### Mobile-Hero-Video (03.07., 52. Runde)
 - Eigenes **Hochformat-Reel für den Mobile-Hero** (`public/video/hero-mobile.mp4`,
   496×864, weboptimiert 2,2 MB → 574 KB, kein Audio, faststart). Desktop/Tablet behält
