@@ -11,11 +11,11 @@ export const CAREER = {
     image: "/career/career-hero-poster.jpg",
   },
 
+  // Intro zur Rollenwelt (Cards darunter): NUR EIN Copytext, keine eigene Headline.
+  // Die Rollen-Domänen (Produktion/Redaktion/… ) stehen bereits im Hero-Body — hier
+  // NICHT wiederholen (sonst Dopplung).
   roleIntro: {
-    headline: "Viele Companies. Viele Rollen. Ein gemeinsames Ziel.",
-    // Gekürzt + die Rollen-Domänen als Magenta-Highlights (siehe roleIntroHighlights).
-    text: "Ob Produktion, Redaktion, Entwicklung, Digital oder Live — Jobs entstehen dort, wo Entertainment gemacht wird.",
-    highlights: ["Produktion", "Redaktion", "Entwicklung", "Digital", "Live"],
+    text: "Viele Companies, viele Rollen, ein gemeinsames Ziel: Jobs bei Banijay entstehen dort, wo Entertainment gemacht wird — direkt in den Companies und Labels der Gruppe.",
   },
 
   // Rollenwelt als Sticky-Card-Stack (value-features/ServicesStack-Prinzip).

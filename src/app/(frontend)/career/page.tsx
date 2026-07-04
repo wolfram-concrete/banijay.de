@@ -25,6 +25,7 @@ export default function CareerPage() {
         body={CAREER.hero.body}
         image={CAREER.hero.image}
         video="/video/career-hero.mp4"
+        highlights={["Produktion", "Redaktion", "Entwicklung", "Digital", "Live"]}
       />
 
       {/* 02 Rollenwelt */}

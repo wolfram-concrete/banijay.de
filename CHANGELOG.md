@@ -9,10 +9,13 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Career-Hero:** Poster war ein Schwarz-Weiß-Bild (`c6.png`) → blitzte vor dem
   farbigen Video auf. Neues Poster aus dem ersten Videoframe (`career-hero-poster.jpg`,
   ffmpeg) → nahtloser Start, kein B/W-Flash.
-- **CareerRoleStack (mobil):** Headline + Copy wieder getrennt (Headline baut zuerst
-  auf, Copy darunter danach); Copy gekürzt + eine Stufe kleiner (4vw, About-Verhältnis);
-  Rollen-Domänen **Produktion · Redaktion · Entwicklung · Digital · Live** magenta
-  gehighlightet.
+- **Career Hero-Body:** die Rollen-Domänen **Produktion · Redaktion · Entwicklung ·
+  Digital · Live** magenta gehighlightet (PageHero `highlights`).
+- **CareerRoleStack:** die Aufzählung stand doppelt (Hero-Body + Section-Copy). Die
+  Section darunter jetzt NUR EIN Copytext, **keine eigene Headline** mehr, neu getextet
+  ohne die Domänen-Aufzählung („Viele Companies, viele Rollen, ein gemeinsames Ziel: …").
+  Formatierung 1:1 wie der About-Copytext (ProofVideo `proofText`): 1.9vw / mobil 5vw,
+  line-height 132 %, weight 500, letter-spacing −0.03vw.
 - **CareerSocialFeed:** Deduplizierung (URL + Text) → der doppelte Juicer-Beitrag
   (z. B. „Good Humor"-Drehstart) erscheint nur noch einmal.
 

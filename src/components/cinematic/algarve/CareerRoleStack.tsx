@@ -54,11 +54,6 @@ function cardTheme(i: number): { bg: string; fg: string; soft: string } {
   return { bg, fg, soft };
 }
 
-// Magenta-Highlight-Wörter der Intro-Copy (Rollen-Domänen). Wortkern-Abgleich
-// (nur Buchstaben, lowercase) → Satzzeichen wie „Produktion," werden ignoriert.
-const HL_WORDS = new Set((CAREER.roleIntro.highlights ?? []).map((w) => w.toLowerCase()));
-const coreWord = (w: string) => w.replace(/[^\p{L}]/gu, "").toLowerCase();
-
 const ROLES = CAREER.roles.map((r, i) => ({
   ...r,
   ...cardTheme(i),
@@ -109,28 +104,15 @@ export function AlgarveCareerRoleStack() {
       style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        {/* Intro — GROSSE Headline (nutzt die Breite) + kleinere Copy darunter, beides
-            mit scroll-gekoppeltem Wort-Parallax. */}
-        <div data-roleintro className="max-w-[84vw] max-[767px]:!max-w-full" style={{ marginBottom: "4.5vw" }}>
-          {/* GROSSE Headline — baut sich zuerst auf (Wörter zuerst im DOM → zuerst im
-              scroll-gekoppelten Stagger). Desktop + Mobile (mobil größer). */}
-          <h2 className="m-0 flex flex-wrap max-[767px]:!text-[8.5vw]" style={{ fontFamily: SHARP, fontSize: "3.7vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.13vw", color: "#0e0d0b", columnGap: "0.5ch" }}>
-            {CAREER.roleIntro.headline.split(" ").map((w, i) => (
-              <span key={`h${i}`} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
-                {w}
-              </span>
-            ))}
-          </h2>
-          {/* Kleinere Copy DARUNTER (baut nach der Headline auf). Die Rollen-Domänen
-              (Produktion · Redaktion · Entwicklung · Digital · Live) magenta gehighlightet. */}
-          <p className="m-0 mt-[1.6vw] flex max-w-[48vw] flex-wrap max-[767px]:!mt-[5vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.3vw", lineHeight: "142%", fontWeight: 500, color: "rgba(14,13,11,0.58)", columnGap: "0.4ch" }}>
+        {/* Intro zur Rollenwelt — NUR EIN Copytext (keine eigene Headline; die
+            Rollen-Domänen stehen bereits im Hero-Body). Baut per scroll-gekoppeltem
+            Wort-Parallax auf. */}
+        <div data-roleintro className="max-w-[52vw] max-[767px]:!max-w-full" style={{ marginBottom: "4.5vw" }}>
+          {/* Gleiche Formatierung wie der About-Copytext (ProofVideo `proofText`):
+              1.9vw / mobil 5vw, line-height 132 %, weight 500, letter-spacing -0.03vw. */}
+          <p className="m-0 flex flex-wrap max-[767px]:!text-[5vw]" style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, letterSpacing: "-0.03vw", color: "#0e0d0b", columnGap: "0.4ch" }}>
             {CAREER.roleIntro.text.split(" ").map((w, i) => (
-              <span
-                key={`t${i}`}
-                data-roleintro-word
-                className="inline-block"
-                style={{ willChange: "transform, opacity", color: HL_WORDS.has(coreWord(w)) ? "#ff4370" : undefined }}
-              >
+              <span key={`t${i}`} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
                 {w}
               </span>
             ))}
