@@ -103,13 +103,13 @@ export function AlgarveWorldNetwork() {
 
   useGSAP(
     () => {
-      if (!window.matchMedia("(min-width: 768px)").matches) return;
       const sec = root.current;
       const wrap = trackWrap.current;
       if (!sec || !wrap || !panel.current) return;
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce) return; // Content sichtbar, Logo-Bahn nativ scroll-/ziehbar.
+      const desktop = window.matchMedia("(min-width: 768px)").matches;
 
       // 1) Aufstieg: radial gekurvte Oberkante (rechts stärker → b-Körper) faltet
       //    beim Hochsteigen auf. Der Content ist dabei noch verborgen (leerer
@@ -147,25 +147,27 @@ export function AlgarveWorldNetwork() {
       // 3) Scroll-Stop: Panel gepinnt; Setz-Phase (Content zieht ein) → dann slidet die
       //    Logo-Bahn über die native scrollLeft-Position (0 → max) — zugleich MANUELL
       //    zieh-/swipebar. Pin-Länge = Setz-Phase + Slide-Distanz → danach löst der Pin.
-      const SETTLE = 0.6;
-      const SETTLE_FRAC = SETTLE / (1 + SETTLE);
-      ScrollTrigger.create({
-        trigger: sec,
-        start: "top top",
-        end: () => "+=" + Math.round(maxScroll() * (1 + SETTLE)),
-        pin: panel.current,
-        pinSpacing: true,
-        anticipatePin: 1,
-        scrub: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          // Manuelle Bedienung hat Vorrang: während/kurz nach Drag/Wheel/Touch nicht
-          // überschreiben, sonst schnappt die manuell gezogene Position zurück.
-          if (dragging.current || performance.now() - lastManual.current < 900) return;
-          const slideP = Math.min(1, Math.max(0, (self.progress - SETTLE_FRAC) / (1 - SETTLE_FRAC)));
-          wrap.scrollLeft = slideP * maxScroll();
-        },
-      });
+      // Pinned Scroll-Stop-Slider NUR Desktop. Mobile: Rise + Unfold + Content-Reveal
+      // (oben) laufen, die Logo-Bahn bleibt nativer Swipe (kein Pin).
+      if (desktop) {
+        const SETTLE = 0.6;
+        const SETTLE_FRAC = SETTLE / (1 + SETTLE);
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top top",
+          end: () => "+=" + Math.round(maxScroll() * (1 + SETTLE)),
+          pin: panel.current,
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (dragging.current || performance.now() - lastManual.current < 900) return;
+            const slideP = Math.min(1, Math.max(0, (self.progress - SETTLE_FRAC) / (1 - SETTLE_FRAC)));
+            wrap.scrollLeft = slideP * maxScroll();
+          },
+        });
+      }
     },
     { scope: root },
   );
@@ -174,15 +176,16 @@ export function AlgarveWorldNetwork() {
     <section
       ref={root}
       data-nav-theme="magenta"
-      // Desktop: -100vh-Overlap (steigt über das Statement). Mobile: kein Overlap,
-      // ruhige gerundete Oberkante. (Höhe = Panel-Höhe; der Pin ergänzt den Scrollweg.)
-      className="relative max-[767px]:!mt-0 max-[767px]:!rounded-t-[6vw]"
+      // Desktop UND Mobile: -100vh-Overlap (steigt über das Statement), Curving-Oberkante
+      // faltet beim Aufsteigen auf (GSAP). Kein statischer Mobile-Rounded mehr.
+      className="relative"
       style={{ background: MAGENTA, color: INK, marginTop: "-100vh", zIndex: 2 }}
     >
-      {/* Full-size Panel — wird auf Desktop gepinnt (Scroll-Stop). Mobile: Auto-Höhe. */}
+      {/* Full-size Panel — Desktop gepinnt (Scroll-Stop). Mobile: min. voller Screen,
+          damit die Magenta-Fläche beim Aufsteigen das Statement voll deckt. */}
       <div
         ref={panel}
-        className="flex h-screen w-full flex-col justify-center max-[767px]:!h-auto max-[767px]:!py-[16vw]"
+        className="flex h-screen w-full flex-col justify-center max-[767px]:!min-h-screen max-[767px]:!h-auto max-[767px]:!py-[16vw]"
         style={{ paddingTop: "3vh", paddingBottom: "3vh", rowGap: "clamp(20px, 3vh, 44px)" }}
       >
         {/* ── Kopf: Textblock links, Brand-Video rechts (mittig im Grid) ─────── */}
@@ -254,14 +257,14 @@ export function AlgarveWorldNetwork() {
                   rel="noopener noreferrer"
                   draggable={false}
                   aria-label={`${h.name} öffnen`}
-                  className="group shrink-0 snap-start overflow-clip max-[767px]:!w-[72vw]"
+                  className="group shrink-0 snap-start overflow-clip max-[767px]:!w-[50vw]"
                   style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
                 >
                   <img
                     src={h.image}
                     alt={h.name}
                     draggable={false}
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[12%]"
                     style={{ padding: "17%" }}
                   />
                 </a>

@@ -27,7 +27,7 @@ function Card({ post }: { post: SocialPost }) {
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex shrink-0 flex-col overflow-clip no-underline max-[767px]:!w-[78vw]"
+      className="group flex shrink-0 flex-col overflow-clip no-underline max-[767px]:!w-[58vw]"
       style={{ width: "19.5vw", background: "#fff", borderRadius: "0.83vw", boxShadow: "0 0.5vw 1.6vw -0.5vw rgba(0,0,0,0.16)", color: INK }}
     >
       <div className="relative overflow-clip" style={{ aspectRatio: "4 / 5", background: "#e8e6df" }}>
@@ -68,7 +68,9 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
 
   useGSAP(
     () => {
-      if (!window.matchMedia("(min-width: 768px)").matches) return; // Desktop: pinned horizontal
+      // Gepinnter Horizontal-Slider (Scroll-Stop → Karten-Slide bis durch) auf Desktop
+      // UND Mobile: die Section rastet ein, der vertikale Scroll wird zum horizontalen
+      // Durchsliden der Karten; erst wenn alle durch sind, geht es weiter.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const tr = track.current;
       if (!tr) return;
@@ -101,7 +103,7 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
           <h2 className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.139vw", color: INK }}>
             #workatBanijay
           </h2>
-          <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: "rgba(14,13,11,0.6)", maxWidth: "34vw" }}>
+          <p className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: "rgba(14,13,11,0.6)" }}>
             Einblicke, Menschen und Momente aus der Banijay-Welt — direkt aus unseren Kanälen.
           </p>
         </div>
@@ -110,7 +112,7 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
       {/* Track: Desktop wird gepinnt horizontal gescrubbt; Mobile = nativer Swipe. */}
       <div
         ref={track}
-        className="flex w-max max-[767px]:!w-full max-[767px]:overflow-x-auto max-[767px]:[scrollbar-width:none] max-[767px]:[&::-webkit-scrollbar]:hidden max-[767px]:snap-x"
+        className="flex w-max"
         style={{ gap: "1.4vw", paddingLeft: "2vw", paddingRight: "2vw" }}
       >
         {posts.map((post, i) => (

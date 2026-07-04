@@ -83,10 +83,9 @@ export function AlgarveCompanyCards() {
 
   useGSAP(
     () => {
-      // 3D-Wegkippen nur auf echtem Desktop (≥992px), wo die Cards sticky
-      // gestapelt sind. Ab ≤991px stehen sie im Normalfluss (Querformat-Bild) —
-      // dort würde das Kippen/Faden nur stören.
-      if (!window.matchMedia("(min-width: 992px)").matches) return;
+      // 3D-Wegkippen — wie die Home-Kernkompetenzen (ServicesStack): auf ALLEN
+      // Viewports (auch Mobile), Sticky-Stack, jede Card kippt um die Oberkante nach
+      // hinten weg + faded, sobald die nächste hochscrollt.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-company-card]");
       // Echtes 3D-Wegkippen: sobald die NÄCHSTE Card hochscrollt und diese
@@ -124,7 +123,7 @@ export function AlgarveCompanyCards() {
             <article
               key={card.id}
               data-company-card
-              className="relative flex flex-col justify-between overflow-clip max-[991px]:!static max-[991px]:!h-auto max-[991px]:!p-[4vw] max-[767px]:!p-[6vw]"
+              className="relative flex flex-col justify-between overflow-clip max-[991px]:!p-[4vw] max-[767px]:!h-[80vh] max-[767px]:!justify-start max-[767px]:!p-[6vw]"
               style={{
                 position: "sticky",
                 top: "1.39vw",
@@ -209,17 +208,18 @@ export function AlgarveCompanyCards() {
                 {/* Tags (max 3) — Kategorie-Marker: kleiner Stern-Glyph (gleiche
                     Glyph-Optik wie der ↗-Pfeil im CTA) + gesperrte Versalie. Klar als
                     Meta-Element erkennbar, aber kein Button und kein Hashtag. */}
-                <div className="flex flex-wrap items-center max-[767px]:!text-[2.8vw]" style={{ gap: "1.25vw", marginTop: "0.4vw" }}>
+                <div className="flex flex-wrap items-center max-[767px]:!gap-[2vw]" style={{ gap: "1.25vw", marginTop: "0.4vw" }}>
                   {card.tags.slice(0, 3).map((t) => (
-                    <span key={t} className="flex items-center" style={{ gap: "0.4vw" }}>
+                    <span key={t} className="flex items-center max-[767px]:!gap-[1vw]" style={{ gap: "0.4vw" }}>
                       <span
                         aria-hidden
-                        className="max-[767px]:!text-[2.8vw]"
+                        className="max-[767px]:!text-[4.2vw]"
                         style={{ color: card.fg, fontSize: "0.82vw", lineHeight: 1, display: "inline-block", transform: "translateY(0.02em)" }}
                       >
                         ✦
                       </span>
                       <span
+                        className="max-[767px]:!text-[4.2vw]"
                         style={{
                           fontFamily: "var(--font-sharp), sans-serif",
                           fontSize: "0.82vw",
@@ -239,7 +239,7 @@ export function AlgarveCompanyCards() {
                     Zeile: das Festival IST das Highlight (keine Doppelung). */}
                 {card.id !== "cologne-comedy-festival" && (
                   <div
-                    className="flex flex-wrap items-center max-[767px]:!text-[3vw]"
+                    className="flex flex-wrap items-center max-[767px]:!hidden"
                     style={{ fontFamily: "var(--font-sharp), sans-serif", gap: "0.56vw", fontSize: "1.05vw", color: card.soft }}
                   >
                     <span

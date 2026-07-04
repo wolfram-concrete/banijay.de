@@ -23,9 +23,10 @@ export function AlgarveLogoReveal() {
 
   useGSAP(
     () => {
-      // Nur Desktop: die gepinnte Video-Rise + b-Blende. Mobile zeigt eine ruhige
-      // Video-Section (100vh, kein Overlap) und leitet direkt in die Magenta-News.
-      if (!window.matchMedia("(min-width: 768px)").matches) return;
+      // Desktop UND Mobile: die Video-Fläche steigt (via -100vh) über die gepinnte
+      // Team-Section auf und rastet full-size ein, danach wächst das Magenta-„b" aus
+      // der Mitte und leitet in die (magenta) News. Auf Mobile pinnt das Team jetzt
+      // ebenfalls (Founders), darum läuft dieselbe Choreografie.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const tl = gsap.timeline({
@@ -80,7 +81,7 @@ export function AlgarveLogoReveal() {
     // gedeckt hat und der Sticky-Container am Section-Ende hochscrollt, zeigt sich
     // darunter derselbe Magenta-Grund → nahtlos in die (magenta) News, kein Video-/
     // Ink-Flash. (Während der Video-Phase deckt das Video den Grund ohnehin voll.)
-    <section ref={root} className="relative overflow-clip max-[767px]:!mt-0 max-[767px]:!h-screen" style={{ height: "260vh", marginTop: "-100vh", zIndex: 2, background: "#ff4370" }}>
+    <section ref={root} className="relative overflow-clip" style={{ height: "260vh", marginTop: "-100vh", zIndex: 2, background: "#ff4370" }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">

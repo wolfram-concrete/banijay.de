@@ -47,8 +47,10 @@ export function AlgarveProofVideo({
 
   useGSAP(
     () => {
-      // Nur Desktop: die gepinnte clip-path-Aufskalierung.
-      if (!window.matchMedia("(min-width: 768px)").matches) return;
+      // Desktop UND Mobile: das Video wächst aus einer grauen Stat-Kachel („130+
+      // Companies weltweit") auf Full-Screen (Geometrie wird dynamisch aus der Kachel
+      // gelesen → passt sich dem mobilen Stat-Grid an), dann hovert die Schrift rein.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const stageEl = stage.current;
       // Quelle = eine der kleinen GRAUEN Stat-Kacheln (data-pv-source). Aus ihr
       // heraus wächst das Video — kein separater, vorab sichtbarer Video-Container.

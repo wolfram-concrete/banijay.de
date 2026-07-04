@@ -5,6 +5,31 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-03
 
+### Mobile-Übergänge + Card-/Slider-Feinschliff (03.07., 51. Runde)
+
+**Mobile-Übergänge (Desktop-Logik auf Mobile übertragen)**
+- **Home-LogoReveal:** Video-Rise über das (jetzt auch mobil gepinnte) Team + Magenta-
+  „b"-Blende → News — Guard entfernt, `-100vh`-Overlap auch mobil.
+- **About-WorldNetwork:** Magenta-Fläche steigt mobil über das Statement (Curving-
+  Unfold + Content-Reveal); Logo-Bahn bleibt nativer Swipe (Pin nur Desktop).
+- **About-ProofVideo:** das Video wächst mobil aus der „130+ Companies weltweit"-Stat-
+  Kachel auf Full-Screen (Geometrie dynamisch aus der Kachel), Schrift hovert rein.
+- **Career-#workatBanijay:** gepinnter Horizontal-Slider (Scroll-Stop → Karten-Slide-
+  Gate) jetzt auch mobil statt nativem Swipe.
+
+**Cards / Slider / Copy (mobil)**
+- **CompanyCards:** Keytags 50 % größer (der Tag-Text hing an inline `0.82vw` = 3px →
+  jetzt ~16px), „Bekannt für"-Zeile mobil raus, **Flip-Animation** aktiviert (Cards
+  sticky, kippen weg wie die Home-Kernkompetenzen).
+- **#workatBanijay:** Copy-Block war zu eng (Inline-`maxWidth 34vw`) → voll breit;
+  Social-Cards −25 % (78vw → 58vw, mehr als eine pro Screen).
+- **WorldNetwork-Slider-Logos:** Container 72vw → 50vw + kleineres Logo-Padding.
+- **AboutIntro-Statement:** Wort-Reveal zügiger (`+=60%`/Stagger 1 → `+=38%`/0,6).
+
+**PageHero-Regression-Fix**
+- h1/Box-Änderungen greifen jetzt **nur Mobile**; Desktop per `matchMedia` auf den
+  Original-Stand (b-/„D"-Form, 40vw×30vh, h1 122px).
+
 ### Mobile-Runde: Hero, Companies-Choreo, Cards, Formular-Master, Übergänge (03.07., 50. Runde)
 
 **Home**

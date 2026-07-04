@@ -48,13 +48,14 @@ export function AlgarveAboutIntro({
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const wordEls = gsap.utils.toArray<HTMLElement>("[data-word]");
       gsap.set(wordEls, { willChange: "transform, opacity", backfaceVisibility: "hidden" });
-      // Wort-für-Wort-Reveal in der ERSTEN Hälfte der Sektion.
+      // Wort-für-Wort-Reveal — kompakt/zügig (kürzerer Scroll-Weg + engerer Stagger),
+      // damit das Statement schneller steht (vorher „langatmig").
       gsap.from(wordEls, {
         opacity: 0,
         yPercent: 30,
         ease: "none",
-        stagger: { amount: 1, from: "start" },
-        scrollTrigger: { trigger: root.current, start: "top top", end: "+=60%", scrub: 1 },
+        stagger: { amount: 0.6, from: "start" },
+        scrollTrigger: { trigger: root.current, start: "top top", end: "+=38%", scrub: 1 },
       });
 
       // magentaExit (nur Mobile): gerundete Magenta-Fläche steigt über das stehende
