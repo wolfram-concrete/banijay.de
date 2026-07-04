@@ -250,7 +250,10 @@ export function AlgarveCompaniesScroller() {
           const r = el.getBoundingClientRect();
           const d = r.left + r.width / 2 - cX;
           const ad = Math.min(Math.abs(d) / window.innerWidth, 1);
-          gsap.set(el, { scale: 1 - ad * 0.2, rotationZ: (d / window.innerWidth) * 11, transformOrigin: "50% 60%" });
+          // rotationZ hart auf ±8° begrenzt — sonst „verdrehen" weit außen liegende
+          // Karten (d weit > 1 Screen) stark.
+          const rot = Math.max(-8, Math.min(8, (d / window.innerWidth) * 8));
+          gsap.set(el, { scale: 1 - ad * 0.2, rotationZ: rot, transformOrigin: "50% 60%" });
           el.style.zIndex = String(100 - Math.round(ad * 100));
           if (Math.abs(d) < bd) {
             bd = Math.abs(d);
@@ -291,10 +294,26 @@ export function AlgarveCompaniesScroller() {
         scrollTrigger: {
           trigger: rootEl,
           start: "top top",
-          end: () => "+=" + (distance() * 1.15 + window.innerHeight * 0.9),
+          // Mehr Scrollweg pro Card (1.15 → 1.7) → der Slide läuft ruhiger/gezielter.
+          end: () => "+=" + (distance() * 1.7 + window.innerHeight * 0.9),
           scrub: 0.5,
           pin: true,
           invalidateOnRefresh: true,
+          // Snap auf jede Card-Mitte — nur während des Slides (Progress ≥ slideFrac),
+          // damit man einzelne Cards gezielt ansteuern kann. In der Intro nicht snappen.
+          snap: {
+            snapTo: (value: number) => {
+              if (value < slideFrac) return value;
+              const n = els.length;
+              if (n < 2) return value;
+              const slideP = (value - slideFrac) / (1 - slideFrac);
+              const k = Math.round(Math.min(1, Math.max(0, slideP)) * (n - 1));
+              return slideFrac + (1 - slideFrac) * (k / (n - 1));
+            },
+            duration: { min: 0.15, max: 0.4 },
+            ease: "power1.inOut",
+            delay: 0.06,
+          },
           onUpdate: (self) => {
             const p = self.progress;
             if (p >= slideFrac) {
