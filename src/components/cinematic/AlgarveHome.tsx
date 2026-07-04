@@ -364,7 +364,7 @@ export function AlgarveHome() {
           muted
           loop
           playsInline
-          className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover max-[767px]:!block max-[479px]:!h-[46vh]"
+          className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover max-[767px]:!block max-[479px]:!m-auto max-[479px]:!h-[58vh]"
         >
           <source src="/video/hero-mobile.mp4" type="video/mp4" />
         </video>
@@ -376,12 +376,12 @@ export function AlgarveHome() {
           className="pointer-events-none absolute inset-x-0 bottom-0 max-[479px]:!hidden"
           style={{ height: "38%", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%)" }}
         />
-        {/* Mobile: die Video-Unterkante (46 %) blendet weich in die dunkle Hero-
-            Verlängerung — kein harter Schnitt zwischen Video und Schwarzfläche. */}
+        {/* Mobile: das mittig platzierte Video-Band (58vh, zentriert) blendet an
+            Ober- UND Unterkante weich in die dunkle Hero-Fläche — kein harter Schnitt. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 hidden max-[479px]:!block"
-          style={{ height: "46vh", background: "linear-gradient(180deg, rgba(10,10,10,0) 68%, #0a0a0a 100%)" }}
+          className="pointer-events-none absolute inset-0 m-auto hidden max-[479px]:!block"
+          style={{ height: "58vh", background: "linear-gradient(180deg, #0a0a0a 0%, rgba(10,10,10,0) 16%, rgba(10,10,10,0) 84%, #0a0a0a 100%)" }}
         />
         <div ref={content} className="relative flex flex-1 flex-col" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div className="flex flex-1 flex-col justify-between text-center" style={{ gap: "0.83vw" }}>
