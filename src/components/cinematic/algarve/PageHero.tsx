@@ -23,18 +23,21 @@ const SHARP = "var(--font-sharp), sans-serif";
 // selbst ab (die Curvings wandern in die Kanten), der finale Schritt setzt alle
 // Ecken auf 0 → Full-Screen.
 // DESKTOP (unverändert): Original-b-/„D"-Form (rechts voller Halbkreis, links kleine
-// obere + scharfe untere Ecke). MOBILE: normaler Kasten mit dezent radialen Ecken.
-// Auswahl passiert per matchMedia in useGSAP (SSR-Default = Desktop = B_SHAPE_RADIUS).
+// obere + scharfe untere Ecke). MOBILE: TORBOGEN — die obere Kante kurvt voll auf
+// (beide oberen Ecken = halbe Container-Breite → runder Bogen oben, wie das Banijay-
+// b-Einzelelement), unten dezent gerundet. Maße bleiben unverändert, nur das Curving
+// oben. Auswahl per matchMedia in useGSAP (SSR-Default = Desktop = B_SHAPE_RADIUS).
 const B_SHAPE_RADIUS = {
   borderTopLeftRadius: "1.8vh",
   borderBottomLeftRadius: "0vh",
   borderTopRightRadius: "15vh",
   borderBottomRightRadius: "15vh",
 } as const;
-const ROUND_RADIUS = {
-  borderTopLeftRadius: "2.4vh",
+// Torbogen (Mobile): obere Ecken = 30vw (= halbe Start-Breite 60vw) → voller Bogen oben.
+const ARCH_RADIUS = {
+  borderTopLeftRadius: "30vw",
   borderBottomLeftRadius: "2.4vh",
-  borderTopRightRadius: "2.4vh",
+  borderTopRightRadius: "30vw",
   borderBottomRightRadius: "2.4vh",
 } as const;
 // SSR-/Reduced-Motion-Default (Desktop-Form).
@@ -98,7 +101,7 @@ export function AlgarvePageHero({
       const START = isMobile
         ? { left: "20vw", top: "46vh", width: "60vw", height: "45vh" }
         : { left: "30vw", top: "56vh", width: "40vw", height: "30vh" };
-      const START_RADIUS = isMobile ? ROUND_RADIUS : B_SHAPE_RADIUS;
+      const START_RADIUS = isMobile ? ARCH_RADIUS : B_SHAPE_RADIUS;
       const FULL = { left: "0vw", top: "0vh", width: "100vw", height: "100vh" };
       gsap.set(["[data-hero-card]", "[data-hero-media]"], { ...START, ...START_RADIUS });
 

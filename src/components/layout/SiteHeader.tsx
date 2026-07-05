@@ -31,6 +31,16 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
   const SHARP = "var(--font-sharp), sans-serif";
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  // Offene Höhe viewport-abhängig: mobil ist allein das Kartenbild 40vw hoch, dazu
+  // Datum + (mehrzeiliger) Titel → 48vw schnitt den Text ab. Auf Mobile mehr Platz.
+  // (max-height cappt nur; kürzere Karten bleiben inhaltshoch, kein Leerraum.)
+  const [openMaxH, setOpenMaxH] = useState("48vw");
+  useEffect(() => {
+    const upd = () => setOpenMaxH(window.matchMedia("(max-width: 767px)").matches ? "78vw" : "48vw");
+    upd();
+    window.addEventListener("resize", upd);
+    return () => window.removeEventListener("resize", upd);
+  }, []);
   const onScroll = () => {
     const el = trackRef.current;
     if (!el) return;
@@ -42,7 +52,7 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
       className={`overflow-hidden ${open ? "w-[62vw] max-[767px]:w-[92vw]" : "w-0"}`}
       style={{
         // Spring-/„magnetisches" Easing → About/Career sliden physikalischer.
-        maxHeight: open ? "48vw" : 0,
+        maxHeight: open ? openMaxH : 0,
         opacity: open ? 1 : 0,
         marginTop: open ? "1.5vw" : 0,
         transition:

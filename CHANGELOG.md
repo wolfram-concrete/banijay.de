@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-05
 
+### Hero-Torbogen + News-Slider-Fix (05.07., abends)
+- **PageHero (alle Subpages: About · Companies · Career · Contact), mobil:** die Startform
+  des Video-Containers kurvt oben zum TORBOGEN auf (obere Ecken = halbe Container-Breite
+  → voller Halbkreis-Bogen, wie das Banijay-b-Einzelelement), unten dezent gerundet. Maße
+  unverändert — nur das Curving oben. Danach laufen wie gehabt die Farb-Layer auf Full-Screen.
+- **Menü-News-Slider (mobil):** die offene Höhe war fix auf 48vw → das 40vw hohe Kartenbild
+  plus Datum/Titel wurde abgeschnitten. Offene Höhe jetzt viewport-abhängig (mobil 78vw,
+  Desktop 48vw) → Titel vollständig sichtbar.
+
+
 ### Flip-Card-Fix + Statement-Reveal (05.07., nachmittags)
 - **Flip-Cards (Companies · Home-Kernkompetenzen · Career-Rollenwelt):** der zuvor
   ergänzte autoAlpha-Fade-in-Auftritt kollidierte mit der Opacity der Flip-Tween (beide
