@@ -79,20 +79,6 @@ export function AlgarveServicesStack() {
       // (bunte Karten flippen weg, die nächste kommt). Mobile nutzt dasselbe
       // Prinzip, nur mit mobil angepasstem Innenlayout (Video unter der Headline).
       const cards = gsap.utils.toArray<HTMLElement>("[data-service-card]");
-
-      // Karten starten UNSICHTBAR und blenden beim Eintritt sauber von 0→100 % ein
-      // (autoAlpha), VOR der Flip-Logik — sonst lugt die nächste Card schon opak (durch
-      // die Perspektive leicht „gekippt" wirkend) am unteren Rand herein.
-      gsap.set(cards, { autoAlpha: 0 });
-      cards.forEach((card) => {
-        gsap.to(card, {
-          autoAlpha: 1,
-          ease: "power2.out",
-          duration: 0.6,
-          scrollTrigger: { trigger: card, start: "top 85%", once: true },
-        });
-      });
-
       // Echtes 3D-Wegkippen (wie auf der Companies-Seite): sobald die nächste Card
       // hochscrollt, kippt die aktuelle um ihre Oberkante nach hinten weg + faded.
       cards.forEach((card, i) => {
@@ -103,7 +89,7 @@ export function AlgarveServicesStack() {
           scale: 0.8,
           opacity: 0,
           ease: "none",
-          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: 0.4 },
+          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: 0.8 },
         });
       });
     },

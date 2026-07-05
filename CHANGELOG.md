@@ -5,12 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-05
 
-### Flip-Card- & Statement-Reveal-Feinschliff (05.07., nachmittags)
-- **Flip-Cards (Companies · Home-Kernkompetenzen · Career-Rollenwelt):** Karten starten
-  UNSICHTBAR und blenden beim Eintritt sauber von 0→100 % ein (autoAlpha), BEVOR die
-  Flip-Logik greift — kein „schon halb gekippter"/opaker Peek am unteren Rand mehr.
-  Flip-Scrub `0.8 → 0.4` → bei schnellem Scroll läuft der Flip nicht mehr im verzerrten
-  Halb-Zustand hinterher.
+### Flip-Card-Fix + Statement-Reveal (05.07., nachmittags)
+- **Flip-Cards (Companies · Home-Kernkompetenzen · Career-Rollenwelt):** der zuvor
+  ergänzte autoAlpha-Fade-in-Auftritt kollidierte mit der Opacity der Flip-Tween (beide
+  steuern die Card-Transparenz) → die Karte war beim Wegkippen bereits unsichtbar
+  (wirkte wie „hart ausgeblendet" statt geflippt). Fade-in wieder ENTFERNT, Flip zurück
+  auf den funktionierenden Stand (opacity + rotationX + scale progressen synchron).
 - **AboutIntro-Statement-Reveal:** Scrub `1 → 0.4` → bei schnellem Rein-Scrollen folgt der
   Wort-Reveal dem Scroll eng, statt ~1 s „hinterherzuschieben".
 
