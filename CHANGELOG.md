@@ -53,7 +53,7 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   versehentlich ergänzt) → voll-breiter Container wie im Original-Template; keine
   abgeschnittenen Placeholder / zu schmalen Felder mehr auf breiten Screens.
 
-## [Unreleased] — 2026-07-04
+## [2026-07-04] — deployt
 
 ### Career-Feinschliff: Hero-Poster, Role-Intro-Highlights, Feed-Dedup (04.07., 60. Runde)
 - **Career-Hero:** Poster war ein Schwarz-Weiß-Bild (`c6.png`) → blitzte vor dem
@@ -367,7 +367,7 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   jede weitere rastet darunter ein) — opake Magenta-Karten mit oberer Schattenkante,
   wie im Algarve-`blog-home`-Template.
 
-## [Unreleased] — 2026-07-02
+## [2026-07-02] — deployt
 
 ### Zahlen-Section, Career-Fächer, Site-QA (02.07., 43. Runde)
 - **About Hard-Facts (ProofVideo) — Video wächst aus grauer Kachel:** Der vorab

@@ -13,7 +13,9 @@ Sticky-Nav, Bildcontainer nutzen native Seitenverhältnisse und Fokuspunkte. Das
 News-Grid ist ein CSS-Grid-Masonry mit nativen Thumbnail-Proportionen + Feature-Karten
 (2 Spalten) und berechneten Row-Spans. Scroll-getriebene Zähler laufen über
 ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden starten.
-Der vollständige Verlauf steht in `CHANGELOG.md`.
+Die Subpage-Heroes (About/Companies/Career/Contact) starten als kleiner Video-Container
+in Banijay-b-Form (Desktop: b-/„D"-Halbkreis rechts; mobil: Torbogen oben) und skalieren
+über gestaffelte Farb-Layer auf Full-Screen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
 ## Stack
 
