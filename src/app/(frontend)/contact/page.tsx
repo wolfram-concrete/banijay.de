@@ -22,7 +22,7 @@ export default function ContactPage() {
         headline={"Let’s\ntalk"}
         label="Contact"
         body="Für Projekte, Presse, Talente und Partnerschaften: Hier beginnt der richtige Kontakt zu Banijay Germany."
-        image="/grid/g10.jpeg"
+        image="/grid/subpage-hero-poster.jpg"
       />
 
       {/* Kontaktbereiche */}

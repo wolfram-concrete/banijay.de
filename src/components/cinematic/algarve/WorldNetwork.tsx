@@ -138,7 +138,9 @@ export function AlgarveWorldNetwork() {
         scrollTrigger: {
           trigger: sec,
           start: "top top",
-          end: () => "+=" + Math.max(300, Math.round(maxScroll() * 0.5)),
+          // Feste Aufbau-Strecke (unabhängig vom Logo-Überhang) — der Content zieht über
+          // ~0.7 Screens vollständig ein, BEVOR die Setz-Phase hält bzw. die Logos sliden.
+          end: () => "+=" + Math.round(window.innerHeight * 0.7),
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -150,21 +152,31 @@ export function AlgarveWorldNetwork() {
       // Pinned Scroll-Stop-Slider NUR Desktop. Mobile: Rise + Unfold + Content-Reveal
       // (oben) laufen, die Logo-Bahn bleibt nativer Swipe (kein Pin).
       if (desktop) {
-        const SETTLE = 0.6;
-        const SETTLE_FRAC = SETTLE / (1 + SETTLE);
+        // FESTE Setz-/Aufbau-Distanz (~1.5 Screens) + optionaler Logo-Slide-Überhang.
+        // Wichtig: auf breiten Screens passen alle Logos in eine Reihe → maxScroll = 0.
+        // Ohne die feste Distanz wäre die Pin-Strecke 0 und man würde über die Section
+        // hinwegscrollen. So rastet sie IMMER full-size ein, der Content baut sich auf
+        // und hält; erst danach sliden die Logos (falls Überhang). Snap → „einrasten".
+        const settlePx = () => Math.round(window.innerHeight * 1.5);
+        const pinDist = () => settlePx() + maxScroll();
         ScrollTrigger.create({
           trigger: sec,
           start: "top top",
-          end: () => "+=" + Math.round(maxScroll() * (1 + SETTLE)),
+          end: () => "+=" + pinDist(),
           pin: panel.current,
           pinSpacing: true,
           anticipatePin: 1,
           scrub: 1,
           invalidateOnRefresh: true,
+          // Snap-Scroll: die Section rastet full-size ein (0) bzw. gibt am Ende frei (1).
+          snap: { snapTo: [0, 1], duration: { min: 0.2, max: 0.5 }, ease: "power1.inOut", delay: 0.1 },
           onUpdate: (self) => {
             if (dragging.current || performance.now() - lastManual.current < 900) return;
-            const slideP = Math.min(1, Math.max(0, (self.progress - SETTLE_FRAC) / (1 - SETTLE_FRAC)));
-            wrap.scrollLeft = slideP * maxScroll();
+            const ms = maxScroll();
+            if (ms <= 0) return;
+            const settleFrac = settlePx() / pinDist();
+            const slideP = Math.min(1, Math.max(0, (self.progress - settleFrac) / (1 - settleFrac)));
+            wrap.scrollLeft = slideP * ms;
           },
         });
       } else {
@@ -172,7 +184,7 @@ export function AlgarveWorldNetwork() {
         // „top top", damit der Panel-Content (Headline/Copy/CTA) beim Einziehen NICHT
         // sofort hinter die Sticky-Nav wegscrollt. Pin-Länge = Reveal-Strecke + kleiner
         // Hold; danach löst der Pin, Logo-Bahn + Pills scrollen normal nach.
-        const revealLen = Math.max(300, Math.round(maxScroll() * 0.5));
+        const revealLen = Math.round(window.innerHeight * 0.7);
         ScrollTrigger.create({
           trigger: sec,
           start: "top top",

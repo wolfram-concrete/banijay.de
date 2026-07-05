@@ -3,6 +3,36 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [Unreleased] — 2026-07-05
+
+### Desktop-Runde: News-Masonry, WorldNetwork-Snap, PartnerStack, Career-Slider, CountUp, Hero-Video (05.07.)
+- **News-Grid (Desktop):** echtes CSS-Grid-Masonry mit NATIVEN Thumbnail-Proportionen
+  (kein Crop) + variablen Card-Größen — einzelne „Feature"-Karten sind 2 Spalten breit
+  (Größenvarianz trotz gleicher 16:9-Quellen), Pinterest-Packing über berechnete
+  Row-Spans (`items-start` verhindert die zirkuläre Höhenmessung). Breiterer Container
+  (bis 1840px), bis zu 5 Spalten, 21 statt 15 Beiträge vorab. Mobile unverändert (1 Spalte).
+- **CompaniesScroller (Desktop):** „UNSERE COMPANIES" steht zuerst als EIN zentrierter
+  Satz (gemessener Versatz, kein Gap) und zieht erst danach an die Ränder. Am Slide-ENDE
+  ein End-Hold (Sektion +120vh) → die letzten Cards sind erfassbar, bevor es weitergeht.
+- **WorldNetwork „Teil einer Welt" (Desktop):** feste Setz-/Aufbau-Distanz (~1.5 Screens)
+  + Logo-Slide — vorher war die Pin-Strecke auf breiten Screens 0 (alle Logos passten in
+  eine Reihe → maxScroll 0), man scrollte drüber. Jetzt rastet die Section full-size ein
+  (Snap), baut sich auf, dann sliden die Logos, dann geht's weiter.
+- **PartnerStack (Desktop):** Text animiert zuerst vollständig, DANN erscheinen die
+  Bildkarten (autoAlpha 0 → fade nach der Text-Reveal) — wie mobil.
+- **CareerSocialSlider (Desktop):** Aufbau höher gesetzt (paddingTop 11vw → 7vw) → mehr
+  Abstand zur unteren Kante, weiterhin genug zur Nav.
+- **CountUp:** von framer-motion `useInView` (IntersectionObserver) auf GSAP ScrollTrigger
+  umgestellt → der Fakten-Zähler startet zuverlässig erst beim Sichtbarwerden (vorher
+  durch Lenis/Pins zu früh). Betrifft Home-Stats + About-ProofVideo.
+- **Hero-Poster (Subpages):** About/Companies/Contact zeigten Grid-Bilder als Poster →
+  Fremdbild-Flash. Jetzt Poster aus dem ersten Videoframe.
+- **Home Intro-Video (`hero.mp4`):** aus der 1080p-Quelle neu encodiert — 1440×684 @1.4 Mbps
+  → 1920×912 @2.4 Mbps + Schärfung (gleicher Bildausschnitt) → deutlich schärfer bei Full-Screen.
+- **Formular (alle Seiten, Desktop):** `maxWidth: 1440px`-Cap entfernt (aus der Mobile-Runde
+  versehentlich ergänzt) → voll-breiter Container wie im Original-Template; keine
+  abgeschnittenen Placeholder / zu schmalen Felder mehr auf breiten Screens.
+
 ## [Unreleased] — 2026-07-04
 
 ### Career-Feinschliff: Hero-Poster, Role-Intro-Highlights, Feed-Dedup (04.07., 60. Runde)

@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
@@ -11,27 +11,62 @@ import type { NewsItem } from "@/data/news";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// News-Grid (News-Seite): 5-Spalten-Raster mit breiten QUERFORMAT-Bildcontainern
-// (passt zu den meist querformatigen Beiträgen), locker gesetzt (großer Row-Gap).
-// Je Beitrag Datum · Titel · „Zum Beitrag"-CTA. Die Karten bauen sich beim Rein-
-// scrollen gestaffelt per Parallax auf. Unten ein „Weitere News laden"-Button, der
-// batchweise nachlädt (CMS-ready: wächst automatisch mit mehr Einträgen).
+// News-Grid (News-Seite) — Masonry mit NATIVEN Thumbnail-Proportionen (kein Crop).
+// Desktop: echtes CSS-Grid-Masonry (Pinterest-Packing über berechnete Row-Spans) mit
+// variablen Card-Größen — einzelne „Feature"-Karten sind 2 Spalten breit → sichtbare
+// Größenvarianz trotz gleicher (16:9-)Quellformate. Nutzt fast die volle Grid-Breite.
+// Mobile: eine Spalte, gestapelt (unverändert). Karten bauen sich beim Rein-scrollen
+// gestaffelt auf; „Weitere News laden" lädt batchweise nach (CMS-ready).
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INITIAL = 15;
-const BATCH = 10;
+const INITIAL = 21;
+const BATCH = 12;
 
-// Masonry-Rhythmus: pro Karte ein wechselndes Seitenverhältnis (Hoch-, Quer- und
-// Quadratformate im Wechsel). Die 6er-Palette teilt sich nicht glatt durch die
-// Spaltenzahl (2/3/4) → die Spalten versetzen sich gegeneinander, das Raster wirkt
-// redaktionell-asymmetrisch statt gleichförmig. Der CSS-Multi-Column-Flow packt die
-// unterschiedlich hohen Karten dicht (Pinterest-Prinzip).
-const RATIOS = ["4 / 5", "16 / 11", "1 / 1", "3 / 4", "16 / 10", "5 / 6"];
+const ROW_UNIT = 8; // px — grid-auto-rows-Basis (Desktop-Masonry)
+const ROW_GAP = 44; // px — visueller Abstand unter jeder Karte (in den Row-Span eingerechnet)
+
+// Feature-Karten (2 Spalten breit) — deterministisch (kein Random) für ruhigen Rhythmus.
+const isFeature = (i: number) => i % 5 === 3;
 
 export function NewsGrid({ items }: { items: NewsItem[] }) {
   const [count, setCount] = useState(Math.min(INITIAL, items.length));
   const grid = useRef<HTMLDivElement>(null);
   const visible = items.slice(0, count);
+
+  // Masonry-Packing: jede Karte spannt so viele 8px-Rows, wie ihre gemessene Höhe
+  // (+ Abstand) braucht. Nur Desktop (md+, dort ist grid-auto-rows aktiv); mobil ist
+  // es eine simple Ein-Spalten-Liste → Row-Span wird zurückgesetzt.
+  const layout = useCallback(() => {
+    const g = grid.current;
+    if (!g) return;
+    const desktop = window.matchMedia("(min-width: 768px)").matches;
+    const cards = Array.from(g.querySelectorAll<HTMLElement>("[data-news-card]"));
+    cards.forEach((c) => {
+      if (!desktop) {
+        c.style.gridRowEnd = "";
+        return;
+      }
+      const span = Math.ceil((c.offsetHeight + ROW_GAP) / ROW_UNIT);
+      c.style.gridRowEnd = `span ${span}`;
+    });
+    ScrollTrigger.refresh();
+  }, []);
+
+  useEffect(() => {
+    layout();
+    const onResize = () => layout();
+    window.addEventListener("resize", onResize);
+    // Bilder laden ggf. NACH dem ersten Layout (native Höhe erst dann bekannt) → neu vermessen.
+    const imgs = grid.current ? Array.from(grid.current.querySelectorAll("img")) : [];
+    const onLoad = () => layout();
+    imgs.forEach((img) => {
+      if (!img.complete) img.addEventListener("load", onLoad, { once: true });
+    });
+    return () => {
+      window.removeEventListener("resize", onResize);
+      imgs.forEach((img) => img.removeEventListener("load", onLoad));
+    };
+  }, [count, layout]);
 
   // Reveal: neue (noch nicht enthüllte) Karten gestaffelt einblenden, sobald sie in
   // den Viewport kommen. Läuft beim ersten Mount UND nach jedem „Weitere laden".
@@ -53,27 +88,28 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
 
   return (
     <>
-      {/* Masonry via CSS-Multi-Column: unterschiedlich hohe Karten packen sich dicht,
-          break-inside-avoid hält jede Karte zusammen. Spaltenzahl responsiv. */}
-      <div ref={grid} className="columns-1 gap-x-6 sm:columns-2 lg:columns-3 xl:columns-4">
+      {/* Desktop: Grid-Masonry (grid-auto-rows + berechnete Row-Spans, dense-flow).
+          Mobile: eine Spalte (grid-cols-1, Karten mit mb als Abstand). */}
+      <div
+        ref={grid}
+        className="grid grid-cols-1 items-start gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:[grid-auto-flow:dense] md:[grid-auto-rows:8px]"
+      >
         {visible.map((item, i) => (
           <Link
             key={item.slug}
             data-news-card
             href={`/news/${item.slug}`}
-            className="group mb-11 block break-inside-avoid no-underline"
+            className={`group mb-11 block no-underline md:mb-0 ${isFeature(i) ? "sm:col-span-2" : ""}`}
             style={{ willChange: "transform, opacity" }}
           >
-            {/* Bildcontainer mit wechselndem Seitenverhältnis (Masonry-Rhythmus) */}
-            {/* Mobil: Container übernimmt das NATIVE Seitenverhältnis des vorbereiteten
-                Banijay-Preview-Bildes (aspect-auto + Bild in natürlicher Höhe → kein
-                Crop). Desktop behält den Masonry-Rhythmus (feste RATIOS, object-cover). */}
-            <div className="overflow-hidden rounded-xl max-[767px]:!aspect-auto" style={{ aspectRatio: RATIOS[i % RATIOS.length], background: "#e8e6df" }}>
+            {/* Bildcontainer übernimmt IMMER das native Seitenverhältnis des Original-
+                Thumbnails (kein Crop). Feature-Karten sind breiter → automatisch größer. */}
+            <div className="overflow-hidden rounded-xl" style={{ background: "#e8e6df" }}>
               <img
                 src={item.img}
                 alt=""
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05] max-[767px]:!h-auto"
+                className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
               />
             </div>
             <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>

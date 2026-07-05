@@ -102,7 +102,7 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
   );
 
   return (
-    <section ref={root} className="overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: "#f8f7f3", paddingTop: "11vw", paddingBottom: "5.56vw" }}>
+    <section ref={root} className="overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* Headline */}
         <div className="mb-[3vw] flex items-end justify-between gap-8 max-[767px]:!mb-[8vw] max-[767px]:!flex-col max-[767px]:!items-start">

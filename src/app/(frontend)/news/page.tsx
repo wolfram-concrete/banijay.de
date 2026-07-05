@@ -19,9 +19,11 @@ export default function NewsPage() {
         image="/grid/g11.png"
       />
 
-      {/* News-Grid — dichtes 4–5-Spalten-Raster mit Parallax-Aufbau + „Weitere laden" */}
+      {/* News-Grid — dichtes Masonry mit nativen Thumbnail-Proportionen. Desktop nutzt
+          fast die volle Breite (breiter als der Standard-Container); mobil bleibt der
+          normale Gutter. */}
       <section className="py-20 lg:py-28" style={{ background: "#f8f7f3" }}>
-        <div className="container">
+        <div className="mx-auto w-full px-6 max-[767px]:!px-6 lg:px-[2.5vw]" style={{ maxWidth: "1840px" }}>
           <NewsGrid items={NEWS} />
         </div>
       </section>

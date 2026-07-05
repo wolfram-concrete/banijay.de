@@ -79,13 +79,25 @@ export function AlgarvePartnerStack() {
           scrollTrigger: { trigger: sec, start: "top top", end: "+=18%", scrub: 1, invalidateOnRefresh: true },
         });
 
-        // Mobile: (1) Intro-Schrift kurz PINNEN, damit sie beim Einziehen nicht sofort
-        // hinter die Sticky-Nav wegscrollt; (2) die Bildkarten sind zunächst UNSICHTBAR
-        // und blenden ERST ein, wenn nach dem Text-Pin der Stack hochkommt — „erst die
-        // Schrift, dann das Bild".
-        if (!window.matchMedia("(min-width: 768px)").matches) {
+        // Bildkarten (Desktop UND Mobile) zunächst UNSICHTBAR — sie erscheinen ERST,
+        // NACHDEM die Schrift (Headline/Copy/CTA) vollständig eingezogen ist. „Erst die
+        // Schrift, dann das Bild, dann läuft der Scroll weiter."
+        gsap.set("[data-partner-card]", { autoAlpha: 0 });
+
+        if (window.matchMedia("(min-width: 768px)").matches) {
+          // Desktop: die Text-Reveal endet bei ~18 % Scroll → Karten kurz danach
+          // (bei ~22 %) einblenden, dann läuft der Sticky-Stack-Scroll normal weiter.
+          gsap.to("[data-partner-card]", {
+            autoAlpha: 1,
+            ease: "power2.out",
+            duration: 0.7,
+            stagger: 0.1,
+            scrollTrigger: { trigger: sec, start: "top top-=22%", once: true },
+          });
+        } else {
+          // Mobile zusätzlich: Intro-Schrift kurz PINNEN (nicht hinter die Sticky-Nav
+          // wegscrollen); Karten einblenden, wenn nach dem Text-Pin der Stack hochkommt.
           const headline = sec.querySelector<HTMLElement>("[data-partner-headline]");
-          gsap.set("[data-partner-card]", { autoAlpha: 0 });
           if (headline) {
             ScrollTrigger.create({
               trigger: sec,

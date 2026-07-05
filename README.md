@@ -5,11 +5,15 @@ Sektions-Choreografie des Algarve-Webflow-Templates (kinetischer Hero, gepinnte
 Scroll-Bühnen, Logo-Reveal, clip-path-Reveal-Übergänge) und füllt sie mit den echten
 Inhalten der Banijay-Welt — Companies, Formate, Kompetenzfelder, Team und News.
 
-Alle gepinnten Scroll-Choreografien sind zusätzlich **mobil eigens getaktet**
-(matchMedia-Branches je Sektion): Magenta-Reveals steigen erst über fertig
-aufgebaute Statements, Content-Panels werden gepinnt, damit Headlines nicht hinter
-die Sticky-Nav scrollen, Bildcontainer nutzen native Seitenverhältnisse und
-Fokuspunkte. Der vollständige Verlauf steht in `CHANGELOG.md`.
+Alle gepinnten Scroll-Choreografien sind **je Viewport eigens getaktet** (matchMedia-
+Branches je Sektion, Desktop UND Mobile): Magenta-Reveals steigen erst über fertig
+aufgebaute Statements, Content-Panels werden gepinnt (feste Setz-Distanz, damit sie
+auch full-size einrasten, wenn nichts überhängt), Headlines scrollen nicht hinter die
+Sticky-Nav, Bildcontainer nutzen native Seitenverhältnisse und Fokuspunkte. Das
+News-Grid ist ein CSS-Grid-Masonry mit nativen Thumbnail-Proportionen + Feature-Karten
+(2 Spalten) und berechneten Row-Spans. Scroll-getriebene Zähler laufen über
+ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden starten.
+Der vollständige Verlauf steht in `CHANGELOG.md`.
 
 ## Stack
 

@@ -48,7 +48,11 @@ const cards = COMPANIES.map((c) => ({
 
 const N = cards.length;
 const STEP_VH = 40; // Scroll-Weg pro weiterer Card
-const TOTAL_VH = 300 + Math.max(0, N - 3) * STEP_VH;
+// Zusätzlicher Scroll-Weg am ENDE: nach der letzten Card ruht die finale 3er-Anordnung
+// noch ein Stück, bevor die nächste Section übernimmt (Desktop) — damit man die letzten
+// Cards noch erfassen kann, statt sofort weiterzufliegen.
+const END_HOLD_VH = 120;
+const TOTAL_VH = 300 + Math.max(0, N - 3) * STEP_VH + END_HOLD_VH;
 
 // Basisfarbe der Companies-Section: erste Ansicht = Banijay-Magenta; von hier aus
 // verfärbt sich der Grund beim Scrollen in die dominanten Card-Farben. Auch der
@@ -405,15 +409,22 @@ export function AlgarveCompaniesScroller() {
       });
 
       // Intro-Choreografie in drei Beats:
-      // 1) Die Wörter stehen zunächst als normale Zeilen NEBENEINANDER in der Mitte
-      //    (via Translate zusammengerückt) und faden ruhig ein.
-      gsap.set(wordL.current, { x: "24vw", scale: 1, opacity: 0 });
-      gsap.set(wordR.current, { x: "-24vw", scale: 1, opacity: 0 });
+      // 1) „UNSERE COMPANIES" steht zuerst als EIN Satz mittig zusammen (kein Gap) und
+      //    fadet ruhig ein. Der Versatz wird aus den realen Wortbreiten GEMESSEN (die
+      //    Ruhelage ist justify-between an den Rändern) → exakt bündig, egal wie breit.
+      if (wordL.current && wordR.current) {
+        const rL0 = wordL.current.getBoundingClientRect();
+        const rR0 = wordR.current.getBoundingClientRect();
+        const spacePx = rL0.height * 0.32; // eine „Leertaste" zwischen den Wörtern
+        const shiftPx = Math.max(0, (rR0.left - rL0.right - spacePx) / 2);
+        gsap.set(wordL.current, { x: shiftPx, scale: 1, opacity: 0 });
+        gsap.set(wordR.current, { x: -shiftPx, scale: 1, opacity: 0 });
+      }
       tl.to([wordL.current, wordR.current], { opacity: 1, ease: "power1.out", duration: 0.7 }, 0.15);
 
-      // 2) Dann ziehen sie auseinander → öffnen die Mitte (das „Loch").
-      tl.to(wordL.current, { x: "0vw", ease: "power2.inOut", duration: 1.8 }, 2.0)
-        .to(wordR.current, { x: "0vw", ease: "power2.inOut", duration: 1.8 }, 2.0);
+      // 2) Dann ziehen sie auseinander an die Ränder → öffnen die Mitte (das „Loch").
+      tl.to(wordL.current, { x: 0, ease: "power2.inOut", duration: 1.8 }, 2.0)
+        .to(wordR.current, { x: 0, ease: "power2.inOut", duration: 1.8 }, 2.0);
 
       // 3) ERST danach steigen die ersten drei Cards aus dem mittleren Loch auf.
       tl.to(els.slice(0, 3), { scale: 1, duration: 0.7, stagger: 0.3, ease: "power2.out" }, 3.9);
@@ -445,6 +456,12 @@ export function AlgarveCompaniesScroller() {
           );
         });
       }
+
+      // End-Hold: ein leerer Beat NACH der letzten Card → die finale 3er-Anordnung
+      // steht noch ein Stück Scroll still (END_HOLD_VH), bevor die nächste Section
+      // übernimmt. So kann man die letzten Cards erfassen, statt durchzufliegen.
+      const lastEnd = N > 3 ? 6.4 + (N - 3) * 0.9 + 0.95 : 6.42;
+      tl.to({}, { duration: 3 }, lastEnd);
     },
     { scope: root },
   );

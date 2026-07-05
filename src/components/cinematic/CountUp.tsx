@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Zählt eine Zahl beim Scroll-in hoch. Versteht Werte wie "1.300", "25+",
 // "4 Milliarden", "250 Mio. €" — Zahlteil wird animiert, Rest bleibt Suffix.
+//
+// Trigger über GSAP ScrollTrigger (NICHT IntersectionObserver): der Rest der Seite
+// läuft über ScrollTrigger + Lenis-Smoothscroll; ein separater IntersectionObserver
+// (framer-motion useInView) feuerte durch die gepinnten Sektionen/den Smooth-Scroll
+// zu früh. Jetzt startet der Zähler exakt, wenn die Zahl in den Viewport scrollt.
 
 function parse(value: string): { target: number; suffix: string } {
   const m = value.match(/^([\d.]+)(.*)$/);
@@ -14,28 +22,45 @@ function parse(value: string): { target: number; suffix: string } {
 
 export function CountUp({ value, className }: { value: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
   const { target, suffix } = parse(value);
   const [n, setN] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
+    const el = ref.current;
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      raf = requestAnimationFrame(() => setN(target));
-      return () => cancelAnimationFrame(raf);
-    }
-    const duration = 1400;
-    const start = performance.now();
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(target * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
+
+    const run = () => {
+      if (reduce) {
+        setN(target);
+        return;
+      }
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setN(Math.round(target * eased));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, target]);
+
+    // once: nur beim ersten Eintritt in den Viewport; start = Zahl kommt von unten
+    // ~18 % über den unteren Viewport-Rand herein → „ist im Sichtbereich".
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top 82%",
+      once: true,
+      onEnter: run,
+    });
+
+    return () => {
+      st.kill();
+      cancelAnimationFrame(raf);
+    };
+  }, [target]);
 
   return (
     <span ref={ref} className={className}>

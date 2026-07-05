@@ -26,7 +26,7 @@ export default function AboutPage() {
         label="About"
         body="Eigenständige Companies, bekannte Marken und kreative Teams — gebündelt unter einem starken Dach, mit weitreichender Präsenz im deutschen Entertainment."
         highlights={["Companies", "Marken", "Teams", "Dach"]}
-        image="/grid/g05.jpg"
+        image="/grid/subpage-hero-poster.jpg"
       />
 
       {/* 02+03 Proof/Zahlen MIT integriertem Statement-Video: gepinnte Fakten-

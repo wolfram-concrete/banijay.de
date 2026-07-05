@@ -94,7 +94,10 @@ export function AlgarveContactForm({
 
   return (
     <section ref={root} style={{ fontFamily: SHARP }} className="bg-[#f8f7f3] py-[8.33vw] max-[767px]:py-[20vw]">
-      <div className="mx-auto px-[2vw] max-[767px]:px-[5vw]" style={{ maxWidth: "1440px" }}>
+      {/* Voll-breiter Container (px-[2vw]) wie im Original-Template — KEIN maxWidth-Cap.
+          Der Cap deckelte die Breite, während die vw-Schriften mit dem Viewport weiter
+          wuchsen → auf breiten Screens zu schmale Felder + abgeschnittene Placeholder. */}
+      <div className="px-[2vw] max-[767px]:px-[5vw]">
         {/* 2-Spalten-Grid (Template): links Headline/Copy, rechts Formular.
             Mobil (default) EINSPALTIG gestapelt; ab md 5fr/7fr nebeneinander. */}
         <div className="grid grid-cols-1 gap-y-[11vw] md:grid-cols-[5fr_7fr] md:items-start md:gap-x-[9.17vw] md:gap-y-0">
