@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [Unreleased] — 2026-07-05
 
+### Flip-Card- & Statement-Reveal-Feinschliff (05.07., nachmittags)
+- **Flip-Cards (Companies · Home-Kernkompetenzen · Career-Rollenwelt):** Karten starten
+  UNSICHTBAR und blenden beim Eintritt sauber von 0→100 % ein (autoAlpha), BEVOR die
+  Flip-Logik greift — kein „schon halb gekippter"/opaker Peek am unteren Rand mehr.
+  Flip-Scrub `0.8 → 0.4` → bei schnellem Scroll läuft der Flip nicht mehr im verzerrten
+  Halb-Zustand hinterher.
+- **AboutIntro-Statement-Reveal:** Scrub `1 → 0.4` → bei schnellem Rein-Scrollen folgt der
+  Wort-Reveal dem Scroll eng, statt ~1 s „hinterherzuschieben".
+
+
 ### Desktop-Runde: News-Masonry, WorldNetwork-Snap, PartnerStack, Career-Slider, CountUp, Hero-Video (05.07.)
 - **News-Grid (Desktop):** echtes CSS-Grid-Masonry mit NATIVEN Thumbnail-Proportionen
   (kein Crop) + variablen Card-Größen — einzelne „Feature"-Karten sind 2 Spalten breit

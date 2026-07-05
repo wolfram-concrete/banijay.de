@@ -88,6 +88,21 @@ export function AlgarveCompanyCards() {
       // hinten weg + faded, sobald die nächste hochscrollt.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const cards = gsap.utils.toArray<HTMLElement>("[data-company-card]");
+
+      // Karten starten UNSICHTBAR und blenden beim Eintritt sauber von 0→100 % ein
+      // (autoAlpha) — VOR der Flip-Logik. Sonst lugt die erste Card schon opak (durch
+      // die Perspektive leicht „gekippt" wirkend) am unteren Rand herein, bevor sie
+      // dran ist. Erst wenn sie eingeblendet ist, greift das 3D-Wegkippen.
+      gsap.set(cards, { autoAlpha: 0 });
+      cards.forEach((card) => {
+        gsap.to(card, {
+          autoAlpha: 1,
+          ease: "power2.out",
+          duration: 0.6,
+          scrollTrigger: { trigger: card, start: "top 85%", once: true },
+        });
+      });
+
       // Echtes 3D-Wegkippen: sobald die NÄCHSTE Card hochscrollt und diese
       // überlagert, kippt die aktuelle um ihre Oberkante nach hinten weg
       // (rotationX) + schrumpft + faded. Nicht nur Fade/Scale (Briefing).
@@ -103,7 +118,7 @@ export function AlgarveCompanyCards() {
             trigger: cards[i + 1],
             start: "top bottom",
             end: "top top",
-            scrub: 0.8,
+            scrub: 0.4,
           },
         });
       });

@@ -55,7 +55,10 @@ export function AlgarveAboutIntro({
         yPercent: 30,
         ease: "none",
         stagger: { amount: 0.6, from: "start" },
-        scrollTrigger: { trigger: root.current, start: "top top", end: "+=38%", scrub: 1 },
+        // scrub NIEDRIG (0.4 statt 1): bei schnellem Scroll in die Section folgt der
+        // Reveal dem Scroll eng, statt ~1 s „hinterherzuschieben" (Statement wirkte
+        // sonst schon da, während die Animation noch nachlief).
+        scrollTrigger: { trigger: root.current, start: "top top", end: "+=38%", scrub: 0.4 },
       });
 
       // magentaExit (nur Mobile): gerundete Magenta-Fläche steigt über das stehende

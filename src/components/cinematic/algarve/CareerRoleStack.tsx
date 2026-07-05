@@ -82,6 +82,20 @@ export function AlgarveCareerRoleStack() {
       // Viewports (auch Mobile), Sticky-Stack, jede Card kippt um die Oberkante nach
       // hinten weg + faded, sobald die nächste hochscrollt.
       const cards = gsap.utils.toArray<HTMLElement>("[data-role-card]");
+
+      // Karten starten UNSICHTBAR und blenden beim Eintritt sauber von 0→100 % ein
+      // (autoAlpha), VOR der Flip-Logik — kein „harter", durch die Perspektive leicht
+      // gekippt wirkender Peek am unteren Rand mehr.
+      gsap.set(cards, { autoAlpha: 0 });
+      cards.forEach((card) => {
+        gsap.to(card, {
+          autoAlpha: 1,
+          ease: "power2.out",
+          duration: 0.6,
+          scrollTrigger: { trigger: card, start: "top 85%", once: true },
+        });
+      });
+
       cards.forEach((card, i) => {
         if (i === cards.length - 1) return;
         gsap.set(card, { transformPerspective: 2000, transformOrigin: "50% 0%" });
@@ -90,7 +104,7 @@ export function AlgarveCareerRoleStack() {
           scale: 0.8,
           opacity: 0,
           ease: "none",
-          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: 0.8 },
+          scrollTrigger: { trigger: cards[i + 1], start: "top bottom", end: "top top", scrub: 0.4 },
         });
       });
     },
