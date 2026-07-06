@@ -231,6 +231,8 @@
 
     const canvas = document.getElementById("stage");
     const progressEl = document.getElementById("progress");
+    let smoothScroll = 0;
+    let lastFrameTime = performance.now();
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
@@ -519,6 +521,7 @@
     }
 
     function ease(t) { return t * t * (3 - 2 * t); }
+    function smoother(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
     function outExpo(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
     function clamp(v, a = 0, b = 1) { return Math.max(a, Math.min(b, v)); }
     function lerp(a, b, t) { return a + (b - a) * t; }
@@ -556,15 +559,20 @@
     }
 
     function update() {
+      const now = performance.now();
+      const dt = Math.min(.08, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      const s = clamp(scrollY / maxScroll);
+      const targetScroll = clamp(scrollY / maxScroll);
+      smoothScroll += (targetScroll - smoothScroll) * (1 - Math.exp(-dt * 5.8));
+      const s = smoothScroll;
       progressEl.style.transform = `scaleX(${s})`;
       document.querySelector(".hud").style.opacity = s < .20 ? 1 : s < .38 ? 1 - (s - .20) / .18 : 0;
 
-      const trunkReveal = ease(clamp((s - .04) / .25));
-      const fanReveal = ease(clamp((s - .28) / .30));
-      const wireReveal = ease(clamp((s - .38) / .30));
-      const lock = ease(clamp((s - .55) / .26));
+      const trunkReveal = smoother(clamp((s - .035) / .32));
+      const fanReveal = smoother(clamp((s - .30) / .34));
+      const wireReveal = smoother(clamp((s - .42) / .30));
+      const lock = smoother(clamp((s - .58) / .28));
       const breathing = performance.now() * .001;
 
       root.rotation.x = THREE.MathUtils.degToRad(lerp(0, -12, lock) + Math.sin(breathing * .4) * .7);
@@ -581,14 +589,15 @@
       const fCol = [];
       const nPos = [];
       const gPos = [];
-      const flowSegments = 32;
+      const flowSegments = 72;
+      const trunkSegments = 96;
 
       for (const trunk of trunks) {
         const trunkEnd = outExpo(trunkReveal);
-        const trunkSegs = Math.max(1, Math.floor(32 * trunkEnd));
+        const trunkSegs = Math.max(1, Math.floor(trunkSegments * trunkEnd));
         for (let j = 1; j <= trunkSegs; j++) {
-          const t0 = (j - 1) / 32;
-          const t1 = j / 32;
+          const t0 = (j - 1) / trunkSegments;
+          const t1 = j / trunkSegments;
           if (t0 > trunkEnd) break;
           const tt1 = Math.min(t1, trunkEnd);
           const a = bezier(trunk.source, trunk.bend, trunk.hub, t0, new THREE.Vector3());
