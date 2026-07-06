@@ -38,7 +38,7 @@
       width: 100vw;
       height: 100svh;
       display: block;
-      z-index: 1;
+      z-index: 2;
       background: transparent;
       filter:
         saturate(1.22)
@@ -92,7 +92,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
       opacity: 0;
       mix-blend-mode: soft-light;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
@@ -100,7 +100,7 @@
 
     .hud {
       position: fixed;
-      z-index: 3;
+      z-index: 4;
       left: clamp(18px, 3vw, 42px);
       right: clamp(18px, 3vw, 42px);
       top: clamp(18px, 3vw, 38px);
@@ -113,7 +113,12 @@
     }
 
     .brand {
-      max-width: min(720px, 62vw);
+      position: absolute;
+      left: 50%;
+      top: 0;
+      max-width: min(780px, 72vw);
+      text-align: center;
+      transform: translateX(-50%);
     }
 
     h1 {
@@ -149,7 +154,7 @@
     .h1-kicker {
       font-style: italic;
       transform: skewX(-8deg);
-      transform-origin: left center;
+      transform-origin: center;
     }
 
     .corner-logo {
@@ -163,6 +168,83 @@
       transform: translateY(-8px);
       animation: logoIn 1.1s ease .55s forwards;
     }
+
+    .media-gallery {
+      --gallery-x: 0vw;
+      --gallery-y: 0vh;
+      --gallery-tilt: 0deg;
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+      perspective: 980px;
+      perspective-origin: 50% 48%;
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) scale(.985);
+      transform-origin: 50% 50%;
+      will-change: opacity, transform;
+    }
+
+    .gallery-space {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transform: translate3d(var(--gallery-x), var(--gallery-y), 0) rotateX(var(--gallery-tilt));
+      will-change: transform;
+    }
+
+    .video-card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: clamp(190px, 22vw, 390px);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      background: rgba(4, 4, 8, .72);
+      box-shadow:
+        0 0 0 1px rgba(111, 220, 255, .06) inset,
+        0 0 22px rgba(78, 192, 255, .16),
+        0 18px 70px rgba(0, 0, 0, .58);
+      transform-style: preserve-3d;
+      filter: saturate(1.08) contrast(1.08);
+    }
+
+    .video-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .12), transparent 18%, transparent 76%, rgba(0, 0, 0, .34)),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .18), transparent 38%);
+      mix-blend-mode: screen;
+      opacity: .55;
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transform: scale(1.08);
+    }
+
+    .video-card picture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-a { transform: translate3d(-61vw, -31vh, -300px) rotateY(34deg) rotateZ(-2deg); }
+    .card-b { transform: translate3d(-38vw, -10vh, -180px) rotateY(24deg) rotateZ(1deg); }
+    .card-c { transform: translate3d(-57vw, 19vh, -250px) rotateY(31deg) rotateZ(2deg); }
+    .card-d { transform: translate3d(-29vw, 30vh, -90px) rotateY(18deg) rotateZ(-1deg); }
+    .card-e { transform: translate3d(61vw, -31vh, -300px) rotateY(-34deg) rotateZ(2deg); }
+    .card-f { transform: translate3d(38vw, -10vh, -180px) rotateY(-24deg) rotateZ(-1deg); }
+    .card-g { transform: translate3d(57vw, 19vh, -250px) rotateY(-31deg) rotateZ(-2deg); }
+    .card-h { transform: translate3d(29vw, 30vh, -90px) rotateY(-18deg) rotateZ(1deg); }
 
     .progress {
       position: fixed;
@@ -229,11 +311,18 @@
       }
 
       .brand {
+        left: 18px;
         max-width: calc(100vw - 112px);
+        text-align: left;
+        transform: none;
       }
 
       h1 {
         font-size: clamp(46px, 16vw, 82px);
+      }
+
+      .media-gallery {
+        opacity: 0 !important;
       }
     }
 
@@ -246,12 +335,27 @@
         filter: none;
         animation: none;
       }
+      .media-gallery {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <div class="progress" id="progress"></div>
   <div class="visual-bg" aria-hidden="true"></div>
+  <div class="media-gallery" id="mediaGallery" aria-hidden="true">
+    <div class="gallery-space">
+      <figure class="video-card card-a"><picture><source srcset="assets/video-snippets/panel-01.webp" type="image/webp"><img src="assets/video-snippets/panel-01.gif" alt=""></picture></figure>
+      <figure class="video-card card-b"><picture><source srcset="assets/video-snippets/panel-02.webp" type="image/webp"><img src="assets/video-snippets/panel-02.gif" alt=""></picture></figure>
+      <figure class="video-card card-c"><picture><source srcset="assets/video-snippets/panel-03.webp" type="image/webp"><img src="assets/video-snippets/panel-03.gif" alt=""></picture></figure>
+      <figure class="video-card card-d"><picture><source srcset="assets/video-snippets/panel-04.webp" type="image/webp"><img src="assets/video-snippets/panel-04.gif" alt=""></picture></figure>
+      <figure class="video-card card-e"><picture><source srcset="assets/video-snippets/panel-05.webp" type="image/webp"><img src="assets/video-snippets/panel-05.gif" alt=""></picture></figure>
+      <figure class="video-card card-f"><picture><source srcset="assets/video-snippets/panel-06.webp" type="image/webp"><img src="assets/video-snippets/panel-06.gif" alt=""></picture></figure>
+      <figure class="video-card card-g"><picture><source srcset="assets/video-snippets/panel-07.webp" type="image/webp"><img src="assets/video-snippets/panel-07.gif" alt=""></picture></figure>
+      <figure class="video-card card-h"><picture><source srcset="assets/video-snippets/panel-08.webp" type="image/webp"><img src="assets/video-snippets/panel-08.gif" alt=""></picture></figure>
+    </div>
+  </div>
   <canvas id="stage" aria-label="banijay wireflow animation"></canvas>
   <div class="grain"></div>
 
@@ -276,6 +380,7 @@
     const canvas = document.getElementById("stage");
     const progressEl = document.getElementById("progress");
     const visualBg = document.querySelector(".visual-bg");
+    const mediaGallery = document.getElementById("mediaGallery");
     const hud = document.querySelector(".hud");
     const heroTitle = document.querySelector("h1");
     let smoothScroll = 0;
@@ -632,12 +737,18 @@
       const fanReveal = smoother(clamp((s - .30) / .34));
       const wireReveal = smoother(clamp((s - .42) / .30));
       const lock = smoother(clamp((s - .58) / .28));
+      const galleryReveal = smoother(clamp((s - .66) / .26));
       const spaceShift = smoother(clamp((s - .06) / .88));
       const breathing = performance.now() * .001;
 
       visualBg.style.setProperty("--space-x", `${lerp(-1.4, 2.8, spaceShift).toFixed(3)}vw`);
       visualBg.style.setProperty("--space-y", `${lerp(.8, -1.8, spaceShift).toFixed(3)}vh`);
       visualBg.style.setProperty("--space-scale", lerp(1.035, 1.085, spaceShift).toFixed(4));
+      mediaGallery.style.opacity = (galleryReveal * .88).toFixed(3);
+      mediaGallery.style.transform = `translate3d(0, ${lerp(28, 0, galleryReveal).toFixed(2)}px, 0) scale(${lerp(.982, 1, galleryReveal).toFixed(4)})`;
+      mediaGallery.style.setProperty("--gallery-x", `${lerp(1.6, -1.8, spaceShift).toFixed(3)}vw`);
+      mediaGallery.style.setProperty("--gallery-y", `${lerp(.8, -1.4, galleryReveal).toFixed(3)}vh`);
+      mediaGallery.style.setProperty("--gallery-tilt", `${lerp(2.4, 0, galleryReveal).toFixed(3)}deg`);
 
       camera.position.x = lerp(-18, 28, spaceShift) + Math.sin(breathing * .32) * 3.5;
       camera.position.y = lerp(0, -16, spaceShift) + Math.sin(breathing * .26) * 2.2;
