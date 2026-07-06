@@ -279,7 +279,7 @@
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.35));
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 2600);
@@ -401,6 +401,16 @@
     root.add(glows);
 
     const tmp = new THREE.Vector3();
+    const tmpA = new THREE.Vector3();
+    const tmpB = new THREE.Vector3();
+    const tmpColorA = new THREE.Color();
+    const tmpColorB = new THREE.Color();
+    const scratchPos = [];
+    const scratchCol = [];
+    const fPos = [];
+    const fCol = [];
+    const nPos = [];
+    const gPos = [];
     const targetPoints = [];
     const wirePairs = [];
     const faintPairs = [];
@@ -589,16 +599,17 @@
     }
 
     function setLineSegments(geo, pairs, reveal = 1) {
-      const pos = [];
-      const col = [];
+      scratchPos.length = 0;
+      scratchCol.length = 0;
       for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
         const local = clamp(reveal * 1.16 - i / pairs.length * .16);
-        const b = pair.a.clone().lerp(pair.b, outExpo(local));
-        pushLine(pos, col, pair.a, b, pair.ca, pair.cb);
+        if (local <= 0) continue;
+        tmp.copy(pair.a).lerp(pair.b, outExpo(local));
+        pushLine(scratchPos, scratchCol, pair.a, tmp, pair.ca, pair.cb);
       }
-      geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-      geo.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(scratchPos, 3));
+      geo.setAttribute("color", new THREE.Float32BufferAttribute(scratchCol, 3));
     }
 
     function update() {
@@ -607,7 +618,7 @@
       lastFrameTime = now;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
       const targetScroll = clamp(scrollY / maxScroll);
-      smoothScroll += (targetScroll - smoothScroll) * (1 - Math.exp(-dt * 5.8));
+      smoothScroll += (targetScroll - smoothScroll) * (1 - Math.exp(-dt * 4.2));
       const s = smoothScroll;
       progressEl.style.transform = `scaleX(${s})`;
       hud.style.opacity = 1;
@@ -640,26 +651,26 @@
       setLineSegments(faintGeo, faintPairs, wireReveal);
       setLineSegments(haloGeo, haloPairs, wireReveal);
 
-      const fPos = [];
-      const fCol = [];
-      const nPos = [];
-      const gPos = [];
-      const flowSegments = 72;
-      const trunkSegments = 96;
+      fPos.length = 0;
+      fCol.length = 0;
+      nPos.length = 0;
+      gPos.length = 0;
+      const flowSegments = 54;
+      const trunkSegments = 72;
 
       for (const trunk of trunks) {
         const trunkEnd = outExpo(trunkReveal);
-        const trunkSegs = Math.max(1, Math.floor(trunkSegments * trunkEnd));
+        const trunkSegs = Math.max(1, Math.ceil(trunkSegments * trunkEnd));
         for (let j = 1; j <= trunkSegs; j++) {
           const t0 = (j - 1) / trunkSegments;
           const t1 = j / trunkSegments;
           if (t0 > trunkEnd) break;
           const tt1 = Math.min(t1, trunkEnd);
-          const a = bezier(trunk.source, trunk.bend, trunk.hub, t0, new THREE.Vector3());
-          const b = bezier(trunk.source, trunk.bend, trunk.hub, tt1, new THREE.Vector3());
-          const ca = trunk.c0.clone().lerp(white, t0 * .22);
-          const cb = trunk.c0.clone().lerp(trunk.c1, tt1 * .36);
-          pushLine(fPos, fCol, a, b, ca, cb);
+          bezier(trunk.source, trunk.bend, trunk.hub, t0, tmpA);
+          bezier(trunk.source, trunk.bend, trunk.hub, tt1, tmpB);
+          tmpColorA.copy(trunk.c0).lerp(white, t0 * .22);
+          tmpColorB.copy(trunk.c0).lerp(trunk.c1, tt1 * .36);
+          pushLine(fPos, fCol, tmpA, tmpB, tmpColorA, tmpColorB);
         }
       }
 
@@ -668,16 +679,18 @@
         const local = clamp((fanReveal - f.delay) / f.speed);
         if (local <= 0) continue;
         const draw = outExpo(local);
-        const hub = f.hub.clone();
-        const branchSegs = Math.max(1, Math.floor(flowSegments * draw));
+        const hub = f.hub;
+        const branchSegs = Math.max(1, Math.ceil(flowSegments * draw));
         for (let j = 1; j <= branchSegs; j++) {
           const t0 = (j - 1) / flowSegments;
           const t1 = j / flowSegments;
-          const a = bezier(hub, f.branchBend, f.end, t0, new THREE.Vector3());
-          const b = bezier(hub, f.branchBend, f.end, t1, new THREE.Vector3());
-          const ca = f.c0.clone().lerp(f.c1, .35 + t0 * .65);
-          const cb = f.c0.clone().lerp(f.c1, .35 + t1 * .65);
-          pushLine(fPos, fCol, a, b, ca, cb);
+          if (t0 > draw) break;
+          const tt1 = Math.min(t1, draw);
+          bezier(hub, f.branchBend, f.end, t0, tmpA);
+          bezier(hub, f.branchBend, f.end, tt1, tmpB);
+          tmpColorA.copy(f.c0).lerp(f.c1, .35 + t0 * .65);
+          tmpColorB.copy(f.c0).lerp(f.c1, .35 + tt1 * .65);
+          pushLine(fPos, fCol, tmpA, tmpB, tmpColorA, tmpColorB);
         }
       }
 
