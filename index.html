@@ -51,6 +51,9 @@
     }
 
     .visual-bg {
+      --space-x: 0vw;
+      --space-y: 0vh;
+      --space-scale: 1.02;
       position: fixed;
       inset: -7vh -7vw;
       z-index: 0;
@@ -69,7 +72,9 @@
       opacity: 1;
       filter: none;
       mix-blend-mode: normal;
-      transform: none;
+      transform: translate3d(var(--space-x), var(--space-y), 0) scale(var(--space-scale));
+      transform-origin: 50% 58%;
+      will-change: transform;
     }
 
     .visual-bg::after {
@@ -266,6 +271,7 @@
 
     const canvas = document.getElementById("stage");
     const progressEl = document.getElementById("progress");
+    const visualBg = document.querySelector(".visual-bg");
     const hud = document.querySelector(".hud");
     const heroTitle = document.querySelector("h1");
     let smoothScroll = 0;
@@ -611,7 +617,18 @@
       const fanReveal = smoother(clamp((s - .30) / .34));
       const wireReveal = smoother(clamp((s - .42) / .30));
       const lock = smoother(clamp((s - .58) / .28));
+      const spaceShift = smoother(clamp((s - .06) / .88));
       const breathing = performance.now() * .001;
+
+      visualBg.style.setProperty("--space-x", `${lerp(-1.4, 2.8, spaceShift).toFixed(3)}vw`);
+      visualBg.style.setProperty("--space-y", `${lerp(.8, -1.8, spaceShift).toFixed(3)}vh`);
+      visualBg.style.setProperty("--space-scale", lerp(1.035, 1.085, spaceShift).toFixed(4));
+
+      camera.position.x = lerp(-18, 28, spaceShift) + Math.sin(breathing * .32) * 3.5;
+      camera.position.y = lerp(0, -16, spaceShift) + Math.sin(breathing * .26) * 2.2;
+      camera.fov = lerp(42, 38.5, spaceShift);
+      camera.lookAt(lerp(0, 24, spaceShift), lerp(0, -10, spaceShift), 0);
+      camera.updateProjectionMatrix();
 
       root.rotation.x = THREE.MathUtils.degToRad(lerp(0, -12, lock) + Math.sin(breathing * .4) * .7);
       root.rotation.y = THREE.MathUtils.degToRad(lerp(-18, -44, lock) + Math.sin(breathing * .35) * .9);
