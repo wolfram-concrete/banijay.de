@@ -1,5 +1,12 @@
 {
+  "private": true,
   "scripts": {
-    "vercel-build": "echo \"Static deployment: no build required\""
+    "build": "next build",
+    "vercel-build": "next build"
+  },
+  "dependencies": {
+    "next": "15.1.7",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   }
 }

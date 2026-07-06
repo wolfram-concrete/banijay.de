@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>banijay Hero Animation</title>
+  <style>
+    :root {
+      --bg: #050407;
+      --ink: #f8f3f6;
+      --muted: rgba(248, 243, 246, .58);
+      --pink: #f05d7d;
+      --pink-hot: #ff79a1;
+      --blue: #6d7dff;
+      --amber: #e7a187;
+      --panel: rgba(9, 7, 13, .58);
+      --line: rgba(255, 255, 255, .14);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 420svh;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100svh;
+      display: block;
+      z-index: 1;
+      background: transparent;
+      filter:
+        saturate(1.22)
+        contrast(1.05)
+        drop-shadow(0 0 4px rgba(255, 245, 255, .38))
+        drop-shadow(0 0 9px rgba(255, 44, 172, .58))
+        drop-shadow(0 0 8px rgba(116, 232, 255, .46))
+        drop-shadow(0 0 16px rgba(70, 210, 255, .32))
+        drop-shadow(0 0 30px rgba(70, 210, 255, .18));
+    }
+
+    .visual-bg {
+      position: fixed;
+      inset: -7vh -7vw;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: #050407;
+    }
+
+    .visual-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/background-neon-stage.png");
+      background-size: cover;
+      background-position: 50% 50%;
+      opacity: 1;
+      filter: none;
+      mix-blend-mode: normal;
+      transform: none;
+    }
+
+    .visual-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+    }
+
+    .hud {
+      position: fixed;
+      z-index: 3;
+      left: clamp(18px, 3vw, 42px);
+      right: clamp(18px, 3vw, 42px);
+      top: clamp(18px, 3vw, 38px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      pointer-events: none;
+      transition: opacity .35s ease;
+    }
+
+    .brand {
+      max-width: min(720px, 62vw);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
+      font-size: clamp(58px, 10vw, 172px);
+      line-height: .82;
+      letter-spacing: 0;
+      color: var(--ink);
+      text-transform: uppercase;
+      font-weight: 900;
+      text-wrap: balance;
+      text-shadow:
+        0 0 26px rgba(255, 245, 255, .26),
+        0 14px 54px rgba(0, 0, 0, .48);
+      opacity: 0;
+      transform: translateY(26px) scale(.985);
+      filter: blur(10px);
+      animation: heroTitleIn 1.45s cubic-bezier(.16, 1, .3, 1) .18s forwards;
+    }
+
+    .corner-logo {
+      width: clamp(36px, 4.4vw, 64px);
+      height: auto;
+      color: #fff;
+      filter:
+        drop-shadow(0 0 18px rgba(255, 255, 255, .34))
+        drop-shadow(0 0 32px rgba(255, 44, 172, .22));
+      opacity: 0;
+      transform: translateY(-8px);
+      animation: logoIn 1.1s ease .55s forwards;
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 4;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 2px;
+      transform-origin: left;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, var(--blue), var(--pink), var(--amber));
+      box-shadow: 0 0 20px rgba(240, 93, 125, .7);
+    }
+
+    @keyframes heroTitleIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(.985);
+        filter: blur(12px);
+      }
+      52% {
+        opacity: 1;
+        filter: blur(1.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes logoIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    svg#source-mark { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+    @media (max-width: 760px) {
+      .hud {
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .brand {
+        max-width: calc(100vw - 112px);
+      }
+
+      h1 {
+        font-size: clamp(46px, 16vw, 82px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { min-height: 100svh; }
+      h1,
+      .corner-logo {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="visual-bg" aria-hidden="true"></div>
+  <canvas id="stage" aria-label="banijay wireflow animation"></canvas>
+  <div class="grain"></div>
+
+  <header class="hud">
+    <div class="brand">
+      <h1>We are banijay</h1>
+    </div>
+    <svg class="corner-logo" viewBox="0 0 52.5 53.72" aria-label="banijay B">
+      <path fill="currentColor" d="M39.62,25.77H0V1.65C0,.74.74,0,1.65,0h37.97c7.12,0,12.89,5.77,12.89,12.89h0c0,8.9-5.77,12.89-12.89,12.89Z"/>
+      <path fill="currentColor" d="M39.62,27.94H0v24.13c0,.91.74,1.65,1.65,1.65h37.97c7.12,0,12.89-5.77,12.89-12.89h0c0-8.9-5.77-12.89-12.89-12.89Z"/>
+    </svg>
+  </header>
+
+  <svg id="source-mark" viewBox="0 0 52.5 53.72" aria-hidden="true">
+    <path id="b-top" d="M39.62,25.77H0V1.65C0,.74.74,0,1.65,0h37.97c7.12,0,12.89,5.77,12.89,12.89h0c0,8.9-5.77,12.89-12.89,12.89Z"/>
+    <path id="b-bottom" d="M39.62,27.94H0v24.13c0,.91.74,1.65,1.65,1.65h37.97c7.12,0,12.89-5.77,12.89-12.89h0c0-8.9-5.77-12.89-12.89-12.89Z"/>
+  </svg>
+
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.164.1/build/three.module.js";
+
+    const canvas = document.getElementById("stage");
+    const progressEl = document.getElementById("progress");
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 2600);
+    camera.position.set(0, 0, 880);
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    const pink = new THREE.Color("#ff2f9b");
+    const hot = new THREE.Color("#ff4fc3");
+    const blue = new THREE.Color("#74e8ff");
+    const amber = new THREE.Color("#ff7bd6");
+    const white = new THREE.Color("#fff5ff");
+
+    const wireMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.78,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const faintWireMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.18,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const flowMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.66,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    const wireGeo = new THREE.BufferGeometry();
+    const wire = new THREE.LineSegments(wireGeo, wireMat);
+    wire.frustumCulled = false;
+    root.add(wire);
+
+    const faintGeo = new THREE.BufferGeometry();
+    const faint = new THREE.LineSegments(faintGeo, faintWireMat);
+    faint.frustumCulled = false;
+    root.add(faint);
+
+    const flowGeo = new THREE.BufferGeometry();
+    const flow = new THREE.LineSegments(flowGeo, flowMat);
+    flow.frustumCulled = false;
+    root.add(flow);
+
+    const flowGlowMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.34,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const flowGlowGeo = new THREE.BufferGeometry();
+    const flowGlow = new THREE.LineSegments(flowGlowGeo, flowGlowMat);
+    flowGlow.frustumCulled = false;
+    root.add(flowGlow);
+
+    const haloMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const haloGeo = new THREE.BufferGeometry();
+    const halo = new THREE.LineSegments(haloGeo, haloMat);
+    halo.frustumCulled = false;
+    root.add(halo);
+
+    function makeGlowTexture() {
+      const c = document.createElement("canvas");
+      c.width = c.height = 96;
+      const ctx = c.getContext("2d");
+      const g = ctx.createRadialGradient(48, 48, 0, 48, 48, 48);
+      g.addColorStop(0, "rgba(255,255,255,1)");
+      g.addColorStop(.24, "rgba(255,255,255,.82)");
+      g.addColorStop(.48, "rgba(255,160,190,.32)");
+      g.addColorStop(1, "rgba(255,160,190,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 96, 96);
+      return new THREE.CanvasTexture(c);
+    }
+
+    const glowTexture = makeGlowTexture();
+    const nodeGeo = new THREE.BufferGeometry();
+    const nodeMat = new THREE.PointsMaterial({
+      size: 3.6,
+      color: 0xffffff,
+      map: glowTexture,
+      transparent: true,
+      opacity: 0.56,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const nodes = new THREE.Points(nodeGeo, nodeMat);
+    nodes.frustumCulled = false;
+    root.add(nodes);
+
+    const glowGeo = new THREE.BufferGeometry();
+    const glowMat = new THREE.PointsMaterial({
+      size: 380,
+      color: 0xff2f9b,
+      map: glowTexture,
+      transparent: true,
+      opacity: 0,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const glows = new THREE.Points(glowGeo, glowMat);
+    glows.frustumCulled = false;
+    root.add(glows);
+
+    const tmp = new THREE.Vector3();
+    const targetPoints = [];
+    const wirePairs = [];
+    const faintPairs = [];
+    const haloPairs = [];
+    const trunks = [];
+    const flows = [];
+    const rng = mulberry32(210726);
+
+    function mulberry32(seed) {
+      return function() {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function logoPoint(x, y, z) {
+      return new THREE.Vector3((x - 26.25) * 8.2, (26.86 - y) * 8.2, z);
+    }
+
+    function insertSharpPoint(points, point) {
+      let bestIndex = 0;
+      let bestDistance = Infinity;
+      for (let i = 0; i < points.length; i++) {
+        const a = points[i];
+        const b = points[(i + 1) % points.length];
+        const ab = b.clone().sub(a);
+        const t = clamp(point.clone().sub(a).dot(ab) / Math.max(ab.lengthSq(), .0001));
+        const projected = a.clone().add(ab.multiplyScalar(t));
+        const distance = projected.distanceTo(point);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = i + 1;
+        }
+      }
+      points.splice(bestIndex, 0, point);
+      return points;
+    }
+
+    function samplePath(id, count, z, sharpPoints = []) {
+      const path = document.getElementById(id);
+      const len = path.getTotalLength();
+      const out = [];
+      for (let i = 0; i < count; i++) {
+        const p = path.getPointAtLength((i / count) * len);
+        out.push(logoPoint(p.x, p.y, z));
+      }
+      sharpPoints.forEach(([x, y]) => insertSharpPoint(out, logoPoint(x, y, z)));
+      return out;
+    }
+
+    const frontTop = samplePath("b-top", 112, 54, [[0, 25.77]]);
+    const frontBottom = samplePath("b-bottom", 112, 54, [[0, 27.94]]);
+    const backTop = samplePath("b-top", 112, -170, [[0, 25.77]]).map(p => p.add(new THREE.Vector3(-92, 46, 0)));
+    const backBottom = samplePath("b-bottom", 112, -170, [[0, 27.94]]).map(p => p.add(new THREE.Vector3(-92, 46, 0)));
+
+    makeOutline(frontTop, hot, wirePairs);
+    makeOutline(frontBottom, hot, wirePairs);
+    makeOutline(backTop, blue, faintPairs);
+    makeOutline(backBottom, blue, faintPairs);
+    makeHalo(frontTop, hot, haloPairs);
+    makeHalo(frontBottom, hot, haloPairs);
+    makeHalo(backTop, blue, haloPairs);
+    makeHalo(backBottom, blue, haloPairs);
+
+    [...frontTop, ...frontBottom].forEach((p, i) => {
+      if (i % 4 === 0) targetPoints.push({ p, c: i < frontTop.length ? hot : amber });
+    });
+    [...backTop, ...backBottom].forEach((p, i) => {
+      if (i % 12 === 0) targetPoints.push({ p, c: blue });
+    });
+
+    const leftHub = new THREE.Vector3(-250, 8, 78);
+    const rightHub = new THREE.Vector3(258, 10, 12);
+    const leftSource = new THREE.Vector3(-980, -72, 34);
+    const rightSource = new THREE.Vector3(980, 38, -22);
+    const leftTargets = targetPoints.filter(({ p }) => p.x < 22).sort((a, b) => b.p.y - a.p.y).slice(0, 34);
+    const rightTargets = targetPoints.filter(({ p }) => p.x >= 22).sort((a, b) => b.p.y - a.p.y).slice(0, 34);
+    makeTrunk("left", leftSource, leftHub, blue, hot);
+    makeTrunk("right", rightSource, rightHub, amber, hot);
+    makeFlowFan("left", leftHub, leftTargets, blue, hot);
+    makeFlowFan("right", rightHub, rightTargets, amber, hot);
+
+    function makeOutline(points, color, bucket) {
+      for (let i = 0; i < points.length; i++) {
+        bucket.push({ a: points[i], b: points[(i + 1) % points.length], ca: color, cb: color });
+      }
+    }
+
+    function makeHalo(points, color, bucket) {
+      const offsets = [
+        new THREE.Vector3(0, 0, 0)
+      ];
+      offsets.forEach((offset, copy) => {
+        for (let i = 0; i < points.length; i++) {
+          const a = points[i].clone().add(offset);
+          const b = points[(i + 1) % points.length].clone().add(offset);
+          const mix = copy === 0 ? .18 : .38;
+          bucket.push({ a, b, ca: color.clone().lerp(white, mix), cb: color.clone().lerp(white, mix) });
+        }
+      });
+    }
+
+    function addCurveSegments(bucket, a, mid, b, segments, ca, cb) {
+      let prev = a.clone();
+      for (let i = 1; i <= segments; i++) {
+        const t0 = (i - 1) / segments;
+        const t1 = i / segments;
+        const start = i === 1 ? prev : bezier(a, mid, b, t0, new THREE.Vector3());
+        const end = bezier(a, mid, b, t1, new THREE.Vector3());
+        bucket.push({ a: start, b: end, ca: ca.clone().lerp(cb, t0), cb: ca.clone().lerp(cb, t1) });
+      }
+    }
+
+    function makeTrunk(side, source, hub, c0, c1) {
+      trunks.push({
+        side,
+        source: source.clone(),
+        hub: hub.clone(),
+        bend: new THREE.Vector3(
+          lerp(source.x, hub.x, .55),
+          lerp(source.y, hub.y, .55),
+          hub.z + (side === "left" ? 148 : 118)
+        ),
+        c0: c0.clone(),
+        c1: c1.clone()
+      });
+    }
+
+    function makeFlowFan(side, hub, targets, c0, c1) {
+      targets.forEach((target, i) => {
+        const t = target.p.clone();
+        const u = targets.length > 1 ? i / (targets.length - 1) : 0;
+        const branchBend = hub.clone().lerp(t, .48);
+        branchBend.y += Math.sin(u * Math.PI) * (side === "left" ? 30 : -26);
+        branchBend.z += 96;
+        flows.push({
+          side,
+          hub: hub.clone(),
+          branchBend,
+          end: t,
+          c0: c0.clone(),
+          c1: target.c.clone().lerp(c1, .45),
+          delay: u * .10,
+          speed: .74,
+          index: i,
+          count: targets.length
+        });
+      });
+    }
+
+    function bezier(a, b, c, t, out) {
+      const mt = 1 - t;
+      out.set(
+        mt * mt * a.x + 2 * mt * t * b.x + t * t * c.x,
+        mt * mt * a.y + 2 * mt * t * b.y + t * t * c.y,
+        mt * mt * a.z + 2 * mt * t * b.z + t * t * c.z
+      );
+      return out;
+    }
+
+    function ease(t) { return t * t * (3 - 2 * t); }
+    function outExpo(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+    function clamp(v, a = 0, b = 1) { return Math.max(a, Math.min(b, v)); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function pushLine(pos, col, a, b, ca, cb) {
+      pos.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      col.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
+    }
+
+    function setLineSegments(geo, pairs, reveal = 1) {
+      const pos = [];
+      const col = [];
+      for (let i = 0; i < pairs.length; i++) {
+        const pair = pairs[i];
+        const local = clamp(reveal * 1.16 - i / pairs.length * .16);
+        const b = pair.a.clone().lerp(pair.b, outExpo(local));
+        pushLine(pos, col, pair.a, b, pair.ca, pair.cb);
+      }
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+      geo.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
+    }
+
+    function update() {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const s = clamp(scrollY / maxScroll);
+      progressEl.style.transform = `scaleX(${s})`;
+      document.querySelector(".hud").style.opacity = s < .20 ? 1 : s < .38 ? 1 - (s - .20) / .18 : 0;
+
+      const trunkReveal = ease(clamp((s - .04) / .25));
+      const fanReveal = ease(clamp((s - .28) / .30));
+      const wireReveal = ease(clamp((s - .38) / .30));
+      const lock = ease(clamp((s - .55) / .26));
+      const breathing = performance.now() * .001;
+
+      root.rotation.x = THREE.MathUtils.degToRad(lerp(0, -12, lock) + Math.sin(breathing * .4) * .7);
+      root.rotation.y = THREE.MathUtils.degToRad(lerp(-18, -44, lock) + Math.sin(breathing * .35) * .9);
+      root.rotation.z = THREE.MathUtils.degToRad(lerp(0, -3, lock));
+      root.position.y = lerp(30, -4, lock);
+      root.scale.setScalar(lerp(.72, .84, lock));
+
+      setLineSegments(wireGeo, wirePairs, wireReveal);
+      setLineSegments(faintGeo, faintPairs, wireReveal);
+      setLineSegments(haloGeo, haloPairs, wireReveal);
+
+      const fPos = [];
+      const fCol = [];
+      const nPos = [];
+      const gPos = [];
+      const flowSegments = 32;
+
+      for (const trunk of trunks) {
+        const trunkEnd = outExpo(trunkReveal);
+        const trunkSegs = Math.max(1, Math.floor(32 * trunkEnd));
+        for (let j = 1; j <= trunkSegs; j++) {
+          const t0 = (j - 1) / 32;
+          const t1 = j / 32;
+          if (t0 > trunkEnd) break;
+          const tt1 = Math.min(t1, trunkEnd);
+          const a = bezier(trunk.source, trunk.bend, trunk.hub, t0, new THREE.Vector3());
+          const b = bezier(trunk.source, trunk.bend, trunk.hub, tt1, new THREE.Vector3());
+          const ca = trunk.c0.clone().lerp(white, t0 * .22);
+          const cb = trunk.c0.clone().lerp(trunk.c1, tt1 * .36);
+          pushLine(fPos, fCol, a, b, ca, cb);
+        }
+      }
+
+      for (let i = 0; i < flows.length; i++) {
+        const f = flows[i];
+        const local = clamp((fanReveal - f.delay) / f.speed);
+        if (local <= 0) continue;
+        const draw = outExpo(local);
+        const hub = f.hub.clone();
+        const branchSegs = Math.max(1, Math.floor(flowSegments * draw));
+        for (let j = 1; j <= branchSegs; j++) {
+          const t0 = (j - 1) / flowSegments;
+          const t1 = j / flowSegments;
+          const a = bezier(hub, f.branchBend, f.end, t0, new THREE.Vector3());
+          const b = bezier(hub, f.branchBend, f.end, t1, new THREE.Vector3());
+          const ca = f.c0.clone().lerp(f.c1, .35 + t0 * .65);
+          const cb = f.c0.clone().lerp(f.c1, .35 + t1 * .65);
+          pushLine(fPos, fCol, a, b, ca, cb);
+        }
+      }
+
+      flowGeo.setAttribute("position", new THREE.Float32BufferAttribute(fPos, 3));
+      flowGeo.setAttribute("color", new THREE.Float32BufferAttribute(fCol, 3));
+      flowGlowGeo.setAttribute("position", new THREE.Float32BufferAttribute(fPos, 3));
+      flowGlowGeo.setAttribute("color", new THREE.Float32BufferAttribute(fCol, 3));
+      nodeGeo.setAttribute("position", new THREE.Float32BufferAttribute(nPos, 3));
+      glowGeo.setAttribute("position", new THREE.Float32BufferAttribute(gPos, 3));
+
+      const shimmer = .88 + Math.sin(breathing * 2.7) * .12;
+      wireMat.opacity = (.20 + wireReveal * .95) * shimmer;
+      faintWireMat.opacity = .18 + wireReveal * .56;
+      haloMat.opacity = wireReveal * (.10 + lock * .30) * shimmer;
+      flowMat.opacity = .88 * Math.pow(1 - lock, 1.55);
+      flowGlowMat.opacity = .46 * Math.pow(1 - lock, 1.35) * shimmer;
+      nodeMat.opacity = 0;
+      glowMat.opacity = 0;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(update);
+    }
+
+    function resize() {
+      const w = innerWidth;
+      const h = innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.position.z = w < 760 ? 1020 : 880;
+      camera.updateProjectionMatrix();
+    }
+
+    addEventListener("resize", resize, { passive: true });
+    resize();
+    update();
+  </script>
+</body>
+</html>
