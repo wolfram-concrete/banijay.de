@@ -431,8 +431,8 @@
 
     const leftHub = new THREE.Vector3(-250, 8, 78);
     const rightHub = new THREE.Vector3(258, 10, 12);
-    const leftSource = new THREE.Vector3(-980, -72, 34);
-    const rightSource = new THREE.Vector3(980, 38, -22);
+    const leftSource = new THREE.Vector3(-1500, -72, 34);
+    const rightSource = new THREE.Vector3(1120, 38, -22);
     const leftTargets = targetPoints.filter(({ p }) => p.x < 22).sort((a, b) => b.p.y - a.p.y).slice(0, 34);
     const rightTargets = targetPoints.filter(({ p }) => p.x >= 22).sort((a, b) => b.p.y - a.p.y).slice(0, 34);
     makeTrunk("left", leftSource, leftHub, blue, hot);
@@ -523,9 +523,23 @@
     function clamp(v, a = 0, b = 1) { return Math.max(a, Math.min(b, v)); }
     function lerp(a, b, t) { return a + (b - a) * t; }
 
-    function pushLine(pos, col, a, b, ca, cb) {
-      pos.push(a.x, a.y, a.z, b.x, b.y, b.z);
+    function pushLineSample(pos, col, a, b, ca, cb, offset) {
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len * offset;
+      const ny = dx / len * offset;
+      pos.push(
+        a.x + nx, a.y + ny, a.z,
+        b.x + nx, b.y + ny, b.z
+      );
       col.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
+    }
+
+    function pushLine(pos, col, a, b, ca, cb) {
+      pushLineSample(pos, col, a, b, ca, cb, 0);
+      pushLineSample(pos, col, a, b, ca, cb, .82);
+      pushLineSample(pos, col, a, b, ca, cb, -.82);
     }
 
     function setLineSegments(geo, pairs, reveal = 1) {
