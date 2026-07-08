@@ -62,7 +62,17 @@ function Card({ post }: { post: SocialPost }) {
   );
 }
 
-export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
+export function AlgarveCareerSocialSlider({
+  posts,
+  headline = "#workatBanijay",
+  subline = "Einblicke, Menschen und Momente aus der Banijay-Welt — direkt aus unseren Kanälen.",
+}: {
+  posts: SocialPost[];
+  /** Überschrift der Section (Default = Career „#workatBanijay"). */
+  headline?: string;
+  /** Begleit-Copy rechts. */
+  subline?: string;
+}) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -107,10 +117,10 @@ export function AlgarveCareerSocialSlider({ posts }: { posts: SocialPost[] }) {
         {/* Headline */}
         <div className="mb-[3vw] flex items-end justify-between gap-8 max-[767px]:!mb-[8vw] max-[767px]:!flex-col max-[767px]:!items-start">
           <h2 className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.139vw", color: INK }}>
-            #workatBanijay
+            {headline}
           </h2>
           <p className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: "rgba(14,13,11,0.6)" }}>
-            Einblicke, Menschen und Momente aus der Banijay-Welt — direkt aus unseren Kanälen.
+            {subline}
           </p>
         </div>
       </div>

@@ -77,8 +77,14 @@ async function fetchPosts(): Promise<SocialPost[]> {
   }
 }
 
-export async function AlgarveCareerSocialFeed() {
+export async function AlgarveCareerSocialFeed({
+  headline,
+  subline,
+}: {
+  headline?: string;
+  subline?: string;
+} = {}) {
   const posts = await fetchPosts();
   if (posts.length === 0) return null; // Feed nicht verfügbar → Section ausblenden
-  return <AlgarveCareerSocialSlider posts={posts} />;
+  return <AlgarveCareerSocialSlider posts={posts} headline={headline} subline={subline} />;
 }
