@@ -2,32 +2,26 @@
 
 import { useMemo, useState } from "react";
 import { NewsGrid } from "./NewsGrid";
-import type { NewsItem } from "@/data/news";
+import type { FeedItem, FeedRubrik } from "@/data/feed";
 
-// News-Rubriken: die Roh-Kategorien der News (News · Primetime · Podcast · Wolter Talks)
-// werden auf saubere Filter-Rubriken gemappt — „Podcast" bündelt Podcast + Wolter Talks.
-function rubrikOf(category: string): "News" | "Primetime" | "Podcast" {
-  const c = category.toLowerCase();
-  if (c.includes("podcast") || c.includes("wolter")) return "Podcast";
-  if (c.includes("primetime")) return "Primetime";
-  return "News";
-}
-
-const RUBRIKEN = ["Alle", "News", "Primetime", "Podcast"] as const;
+// News-Rubriken: News · Primetime · Podcast (bündelt Podcast + Wolter Talks) · Social.
+// Die Social-Posts sind bereits in die Liste eingemischt (nach Datum) — der Filter zeigt
+// wahlweise nur eine Rubrik.
+const RUBRIKEN = ["Alle", "News", "Primetime", "Podcast", "Social"] as const;
 
 const SHARP = "var(--font-sharp), sans-serif";
 
-export function NewsFilter({ items }: { items: NewsItem[] }) {
+export function NewsFilter({ items }: { items: FeedItem[] }) {
   const [rubrik, setRubrik] = useState<string>("Alle");
 
   const counts = useMemo(() => {
-    const map: Record<string, number> = { Alle: items.length, News: 0, Primetime: 0, Podcast: 0 };
-    items.forEach((n) => (map[rubrikOf(n.category)] += 1));
+    const map: Record<string, number> = { Alle: items.length, News: 0, Primetime: 0, Podcast: 0, Social: 0 };
+    items.forEach((it) => (map[it.rubrik] += 1));
     return map;
   }, [items]);
 
   const filtered = useMemo(
-    () => (rubrik === "Alle" ? items : items.filter((n) => rubrikOf(n.category) === rubrik)),
+    () => (rubrik === "Alle" ? items : items.filter((it) => it.rubrik === (rubrik as FeedRubrik))),
     [items, rubrik],
   );
 

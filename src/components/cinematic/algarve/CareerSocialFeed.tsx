@@ -5,7 +5,9 @@ import { AlgarveCareerSocialSlider, type SocialPost } from "./CareerSocialSlider
 // Karriereseite), rendert sie aber über einen eigenen Banijay-Slider (kein
 // Fremd-Widget/Script). Bei Fehler wird die Section einfach ausgeblendet.
 
-const JUICER_URL = "https://www.juicer.io/api/feeds/banijaygermany?per=12";
+// per=50 → genug Rohposts zum Deduplizieren; wie viele wir am Ende behalten, steuert
+// der `limit`-Parameter von fetchSocialPosts (News-Liste zieht mehr als der Slider).
+const JUICER_URL = "https://www.juicer.io/api/feeds/banijaygermany?per=50";
 
 type JuicerPost = {
   image?: string;
@@ -41,7 +43,7 @@ function formatDate(iso?: string): string {
   return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-async function fetchPosts(): Promise<SocialPost[]> {
+export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
   try {
     const res = await fetch(JUICER_URL, {
       headers: { "User-Agent": "Mozilla/5.0 (banijay.de career feed)" },
@@ -71,7 +73,7 @@ async function fetchPosts(): Promise<SocialPost[]> {
         seen.add(key);
         return true;
       })
-      .slice(0, 12);
+      .slice(0, limit);
   } catch {
     return [];
   }
@@ -84,7 +86,7 @@ export async function AlgarveCareerSocialFeed({
   headline?: string;
   subline?: string;
 } = {}) {
-  const posts = await fetchPosts();
+  const posts = await fetchSocialPosts();
   if (posts.length === 0) return null; // Feed nicht verfügbar → Section ausblenden
   return <AlgarveCareerSocialSlider posts={posts} headline={headline} subline={subline} />;
 }

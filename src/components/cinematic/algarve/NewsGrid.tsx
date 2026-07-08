@@ -7,7 +7,7 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import type { NewsItem } from "@/data/news";
+import type { FeedItem } from "@/data/feed";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -28,7 +28,7 @@ const ROW_GAP = 44; // px — visueller Abstand unter jeder Karte (in den Row-Sp
 // Feature-Karten (2 Spalten breit) — deterministisch (kein Random) für ruhigen Rhythmus.
 const isFeature = (i: number) => i % 5 === 3;
 
-export function NewsGrid({ items }: { items: NewsItem[] }) {
+export function NewsGrid({ items }: { items: FeedItem[] }) {
   const [count, setCount] = useState(Math.min(INITIAL, items.length));
   const grid = useRef<HTMLDivElement>(null);
   const visible = items.slice(0, count);
@@ -94,46 +94,80 @@ export function NewsGrid({ items }: { items: NewsItem[] }) {
         ref={grid}
         className="grid grid-cols-1 items-start gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:[grid-auto-flow:dense] md:[grid-auto-rows:8px]"
       >
-        {visible.map((item, i) => (
-          <Link
-            key={item.slug}
-            data-news-card
-            href={`/news/${item.slug}`}
-            className={`group mb-11 block no-underline md:mb-0 ${isFeature(i) ? "sm:col-span-2" : ""}`}
-            style={{ willChange: "transform, opacity" }}
-          >
-            {/* Bildcontainer übernimmt IMMER das native Seitenverhältnis des Original-
-                Thumbnails (kein Crop). Feature-Karten sind breiter → automatisch größer. */}
-            <div className="overflow-hidden rounded-xl" style={{ background: "#e8e6df" }}>
-              <img
-                src={item.img}
-                alt=""
-                loading="lazy"
-                className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-              />
-            </div>
-            <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>
-            <h2
-              className="mt-1.5 leading-snug text-foreground"
-              style={{ fontFamily: SHARP, fontSize: "1.05rem", lineHeight: "126%", fontWeight: 500 }}
-            >
-              {item.title}
-            </h2>
-            {/* CTA zum Beitrag — visueller Affordance-Marker (ganze Karte ist klickbar).
-                Hover (auf der ganzen Karte): eine Underline läuft von links unter dem
-                Text ein, der Pfeil rückt diagonal nach außen. */}
-            <span
-              className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent"
-              style={{ fontFamily: SHARP }}
-            >
-              <span className="relative">
-                Zum Beitrag
-                <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
+        {visible.map((item, i) => {
+          const social = item.kind === "social";
+          const wrapClass = `group mb-11 block no-underline md:mb-0 ${isFeature(i) ? "sm:col-span-2" : ""}`;
+          const inner = (
+            <>
+              {/* Bildcontainer übernimmt IMMER das native Seitenverhältnis des Original-
+                  Thumbnails (kein Crop). Feature-Karten sind breiter → automatisch größer. */}
+              <div className="relative overflow-hidden rounded-xl" style={{ background: "#e8e6df" }}>
+                <img
+                  src={item.img}
+                  alt=""
+                  loading="lazy"
+                  className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                />
+                {social && item.source && (
+                  <span
+                    className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.08em]"
+                    style={{
+                      background: "rgba(14,13,11,0.55)",
+                      color: "#f8f7f3",
+                      backdropFilter: "blur(6px)",
+                      WebkitBackdropFilter: "blur(6px)",
+                      fontFamily: SHARP,
+                    }}
+                  >
+                    {item.source}
+                  </span>
+                )}
+              </div>
+              <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>
+              <h2
+                className={`mt-1.5 leading-snug text-foreground ${social ? "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden" : ""}`}
+                style={{ fontFamily: SHARP, fontSize: "1.05rem", lineHeight: "126%", fontWeight: 500 }}
+              >
+                {item.title}
+              </h2>
+              {/* CTA — visueller Affordance-Marker (ganze Karte ist klickbar). Hover: eine
+                  Underline läuft von links unter dem Text ein, der Pfeil rückt nach außen. */}
+              <span
+                className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent"
+                style={{ fontFamily: SHARP }}
+              >
+                <span className="relative">
+                  {social ? "Ansehen" : "Zum Beitrag"}
+                  <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                </span>
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </span>
-          </Link>
-        ))}
+            </>
+          );
+          return social ? (
+            <a
+              key={item.id}
+              data-news-card
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={wrapClass}
+              style={{ willChange: "transform, opacity" }}
+            >
+              {inner}
+            </a>
+          ) : (
+            <Link
+              key={item.id}
+              data-news-card
+              href={item.href}
+              className={wrapClass}
+              style={{ willChange: "transform, opacity" }}
+            >
+              {inner}
+            </Link>
+          );
+        })}
       </div>
 
       {count < items.length && (

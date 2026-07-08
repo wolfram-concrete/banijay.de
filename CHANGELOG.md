@@ -3,6 +3,30 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [redesign-v2] — Branch (Preview) — 2026-07-08
+
+### News-Page: gemischter News-/Social-Feed + geschärfte Rubriken (08.07.)
+- **Ein gemeinsamer Feed statt getrennter Section:** die redaktionellen News-Beiträge und
+  die LinkedIn-/Social-Posts (Juicer) werden serverseitig zu EINER nach Datum (absteigend)
+  sortierten Liste zusammengeführt (`src/data/feed.ts` → `mergeFeed()`) und gemeinsam im
+  Masonry-Grid gerendert. Der bisher separate Social-Slider unten auf der News-Page entfällt.
+- **Social-Karten im Grid:** externe LinkedIn-Posts als Karte mit Quellen-Badge (z. B.
+  „LinkedIn") oben links, 3-zeilig gekapptem Post-Text und „Ansehen ↗" (öffnet extern);
+  News-Karten unverändert „Zum Beitrag ↗" (intern).
+- **Rubrik-Filter erweitert:** neue Rubrik **Social** — `Alle · News · Primetime · Podcast · Social`.
+- **Mehr LinkedIn:** `fetchSocialPosts(limit)` ist jetzt parametrierbar (Juicer-Rohabruf
+  `per=50`); News-Liste zieht **30** Posts, der Career-Slider bleibt schlank bei **12**.
+- **Rubrik-Korrekturen (Datenqualität):** „Brainpool Live eröffnet NightWash club" (Presse,
+  war fälschlich Podcast) → **News**; „Marcus Wolter zu Gast im brand eins Podcast"
+  (externer Gastauftritt) → **News**. Mapping geschärft: nur `WOLTER TALKS` zählt als
+  **Podcast** — die Podcast-Rubrik enthält damit ausschließlich die eigenen Folgen.
+
+### Companies-Bento + News-Rubriken (Start redesign-v2, 07.–08.07.)
+- **Home – neue Companies-Bento-Section:** dark, holistisches Bento-Grid aller Companies mit
+  Medien-Hintergrund (Ken-Burns), weißem Banijay-Logo, Genre-Tags, Aufbau-Stagger und
+  Klick-Detail-Overlay — ersetzt den bisherigen Companies-Scroller auf der Home.
+- **News-Page – Rubrik-Filter (NewsFilter/NewsGrid):** Chip-Filter über dem Masonry-Grid.
+
 ## [Unreleased] — 2026-07-05
 
 ### Hero-Torbogen + News-Slider-Fix (05.07., abends)
