@@ -53,3 +53,6 @@ hero-cinematic.mp4
 # Genutzte Videos werden committet (weboptimiert), damit sie im Vercel-Deploy
 # vorhanden sind: kompetenz-reel, hero, hero-bg, preloader-bg, team-fullscreen,
 # grid-loop1-3 (siehe public/video/).
+
+# Uebersichts-/Snapshot-PDFs (Deliverables, nicht ins Repo)
+banijay-website-uebersicht.pdf

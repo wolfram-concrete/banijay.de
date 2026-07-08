@@ -1,6 +1,6 @@
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
-import { AlgarveCompaniesScroller } from "@/components/cinematic/algarve/CompaniesScroller";
+import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesBento";
 import { AlgarveAnimatedHeading } from "@/components/cinematic/algarve/AnimatedHeading";
 import { AlgarveServicesStack } from "@/components/cinematic/algarve/ServicesStack";
 import { AlgarveTestimonials } from "@/components/cinematic/algarve/Testimonials";
@@ -29,8 +29,9 @@ export default function HomePage() {
         text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
       />
 
-      {/* Alle Companies als horizontaler Snap-Scroll-Slider (erweitert works-home) */}
-      <AlgarveCompaniesScroller />
+      {/* „Unsere Companies" — holistisches Bento-Grid ALLER Companies (Media-Background
+          + Aufbau-Stagger + Klick-Detail). Ersetzt den alten Coverflow-Slider. */}
+      <AlgarveCompaniesBento />
 
       {/* Konvergierende Headline — der Aha (section_animated-heading) */}
       <AlgarveAnimatedHeading lines={["Du kennst", "die Formate.", "Hier entstehen sie."]} />
