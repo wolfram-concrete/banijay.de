@@ -288,12 +288,26 @@ export function AlgarveHome() {
       // geformt hat, swiped der MAGENTA-Titel „WE ARE BANIJAY" von links nach
       // rechts über den dunklen Staub-Grund, DANN fächern die weißen
       // Planetenringe (gleichradig) auf. Danach folgt das Statement.
+      // MARQUEE „WE ARE BANIJAY" (Wolfram 13.07. v7): liegt als eigener Layer
+      // HINTER dem Brennglas und ist ab dem ERSTEN Laden unten sichtbar (kein
+      // Fade). Sie WANDERT erst beim Scrollen — die horizontale Verschiebung ist
+      // scroll-getrieben (statt Endlos-CSS), steht also bei Scroll 0 still.
+      const marqueeTrack = root.current?.querySelector<HTMLElement>("[data-hero-marquee-track]");
+      if (marqueeTrack && !reduce) {
+        ScrollTrigger.create({
+          trigger: heroSection.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.5,
+          onUpdate: (self) => {
+            marqueeTrack.style.transform = `translateX(${(-self.progress * 50).toFixed(2)}%)`;
+          },
+        });
+      }
+
       const fan = gsap.timeline({
         scrollTrigger: { trigger: orbitZone.current, start: "top 60%", end: "bottom 35%", scrub: 0.7 },
       });
-      // Titel-Marquee blendet ein (die Endlos-Bewegung läuft per CSS)
-      gsap.set("[data-hero-marquee]", { autoAlpha: 0 });
-      fan.to("[data-hero-marquee]", { autoAlpha: 1, ease: "power2.out", duration: 0.8 }, 0.1);
       // Planetenringe: gleichradig, mittelachsig, fächern gestaffelt nach unten
       const rings = gsap.utils.toArray<SVGCircleElement>("[data-hero-ring]");
       gsap.set(rings, { autoAlpha: 0 });
@@ -341,49 +355,60 @@ export function AlgarveHome() {
       {/* overflow-HIDDEN statt -clip (13.07.): clip ignoriert border-radius —
           das Hero-Bild war außerhalb der radialen Kontur sichtbar. hidden
           schneidet exakt entlang der (animierten) Rundung. */}
+      {/* ZWEI-LAYER-HERO (Wolfram 13.07. v7): oben NUR das Brennglas (außerhalb
+          seiner Form transparent) — dahinter, unten sichtbar, die Headline
+          „WE ARE BANIJAY". Above the fold (100vh); die radiale Unterkante des
+          Brennglases formt sich beim Scrollen. */}
       <section
         ref={heroSection}
-        className="relative z-[2] flex min-h-[120vh] flex-col overflow-hidden max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
-        style={{
-          background: "transparent",
-          paddingTop: "6.5rem",
-          paddingBottom: "13vh",
-          // START: GERADE Unterkante (13.07.) — die radiale 50vw-Kurve formt
-          // sich erst beim Scrollen (applyCurve im useGSAP, ein Wert für
-          // Section, Zirkel-Kontur und Linsen-Pill im Shader). z-2 > Übergangs-
-          // zone (z-1) → das Brennglas überlagert die obere Marquee-Hälfte.
-          borderRadius: "0",
-        }}
+        className="relative z-[2] flex min-h-screen flex-col overflow-visible max-[479px]:!pb-[11vw]"
+        style={{ background: "transparent", paddingTop: "6.5rem" }}
       >
-        {/* Hintergrund: das rote Glas-B FULLSCREEN — AUSSERHALB des Brennglases
-            soft-blurry (CSS-filter; leichtes Upscale versteckt die Blur-Ränder).
-            Der Subtil-Zoom kommt aus dem Linsen-rAF (synchron mit uZoom). */}
+        {/* TEXTUR-QUELLE (unsichtbar): das rote Glas-B speist nur die WebGL-Linse.
+            AUSSERHALB des Brennglases bleibt der Hero transparent — der Moody-Grund
+            und die Headline dahinter scheinen durch (Wolfram 13.07.). */}
         <img
           ref={heroImg}
           data-hero-vid
           src="/hero-v2/b-red.jpg"
           alt=""
           draggable={false}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0"
         />
 
-        {/* FOKUS OBEN: das Bild softet im Container nach unten dunkel ab */}
+        {/* HEADLINE-LAYER (z-1) — HINTER dem Brennglas. Ab dem ersten Laden unten
+            sichtbar; die Mittelachse liegt an der Brennglas-Unterkante, sodass die
+            obere Hälfte hinter dem Glas verschwindet und die untere frei steht.
+            Wandert scroll-getrieben (data-hero-marquee-track im useGSAP). */}
         <div
+          data-hero-marquee
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(10,2,8,0) 42%, rgba(10,2,8,0.55) 72%, rgba(10,2,8,0.92) 100%)" }}
-        />
+          className="pointer-events-none absolute inset-x-0 overflow-hidden"
+          style={{ bottom: "4vh", zIndex: 1 }}
+        >
+          <div data-hero-marquee-track className="flex w-max" style={{ willChange: "transform" }}>
+            {[0, 1].map((dup) => (
+              <span
+                key={dup}
+                className="whitespace-nowrap uppercase"
+                // Anton = bolderer Display-Schnitt, kein „·"-Trenner
+                style={{ fontFamily: "var(--font-anton), sans-serif", fontWeight: 400, fontSize: "clamp(5rem, 20vw, 30rem)", lineHeight: 0.9, letterSpacing: "0", color: "#ff4370", paddingRight: "0.5em" }}
+              >
+                We Are Banijay&nbsp;&nbsp;&nbsp;
+              </span>
+            ))}
+          </div>
+        </div>
 
-        {/* ZIRKEL-KONTUR: feine Lichtlinie exakt auf der radialen Unterkante
-            (folgt via borderRadius derselben 50vw-Geometrie) — Ring „0" des
-            Systems, die Satelliten-Ringe darunter setzen sie fort. */}
+        {/* ZIRKEL-KONTUR: feine Lichtlinie auf der radialen Brennglas-Unterkante
+            (folgt via borderRadius der 50vw-Geometrie) — Ring „0" des Systems. */}
         <div
           ref={contour}
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0"
+          className="pointer-events-none absolute inset-x-0"
           style={{
             zIndex: 2,
+            bottom: "26vh",
             height: "50vw",
             opacity: 0, // blendet mit der Kurven-Formung ein (applyCurve)
             borderRadius: "0",
@@ -391,31 +416,29 @@ export function AlgarveHome() {
           }}
         />
 
-        {/* BRENNGLAS-LINSE (Figma 48:1375): WebGL-Shader rendert innerhalb der
-            D-Kontur das SCHARFE Video; an der Kante bricht die Perspektive radial
-            entlang der lokalen Kontur-Normale (SDF) und läuft weich nach innen
-            aus. Bewusste Kunden-Ausnahme der Keine-Rundungen-Regel (b-Element). */}
-        <canvas ref={lensCanvas} data-hero-vid aria-hidden className="pointer-events-none absolute inset-0" />
-        {/* Mess-Element für die Linsen-Geometrie + feine Licht-Säume an der Kante */}
+        {/* BRENNGLAS-LINSE (z-2, oberer Layer): WebGL-Shader rendert innerhalb der
+            Form das scharfe Bild, außerhalb ist der Canvas TRANSPARENT (discard) —
+            dort scheint die Headline durch. Bewusste Kunden-Ausnahme der
+            Keine-Rundungen-Regel (b-Element). */}
+        <canvas ref={lensCanvas} data-hero-vid aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 2 }} />
+        {/* Mess-Element für die Linsen-Geometrie — oben bündig, endet oberhalb des
+            Text-Bandes (bottom 26vh), damit die Headline unten frei steht. */}
         <div
           ref={lensBox}
           data-hero-vid
           aria-hidden
           className="pointer-events-none absolute"
           style={{
-            // FULL SIZE (v3): das Brennglas füllt den kompletten Hero — kein
-            // Abstand zum äußeren Bereich. Die Pill-Rundung unten (999px →
-            // clamp auf 50vw) IST die radiale Hero-Form; ihr Radius ist die
-            // Basis der Satelliten-Ringe.
-            inset: "0",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: "26vh",
+            zIndex: 2,
             borderRadius: "0", // Pill formt sich mit der Kurve (applyCurve)
             boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)",
           }}
         />
-        {/* KEINE Intro-Headline mehr im Hero (13.07.): above the fold nur das
-            B-Visual full size. Die Headline erscheint als Marquee beim Scrollen
-            (unten in der Übergangszone), sobald sich der Radius formt. */}
-        <div ref={content} className="relative flex flex-1 flex-col" style={{ zIndex: 2, paddingLeft: "2vw", paddingRight: "2vw" }} />
+        <div ref={content} className="hidden" />
       </section>
 
       {/* ── ÜBERGANGSZONE (Wolfram 13.07. v6, Career-Referenz): dunkler
@@ -479,30 +502,19 @@ export function AlgarveHome() {
           ))}
         </svg>
 
-        {/* TITEL-MARQUEE: „WE ARE BANIJAY" FULL SIZE (breiter als der Screen),
-            läuft endlos von RECHTS nach LINKS. Sitzt mit der Mittelachse GENAU
-            auf der Hero-Unterkante (translateY -50%) → die OBERE HÄLFTE liegt
-            hinter dem Brennglas (Hero z-2 überlagert), die untere Hälfte ist
-            sichtbar. Magenta, überragt den Screen. */}
+        {/* WEICHER MAGENTA-ARC am unteren Rand (Wolfram 13.07.): radialer
+            Übergang moody → magenta, symmetrisch zur Ring-Rundung (Zentrum unter
+            der Zone → nach oben geöffneter Bogen). Er scrollt in die darunter
+            liegende, VOLL magenta Statement-Fläche (DustStage) hinein — dadurch
+            liegt das Statement bereits auf komplettem Magenta. */}
         <div
-          data-hero-marquee
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 overflow-hidden"
-          style={{ top: "0", transform: "translateY(-62%)", zIndex: 1 }}
-        >
-          <div className="hero-title-marquee">
-            {[0, 1].map((dup) => (
-              <span
-                key={dup}
-                className="whitespace-nowrap uppercase"
-                // Anton = bolderer Display-Schnitt (Wolfram 13.07.), kein „·"-Trenner
-                style={{ fontFamily: "var(--font-anton), sans-serif", fontWeight: 400, fontSize: "clamp(5rem, 20vw, 30rem)", lineHeight: 0.9, letterSpacing: "0", color: "#ff4370", paddingRight: "0.5em" }}
-              >
-                We Are Banijay&nbsp;&nbsp;&nbsp;
-              </span>
-            ))}
-          </div>
-        </div>
+          className="absolute inset-x-0 bottom-0"
+          style={{
+            height: "70vh",
+            background:
+              "radial-gradient(130% 92% at 50% 128%, #ff4370 44%, rgba(255,67,112,0.45) 63%, rgba(255,67,112,0) 82%)",
+          }}
+        />
       </div>
     </div>
   );

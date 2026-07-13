@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-13
 
+### Zwei-Layer-Hero, voll-Magenta-Statement & neuer Preloader (13.07., Abend)
+- **Zwei-Layer-Hero** (`AlgarveHome.tsx`): oben NUR das Brennglas (außerhalb seiner Form
+  transparent — Moody-Grund scheint durch), darunter/dahinter die Headline „WE ARE BANIJAY".
+  Der opake Blur-Hintergrund und der dunkle Verlaufs-Layer, die die Schrift verdeckt haben,
+  sind raus. Die Headline ist ab dem ERSTEN Laden unten sichtbar (steht bei Scroll 0 still)
+  und wandert erst beim Scrollen — scroll-getrieben statt Endlos-Loop.
+- **Statement auf VOLLER Magenta-Fläche** (`DustStage.tsx`): der Magenta-Veil ist jetzt
+  vollflächig und hält, bis das Statement gelesen ist — kein dunkler oberer Rest mehr. Der
+  weiche moody→magenta-Übergang passiert vorher als radialer Bogen am Unterrand der
+  Übergangszone (symmetrisch zur Ring-Rundung) und scrollt in die Magenta-Fläche hinein.
+- **Neuer Preloader** (`IntroOverlay.tsx`): Sternenstaub wächst subtil auf und ergibt durch
+  eine B-Maske die Banijay-Bildmarke → die Headline „Welcome to / a new Era" (Zweizeiler,
+  „Era" italic-magenta) blendet ein und tauscht das Staub-B aus → das Staubfeld explodiert
+  in die Kamera als Blende, die auf den Home-Hero aufreißt.
+
 ### Home-Feinschliff: Hero, Übergang & Editorial (13.07., Nachmittag)
 - **Hero above the fold, ohne Intro-Headline:** die statische Hero-Headline entfällt —
   „WE ARE BANIJAY" erscheint erst beim Scrollen als Ticker (`AlgarveHome.tsx`).

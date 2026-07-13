@@ -41,19 +41,20 @@ export function DustStage() {
           scrub: 0.6,
         },
       });
-      // ⓪ MAGENTA-VEIL (13.07., Farbfächer-Ausklang): das Statement startet
-      //    auf gefüllter Magenta-Fläche (Fortsetzung des letzten Fächer-Layers
-      //    aus dem Hero) — und löst sich per Scroll auf …
-      tl.to(veil.current, { autoAlpha: 0, duration: 0.34, ease: "power1.inOut" }, 0.14)
-        // ① … dahinter kommt der Moody-Background zum Vorschein und
-        // ② der zentrale Sternstaub wächst auf
+      // ⓪ MAGENTA-VEIL: das Statement liegt auf VOLLER Magenta-Fläche
+      //    (Wolfram 13.07.: „wenn das Statement erscheint muss der Background
+      //    bereits vollständig magenta sein"). Der Veil HÄLT deshalb erst, …
+      tl.to({}, { duration: 0.5 })
+        // ① … und löst sich ERST danach auf (Statement blendet aus, Ökosystem
+        //    baut sich auf) — dahinter kommt der Moody-Grund zum Vorschein …
+        .to(veil.current, { autoAlpha: 0, duration: 0.34, ease: "power1.inOut" }, 0.5)
+        // ② … und der zentrale Sternstaub wächst auf und bleibt stehen.
         .fromTo(
           inner.current,
           { scale: 0.5, autoAlpha: 0 },
           { scale: 1, autoAlpha: 0.8, duration: 0.5, ease: "power2.out" },
-          0.22,
-        )
-        .to({}, { duration: 0.3 }); // ③ und bleibt stehen
+          0.55,
+        );
     },
     { scope: root },
   );
@@ -61,19 +62,11 @@ export function DustStage() {
   return (
     <div ref={root} aria-hidden className="pointer-events-none absolute inset-0 z-0">
       <div className="sticky top-0 h-screen overflow-clip">
-        {/* Magenta-Fläche (Statement-Start) — RADIALER Gradient, symmetrisch zum
-            Radius der Satelliten-Ringe (Wolfram 13.07.): der Übergang moody →
-            magenta folgt derselben nach unten geöffneten Kurve wie die Ringe
-            (Zentrum weit oben mittig), damit die Kante weich und bogenförmig ist
-            statt hart-horizontal. */}
-        <div
-          ref={veil}
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(140% 150% at 50% -60%, rgba(255,67,112,0) 52%, rgba(255,67,112,0.55) 66%, #ff4370 80%)",
-          }}
-        />
+        {/* Magenta-Fläche (Statement) — VOLL magenta (Wolfram 13.07.): das
+            Statement liegt komplett auf Magenta, kein dunkler oberer Rest. Der
+            weiche moody→magenta-Übergang passiert VORHER (radialer Arc am unteren
+            Rand der Übergangszone im Hero) und scrollt in diese Fläche hinein. */}
+        <div ref={veil} className="absolute inset-0" style={{ background: "#ff4370" }} />
         {/* Heller Staub (moody-Phase, nach dem Ausblenden des Veils) */}
         <div
           className="absolute inset-0"
