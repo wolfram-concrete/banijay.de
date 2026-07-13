@@ -11,8 +11,9 @@ import { NEWS, getNewsBySlug } from "@/data/news";
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
-const INK = "#0e0d0b";
-const MEDIUM = "rgba(0,0,0,0.64)";
+// Dark-Mood (V2): Typo hell auf globalem MoodBackdrop — ehemals INK (#0e0d0b) → PAPER.
+const INK = "#f8f7f3";
+const MEDIUM = "rgba(248,247,243,0.75)";
 
 const LABEL = {
   fontFamily: SHARP,
@@ -42,13 +43,13 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const more = NEWS.filter((n) => n.slug !== slug).slice(0, 3);
 
   return (
-    <div style={{ background: PAPER }}>
+    <div style={{ background: "transparent" }}>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section style={{ paddingTop: "7rem", paddingBottom: "2.22vw" }}>
         <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div
             className="relative flex items-end overflow-clip max-[767px]:!p-[8vw]"
-            style={{ padding: "22vw 3.33vw 3.33vw", borderRadius: "1.67vw", color: PAPER }}
+            style={{ padding: "22vw 3.33vw 3.33vw", color: PAPER }}
           >
             <img src={item.img} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} />
@@ -127,7 +128,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
 
       {/* ── Divider ──────────────────────────────────────────────────────── */}
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div style={{ height: "1px", background: "rgba(0,0,0,0.16)" }} />
+        <div style={{ height: "1px", background: "rgba(248,247,243,0.16)" }} />
       </div>
 
       {/* ── Mehr News ────────────────────────────────────────────────────── */}
@@ -145,7 +146,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
                 key={n.slug}
                 href={`/news/${n.slug}`}
                 className="group relative flex items-end overflow-clip no-underline max-[767px]:!p-[6vw]"
-                style={{ padding: "44% 2.22vw 2.22vw", borderRadius: "1.11vw", color: PAPER }}
+                style={{ padding: "44% 2.22vw 2.22vw", color: PAPER }}
               >
                 <img
                   src={n.img}
@@ -158,7 +159,6 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
                   style={{
                     gap: "1.11vw",
                     zIndex: 3,
-                    borderRadius: "1.11vw",
                     padding: "1.67vw",
                     background: "rgba(0,0,0,0.28)",
                     backdropFilter: "blur(10px)",

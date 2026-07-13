@@ -12,7 +12,6 @@ import { ArrowUpRight } from "lucide-react";
 // sitzt — statt im engen dunklen Panel auszulaufen. CTA bleibt erhalten.
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INK = "#0e0d0b";
 const PAPER = "#f8f7f3";
 const MAGENTA = "#ff4370";
 
@@ -54,7 +53,7 @@ export function AlgarveCeoTestimonial({
   }, []);
 
   return (
-    <section ref={root} style={{ background: PAPER, paddingTop: "6.94vw", paddingBottom: "6.94vw" }}>
+    <section ref={root} style={{ background: "transparent", paddingTop: "6.94vw", paddingBottom: "6.94vw" }}>
       <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1560px" }}>
         {/* Nimbus features-11: 0.95fr/1.05fr, großzügiger Gap, KEIN items-center →
             das Portrait füllt die Spaltenhöhe (großes Bild); der Content spreizt per
@@ -64,7 +63,7 @@ export function AlgarveCeoTestimonial({
           style={{ columnGap: "5vw", rowGap: "8vw" }}
         >
           {/* ── Portrait links, groß, mit Overlay-Reveal (skaliert nach oben weg) ── */}
-          <div className="relative overflow-hidden max-[767px]:!aspect-[4/5]" style={{ borderRadius: "0.6vw", aspectRatio: "5 / 6" }}>
+          <div className="relative overflow-hidden max-[767px]:!aspect-[4/5]" style={{ aspectRatio: "5 / 6" }}>
             <img
               src={image}
               alt={name}
@@ -75,7 +74,9 @@ export function AlgarveCeoTestimonial({
               aria-hidden
               className="absolute inset-0"
               style={{
-                background: PAPER,
+                // Reveal-Blende: statt Paper nun Mood-Ink — auf dem dunklen Backdrop
+                // wirkt die Abdeckung wie Schatten statt als heller Block.
+                background: "#0a0208",
                 transformOrigin: "50% 100%",
                 transform: visible ? "scaleY(0)" : "scaleY(1)",
                 transition: "transform 900ms cubic-bezier(0.65,0,0.35,1)",
@@ -102,22 +103,22 @@ export function AlgarveCeoTestimonial({
               </span>
               <blockquote
                 className="m-0 max-[767px]:!text-[6.4vw]"
-                style={{ fontFamily: SHARP, fontSize: "2.08vw", lineHeight: "128%", fontWeight: 500, letterSpacing: "-0.04vw", color: INK }}
+                style={{ fontFamily: SHARP, fontSize: "2.08vw", lineHeight: "128%", fontWeight: 500, letterSpacing: "-0.04vw", color: PAPER }}
               >
                 „{quote}“
               </blockquote>
             </div>
 
             <div className="flex flex-col items-start max-[767px]:!gap-[5vw]" style={{ gap: "1.6vw" }}>
-              <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.25vw", fontWeight: 500, color: INK }}>
+              <span className="max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "1.25vw", fontWeight: 500, color: PAPER }}>
                 {name}
               </span>
 
               {cta && (
                 <a
                   href={cta.href}
-                  className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
-                  style={{ border: "0.12vw solid #0e0d0b", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.05vw" }}
+                  className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
+                  style={{ border: "0.12vw solid #f8f7f3", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.05vw" }}
                 >
                   {cta.text}
                   <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />

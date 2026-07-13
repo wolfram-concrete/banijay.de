@@ -86,7 +86,8 @@ export function AlgarveLogoReveal() {
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">
           <video autoPlay muted loop playsInline poster="/brand/team-poster.jpg" className="absolute inset-0 h-full w-full object-cover">
-            <source src="/video/team-fullscreen.mp4" type="video/mp4" />
+            {/* „Design ohne Titel" (Wolfram 13.07.) — weboptimiert 1600w/crf34/muted */}
+            <source src="/video/hero-design.mp4" type="video/mp4" />
           </video>
 
           {/* magenta „b" — wächst SCHARF aus der Mitte über mask-size */}

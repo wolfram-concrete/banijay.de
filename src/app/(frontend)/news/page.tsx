@@ -28,7 +28,7 @@ export default async function NewsPage() {
       {/* Ein gemischter Feed (News + Social, nach Datum) mit Rubrik-Filter
           (Alle · News · Primetime · Podcast · Social) — dichtes Masonry mit nativen
           Thumbnail-Proportionen, Desktop fast volle Breite. */}
-      <section className="py-20 lg:py-28" style={{ background: "#f8f7f3" }}>
+      <section className="py-20 lg:py-28" style={{ background: "transparent" }}>
         <div className="mx-auto w-full px-6 max-[767px]:!px-6 lg:px-[2.5vw]" style={{ maxWidth: "1840px" }}>
           <NewsFilter items={feed} />
         </div>

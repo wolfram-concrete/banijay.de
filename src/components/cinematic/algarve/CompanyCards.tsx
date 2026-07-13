@@ -115,7 +115,7 @@ export function AlgarveCompanyCards() {
     <section
       ref={root}
       className="overflow-clip"
-      style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
+      style={{ background: "transparent", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         <div className="flex flex-col" style={{ gap: "2.22vw" }}>
@@ -129,14 +129,13 @@ export function AlgarveCompanyCards() {
                 top: "1.39vw",
                 height: "96vh",
                 padding: "4.44vw",
-                borderRadius: "1.67vw",
                 backgroundColor: card.bg,
                 color: card.fg,
                 transformStyle: "preserve-3d",
                 transform: "perspective(2000px)",
               }}
             >
-              {/* Top: Cluster-Kicker + Name links, Index rechts */}
+              {/* Top: Cluster-Kicker + Name (Nummerierung entfällt – Kundenwunsch 07/26) */}
               <div className="relative flex items-start justify-between" style={{ gap: "2vw" }}>
                 <div className="flex flex-col" style={{ gap: "1.11vw" }}>
                   <div className="flex items-center" style={{ gap: "0.83vw" }}>
@@ -163,7 +162,7 @@ export function AlgarveCompanyCards() {
                           letterSpacing: "0.08vw",
                           textTransform: "uppercase",
                           padding: "0.2vw 0.66vw",
-                          borderRadius: "999px",
+                          borderRadius: "4px",
                           border: `0.09vw solid ${card.fg}`,
                           color: card.fg,
                         }}
@@ -176,9 +175,6 @@ export function AlgarveCompanyCards() {
                     {card.name}
                   </h3>
                 </div>
-                <h3 className="max-[767px]:!hidden" style={{ ...H1, color: card.soft }}>
-                  {card.index}
-                </h3>
               </div>
 
               {/* Bottom: Claim + Body + Tags + Known-for + CTA */}
@@ -271,7 +267,7 @@ export function AlgarveCompanyCards() {
                       "--cta-bg": card.bg,
                       marginTop: "0.83vw",
                       padding: "0.83vw 1.53vw",
-                      borderRadius: "999px",
+                      borderRadius: "8px",
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontSize: "1.05vw",
                       fontWeight: 600,
@@ -301,7 +297,6 @@ export function AlgarveCompanyCards() {
                   maxHeight: "560px",
                   inset: "auto 4.44vw 4.44vw auto",
                   transform: card.rotate,
-                  borderRadius: "1.11vw",
                   boxShadow: "0 1.2vw 3vw -0.6vw rgba(0,0,0,0.35)",
                 }}
               >
@@ -320,7 +315,6 @@ export function AlgarveCompanyCards() {
                 className="hidden w-full overflow-clip max-[991px]:!block max-[767px]:!mt-[7vw]"
                 style={{
                   marginTop: "2.5vw",
-                  borderRadius: "3vw",
                   boxShadow: "0 4vw 8vw -2vw rgba(0,0,0,0.3)",
                 }}
               >

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Anton } from "next/font/google";
 import "./globals.css";
 
 // Sharp Grotesk — Brand-Font von Banijay Germany (lokal eingebunden).
@@ -12,6 +13,15 @@ const sharpGrotesk = localFont({
     { path: "./fonts/SharpGrotesk-MediumItalic20.otf", weight: "500", style: "italic" },
   ],
   variable: "--font-sharp",
+  display: "swap",
+});
+
+// Anton — Display-Font für ALLE H1 (V2-Typo-Entscheid, 10.07.): fetter,
+// condensed Specimen-Look; Sharp Grotesk bleibt Body/UI-Font.
+const anton = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-anton",
   display: "swap",
 });
 
@@ -31,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${sharpGrotesk.variable} h-full antialiased`}>
+    <html lang="de" className={`${sharpGrotesk.variable} ${anton.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

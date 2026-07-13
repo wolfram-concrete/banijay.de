@@ -5,203 +5,258 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { homeStats } from "@/data/site";
-import { HOME } from "@/data/home";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Faithful-Nachbau des Algarve/BYQ-Templates (Struktur, Maße, Effekte 1:1),
-// mit Banijay-Inhalten. Zwei gestapelte Sub-Sektionen:
-//  1. Hero-Text: „WE / ARE" (3D-Flip) + riesiges „BANIJAY" über 4 gestaffelte
-//     Clip-Zeilen (2vw/4vw/6vw/voll) + Stats links / Beschreibung rechts.
-//  2. Sticky-Grid (400vh): 5×3-Kacheln skalieren aus ihren Origins ein,
-//     zentrales Video mit „play showreel" + Frosted Play/Pause-Pill.
+// V2-Hero (Umbau 13.07. abends, Wolfram-Diktat):
+//  • Master-Quelle ist wieder ein STILL — das rote Glas-B (b-red.jpg) mit
+//    radialem Lichthorizont. Außen blurry, die WebGL-Linse rendert innerhalb
+//    der D-Kontur das scharfe Bild; beide Ebenen atmen subtil synchron.
+//  • Die UNTERE Hero-Kante ist BAUCHIG (radialer Zirkel via clip-path-Ellipse).
+//  • Aus diesem Zirkel wandern SATELLITEN-RINGE mittelachsig heraus (gescrubbt)
+//    — das Ökosystem-Motiv taucht hier zum ersten Mal auf und leitet zum
+//    Statement („kein einzelnes Produktionshaus") über.
+//  • H1 „WE ARE BANIJAY." in VERSALIEN, full size (überragt das Brennglas),
+//    skaliert nach dem Intro fett auf (Event banijay:introdone).
 
-const PAPER = "#f8f7f3";
-
-// fontSize/lineHeight kommen aus CSS-Vars, die per JS so gesetzt werden, dass
-// „BANIJAY" exakt die volle Grid-Breite füllt (randlos, wie „RESONATE" in der
-// Algarve-Referenz). Fallback = die Template-Werte.
-const BIG = {
-  fontFamily: "var(--font-sharp), sans-serif",
-  fontSize: "var(--big-fs, 19.8vw)",
-  lineHeight: "var(--big-lh, 15vw)",
-  fontWeight: 500,
-  letterSpacing: "-0.125rem",
-  textAlign: "left",
-} as const;
-
-const TOP = {
-  fontFamily: "var(--font-sharp), sans-serif",
-  fontSize: "8.8vw",
-  lineHeight: "7.6vw",
-  fontWeight: 500,
-  letterSpacing: "-0.125rem",
-} as const;
-
-// BANIJAY füllt die Content-Breite exakt (Tinte bündig mit „ARE" rechts).
-const FIT_SCALE = 1.0;
-
-const BODY = {
-  fontFamily: "var(--font-sharp), sans-serif",
-  fontSize: "1.39vw",
-  lineHeight: "135%",
-  fontWeight: 400,
-  color: "#000",
-} as const;
-
-// 5×3-Grid (= Entertainment Portfolio): 12 Format-Kacheln + 3 leere Zellen
-// (Mitte Reihe 2) fürs Showreel-Video. Beim Hover erscheint Titel · Company ·
-// Genre — der „Aha-Moment": bekannte Formate, dahinter die Banijay-Companies.
-type Fmt = { title: string; company: string; genre: string };
-type Cell = { src: string; origin: string; fmt: Fmt; video?: string } | null;
-const CELLS: Cell[] = [
-  { src: "/grid/g01.jpg", origin: "0% 0%", fmt: { title: "The Masked Singer", company: "EndemolShine Germany", genre: "Show & Entertainment" } },
-  { src: "/grid/g02.jpg", origin: "50% 0%", video: "/video/grid-loop1.mp4", fmt: { title: "Wer wird Millionär?", company: "EndemolShine Germany", genre: "Quiz" } },
-  { src: "/grid/g03.png", origin: "50% 0%", fmt: { title: "TV total", company: "Brainpool", genre: "Comedy & Live" } },
-  { src: "/grid/g04.jpeg", origin: "50% 0%", fmt: { title: "Temptation Island", company: "Banijay Productions Germany", genre: "Reality & Factual" } },
-  { src: "/reels/wolter-talks.jpg", origin: "100% 0%", fmt: { title: "Marcus Wolter", company: "Banijay Germany", genre: "Podcast & Social" } },
-  { src: "/grid/g06.jpg", origin: "0% 50%", fmt: { title: "Kitchen Impossible", company: "EndemolShine Germany", genre: "Factual Entertainment" } },
-  null,
-  null,
-  null,
-  { src: "/grid/g07.png", origin: "100% 50%", video: "/video/grid-loop2.mp4", fmt: { title: "Promi Big Brother", company: "EndemolShine Germany", genre: "Reality & Factual" } },
-  { src: "/grid/g08.jpg", origin: "0% 100%", fmt: { title: "Das große Promibüßen", company: "Banijay Productions Germany", genre: "Reality & Factual" } },
-  { src: "/grid/g09.jpg", origin: "50% 100%", fmt: { title: "LEGO Masters", company: "EndemolShine Germany", genre: "Show & Entertainment" } },
-  { src: "/grid/g10.jpeg", origin: "50% 100%", video: "/video/grid-loop3.mp4", fmt: { title: "Tatort Dresden", company: "MadeFor", genre: "Fiction & Scripted" } },
-  { src: "/grid/g11.png", origin: "50% 100%", fmt: { title: "NightWash", company: "Banijay Germany Live", genre: "Comedy & Live" } },
-  { src: "/grid/g12.jpg", origin: "100% 100%", fmt: { title: "Cologne Comedy Festival", company: "Cologne Comedy Festival", genre: "Comedy & Live" } },
-];
-
-// Mobile-Portfolio: reduziert auf 4 Format-Kacheln (2 oben, 2 unten) + großes
-// Showreel-Video mittig. Beim Scrollen kippen die 4 Kacheln weg und das Video
-// wächst auf Vollbild — dasselbe Konzept wie das Desktop-Grid, nur schlanker.
-// 8 Kacheln: oben 2×2 (Reihen 1–2), unten 2×2 (Reihen 4–5). Reihe 3 = mittiges
-// Video (bleibt 1/3 hoch). Die kleinen Kacheln sind dadurch halb so hoch. Ein Teil
-// der Zellen hat ein Loop-Video → lebendige „Video-Gallery".
-const MOBILE_TILES = [
-  { cell: CELLS[0]!, row: 1, col: 1, origin: "0% 0%" },
-  { cell: CELLS[3]!, row: 1, col: 2, origin: "100% 0%" },
-  { cell: CELLS[1]!, row: 2, col: 1, origin: "0% 50%" },
-  { cell: CELLS[2]!, row: 2, col: 2, origin: "100% 50%" },
-  { cell: CELLS[9]!, row: 4, col: 1, origin: "0% 50%" },
-  { cell: CELLS[12]!, row: 4, col: 2, origin: "100% 50%" },
-  { cell: CELLS[11]!, row: 5, col: 1, origin: "0% 100%" },
-  { cell: CELLS[14]!, row: 5, col: 2, origin: "100% 100%" },
-];
-
-// 4-Zeilen-Factsheet (Algarve-Referenz: Stats links im Hero-Fuß).
-const STAT_LINES = homeStats()
-  .slice(0, 4)
-  .map((s) => `${s.value} ${s.label}`);
+// V2-Mood: Sections transparent — der globale MoodBackdrop (layout.tsx) scheint durch.
+const SECTION_BG = "transparent";
 
 export function AlgarveHome() {
   const root = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
-  const gridSection = useRef<HTMLElement>(null);
-  const heroVideo = useRef<HTMLVideoElement>(null);
+  const heroImg = useRef<HTMLImageElement>(null);
+  const orbitZone = useRef<HTMLDivElement>(null);
+  const heroSection = useRef<HTMLElement>(null);
+  const contour = useRef<HTMLDivElement>(null);
+  // Kurven-Fortschritt 0..1 (13.07.): Hero startet GERADE, die radiale Kurve
+  // formt sich erst beim Scrollen — geteilt zwischen Scroll-Handler (useGSAP)
+  // und Linsen-Shader (uRR im draw-Loop).
+  const curveP = useRef(0);
 
-  // Hero-Video: normal schnell, KEIN Loop — gegen Ende verlangsamt es und friert
-  // auf dem letzten Frame als Standbild ein.
+  // BRENNGLAS-LINSE als WebGL-Shader: Distanzfeld (SDF) der D-Kontur →
+  // pro Pixel lokale Kanten-NORMALE. Die Brechung verschiebt das Sample entlang
+  // dieser Normale (folgt also auch der großen rechten Kurve RADIAL) und läuft
+  // über eine smoothstep-Feder weich nach innen aus — keine harte Innenkante.
+  // Der Shader sampelt das MASTER-Video direkt (keine Video-Kopien, kein Sync).
+  const lensCanvas = useRef<HTMLCanvasElement>(null);
+  const lensBox = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const v = heroVideo.current;
-    if (!v) return;
-    v.muted = true;
-    v.playbackRate = 1;
-    const SLOW = 2.5; // letzte 2.5s ausklingen lassen
-    const onTime = () => {
-      const dur = v.duration || 0;
-      if (!Number.isFinite(dur) || dur === 0) return;
-      const rem = dur - v.currentTime;
-      if (rem <= SLOW) v.playbackRate = Math.max(0.08, rem / SLOW);
-      if (rem <= 0.08) {
-        v.pause();
-        try {
-          v.currentTime = Math.max(0, dur - 0.05);
-        } catch {}
+    const canvas = lensCanvas.current;
+    const box = lensBox.current;
+    const img = heroImg.current;
+    const section = canvas?.parentElement as HTMLElement | null;
+    if (!canvas || !box || !img || !section) return;
+    const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true });
+    if (!gl) {
+      // Fallback ohne WebGL: Hintergrund scharf lassen statt komplett verschwommen
+      img.style.filter = "none";
+      canvas.style.display = "none";
+      return;
+    }
+
+    const VERT = `attribute vec2 aPos; varying vec2 vUv; void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.,1.); }`;
+    const FRAG = `precision mediump float;
+      varying vec2 vUv;
+      uniform sampler2D uTex;
+      uniform vec2 uRes;   // Canvas px
+      uniform vec2 uC;     // Linsen-Zentrum px (y-down)
+      uniform vec2 uH;     // Halbmaße px
+      uniform float uRL;   // Radius OBEN (27px * dpr) — 90°-Kippung 13.07.
+      uniform float uRR;   // Radius UNTEN (Pill = Halbbreite)
+      uniform float uBand; // Feder-Breite der Kantenzone px
+      uniform float uDisp; // max. Brechungs-Versatz px
+      uniform vec2 uVid;   // Bild-Pixelmaße
+      uniform float uZoom; // Subtil-Zoom (synchron zum CSS-Zoom des Backdrops)
+      uniform vec2 uOff;   // perspektivischer Versatz (Maus-Parallaxe, px)
+
+      float sd(vec2 p){
+        // 90° nach rechts gekippt (13.07.): Pill-Rundung liegt UNTEN (y-basiert)
+        float r = (p.y > uC.y) ? uRR : uRL;
+        vec2 q = abs(p - uC) - uH + vec2(r);
+        return min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0))) - r;
       }
-    };
-    v.addEventListener("timeupdate", onTime);
-    return () => v.removeEventListener("timeupdate", onTime);
-  }, []);
-
-  // Grid-Videos (Tile-Loops + Showreel) zuverlässig abspielen: Browser pausieren
-  // autoplay-Videos, die beim Laden außerhalb des Viewports liegen, und nehmen sie
-  // nicht zuverlässig wieder auf → man sähe nur ein eingefrorenes Bild. Daher per
-  // IntersectionObserver starten, sobald sichtbar (offscreen pausieren spart Decode).
-  useEffect(() => {
-    const sec = gridSection.current;
-    if (!sec) return;
-    const vids = Array.from(sec.querySelectorAll("video"));
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
-        });
-      },
-      { threshold: 0.15 },
-    );
-    vids.forEach((v) => io.observe(v));
-    return () => io.disconnect();
-  }, []);
-
-  // „BANIJAY" auf volle Grid-Breite skalieren: gemessene Wortbreite → font-size,
-  // die die verfügbare Breite (+1vw für den margin-left-Versatz) exakt füllt.
-  // Nur bei Breitenänderung neu rechnen (Höhenänderung würde sonst loopen).
-  useEffect(() => {
-    const rootEl = root.current;
-    const box = content.current;
-    if (!rootEl || !box) return;
-    const strips = rootEl.querySelectorAll<HTMLElement>("[data-strip]");
-    const full = strips[strips.length - 1];
-    let lastW = -1;
-    const fit = (force = false) => {
-      if (!full) return;
-      const w = box.clientWidth;
-      if (!force && w === lastW) return;
-      lastW = w;
-      const vw = window.innerWidth;
-      // Ziel = gepolsterte Content-Breite (WE links → ARE rechts), ohne Overshoot:
-      // das Wort füllt die Breite exakt, damit das „Y" nicht von overflow-clip
-      // abgeschnitten wird.
-      const cs = getComputedStyle(box);
-      const avail = w - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
-      if (avail <= 0 || !vw) return;
-      // Gemessen wird die tatsächliche TINTEN-Breite (Range, nicht scrollWidth) —
-      // das negative Letter-Spacing lässt die Glyphen über die Box ragen, sonst
-      // bliebe rechts eine Lücke. Ziel: Tinte füllt die Content-Breite exakt, das
-      // „Y" schließt bündig mit dem rechten Grid-Ende (ARE) ab. In vw → skaliert
-      // automatisch mit. Mehrere Durchläufe wegen Letter-Spacing-Nichtlinearität.
-      const range = document.createRange();
-      for (let k = 0; k < 3; k++) {
-        const curFsPx = parseFloat(getComputedStyle(full).fontSize);
-        range.selectNodeContents(full);
-        const inkW = range.getBoundingClientRect().width;
-        if (!inkW || !curFsPx) return;
-        const targetVw = ((curFsPx * (avail / inkW)) / vw) * 100 * FIT_SCALE;
-        rootEl.style.setProperty("--big-fs", `${targetVw}vw`);
-        rootEl.style.setProperty("--big-lh", `${targetVw * (15 / 19.8)}vw`);
+      vec2 cover(vec2 px){
+        // FOKUS OBEN (13.07. v2): 30% groesser, voll nach OBEN geschoben
+        // (Bottom-Bias 1.0) — das Motiv (B + Horizont) sitzt im oberen
+        // Hero-Bereich, der Himmel wird komplett gecroppt.
+        float sc = max(uRes.x / uVid.x, uRes.y / uVid.y) * 1.3;
+        vec2 disp = uVid * sc;
+        vec2 off = vec2((uRes.x - disp.x) * 0.5, (uRes.y - disp.y) * 1.0);
+        vec2 uv = (px - off) / disp;
+        // Zoom um die Bildmitte (Sample-Fenster schrumpft -> Bild waechst)
+        return (uv - 0.5) / uZoom + 0.5;
       }
+      void main(){
+        vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes; // y-down wie DOM
+        float d = sd(px);
+        float alpha = 1.0 - smoothstep(-1.5, 1.5, d); // weiche Außenkante (AA)
+        if (alpha <= 0.003) discard;
+        float e = 2.0;
+        vec2 n = vec2(sd(px + vec2(e,0.)) - sd(px - vec2(e,0.)), sd(px + vec2(0.,e)) - sd(px - vec2(0.,e)));
+        n = normalize(n + vec2(1e-5));
+        // Brechungs-Profil: 1 an der Kante -> 0 in Band-Tiefe, weich gefedert
+        float k = 1.0 - smoothstep(0.0, uBand, -d);
+        k = pow(clamp(k, 0.0, 1.0), 1.7);
+        // Sample wandert entlang der LOKALEN Normale + leichter perspektivischer
+        // Versatz der Bildmitte (Maus-Parallaxe, v3)
+        vec2 sp = px - n * (k * uDisp) + uOff;
+        vec2 uv = cover(sp);
+        vec3 col = texture2D(uTex, uv).rgb;
+        // Kanten-Unschärfe proportional zur Brechung (5-Tap)
+        vec2 duv = vec2(k * 3.5) / uRes;
+        vec3 blur = (texture2D(uTex, uv + vec2(duv.x, 0.)).rgb + texture2D(uTex, uv - vec2(duv.x, 0.)).rgb
+                   + texture2D(uTex, uv + vec2(0., duv.y)).rgb + texture2D(uTex, uv - vec2(0., duv.y)).rgb) * 0.25;
+        col = mix(col, blur, k * 0.8);
+        col *= 1.0 + k * 0.09; // die Kante faengt etwas Licht
+        gl_FragColor = vec4(col * alpha, alpha);
+      }`;
+
+    const mk = (type: number, src: string) => {
+      const sh = gl.createShader(type)!;
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
     };
-    fit(true);
-    const ro = new ResizeObserver(() => fit());
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, "aPos");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    const U = (n: string) => gl.getUniformLocation(prog, n);
+
+    let raf = 0;
+    let visible = true;
+    let hxCur = 0; // Halbbreite (px) — Basis für den animierten Pill-Radius
+    const dprOf = () => Math.min(devicePixelRatio || 1, 2);
+
+    const resize = () => {
+      const dpr = dprOf();
+      const sw = section.clientWidth, sh = section.clientHeight;
+      canvas.width = Math.round(sw * dpr);
+      canvas.height = Math.round(sh * dpr);
+      canvas.style.width = sw + "px";
+      canvas.style.height = sh + "px";
+      const sr = section.getBoundingClientRect();
+      const br = box.getBoundingClientRect();
+      const cx = (br.left - sr.left + br.width / 2) * dpr;
+      const cy = (br.top - sr.top + br.height / 2) * dpr;
+      const hx = (br.width / 2) * dpr;
+      const hy = (br.height / 2) * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(U("uRes"), canvas.width, canvas.height);
+      gl.uniform2f(U("uC"), cx, cy);
+      gl.uniform2f(U("uH"), hx, hy);
+      gl.uniform1f(U("uRL"), 1); // OBEN eckig (full-size, v3)
+      hxCur = hx; // UNTEN = Pill (Halbbreite) × Kurven-Fortschritt (im draw-Loop)
+      gl.uniform1f(U("uBand"), 120 * dpr); // Feder-Tiefe der Kantenzone
+      gl.uniform1f(U("uDisp"), 30 * dpr); // max. Brechungs-Versatz
+    };
+
+    // STILL als Master-Quelle (13.07. abends): Bild EINMAL in die Textur.
+    let uploaded = false;
+    const upload = () => {
+      if (uploaded || !img.complete || !img.naturalWidth) return;
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.uniform2f(U("uVid"), img.naturalWidth, img.naturalHeight);
+      uploaded = true;
+    };
+    upload();
+    img.addEventListener("load", upload);
+
+    // Subtil-Zoom (26s-Atmung): Basis 1.015 lässt Rand-Reserve für die
+    // Parallaxe. Dazu der PERSPEKTIVISCHE VERSATZ (v3): die Bildmitte folgt
+    // träge der Maus (uOff im Shader) — leichter Tiefen-Eindruck im Glas.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const zoomAt = (now: number) => (reduce ? 1.015 : 1.015 + 0.045 * (0.5 - 0.5 * Math.cos(((now % 26000) / 26000) * Math.PI * 2)));
+    const mouse = { x: 0, y: 0 };
+    const eased = { x: 0, y: 0 };
+    const onMouse = (e: MouseEvent) => {
+      mouse.x = e.clientX / window.innerWidth - 0.5;
+      mouse.y = e.clientY / window.innerHeight - 0.5;
+    };
+    window.addEventListener("mousemove", onMouse, { passive: true });
+
+    const draw = (now: number) => {
+      if (visible && uploaded) {
+        const dpr = dprOf();
+        const z = zoomAt(now);
+        eased.x += (mouse.x - eased.x) * 0.04;
+        eased.y += (mouse.y - eased.y) * 0.04;
+        img.style.transform = `scale(${(1.05 * z).toFixed(4)}) translate(${(-eased.x * 10).toFixed(1)}px, ${(-eased.y * 6).toFixed(1)}px)`;
+        gl.uniform1f(U("uZoom"), z);
+        // Kurven-Formung: der untere Pill-Radius wächst mit dem Scroll (0 → 50vw)
+        gl.uniform1f(U("uRR"), Math.max(1, hxCur * curveP.current));
+        gl.uniform2f(U("uOff"), reduce ? 0 : eased.x * 26 * dpr, reduce ? 0 : eased.y * 16 * dpr);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    raf = requestAnimationFrame(draw);
+    const ro = new ResizeObserver(resize);
+    ro.observe(section);
     ro.observe(box);
-    // Nach dem Font-Load ändert sich durch den Neu-Fit von „BANIJAY" die Hero-Höhe
-    // → die (scroll-getriggerten) Grid-Positionen müssen neu vermessen werden, sonst
-    // verrutscht die Scroll-Choreografie (fühlt sich wie ein „Zurückspringen" an).
-    document.fonts?.ready.then(() => {
-      fit(true);
-      ScrollTrigger.refresh();
-    });
-    return () => ro.disconnect();
+    const io = new IntersectionObserver(([en]) => (visible = en.isIntersecting), { threshold: 0.02 });
+    io.observe(section);
+    return () => {
+      cancelAnimationFrame(raf);
+      img.removeEventListener("load", upload);
+      window.removeEventListener("mousemove", onMouse);
+      ro.disconnect();
+      io.disconnect();
+    };
   }, []);
 
   useGSAP(
     () => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) return;
+
+      // KURVEN-FORMUNG (13.07.): der Hero startet unten GERADE. Erst beim
+      // Scrollen über den Above-the-fold-Bereich formt sich die radiale Kurve
+      // (Section-Radius, Zirkel-Kontur, Linsen-Pill im Shader — ein Wert).
+      const applyCurve = (v: number) => {
+        curveP.current = v;
+        const r = (v * 50).toFixed(2);
+        if (heroSection.current) heroSection.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
+        if (contour.current) {
+          contour.current.style.opacity = String(v);
+          contour.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
+        }
+        if (lensBox.current) {
+          const px = Math.round(v * 999);
+          lensBox.current.style.borderRadius = `0 0 ${px}px ${px}px`;
+        }
+      };
+      if (reduce) {
+        applyCurve(1);
+        return;
+      }
+      applyCurve(0);
+      ScrollTrigger.create({
+        trigger: heroSection.current,
+        start: "top top",
+        end: "70% top",
+        scrub: 0.6,
+        onUpdate: (self) => applyCurve(self.progress),
+      });
 
       // Hero-Einfahrt — EXAKT nach Original-Timeline t-0eeba58c (Load, Delay 1.2s).
       // Obere Wörter (We/are): echter 3D-Roll-Flip, bei dem Front- und Back-Ebene
@@ -215,9 +270,6 @@ export function AlgarveHome() {
       // translateY(100%)/rotateX(-90) sauber) — sonst parst GSAP die 100% aus dem
       // computed Style als px-Baseline und vermischt sie mit dem yPercent-Tween,
       // wodurch die Back-Ebene vertikal auf 100% hängen bliebe.
-      gsap.set('[data-flip-front="one"], [data-flip-front="second"]', { yPercent: 0, rotateX: 0 });
-      gsap.set('[data-flip-back="one"], [data-flip-back="second"]', { yPercent: 100, rotateX: -90 });
-
       // Beim Neu-Laden: das Hintergrund-Video fängt RUHIG an (blendet langsam ein und
       // läuft), während die Typo zunächst KOMPLETT ausgeblendet ist. Erst danach (nach
       // einer kurzen Vorlaufzeit, siehe startHero-Delay) kommt die Typo herein.
@@ -228,393 +280,188 @@ export function AlgarveHome() {
       // „banijay:introdone"), damit die Hero-Animation nicht unsichtbar hinter dem
       // Overlay abläuft. Die gsap.set-Startlagen oben greifen sofort → der Hero
       // steht während des Preloaders bereits korrekt (Front sichtbar, Back verdeckt).
-      const isMobile = !window.matchMedia("(min-width: 768px)").matches;
       const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-      // Die Typo blendet zuerst SANFT herein (weiche, längere Blende aus dem
-      // versteckten Startzustand, mit leichtem Aufwärts-Drift), bekommt einen
-      // kurzen Moment Ruhe — und ERST DANN läuft die WE/ARE/BANIJAY-Choreografie.
+      // Intro-Finale (v4): die Headline skaliert auf UND die Wörter schieben
+      // sich GELAYERT aus ihren Masken hoch (WE → ARE → BANIJAY, gestaffelt).
       tl.fromTo(
         "[data-hero-typo]",
-        { autoAlpha: 0, y: 22 },
-        { autoAlpha: 1, y: 0, duration: 1.25, ease: "sine.out" },
+        { autoAlpha: 0, scale: 0.8 },
+        { autoAlpha: 1, scale: 1, duration: 1.0, ease: "power3.out" },
         0,
+      ).fromTo(
+        "[data-hero-word]",
+        { yPercent: 118 },
+        { yPercent: 0, duration: 1.05, stagger: 0.14, ease: "power4.out" },
+        0.05,
       );
-      tl.to('[data-flip-front="one"]', { yPercent: -100, rotateX: 90, duration: 0.45 }, 0.85)
-        .to('[data-flip-back="one"]', { yPercent: 0, rotateX: 0, duration: 0.45 }, 0.85)
-        .to('[data-flip-front="second"]', { yPercent: -100, rotateX: 90, duration: 0.53 }, 1.1)
-        .to('[data-flip-back="second"]', { yPercent: 0, rotateX: 0, duration: 0.53 }, 1.1);
-      // BANIJAY „fächert herab" — die gestaffelten Slices settlen von oben in Position
-      // (Venetian-Blind-Kaskade). Desktop UND Mobile identisch, damit der Fächer auch
-      // auf dem Handy sichtbar ist.
-      tl.fromTo('[data-slice="second"]', { y: "-3vw" }, { y: "0vw", duration: 0.8 }, 1.35)
-        .fromTo('[data-slice="third"]', { y: "-8vw" }, { y: "0vw", duration: 0.8 }, 1.35)
-        .fromTo('[data-slice="last"]', { y: "-15vw" }, { y: "0vw", duration: 0.8 }, 1.35);
-
-      // Die untere Copy (Subline) bleibt zunächst verborgen.
-      gsap.set("[data-heroline]", { autoAlpha: 0, y: 26 });
-
-      // Mobile: die Copy blendet ein, SOBALD die h1-Choreografie durch ist (in die
-      // Timeline gekettet, nicht scroll-getriggert) — sie sitzt am unteren Rand.
-      if (isMobile) {
-        tl.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out" }, 2.35);
-      }
-
       // Die H1-Animation startet ERST, wenn der Preloader-Übergang vollständig
       // abgeschlossen ist — das Event „banijay:introdone" feuert im onComplete NACH
       // dem Cutout-Aufziehen. Fallback nach 5s, falls kein Preloader läuft.
       // Kein Preloader mehr → die H1-Animation startet kurz nach dem Mount. (Das
       // introdone-Event bleibt als Kompatibilität erhalten, falls doch ein Intro läuft.)
       // Vorlaufzeit, damit das Video erst „anläuft", bevor die Typo hereinkommt.
+      // SATELLITEN-RINGE (v2): identische Kurven-Kopien FÄCHERN aus der Zirkel-
+      // Kontur nach unten auf — gescrubbt beim Scrollen Richtung Statement.
+      // Kein Scale (Radius bleibt gleich!), nur der Scheitel wandert (attr cy).
+      // FARBFÄCHER: erst NACHDEM sich die Kurve geformt hat (Trigger später
+      // als früher: Zone bei 45% Viewport) schieben sich die Farb-Layer aus
+      // der Kurve heraus. Die Satelliten-Ringe sind vorerst RAUS (Wolfram
+      // 13.07.: „die gibt es momentan noch nicht").
+      const fan = gsap.timeline({
+        scrollTrigger: { trigger: orbitZone.current, start: "top 45%", end: "bottom 40%", scrub: 0.7 },
+      });
+      const fanLayers = gsap.utils.toArray<SVGPathElement>("[data-hero-fan]");
+      fanLayers.forEach((layer) => gsap.set(layer, { y: -Number(layer.dataset.shift), autoAlpha: 0 }));
+      fanLayers.forEach((layer, i) => {
+        fan.to(layer, { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" }, i * 0.12);
+      });
+
+      // Start NACH der Intro-Choreografie (banijay:introdone aus IntroOverlay).
+      // Fallback deutlich hinter der Intro-Länge (~3.4s), falls kein Intro läuft.
       const startHero = () => tl.play();
-      if ((window as { __introDone?: boolean }).__introDone) gsap.delayedCall(0.9, startHero);
+      if ((window as { __introDone?: boolean }).__introDone) gsap.delayedCall(0.3, startHero);
       else {
-        window.addEventListener("banijay:introdone", () => gsap.delayedCall(0.9, startHero), { once: true });
-        gsap.delayedCall(1.4, startHero);
-      }
-
-      // Desktop: untere Zeilen (Factsheet + Subline) erscheinen beim Scrollen. (Mobile
-      // wird die Copy oben bereits per Timeline nach der h1 eingeblendet.)
-      if (!isMobile) {
-        ScrollTrigger.create({
-          trigger: root.current,
-          start: "top top-=20",
-          once: true,
-          onEnter: () =>
-            gsap.to("[data-heroline]", { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }),
-        });
-      }
-
-      // Sticky-Grid — EXAKT nach der Algarve-Referenz (custom GSAP, Timeline
-      // t-df357d83, Trigger auf section_grid-home, scrub 1). Positionen/Dauern
-      // 1:1 aus dem Original übernommen:
-      //   • Karten (data-tile): rotationY 0 → -180° + opacity → 0, gestaffelt
-      //     (each .1) → sie FLIPPEN um die eigene Y-Achse weg.  (pos .3, dur 2.82)
-      //   • Video (data-showreel): erst width → 100% (pos 1.11, dur 1.32), dann
-      //     height → 100% (pos 2.0, dur .93) → das KONTURIERTE Panel zieht auf
-      //     Vollbild auf (Breite zuerst, dann Höhe). Kein Scale → Rahmen bleibt.
-      // Das gepinnte 5×3-Scaling-Grid nur auf Desktop — auf Mobile wäre es unbrauchbar
-      // (5 Spalten → winzige, sehr hohe Kacheln). Mobile bekommt ein eigenes 2-Spalten-
-      // Grid (statisches Markup, keine Animation).
-      if (window.matchMedia("(min-width: 768px)").matches) {
-        const gridTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: gridSection.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-          },
-        });
-
-        gridTl
-          .to(
-            "[data-tile]",
-            { rotationY: -180, opacity: 0, ease: "power1.inOut", duration: 2.82, stagger: { each: 0.1 } },
-            0.3,
-          )
-          .to("[data-showreel]", { width: "100%", ease: "none", duration: 1.32 }, 1.11)
-          .to("[data-showreel]", { height: "100%", ease: "none", duration: 0.93 }, 2.0);
-      } else {
-        // Mobile: dasselbe Konzept — die 4 Kacheln kippen weg, das mittige Video
-        // (schon volle Breite) wächst auf die volle Höhe. Kürzeres Scroll-Fenster.
-        const gridTlM = gsap.timeline({
-          scrollTrigger: {
-            trigger: gridSection.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-          },
-        });
-        gridTlM
-          .to(
-            "[data-tile-m]",
-            { rotationY: -180, opacity: 0, ease: "power1.inOut", duration: 2.4, stagger: { each: 0.14 } },
-            0.4,
-          )
-          .to("[data-showreel-m]", { height: "100%", ease: "none", duration: 1.4 }, 1.6);
+        window.addEventListener("banijay:introdone", () => gsap.delayedCall(0.15, startHero), { once: true });
+        gsap.delayedCall(6, startHero);
       }
     },
     { scope: root },
   );
 
   return (
-    <div ref={root} style={{ background: PAPER }}>
+    <div ref={root} style={{ background: SECTION_BG }}>
       {/* ── Hero-Text-Sektion ─────────────────────────────────────────── */}
       {/* Video full-bleed (auch hinter der fixen Nav). Weiße Typo direkt darüber,
           kein Wash. paddingTop hält WE/ARE frei unter der überlagernden Nav. */}
+      {/* overflow-HIDDEN statt -clip (13.07.): clip ignoriert border-radius —
+          das Hero-Bild war außerhalb der radialen Kontur sichtbar. hidden
+          schneidet exakt entlang der (animierten) Rundung. */}
       <section
-        className="relative flex min-h-[112vh] flex-col overflow-clip max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
-        style={{ background: "#0a0a0a", paddingTop: "6.5rem", paddingBottom: "3.5vw" }}
+        ref={heroSection}
+        className="relative flex min-h-[120vh] flex-col overflow-hidden max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
+        style={{
+          background: "transparent",
+          paddingTop: "6.5rem",
+          paddingBottom: "13vh",
+          // START: GERADE Unterkante (13.07.) — die radiale 50vw-Kurve formt
+          // sich erst beim Scrollen (applyCurve im useGSAP, ein Wert für
+          // Section, Zirkel-Kontur und Linsen-Pill im Shader).
+          borderRadius: "0",
+        }}
       >
-        {/* Hintergrund-Video. Desktop/Tablet: cinematisches Landscape-Reel (langsam,
-            friert auf letztem Frame ein). Mobile (≤767): natives Hochformat-Reel
-            (496×864), das den schmalen mobilen Video-Bereich formatfüllend deckt. */}
-        <video
-          ref={heroVideo}
+        {/* Hintergrund: das rote Glas-B FULLSCREEN — AUSSERHALB des Brennglases
+            soft-blurry (CSS-filter; leichtes Upscale versteckt die Blur-Ränder).
+            Der Subtil-Zoom kommt aus dem Linsen-rAF (synchron mit uZoom). */}
+        <img
+          ref={heroImg}
           data-hero-vid
-          autoPlay
-          muted
-          playsInline
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover max-[767px]:!hidden"
-        >
-          <source src="/video/hero-bg.mp4" type="video/mp4" />
-        </video>
-        <video
-          data-hero-vid
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover max-[767px]:!block max-[479px]:!m-auto max-[479px]:!h-[58vh]"
-        >
-          <source src="/video/hero-mobile.mp4" type="video/mp4" />
-        </video>
+          src="/hero-v2/b-red.jpg"
+          alt=""
+          draggable={false}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
+        />
 
-        {/* Weicher Bild-Fuß nur für die Lesbarkeit von Factsheet/Subline (dunkel,
-            kein weißer Layer). */}
+        {/* FOKUS OBEN: das Bild softet im Container nach unten dunkel ab */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 max-[479px]:!hidden"
-          style={{ height: "38%", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%)" }}
+          className="pointer-events-none absolute inset-0"
+          style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(10,2,8,0) 42%, rgba(10,2,8,0.55) 72%, rgba(10,2,8,0.92) 100%)" }}
         />
-        {/* Mobile: das mittig platzierte Video-Band (58vh, zentriert) blendet an
-            Ober- UND Unterkante weich in die dunkle Hero-Fläche — kein harter Schnitt. */}
+
+        {/* ZIRKEL-KONTUR: feine Lichtlinie exakt auf der radialen Unterkante
+            (folgt via borderRadius derselben 50vw-Geometrie) — Ring „0" des
+            Systems, die Satelliten-Ringe darunter setzen sie fort. */}
         <div
+          ref={contour}
           aria-hidden
-          className="pointer-events-none absolute inset-0 m-auto hidden max-[479px]:!block"
-          style={{ height: "58vh", background: "linear-gradient(180deg, #0a0a0a 0%, rgba(10,10,10,0) 16%, rgba(10,10,10,0) 84%, #0a0a0a 100%)" }}
+          className="pointer-events-none absolute inset-x-0 bottom-0"
+          style={{
+            zIndex: 2,
+            height: "50vw",
+            opacity: 0, // blendet mit der Kurven-Formung ein (applyCurve)
+            borderRadius: "0",
+            boxShadow: "inset 0 -1px 0 rgba(248,247,243,0.25)",
+          }}
         />
-        <div ref={content} className="relative flex flex-1 flex-col" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+
+        {/* BRENNGLAS-LINSE (Figma 48:1375): WebGL-Shader rendert innerhalb der
+            D-Kontur das SCHARFE Video; an der Kante bricht die Perspektive radial
+            entlang der lokalen Kontur-Normale (SDF) und läuft weich nach innen
+            aus. Bewusste Kunden-Ausnahme der Keine-Rundungen-Regel (b-Element). */}
+        <canvas ref={lensCanvas} data-hero-vid aria-hidden className="pointer-events-none absolute inset-0" />
+        {/* Mess-Element für die Linsen-Geometrie + feine Licht-Säume an der Kante */}
+        <div
+          ref={lensBox}
+          data-hero-vid
+          aria-hidden
+          className="pointer-events-none absolute"
+          style={{
+            // FULL SIZE (v3): das Brennglas füllt den kompletten Hero — kein
+            // Abstand zum äußeren Bereich. Die Pill-Rundung unten (999px →
+            // clamp auf 50vw) IST die radiale Hero-Form; ihr Radius ist die
+            // Basis der Satelliten-Ringe.
+            inset: "0",
+            borderRadius: "0", // Pill formt sich mit der Kurve (applyCurve)
+            boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)",
+          }}
+        />
+        <div ref={content} className="relative flex flex-1 flex-col" style={{ zIndex: 2, paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div className="flex flex-1 flex-col justify-between text-center" style={{ gap: "0.83vw" }}>
-            {/* Kopfgruppe (WE/ARE + BANIJAY) oben */}
-            <div data-hero-typo className="flex flex-col" style={{ gap: "0.83vw" }}>
-              {/* Top-Row: WE | ARE — zweiseitiger 3D-Box-Flip (Algarve-Referenz:
-                  wrap-heading-3d_front/back). Der Kasten klappt um die eigene
-                  Achse auf. */}
-              <div className="flex flex-row items-center justify-between">
-                {(
-                  [
-                    { word: "We", id: "one" },
-                    { word: "are", id: "second" },
-                  ] as const
-                ).map(({ word, id }) => (
-                  <div key={id} style={{ perspective: "1000px" }}>
-                    <div className="relative" style={{ transformStyle: "preserve-3d" }}>
-                      {/* Front-Ebene — sichtbar in Ruhe, rollt beim Load hoch & weg */}
-                      <h1
-                        data-flip-front={id}
-                        className="m-0 p-0 uppercase text-white max-[767px]:!text-[14vw] max-[767px]:!leading-[12vw]"
-                        style={{ ...TOP, backfaceVisibility: "hidden", transformOrigin: "50% 100%" }}
-                      >
-                        {word}
-                      </h1>
-                      {/* Back-Ebene — deckungsgleich, rollt aus 100%/-90° in die finale
-                          Lage. KEIN inline transform → sonst cached GSAP daraus eine
-                          px-Baseline, die den yPercent-Tween blockiert. Startlage
-                          setzt ausschließlich gsap.set (bzw. bei Reduced-Motion bleibt
-                          die Ebene deckungsgleich über der Front → optisch identisch). */}
-                      <h1
-                        data-flip-back={id}
-                        aria-hidden
-                        className="m-0 p-0 uppercase text-white absolute inset-0 max-[767px]:!text-[14vw] max-[767px]:!leading-[12vw]"
-                        style={{ ...TOP, backfaceVisibility: "hidden", transformOrigin: "50% 0" }}
-                      >
-                        {word}
-                      </h1>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Riesiges BANIJAY über 4 gestaffelte Clip-Zeilen (füllt WE→ARE).
-                  Desktop: die 3 partiellen Slats bilden beim Load eine Venetian-Blind-
-                  Kaskade, die von oben herabfächert. Mobile: die partiellen Slats
-                  ausblenden (dünne Letter-Top-Streifen lesen auf kleinem Screen als
-                  Geistern) — stattdessen fährt das VOLLE Wort per Clip-Wipe von oben
-                  nach unten herein (data-strip-mob, siehe Hero-Timeline). */}
-              <div className="flex flex-col" style={{ gap: "1vw" }}>
-                {(
-                  [
-                    { h: "2vw", key: "first" },
-                    { h: "4vw", key: "second" },
-                    { h: "6vw", key: "third" },
-                    { h: "auto", key: "last" },
-                  ] as const
-                ).map(({ h, key }, i) => (
-                  // Letzte Zeile (volles Wort) NICHT clippen → „Y"-Tinte, die durch
-                  // das negative Letter-Spacing über die Box ragt, bleibt sichtbar.
-                  <div key={key} data-slice={key} style={{ overflow: i === 3 ? "visible" : "clip", height: h }}>
-                    <h1 data-strip data-strip-mob={i === 3 ? "" : undefined} className="m-0 p-0 uppercase text-white" style={BIG}>
-                      Banijay
-                    </h1>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Fuß: 4-Zeilen-Factsheet links / kurze Subline rechts (Algarve-Ref).
-                Mobile (max-479): Facts ausgeblendet — nur die Subline, mittelachsig
-                unter dem Video, erscheint per Scroll-Reveal auf der dunklen Hero-
-                Verlängerung. */}
-            <div
-              className="flex flex-row items-end justify-between text-left max-[479px]:!absolute max-[479px]:!inset-x-0 max-[479px]:!bottom-[7vh] max-[479px]:!flex-col max-[479px]:!items-stretch max-[479px]:!gap-5"
-              style={{ gap: "1.39vw" }}
-            >
-              <div className="flex flex-col items-start max-[479px]:!hidden" style={{ maxWidth: "39.17vw" }}>
-                {STAT_LINES.map((line) => (
-                  <div key={line} data-heroline className="m-0" style={{ ...BODY, color: "#fff" }}>
-                    {line}
-                  </div>
-                ))}
-              </div>
-              <p
-                data-heroline
-                className="m-0 text-right max-[479px]:!mx-auto max-[479px]:!max-w-[82vw] max-[479px]:!text-center max-[479px]:!text-[4.4vw] max-[479px]:!leading-[1.34]"
-                style={{ ...BODY, color: "#fff", maxWidth: "31.11vw" }}
+            {/* V2-Hero-Typo (13.07. v4): VERSALIEN, noch größer, OHNE Punkt.
+                Die Wörter kommen GELAYERT herein — jedes schiebt sich aus einer
+                eigenen Overflow-Maske hoch (gestaffelt, siehe Hero-Timeline). */}
+            {/* Headline WEITER OBEN (13.07.): nicht mehr mittig zentriert */}
+            <div data-hero-typo className="flex flex-1 items-start justify-center" style={{ paddingTop: "13vh" }}>
+              <h1
+                className="m-0 p-0 text-center uppercase text-white"
+                style={{ fontSize: "clamp(3rem, 14vw, 18rem)", lineHeight: 1.0, whiteSpace: "nowrap" }}
               >
-                {HOME.hero.subline}
-              </p>
+                {["We", "Are", "Banijay"].map((w, i) => (
+                  <span key={w} className="inline-block overflow-hidden align-top" style={{ marginRight: i < 2 ? "0.22em" : 0 }}>
+                    <span data-hero-word className="inline-block">
+                      {w}
+                    </span>
+                  </span>
+                ))}
+              </h1>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Sticky-Grid-Sektion (400vh) ───────────────────────────────── */}
-      {/* WICHTIG: overflow NICHT auf die Section (das bräche das Sticky-Pinning) —
-          das Clipping des Zooms läuft über den Sticky-Container. */}
-      <section ref={gridSection} className="relative" style={{ background: PAPER, height: "400vh" }}>
-        <div className="sticky top-0 w-screen overflow-clip max-[767px]:hidden" style={{ height: "100vh" }}>
-          <div className="h-full w-full" style={{ padding: "2vw" }}>
-            <div
-              className="relative h-full w-full"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-                gridTemplateRows: "minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)",
-                columnGap: "1vw",
-                rowGap: "1vw",
-                perspective: "2000px",
-              }}
-            >
-              {CELLS.map((cell, i) =>
-                cell ? (
-                  <div
-                    key={i}
-                    data-tile
-                    className="group relative w-full overflow-hidden"
-                    style={{ borderRadius: "1.11vw", backfaceVisibility: "hidden", transformOrigin: cell.origin }}
-                  >
-                    {cell.video ? (
-                      <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        poster={cell.src}
-                        className="block h-full w-full object-cover"
-                      >
-                        <source src={cell.video} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
-                    )}
-                    {/* Hover: Format · Company · Genre */}
-                    <div
-                      className="absolute inset-0 flex flex-col justify-end opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.82), rgba(0,0,0,0) 72%)", padding: "0.9vw" }}
-                    >
-                      <span
-                        className="uppercase"
-                        style={{ fontFamily: "var(--font-sharp), sans-serif", color: "#fff", fontWeight: 600, fontSize: "1vw", lineHeight: 1.1 }}
-                      >
-                        {cell.fmt.title}
-                      </span>
-                      <span style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.72vw", marginTop: "0.25vw" }}>
-                        {cell.fmt.company} · {cell.fmt.genre}
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div key={i} />
-                ),
-              )}
-
-              {/* Zentrales Video */}
-              <div
-                data-showreel
-                className="absolute overflow-hidden"
-                style={{
-                  zIndex: 5,
-                  borderRadius: "1.11vw",
-                  width: "calc(60% - 0.4vw)",
-                  height: "calc(33.3333% - 0.6667vw)",
-                  inset: "0%",
-                  margin: "auto",
-                }}
-              >
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 h-full w-full object-cover"
-                >
-                  <source src="/video/hero.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Mobile: reduziertes Sticky-Grid — 2 Format-Kacheln oben, großes
-            Showreel-Video mittig (volle Breite), 2 Kacheln unten. Beim Scrollen
-            kippen die 4 Kacheln weg und das Video wächst auf Vollbild (gridTlM).
-            Gleiches Konzept wie Desktop, nur schlanker für schmale Screens. */}
-        <div className="sticky top-0 hidden h-screen w-screen overflow-clip max-[767px]:block">
-          <div className="h-full w-full" style={{ padding: "3vw" }}>
-            <div
-              className="relative h-full w-full"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                // 5 Reihen: oben 2 (je 1fr), Video-Reihe (2fr = 1/3, bleibt gleich),
-                // unten 2 (je 1fr). Kleine Kacheln dadurch halb so hoch.
-                gridTemplateRows: "1fr 1fr 2fr 1fr 1fr",
-                columnGap: "3vw",
-                rowGap: "3vw",
-                perspective: "1200px",
-              }}
-            >
-              {MOBILE_TILES.map(({ cell, row, col, origin }, i) => (
-                <div
-                  key={i}
-                  data-tile-m
-                  className="relative w-full overflow-hidden"
-                  style={{ borderRadius: "4vw", backfaceVisibility: "hidden", transformOrigin: origin, gridRow: row, gridColumn: col }}
-                >
-                  {cell.video ? (
-                    <video autoPlay loop muted playsInline poster={cell.src} className="block h-full w-full object-cover">
-                      <source src={cell.video} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <img src={cell.src} alt={cell.fmt.title} className="block h-full w-full object-cover" />
-                  )}
-                </div>
-              ))}
-
-              {/* Zentrales Showreel-Video (mittlere Reihe, volle Breite) */}
-              <div
-                data-showreel-m
-                className="absolute overflow-hidden"
-                style={{ zIndex: 5, borderRadius: "4vw", width: "100%", height: "calc(33.333% - 2vw)", inset: "0%", margin: "auto" }}
-              >
-                <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
-                  <source src="/video/hero.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── SATELLITEN-RINGE (Wolfram 13.07., v2): KEINE kleineren Radien mehr —
+          alle Ringe sind KOPIEN derselben Kurve (Basis-Radius ≈ Linsen-Pill/
+          Zirkel-Kontur, r=770 im 1600er-System) und FÄCHERN mittelachsig nach
+          unten auf, bis der Übergang ins Statement kommt. Satelliten pendeln
+          auf dem sichtbaren Bogen. */}
+      <div ref={orbitZone} aria-hidden className="pointer-events-none relative overflow-hidden" style={{ height: "46vh", marginTop: "-3vh" }}>
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 443" preserveAspectRatio="xMidYMid slice" fill="none">
+          {/* FARBFÄCHER (Wolfram 13.07., Career-Hero-Palette): radiale Flächen-
+              Layer wachsen synchron zum Scroll aus der Hero-Kurve und gehen
+              nach unten weg — der letzte (Magenta) füllt in die Statement-
+              Fläche hinein (dort übernimmt das Veil in DustStage). */}
+          {[
+            { v: 24, color: "#e71d7d" },
+            { v: 110, color: "#2e37c9" },
+            { v: 205, color: "#065dff" },
+            { v: 305, color: "#16c8ff" },
+            { v: 410, color: "#ff4370" },
+          ].map((f, i) => (
+            <path
+              key={`fan${i}`}
+              data-hero-fan
+              data-shift={f.v - 24}
+              d={`M 0 ${f.v - 800} A 800 800 0 0 0 1600 ${f.v - 800} L 1600 1400 L 0 1400 Z`}
+              fill={f.color}
+            />
+          ))}
+          {/* Die Satelliten-Ringe + Bahnpunkte sind vorerst RAUS (Wolfram
+              13.07.: „die gibt es dann momentan noch nicht") — hier stand
+              zuletzt das gleichradige Ring-System; bei Bedarf aus der
+              Git-Historie zurückholbar. */}
+        </svg>
+      </div>
     </div>
   );
 }

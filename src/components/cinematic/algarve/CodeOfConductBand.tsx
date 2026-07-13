@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // der Banijay-CTA (Outline-Pill), der nach dem Statement einfadet.
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INK = "#0e0d0b";
+const PAPER = "#f8f7f3";
 const MAGENTA = "#ff4370";
 const ACCENT_WORD = "kreative";
 
@@ -63,19 +63,19 @@ export function AlgarveCodeOfConductBand() {
     <section
       ref={root}
       className="max-[767px]:!h-[150vh]"
-      style={{ background: "#f8f7f3", height: "220vh", position: "relative", overflow: "clip" }}
+      style={{ background: "transparent", height: "220vh", position: "relative", overflow: "clip" }}
     >
       <div className="flex items-center justify-center" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
         <div className="flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
-            className="m-0 mx-auto flex flex-wrap justify-center text-center text-black max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
+            className="m-0 mx-auto flex flex-wrap justify-center text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
             style={{ ...H4, maxWidth: "55.28vw", columnGap: "0.6vw", rowGap: 0 }}
           >
             {words.map((word, i) => {
               const clean = word.replace(/[.,]/g, "");
               const isAccent = clean === ACCENT_WORD;
               return (
-                <span key={i} data-coc-word className="inline-block" style={{ color: isAccent ? MAGENTA : INK }}>
+                <span key={i} data-coc-word className="inline-block" style={{ color: isAccent ? MAGENTA : PAPER }}>
                   {word}
                 </span>
               );
@@ -87,8 +87,8 @@ export function AlgarveCodeOfConductBand() {
             href={CAREER.codeOfConduct.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#f8f7f3] max-[767px]:!mt-[6vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
-            style={{ marginTop: "2.4vw", border: "1px solid #0e0d0b", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
+            className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!mt-[6vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+            style={{ marginTop: "2.4vw", border: "1px solid #f8f7f3", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
           >
             {CAREER.codeOfConduct.cta.text}
             <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />

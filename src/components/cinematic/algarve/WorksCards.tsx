@@ -73,7 +73,7 @@ export function AlgarveWorksCards() {
     <section
       ref={root}
       className="relative overflow-clip"
-      style={{ background: "#f8f7f3", height: "300vh" }}
+      style={{ background: "transparent", height: "300vh" }}
     >
       <div
         className="sticky top-0 flex items-end"
@@ -85,10 +85,10 @@ export function AlgarveWorksCards() {
         >
           {/* Große Wörter */}
           <div className="flex items-center justify-between max-[767px]:hidden">
-            <h2 ref={wordL} className="uppercase text-black" style={{ ...H5, transformOrigin: "100%" }}>
+            <h2 ref={wordL} className="uppercase text-[#f8f7f3]" style={{ ...H5, transformOrigin: "100%" }}>
               featured
             </h2>
-            <h2 ref={wordR} className="uppercase text-black" style={{ ...H5, transformOrigin: "0%" }}>
+            <h2 ref={wordR} className="uppercase text-[#f8f7f3]" style={{ ...H5, transformOrigin: "0%" }}>
               companies
             </h2>
           </div>
@@ -106,8 +106,7 @@ export function AlgarveWorksCards() {
                 style={{
                   width: "100%",
                   height: "80%",
-                  borderRadius: "1.11vw",
-                  background: "#fff",
+                  background: "rgba(255,255,255,0.06)",
                   boxShadow: "0 1px 3px 0 rgba(0,0,0,0.04), 0 2px 30px 0 rgba(0,0,0,0.08)",
                 }}
               >
@@ -116,7 +115,6 @@ export function AlgarveWorksCards() {
                     src={card.img}
                     alt={card.name}
                     className="absolute inset-0 h-full w-full object-cover"
-                    style={{ borderRadius: "0.3vw" }}
                   />
                   <div
                     className="absolute flex w-full flex-col items-center justify-end"

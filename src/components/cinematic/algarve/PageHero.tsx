@@ -14,7 +14,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // Body-Text als große, schwarze, einscrollende Typo (wie Home-Section 3).
 
 const PAPER = "#f8f7f3";
-const INK = "#0e0d0b";
 const SHARP = "var(--font-sharp), sans-serif";
 
 // b-Balken-Startform (Banijay-Logo-Element „Element 1.svg"): rechts eine volle
@@ -27,18 +26,20 @@ const SHARP = "var(--font-sharp), sans-serif";
 // (beide oberen Ecken = halbe Container-Breite → runder Bogen oben, wie das Banijay-
 // b-Einzelelement), unten dezent gerundet. Maße bleiben unverändert, nur das Curving
 // oben. Auswahl per matchMedia in useGSAP (SSR-Default = Desktop = B_SHAPE_RADIUS).
+// V2 (Task #57, 10.07.): KEINE gekurvten Container mehr — Start-Formen flach.
+// (Die frühere b-/Torbogen-Form bleibt als Kommentar-Referenz im Git-Verlauf.)
 const B_SHAPE_RADIUS = {
-  borderTopLeftRadius: "1.8vh",
+  borderTopLeftRadius: "0vh",
   borderBottomLeftRadius: "0vh",
-  borderTopRightRadius: "15vh",
-  borderBottomRightRadius: "15vh",
+  borderTopRightRadius: "0vh",
+  borderBottomRightRadius: "0vh",
 } as const;
 // Torbogen (Mobile): obere Ecken = 30vw (= halbe Start-Breite 60vw) → voller Bogen oben.
 const ARCH_RADIUS = {
-  borderTopLeftRadius: "30vw",
-  borderBottomLeftRadius: "2.4vh",
-  borderTopRightRadius: "30vw",
-  borderBottomRightRadius: "2.4vh",
+  borderTopLeftRadius: "0vw",
+  borderBottomLeftRadius: "0vh",
+  borderTopRightRadius: "0vw",
+  borderBottomRightRadius: "0vh",
 } as const;
 // SSR-/Reduced-Motion-Default (Desktop-Form).
 const B_RADIUS = B_SHAPE_RADIUS;
@@ -159,7 +160,7 @@ export function AlgarvePageHero({
   const words = body.split(" ");
 
   return (
-    <div ref={root} style={{ background: PAPER }}>
+    <div ref={root} style={{ background: "transparent" }}>
       {/* ── Gepinnte Bühne ─────────────────────────────────────────────── */}
       <section data-hero-stage style={{ position: "relative", height: "300vh" }}>
         <div className="sticky top-0 overflow-hidden" style={{ height: "100vh" }}>
@@ -180,7 +181,7 @@ export function AlgarvePageHero({
           <div
             data-hero-h1
             className="absolute inset-x-0 flex flex-col items-center text-center"
-            style={{ top: "10vh", paddingLeft: "2vw", paddingRight: "2vw", zIndex: 3, color: INK }}
+            style={{ top: "10vh", paddingLeft: "2vw", paddingRight: "2vw", zIndex: 3, color: PAPER }}
           >
             {lines.map((ln, i) => (
               <span
@@ -237,7 +238,7 @@ export function AlgarvePageHero({
             fontSize: "3.33vw",
             lineHeight: "120%",
             letterSpacing: "-0.094vw",
-            color: INK,
+            color: PAPER,
           }}
         >
           {words.map((w, i) => (

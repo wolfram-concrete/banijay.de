@@ -32,16 +32,21 @@ export function AlgarveAboutIntro({
   text,
   magentaExit = false,
   tall = false,
+  fadeExit = false,
 }: {
   text?: string;
   magentaExit?: boolean;
   /** Desktop höher (275vh) → Standraum, damit die nächste Section darüber aufsteigen kann. */
   tall?: boolean;
+  /** Exchange-Übergang (Wolfram 13.07.): das stehende Statement BLENDET am Ende
+      aus — die nächste Section liegt via -100vh-Overlap dahinter und kommt zum
+      Vorschein, statt dass normal weitergescrollt wird. */
+  fadeExit?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
   const words = (text ?? HOME.world.text).split(" ");
-  const tallSection = magentaExit || tall;
+  const tallSection = magentaExit || tall || fadeExit;
 
   useGSAP(
     () => {
@@ -61,12 +66,22 @@ export function AlgarveAboutIntro({
         scrollTrigger: { trigger: root.current, start: "top top", end: "+=38%", scrub: 0.4 },
       });
 
+      // fadeExit: nach dem Lese-Fenster blendet das Statement im Sticky-Panel
+      // weich aus — dahinter wird die überlappende Folge-Section sichtbar.
+      if (fadeExit) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 0.6 },
+        });
+        tl.to({}, { duration: 0.52 }) // Reveal (bis ~0.22) + Lese-Fenster
+          .to("[data-intro-content]", { autoAlpha: 0, duration: 0.22, ease: "power1.inOut" });
+      }
+
       // magentaExit (nur Mobile): gerundete Magenta-Fläche steigt über das stehende
       // Statement und faltet auf. Startlage per gsap.set (vor dem Paint; Section liegt
       // unter dem Fold). KEIN inline-Transform, sonst verdoppelt GSAP das „100%".
       const ov = overlay.current;
       if (magentaExit && ov && !window.matchMedia("(min-width: 768px)").matches) {
-        gsap.set(ov, { yPercent: 100, borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+        gsap.set(ov, { yPercent: 100, borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw" });
         const tl = gsap.timeline({
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
         });
@@ -100,9 +115,9 @@ export function AlgarveAboutIntro({
         className="flex items-center justify-center"
         style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}
       >
-        <div style={{ padding: "2vw" }}>
+        <div data-intro-content style={{ padding: "2vw" }}>
           <p
-            className="m-0 mx-auto text-center text-black max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
+            className="m-0 mx-auto text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
             style={{ ...H4, maxWidth: "55.28vw" }}
           >
             {words.map((w, i) => (

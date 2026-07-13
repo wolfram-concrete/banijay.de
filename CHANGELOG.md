@@ -3,6 +3,72 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [redesign-v2] — Branch (Preview) — 2026-07-13
+
+### Moody-Inversion der ganzen Site (Task #69, 10.–13.07.)
+- **Globaler MoodBackdrop** (`MoodBackdrop.tsx`, in `(frontend)/layout.tsx`): jede Seite
+  trägt denselben dark/moody Grund (Schwarz → Brombeere → Magenta-dunkel → Indigo) mit
+  spürbarer Varianz — ein wandernder Magenta-Haupt-Glow (scroll-getrieben), ein Gegen-Glow
+  in Gegenphase und ein zeitbasiertes „Atmen". Das Atmen läuft als CSS-Animation auf einer
+  INNEREN Fläche (getrennt vom Scroll-transform der äußeren Ebene) — sonst flackerte der
+  Glow oben rechts beim Scrollen.
+- **~35 Module invertiert:** transparente Sections auf dem MoodBackdrop, Paper-Typo,
+  `.glass-panel`-Milchglas (Magenta-Alpha + Blur + Licht-Aura). H1 site-weit in **Anton**.
+- **Heike-Regel „keine abgerundeten Ecken":** Container eckig; nur CTAs/Chips/Formfelder
+  max. 8px, Badges 4px. News-Modul-Bildcontainer entrundet; ContactForm-Select `colorScheme`
+  dark; Footer site-weit invertiert (Magenta-Card, Ink-Elemente).
+
+### Neue Home-Intro-Animation (13.07.)
+- **IntroOverlay** (`IntroOverlay.tsx`): Sternenstaub entsteht zentral → weißes B baut sich
+  auf → Video-Reveal → B-Zoom öffnet sich zum Brennglas-Rahmen → Headline skaliert auf,
+  Header blendet mit dem **Magenta-B als Menü-Element** ein (ersetzt „MENU"). Scroll während
+  des Intros gesperrt, `prefers-reduced-motion` überspringt.
+
+### Brennglas-Hero als Full-Size (13.07.)
+- Das Brennglas IST die Hero-Form (`AlgarveHome.tsx`): rotes Glas-B als Still-Master, WebGL-
+  Linse rendert innen scharf mit Kanten-Brechung, außen blurry, perspektivischer Maus-Versatz.
+  Motiv-Fokus oben, unten Dunkel-Fade. Headline **„WE ARE BANIJAY"** in Versalien, gelayert
+  (Wort-für-Wort aus Masken), weiter oben platziert.
+- **Scroll-geformte radiale Kurve:** der Hero startet unten GERADE; beim Scrollen formt sich
+  die 50vw-Pill-Kurve (ein Fortschrittswert steuert Section-Radius, Zirkel-Kontur und den
+  Linsen-Pill-Radius im Shader). `overflow: hidden` clippt exakt entlang der Rundung.
+- **Farbfächer-Übergang** in die Statement-Section: aus der Kurve fächern konzentrische
+  Farb-Layer (Career-Hero-Palette) heraus, der Magenta-Layer füllt in die Statement-Fläche;
+  per Scroll löst sich das Magenta auf und der Moody-Grund + zentraler Sternstaub erscheinen.
+- Logo links oben site-weit ausgeblendet — nur bei geöffneter Navi (schwarz) sichtbar.
+
+### Home-Struktur & Exchange-Strecke (13.07.)
+- Sticky-Grid-„Entertainment-Portfolio" (400vh) entfernt (#53); Statement folgt direkt.
+- **Exchange-Choreografie:** Statement blendet aus → gepinnte **Ökosystem-Section**
+  (`EcosystemSection.tsx`, Atom-Orbit-Grafik mit gekippten Ellipsen, wabernden Karten-Balken)
+  baut sich auf und tauscht sich an gleicher Stelle gegen die Headline „Ein System mit über
+  40 Companies" → normaler Scroll zur Liste. Ein sticky **DustStage**-Sternstaub trägt die
+  ganze Strecke (wächst zentral auf, bleibt stehen). Variante B „Faser-Globus"
+  (`EcosystemBurst.tsx`) als Looktest unter `/looktest-ecosystem-b` gesichert.
+
+### Companies-Directory + Flip-Lightbox (Task #60/#61, 13.07.)
+- **Neue Datenbasis** `companiesDirectory.ts`: 40 Einträge — 30 Logo-Companies (Pipeline
+  PDF→getrimmtes Weiß-PNG in `public/company-logos`) + All3Media (filmpool, Magic Connection,
+  South & Browse) + 10 Grafik-Platzhalter. Brainpool-Companies auf Kundenwunsch entfernt.
+- **Companies-Bento** rubrizierbar nach Ökosystem-Kategorien (Filter-Chips), Kacheln mit
+  echten Weiß-Logos + exemplarischem Bewegtbild (Trailer-Loops). Klick → **Lightbox als
+  Scroll-Flip-Stack** in der Flip-Card-Optik der früheren Kompetenzfelder (Fullsize-Video im
+  Background, Durchblättern per Scroll/Pfeil, X/Esc schließt). Das eigenständige
+  ServicesStack-Modul ist entfallen.
+
+### Editorial-Section „Eine neue Ära" (Task #56, 13.07.)
+- `Editorial.tsx` (BYQ-Artikel-Layout, dark/eckig): Marcus-Porträt links hochkant (sticky),
+  Text rechts, helles Milchglas-Panel mit Ink-Typo, endlose Bild-Marquee (Cologne Comedy
+  Festival), Sternstaub rechts oben, spektakuläre Entrance-Choreografie (Zeilen-Masken,
+  „&"-Pop, Bild-Wipe, gestaffelte Blöcke). Inhalt: Historie → Fusion Banijay Entertainment +
+  All3Media (echte Fakten/Zitate; Wording-Entwurf bis Heike, #58).
+
+### Weitere (13.07.)
+- Companies-Headline & „Ein Dach. Viele Handschriften." als AnimatedHeading mit zentralem
+  Sternstaub hinter der Konvergenz. Team-Headline mittelachsig + mehr Luft. Divider-Linie
+  auf der Home entfernt. Team-Überblend-Video getauscht. Hydration-Fixe (Float-Präzision),
+  toter Code (`HomeSections.tsx`) gelöscht.
+
 ## [redesign-v2] — Branch (Preview) — 2026-07-08
 
 ### News-Page: gemischter News-/Social-Feed + geschärfte Rubriken (08.07.)

@@ -19,11 +19,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 
 const FIELD =
-  "w-full mb-0 pt-[0.56vw] pb-[0.56vw] pr-[1.67vw] pl-0 border-0 border-b border-[rgba(0,0,0,0.16)] bg-transparent text-[#0e0d0b] leading-[135%] font-normal outline-none transition-colors focus:border-[#0e0d0b] placeholder:text-[rgba(0,0,0,0.32)] max-[991px]:text-[2.286vw] max-[767px]:text-[3.6vw] max-[767px]:pt-[2.4vw] max-[767px]:pb-[2.4vw] max-[767px]:pr-[5.33vw]";
+  "w-full mb-0 pt-[0.56vw] pb-[0.56vw] px-[0.83vw] rounded-[8px] border border-[rgba(248,247,243,0.16)] bg-[rgba(255,255,255,0.06)] text-[#f8f7f3] leading-[135%] font-normal outline-none transition-colors focus:border-[rgba(248,247,243,0.55)] placeholder:text-[rgba(248,247,243,0.4)] max-[991px]:text-[2.286vw] max-[767px]:text-[3.6vw] max-[767px]:pt-[2.4vw] max-[767px]:pb-[2.4vw] max-[767px]:px-[3vw]";
 const INPUT = `${FIELD} h-[3.33vw] text-[1.39vw] max-[991px]:h-[5.714vw] max-[767px]:h-[9.6vw]`;
 const TEXTAREA = `${FIELD} h-[8.33vw] resize-none text-[1.39vw] max-[767px]:h-[30vw]`;
 const LABEL =
-  "uppercase font-bold tracking-[0.052vw] text-[rgba(0,0,0,0.64)] text-[1vw] leading-[100%] max-[991px]:text-[1.4vw] max-[767px]:text-[3vw]";
+  "uppercase font-bold tracking-[0.052vw] text-[rgba(248,247,243,0.64)] text-[1vw] leading-[100%] max-[991px]:text-[1.4vw] max-[767px]:text-[3vw]";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -42,8 +42,8 @@ function SubmitButton() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ fontFamily: SHARP }}
-      className={`cursor-pointer rounded-[2.22vw] border border-[#0e0d0b] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:rounded-[8.53vw] max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
-        hovered ? "bg-[#0e0d0b] text-[#f8f7f3]" : "bg-[#f8f7f3] text-[#0e0d0b]"
+      className={`cursor-pointer rounded-[8px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
+        hovered ? "bg-[#f8f7f3] text-[#0a0208]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >
       Nachricht senden
@@ -93,7 +93,7 @@ export function AlgarveContactForm({
   };
 
   return (
-    <section ref={root} style={{ fontFamily: SHARP }} className="bg-[#f8f7f3] py-[8.33vw] max-[767px]:py-[20vw]">
+    <section ref={root} style={{ fontFamily: SHARP }} className="bg-transparent py-[8.33vw] max-[767px]:py-[20vw]">
       {/* Voll-breiter Container (px-[2vw]) wie im Original-Template — KEIN maxWidth-Cap.
           Der Cap deckelte die Breite, während die vw-Schriften mit dem Viewport weiter
           wuchsen → auf breiten Screens zu schmale Felder + abgeschnittene Placeholder. */}
@@ -105,7 +105,7 @@ export function AlgarveContactForm({
           <div className="flex flex-col items-start md:sticky" style={{ top: "8rem", gap: "1.67vw" }}>
             <h2
               className="m-0 flex flex-wrap max-[767px]:!text-[9vw]"
-              style={{ fontFamily: SHARP, fontSize: "3.33vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.1vw", color: "#0e0d0b", columnGap: "0.4ch" }}
+              style={{ fontFamily: SHARP, fontSize: "3.33vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.1vw", color: "#f8f7f3", columnGap: "0.4ch" }}
             >
               {headline.split(" ").map((w, i) => (
                 <span key={i} data-cf-word className="inline-block" style={{ willChange: "transform, opacity" }}>
@@ -117,7 +117,7 @@ export function AlgarveContactForm({
               <p
                 data-cf-fade
                 className="m-0 max-w-[30vw] max-[767px]:!mt-[2vw] max-[767px]:!max-w-full max-[767px]:!text-[4.4vw]"
-                style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "142%", color: "rgba(0,0,0,0.58)" }}
+                style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "142%", color: "rgba(248,247,243,0.58)" }}
               >
                 {copy}
               </p>
@@ -129,7 +129,7 @@ export function AlgarveContactForm({
             {sent ? (
               <div
                 role="status"
-                className="rounded-[1.11vw] bg-[#0e0d0b] p-6 text-center text-[#f8f7f3] max-[767px]:rounded-[4.27vw] max-[767px]:p-[6vw] max-[767px]:text-[4vw]"
+                className="glass-panel p-6 text-center text-[#f8f7f3] max-[767px]:p-[6vw] max-[767px]:text-[4vw]"
               >
                 Danke! Deine Nachricht ist eingegangen — wir melden uns.
               </div>
@@ -157,11 +157,19 @@ export function AlgarveContactForm({
 
                 {/* Anliegen (3 Optionen) */}
                 <Field label="Worum geht’s?">
-                  <select className={`${INPUT} cursor-pointer`} style={{ fontFamily: SHARP }} name="Topic" defaultValue="">
-                    <option value="">Bitte wählen …</option>
-                    <option value="format">Formatidee / Produktion</option>
-                    <option value="partner">Partnerschaft</option>
-                    <option value="other">Sonstiges</option>
+                  {/* colorScheme dark: das native Dropdown rendert dunkel statt
+                      weiß-auf-weiß; Options-BG als Fallback für Browser, die
+                      option-Styles erlauben. */}
+                  <select
+                    className={`${INPUT} cursor-pointer`}
+                    style={{ fontFamily: SHARP, colorScheme: "dark" }}
+                    name="Topic"
+                    defaultValue=""
+                  >
+                    <option value="" style={{ background: "#1a0612", color: "#f8f7f3" }}>Bitte wählen …</option>
+                    <option value="format" style={{ background: "#1a0612", color: "#f8f7f3" }}>Formatidee / Produktion</option>
+                    <option value="partner" style={{ background: "#1a0612", color: "#f8f7f3" }}>Partnerschaft</option>
+                    <option value="other" style={{ background: "#1a0612", color: "#f8f7f3" }}>Sonstiges</option>
                   </select>
                 </Field>
 

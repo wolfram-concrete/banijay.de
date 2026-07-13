@@ -114,7 +114,7 @@ export function AlgarveWorldNetwork() {
       // 1) Aufstieg: radial gekurvte Oberkante (rechts stärker → b-Körper) faltet
       //    beim Hochsteigen auf. Der Content ist dabei noch verborgen (leerer
       //    Magenta-Grund schiebt sich versetzt über das Statement).
-      gsap.set(sec, { borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+      gsap.set(sec, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw" });
       gsap.to(sec, {
         borderTopLeftRadius: "0vw",
         borderTopRightRadius: "0vw",
@@ -238,7 +238,7 @@ export function AlgarveWorldNetwork() {
                 href={world.cta.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
+                className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
                 style={{ border: "0.12vw solid #0e0d0b", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500, marginTop: "0.4vw" }}
               >
                 {world.cta.text}
@@ -250,7 +250,7 @@ export function AlgarveWorldNetwork() {
             <div
               data-wn-reveal
               className="overflow-clip max-[767px]:!aspect-[16/10] max-[767px]:!h-auto"
-              style={{ borderRadius: "0.8vw", height: "clamp(300px, 42vh, 480px)" }}
+              style={{ height: "clamp(300px, 42vh, 480px)" }}
             >
               <video
                 autoPlay
@@ -285,7 +285,7 @@ export function AlgarveWorldNetwork() {
                   draggable={false}
                   aria-label={`${h.name} öffnen`}
                   className="group shrink-0 snap-start overflow-clip max-[767px]:!h-[27vw] max-[767px]:!w-[27vw]"
-                  style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE, borderRadius: "0.8vw" }}
+                  style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE }}
                 >
                   <img
                     src={h.image}
@@ -310,7 +310,7 @@ export function AlgarveWorldNetwork() {
                 href={w.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-[0.4vw] whitespace-nowrap rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[rgba(14,13,11,0.08)] max-[767px]:!px-[4vw] max-[767px]:!py-[2.5vw] max-[767px]:!text-[3.2vw]"
+                className="inline-flex items-center gap-[0.4vw] whitespace-nowrap rounded-[8px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[rgba(14,13,11,0.08)] max-[767px]:!px-[4vw] max-[767px]:!py-[2.5vw] max-[767px]:!text-[3.2vw]"
                 style={{ border: "0.1vw solid rgba(14,13,11,0.3)", padding: "0.6vw 1.2vw", fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 500 }}
               >
                 {w.label}

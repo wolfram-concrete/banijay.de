@@ -101,7 +101,7 @@ export function AlgarveCareerRoleStack() {
     <section
       ref={root}
       className="overflow-clip"
-      style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
+      style={{ background: "transparent", paddingTop: "5.56vw", paddingBottom: "8.33vw" }}
     >
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* Intro zur Rollenwelt — NUR EIN Copytext (keine eigene Headline; die
@@ -110,7 +110,7 @@ export function AlgarveCareerRoleStack() {
         <div data-roleintro className="max-w-[52vw] max-[767px]:!max-w-full" style={{ marginBottom: "4.5vw" }}>
           {/* Gleiche Formatierung wie der About-Copytext (ProofVideo `proofText`):
               1.9vw / mobil 5vw, line-height 132 %, weight 500, letter-spacing -0.03vw. */}
-          <p className="m-0 flex flex-wrap max-[767px]:!text-[5vw]" style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, letterSpacing: "-0.03vw", color: "#0e0d0b", columnGap: "0.4ch" }}>
+          <p className="m-0 flex flex-wrap max-[767px]:!text-[5vw]" style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, letterSpacing: "-0.03vw", color: "#f8f7f3", columnGap: "0.4ch" }}>
             {CAREER.roleIntro.text.split(" ").map((w, i) => (
               <span key={`t${i}`} data-roleintro-word className="inline-block" style={{ willChange: "transform, opacity" }}>
                 {w}
@@ -130,7 +130,6 @@ export function AlgarveCareerRoleStack() {
                 top: "1.39vw",
                 height: "90vh",
                 padding: "4.44vw",
-                borderRadius: "1.67vw",
                 backgroundColor: card.bg,
                 color: card.fg,
                 transformOrigin: "50% 0",
@@ -169,7 +168,7 @@ export function AlgarveCareerRoleStack() {
               {/* Bildmodul — Desktop: schwebend rechts unten. Mobile: in-flow (order-2),
                   full-width, direkt unter der Headline (Home-ServicesStack-Optik). */}
               <div
-                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[6vw] max-[767px]:!h-[74vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none max-[767px]:!rounded-[4vw]"
+                className="absolute overflow-hidden max-[767px]:!static max-[767px]:!order-2 max-[767px]:!mt-[6vw] max-[767px]:!h-[74vw] max-[767px]:!w-full max-[767px]:!max-h-none max-[767px]:!max-w-full max-[767px]:!inset-auto max-[767px]:!transform-none"
                 style={{
                   zIndex: 3,
                   width: "26vw",
@@ -178,7 +177,6 @@ export function AlgarveCareerRoleStack() {
                   maxHeight: "560px",
                   inset: "auto 4.44vw 4.44vw auto",
                   transform: card.rotate,
-                  borderRadius: "1.11vw",
                   boxShadow: "0 1.2vw 3vw -0.6vw rgba(0,0,0,0.35)",
                 }}
               >

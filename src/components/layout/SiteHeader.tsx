@@ -288,7 +288,7 @@ export function SiteHeader() {
         // Geschlossen liegt die Nav UNTER dem Footer (z-45 < Footer z-50) — am Seiten-
         // ende verschwindet die Top-Nav also hinter dem Footer (der hat eigene Links).
         // Sobald das Menü geöffnet wird, springt die Nav samt Overlay über alles (z-201).
-        className={`fixed inset-x-0 top-0 bg-transparent ${open ? "z-[201]" : "z-[45]"}`}
+        className={`site-header-root fixed inset-x-0 top-0 bg-transparent ${open ? "z-[201]" : "z-[45]"}`}
         style={{ paddingTop: "1.5vw", paddingBottom: "1.5vw" }}
       >
         <div className="flex items-center justify-between max-[767px]:!px-[4vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
@@ -307,13 +307,19 @@ export function SiteHeader() {
             }}
             aria-label="Banijay Germany — Startseite"
             className="flex items-center"
+            // Logo-Regel (Wolfram 13.07.): das Banijay-Germany-Logo ist auf ALLEN
+            // Seiten ausgeblendet — NUR bei geöffneter Navi steht es (schwarz)
+            // links oben. Bleibt im Flow, damit das Menü-B rechts sitzt.
+            style={{ visibility: open ? "visible" : "hidden", pointerEvents: open ? "auto" : "none" }}
+            tabIndex={open ? 0 : -1}
+            aria-hidden={!open}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/banijay-logo.png"
               alt="Banijay Germany"
               className="h-[2.625rem] w-auto origin-left transition-[filter] duration-300"
-              style={{ filter: blackLogo ? "brightness(0)" : onDark ? "brightness(0) invert(1)" : undefined }}
+              style={{ filter: "brightness(0)" }}
             />
           </Link>
 
@@ -325,15 +331,14 @@ export function SiteHeader() {
               aria-label={open ? "Menü schließen" : "Menü öffnen"}
               // Mobile: 25 % kleiner (3.5rem → 2.625rem) — auf schmalen Screens
               // war die Wortmarke zu groß.
-              className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[12vw]"
+              className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[9vw]"
               style={{
-                // Kein Pill mehr — reine Wortmarke rechtsbündig, in Magenta wie das Logo.
-                // Über Magenta-Flächen bzw. im offenen Overlay invertiert sie auf Ink.
-                // Maximiert: Versalhöhe ≈ Logo-Höhe (sitzt an Ober-, schließt an
-                // Unterlänge des Banijay-Logos). Logo = 2.625rem → fontSize ~3.5rem.
+                // Intro-Umbau (13.07.): statt der „MENU"-Wortmarke steht hier das
+                // MAGENTA B als Burger-Element (erscheint mit dem Intro-Finale,
+                // via html[data-intro] bis dahin verborgen). Offen → „Close".
                 fontFamily: "var(--font-sharp), sans-serif",
                 fontWeight: 500,
-                fontSize: "3.5rem",
+                fontSize: "2.4rem",
                 lineHeight: 0.86,
                 letterSpacing: "-0.01em",
                 color: open || overlayPresent || onMagenta ? INK : MAGENTA,
@@ -341,7 +346,18 @@ export function SiteHeader() {
                 padding: 0,
               }}
             >
-              {open ? "Close" : "MENU"}
+              {open ? (
+                "Close"
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src="/brand/banijay-sign-magenta.svg"
+                  alt=""
+                  className="h-[2.625rem] w-auto transition-[filter] duration-300"
+                  // Auf Magenta-Flächen invertiert das B auf Ink (wie vorher die Wortmarke)
+                  style={{ filter: overlayPresent || onMagenta ? "brightness(0)" : undefined }}
+                />
+              )}
             </button>
 
             {/* Eingerastetes Seiten-Label — gleiche Wortmarke, regular, rechtsbündig

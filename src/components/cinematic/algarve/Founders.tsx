@@ -24,7 +24,7 @@ const NAME = {
   letterSpacing: "-0.01em",
   lineHeight: "118%",
 } as const;
-const ROLE = { color: "#000000a3", fontSize: "clamp(0.7rem, 0.8vw, 0.95rem)", lineHeight: "122%" } as const;
+const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 0.95rem)", lineHeight: "122%" } as const;
 
 // Fokuspunkt je Portrait (object-position), damit die Gesichter im Crop nie
 // abgeschnitten werden — Portraits mit Kopf weit oben brauchen einen stärkeren
@@ -161,14 +161,23 @@ export function AlgarveFounders() {
   );
 
   return (
-    <section ref={root} style={{ background: "#f8f7f3" }}>
+    <section ref={root} style={{ background: "transparent" }}>
       {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
       <div data-team-stage className="relative max-[767px]:hidden" style={{ height: "100vh", overflow: "hidden" }}>
         <div className="flex h-full w-full flex-col" style={{ padding: "6vw 2vw 3vw" }}>
-          {/* TEAM — eigenständige Headline über der Portrait-Animation (z-3) */}
+          {/* TEAM — MITTELACHSIG (13.07.) + mehr Luft zum Portrait-Aufbau */}
           <h2
-            className="m-0 uppercase text-black"
-            style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.22vw", fontWeight: 500, letterSpacing: "-0.139vw", lineHeight: 0.95, position: "relative", zIndex: 3 }}
+            className="m-0 text-center uppercase text-[#f8f7f3]"
+            style={{
+              fontFamily: "var(--font-sharp), sans-serif",
+              fontSize: "7.22vw",
+              fontWeight: 500,
+              letterSpacing: "-0.139vw",
+              lineHeight: 0.95,
+              position: "relative",
+              zIndex: 3,
+              marginBottom: "3.5vw",
+            }}
           >
             Team
           </h2>
@@ -185,11 +194,11 @@ export function AlgarveFounders() {
           >
             {TEAM.map((p) => (
               <div key={p.name} data-team-tile className="flex min-h-0 flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
-                <div className="min-h-0 flex-1 overflow-clip" style={{ borderRadius: "0.9vw", background: "#e8e6df" }}>
+                <div className="min-h-0 flex-1 overflow-clip" style={{ background: "rgba(255,255,255,0.08)" }}>
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }} />
                 </div>
                 <div data-team-meta className="flex flex-col" style={{ gap: "0.1vw", willChange: "transform, opacity" }}>
-                  <div className="text-black" style={NAME}>
+                  <div className="text-[#f8f7f3]" style={NAME}>
                     {p.name}
                   </div>
                   <div style={ROLE}>{p.role}</div>
@@ -205,7 +214,7 @@ export function AlgarveFounders() {
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        <h2 className="m-0 mb-8 uppercase text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
+        <h2 className="m-0 mb-8 uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
           Team
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
@@ -221,7 +230,7 @@ export function AlgarveFounders() {
               >
                 <div
                   className="overflow-clip"
-                  style={{ borderRadius: "4vw", aspectRatio: feature ? "16 / 10" : "4 / 5", background: "#e8e6df" }}
+                  style={{ aspectRatio: feature ? "16 / 10" : "4 / 5", background: "rgba(255,255,255,0.08)" }}
                 >
                   <img
                     src={p.img}
@@ -231,10 +240,10 @@ export function AlgarveFounders() {
                   />
                 </div>
                 <div>
-                  <div className="text-black" style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 500, fontSize: feature ? "5vw" : "3.6vw", lineHeight: "120%" }}>
+                  <div className="text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontWeight: 500, fontSize: feature ? "5vw" : "3.6vw", lineHeight: "120%" }}>
                     {p.name}
                   </div>
-                  <div style={{ color: "#000000a3", fontSize: feature ? "3.6vw" : "3vw", lineHeight: "125%" }}>{p.role}</div>
+                  <div style={{ color: "rgba(248,247,243,0.64)", fontSize: feature ? "3.6vw" : "3vw", lineHeight: "125%" }}>{p.role}</div>
                 </div>
               </div>
             );

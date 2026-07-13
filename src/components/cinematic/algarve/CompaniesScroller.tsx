@@ -379,7 +379,7 @@ export function AlgarveCompaniesScroller() {
       // Aufsteigen auffaltet. Keine zweite Blende mehr, die sich überlagert.
       const sec = root.current;
       if (sec) {
-        gsap.set(sec, { borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+        gsap.set(sec, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw" });
         gsap.to(sec, {
           borderTopLeftRadius: "0vw",
           borderTopRightRadius: "0vw",
@@ -513,13 +513,12 @@ export function AlgarveCompaniesScroller() {
                   style={{
                     width: "100%",
                     height: "100%",
-                    borderRadius: "1.11vw",
                     background: "#fff",
                     boxShadow: "0 1px 3px 0 rgba(248,247,243,0.04), 0 2px 30px 0 rgba(0,0,0,0.08)",
                   }}
                 >
                   <div className="relative flex flex-1 flex-col items-center justify-end overflow-clip">
-                    <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ borderRadius: "0.3vw", objectPosition: card.objectPosition }} />
+                    <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: card.objectPosition }} />
                     <div
                       className="absolute flex w-full flex-col items-center justify-end text-center"
                       style={{
@@ -563,7 +562,7 @@ export function AlgarveCompaniesScroller() {
                 data-mcard
                 {...(card.href ? { href: card.href, target: "_blank", rel: "noreferrer" } : {})}
                 className="relative flex shrink-0 flex-col overflow-clip no-underline"
-                style={{ width: "74vw", height: "104vw", borderRadius: "5vw", background: "#fff", boxShadow: "0 3vw 8vw -2vw rgba(0,0,0,0.35)", willChange: "transform" }}
+                style={{ width: "74vw", height: "104vw", background: "#fff", boxShadow: "0 3vw 8vw -2vw rgba(0,0,0,0.35)", willChange: "transform" }}
               >
                 <img src={card.img} alt={card.name} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: card.objectPosition }} />
                 {/* Caption mit seitlichem Padding, damit lange Namen (z. B. „Endemol

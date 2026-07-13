@@ -17,7 +17,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // (Die frühere bunte Standorte-/Fächer-Stapel-Lösung wurde verworfen.)
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INK = "#0e0d0b";
 const PAPER = "#f8f7f3";
 const MAGENTA = "#ff4370";
 
@@ -65,7 +64,7 @@ export function AlgarveCareerTomorrowStack() {
   );
 
   return (
-    <section ref={root} className="overflow-clip" style={{ background: PAPER, paddingTop: "8vw", paddingBottom: "8vw" }}>
+    <section ref={root} className="overflow-clip" style={{ background: "transparent", paddingTop: "8vw", paddingBottom: "8vw" }}>
       <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
         <div className="grid items-center md:grid-cols-[1.05fr_0.95fr] max-[767px]:!grid-cols-1" style={{ columnGap: "5vw", rowGap: "8vw" }}>
           {/* ── Text-Spalte ────────────────────────────────────────────────── */}
@@ -80,21 +79,21 @@ export function AlgarveCareerTomorrowStack() {
             <h2
               data-tm-item
               className="m-0 max-[767px]:!text-[8vw]"
-              style={{ fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "106%", fontWeight: 500, letterSpacing: "-0.1vw", color: INK }}
+              style={{ fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "106%", fontWeight: 500, letterSpacing: "-0.1vw", color: PAPER }}
             >
               {tomorrow.headline}
             </h2>
             {/* Mobil: Bild oberhalb der Copy (Desktop nutzt das Bild in der rechten Spalte). */}
             <div
               data-tm-item
-              className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block max-[767px]:!aspect-[4/3] max-[767px]:!rounded-[3vw]"
+              className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block max-[767px]:!aspect-[4/3]"
             >
               <img src={tomorrow.image} alt={tomorrow.headline} className="h-full w-full object-cover" />
             </div>
             <p
               data-tm-item
               className="m-0 max-w-[38vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
-              style={{ fontSize: "1.25vw", lineHeight: "150%", color: "rgba(14,13,11,0.66)" }}
+              style={{ fontSize: "1.25vw", lineHeight: "150%", color: "rgba(248,247,243,0.66)" }}
             >
               {tomorrow.text}
             </p>
@@ -103,7 +102,7 @@ export function AlgarveCareerTomorrowStack() {
               href={tomorrow.cta.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-2 rounded-full bg-[#0e0d0b] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+              className="inline-flex w-fit items-center gap-2 rounded-[8px] bg-[#0e0d0b] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
               style={{ padding: "0.95vw 1.9vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500, marginTop: "0.8vw" }}
             >
               {tomorrow.cta.text}
@@ -113,7 +112,7 @@ export function AlgarveCareerTomorrowStack() {
 
           {/* ── Bild rechts (mit Parallax; höher als der Container) — nur Desktop.
               Mobil sitzt das Bild oberhalb der Copy (siehe Textspalte). ─────── */}
-          <div className="relative overflow-clip max-[767px]:!hidden" style={{ borderRadius: "1.4vw", aspectRatio: "5 / 6" }}>
+          <div className="relative overflow-clip max-[767px]:!hidden" style={{ aspectRatio: "5 / 6" }}>
             <img
               ref={img}
               src={tomorrow.image}

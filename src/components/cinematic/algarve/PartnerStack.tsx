@@ -60,7 +60,7 @@ export function AlgarvePartnerStack() {
         // die volle Magenta-Fläche schiebt sich mit -100vh-Overlap über das (gepinnte,
         // still stehende) Team; die gerundete Oberkante (rechts stärker → b-Körper)
         // faltet beim Aufsteigen auf.
-        gsap.set(sec, { borderTopLeftRadius: "12vw", borderTopRightRadius: "42vw" });
+        gsap.set(sec, { borderTopLeftRadius: "0vw", borderTopRightRadius: "0vw" });
         gsap.to(sec, {
           borderTopLeftRadius: "0vw",
           borderTopRightRadius: "0vw",
@@ -161,7 +161,7 @@ export function AlgarvePartnerStack() {
           <a
             data-partner-reveal
             href={partnership.cta.href}
-            className="inline-flex w-fit items-center gap-2 rounded-full text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+            className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
             style={{ border: "0.12vw solid #0e0d0b", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.1vw", fontWeight: 500, marginTop: "1vw" }}
           >
             {partnership.cta.text}
@@ -186,7 +186,6 @@ export function AlgarvePartnerStack() {
                 top: CARD_TOPS[i],
                 height: "70vh",
                 marginBottom: i === 0 ? "2vw" : `${-2.8 * i}vw`,
-                borderRadius: "1vw",
                 transformOrigin: "50% 0%",
                 willChange: "transform, filter",
               }}
@@ -200,7 +199,7 @@ export function AlgarvePartnerStack() {
 
               {/* Textkachel unten links — leicht transparentes Ink, kein Glass-Look */}
               <div
-                className="absolute max-w-[38vw] rounded-[8px] max-[767px]:!left-[4vw] max-[767px]:!right-[4vw] max-[767px]:!bottom-[4vw] max-[767px]:!max-w-none max-[767px]:!p-[5vw]"
+                className="absolute max-w-[38vw] max-[767px]:!left-[4vw] max-[767px]:!right-[4vw] max-[767px]:!bottom-[4vw] max-[767px]:!max-w-none max-[767px]:!p-[5vw]"
                 style={{ left: "2vw", bottom: "2vw", padding: "1.4vw", background: TILE_COLORS[i] ?? "rgba(14,13,11,0.72)", color: PAPER, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
               >
                 <span

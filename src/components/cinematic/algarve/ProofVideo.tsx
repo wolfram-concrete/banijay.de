@@ -78,7 +78,7 @@ export function AlgarveProofVideo({
 
       // Startlage: Video liegt exakt auf der Quell-Kachel und ist NOCH unsichtbar
       // (die graue Kachel ist voll zu sehen). Erst nach Scroll-In layert es ein.
-      gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 18), autoAlpha: 0 });
+      gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 0), autoAlpha: 0 });
       gsap.set(words, { yPercent: 110, opacity: 0 });
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -91,7 +91,7 @@ export function AlgarveProofVideo({
       // Bei jedem Refresh (Resize/Layout) neu vermessen.
       const onRefresh = () => {
         v = measure();
-        gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 18) });
+        gsap.set(overlayEl, { clipPath: clip(v.top, v.right, v.bottom, v.left, 0) });
       };
       ScrollTrigger.addEventListener("refreshInit", onRefresh);
 
@@ -109,9 +109,9 @@ export function AlgarveProofVideo({
       // A) Das Video layert langsam in der Quell-Kachel ein (fade-in an Ort/Stelle).
       tl.to(overlayEl, { autoAlpha: 1, ease: "power1.out", duration: 0.12 }, 0);
       // B) Aus der Kachel nach OBEN + UNTEN aufziehen → volle Höhe (radiale Kanten).
-      tl.to(overlayEl, { clipPath: clip(0, v.right, 0, v.left, 18), ease: "power2.inOut", duration: 0.34 }, 0.12);
+      tl.to(overlayEl, { clipPath: clip(0, v.right, 0, v.left, 0), ease: "power2.inOut", duration: 0.34 }, 0.12);
       // C) Symmetrisch nach LINKS + RECHTS aufziehen → volle Breite.
-      tl.to(overlayEl, { clipPath: clip(0, 0, 0, 0, 18), ease: "power2.inOut", duration: 0.3 }, 0.48);
+      tl.to(overlayEl, { clipPath: clip(0, 0, 0, 0, 0), ease: "power2.inOut", duration: 0.3 }, 0.48);
       // D) Radien schärfen → full-size.
       tl.to(overlayEl, { clipPath: clip(0, 0, 0, 0, 0), ease: "power2.inOut", duration: 0.12 }, 0.78);
       // E) Erst full-size das Statement Wort für Wort zentral aufs Video.
@@ -131,13 +131,15 @@ export function AlgarveProofVideo({
     <div className="grid grid-cols-2 gap-[1vw] md:grid-cols-3 max-[767px]:!gap-[3vw]">
       {nonAbout.map((s, i) => {
         const accent = i === 0;
-        const bg = accent ? ACCENT : "rgba(14,13,11,0.05)";
+        // V2-Mood: Nicht-Akzent-Kacheln als helles Milchglas auf dunklem Backdrop;
+        // die Magenta-Akzent-Kachel behält Ink-Typo (bewusster Vibrant-Moment).
+        const bg = accent ? ACCENT : "rgba(255,255,255,0.06)";
         return (
           <div
             key={s.label}
             data-pv-source={!accent && i === nonAbout.length - 1 ? true : undefined}
-            className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!rounded-[4vw] max-[767px]:!p-[5vw] ${accent ? "col-span-2" : ""}`}
-            style={{ background: bg, color: INK, borderRadius: "1.11vw", padding: "1.6vw", minHeight: "9vw" }}
+            className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!p-[5vw] ${accent ? "col-span-2" : ""}`}
+            style={{ background: bg, color: accent ? INK : PAPER, padding: "1.6vw", minHeight: "9vw" }}
           >
             <span
               className="max-[767px]:!text-[10.5vw]"
@@ -157,7 +159,7 @@ export function AlgarveProofVideo({
   return (
     <>
       {/* ── Gepinnte Bühne mit clip-path-Aufskalierung (Desktop + Mobile) ── */}
-      <section ref={root} className="relative" style={{ height: "300vh", background: PAPER }}>
+      <section ref={root} className="relative" style={{ height: "300vh", background: "transparent" }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
           <div
             className="flex h-full flex-col max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
@@ -165,7 +167,7 @@ export function AlgarveProofVideo({
           >
             <p
               className="md:max-w-[52vw] max-[767px]:!text-[5vw]"
-              style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: INK, letterSpacing: "-0.03vw", margin: 0 }}
+              style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: PAPER, letterSpacing: "-0.03vw", margin: 0 }}
             >
               {proofText}
             </p>

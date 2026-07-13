@@ -147,7 +147,7 @@ export function AlgarveTestimonials() {
   };
 
   return (
-    <section ref={root} style={{ background: "#f8f7f3", paddingBottom: "5.56vw" }}>
+    <section ref={root} style={{ background: "transparent", paddingBottom: "5.56vw" }}>
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* Dunkles Panel — Hintergrund: leuchtendes Magenta-„b" (b-Glow), per dunklem
             Verlaufs-Scrim gedämpft, damit die Grayscale-Karten + der weiße Text lesbar
@@ -157,7 +157,6 @@ export function AlgarveTestimonials() {
           style={{
             paddingTop: "11.11vw",
             paddingBottom: "8.33vw",
-            borderRadius: "1.67vw",
             backgroundColor: "#0a0a0a",
             backgroundImage:
               "linear-gradient(180deg, rgba(10,10,10,0.42) 0%, rgba(10,10,10,0.58) 46%, rgba(10,10,10,0.86) 100%), url(/brand/testimonials-b-glow.jpg)",
@@ -180,7 +179,7 @@ export function AlgarveTestimonials() {
                 data-tcard
                 onMouseEnter={() => applyHover(i)}
                 className="relative flex-1 cursor-pointer overflow-hidden"
-                style={{ height: "40vh", borderRadius: "12px", willChange: "transform" }}
+                style={{ height: "40vh", willChange: "transform" }}
               >
                 <img src={c.url} alt={c.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
                 <div data-ov className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.64)" }} />
@@ -223,7 +222,7 @@ export function AlgarveTestimonials() {
           <div className="hidden flex-col gap-[8vw] max-[991px]:flex" style={{ paddingLeft: "5vw", paddingRight: "5vw" }}>
             {STATEMENTS.map((s, i) => (
               <figure key={i} data-tmob className="m-0 grid items-start gap-[4vw]" style={{ gridTemplateColumns: "4fr 8fr" }}>
-                <div className="overflow-hidden" style={{ borderRadius: "3vw", aspectRatio: "4 / 5" }}>
+                <div className="overflow-hidden" style={{ aspectRatio: "4 / 5" }}>
                   <img
                     src={CARDS[i].url}
                     alt={CARDS[i].name}
@@ -251,8 +250,8 @@ export function AlgarveTestimonials() {
             <div
               key={s.label}
               data-tstat
-              className="flex flex-col items-center justify-center text-center max-[767px]:!flex-row max-[767px]:!justify-between max-[767px]:!gap-[4vw] max-[767px]:!p-[6vw] max-[767px]:!rounded-[4vw]"
-              style={{ padding: "3.33vw 1.39vw", gap: "1.67vw", borderRadius: "1.11vw", backgroundColor: "#00000014" }}
+              className="glass-panel flex flex-col items-center justify-center text-center max-[767px]:!flex-row max-[767px]:!justify-between max-[767px]:!gap-[4vw] max-[767px]:!p-[6vw]"
+              style={{ padding: "3.33vw 1.39vw", gap: "1.67vw", color: "#f8f7f3" }}
             >
               <span
                 className="max-[767px]:!text-[13vw]"

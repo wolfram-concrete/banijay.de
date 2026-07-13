@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 // Unternehmenstrailer; jedes Video ist per object-cover + leichtem Scale formatfüllend
 // (kein Videorahmen sichtbar). Bühne = Off-White + feine Grain-Textur.
 
-const BG = "#f8f7f3";
+const BG = "transparent";
 
 // Container-Konfiguration (a–k) exakt nach Template — Klasse, Snippet, Parallax-Tiefe.
 // speed = vertikale Parallax-Tiefe. Bewusst ruhiger als das Template (× ~0.55),
@@ -145,9 +145,9 @@ export function AlgarveAboutDrift() {
 const CSS = `
 .drift-section{position:relative;width:100%;height:124vh;min-height:860px;background:${BG};overflow:hidden}
 .drift-section::before{content:'';position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.8;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")}
-.float-img{position:absolute;overflow:hidden;will-change:transform;border-radius:12px}
+.float-img{position:absolute;overflow:hidden;will-change:transform}
 .float-img video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.12);will-change:transform}
-.float-img__label{position:absolute;bottom:-1.4rem;left:0;font-family:system-ui,sans-serif;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,13,11,.4);white-space:nowrap;pointer-events:none}
+.float-img__label{position:absolute;bottom:-1.4rem;left:0;font-family:system-ui,sans-serif;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,247,243,.4);white-space:nowrap;pointer-events:none}
 .float-img--a{width:190px;height:265px;left:8%;top:20%;z-index:6}
 .float-img--b{width:215px;height:138px;left:30%;top:15%;z-index:6}
 .float-img--c{width:112px;height:155px;left:19%;top:58%;z-index:6}

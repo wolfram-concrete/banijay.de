@@ -48,7 +48,7 @@ export function AlgarveWorksB() {
     <section
       ref={root}
       style={{
-        background: "#f8f7f3",
+        background: "transparent",
         paddingTop: "5.56vw",
         paddingBottom: "5.56vw",
         opacity: shown ? 1 : 0,
@@ -59,7 +59,7 @@ export function AlgarveWorksB() {
         {/* Headline */}
         <div className="flex items-center justify-center text-center" style={{ marginBottom: "4.44vw" }}>
           <h2
-            className="m-0 uppercase text-black"
+            className="m-0 uppercase text-[#f8f7f3]"
             style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.22vw", fontWeight: 500, letterSpacing: "-0.139vw", lineHeight: "110%" }}
           >
             Companies
@@ -76,7 +76,7 @@ export function AlgarveWorksB() {
                 key={c.slug}
                 {...(c.externalLink ? { href: c.externalLink, target: "_blank", rel: "noreferrer" } : {})}
                 className="group relative flex flex-col no-underline"
-                style={{ color: "#0e0d0b" }}
+                style={{ color: "#f8f7f3" }}
               >
                 {/* Sticky Label-Band (top 50%) — auf Mobile statisch, gestapelt */}
                 <div
@@ -94,7 +94,7 @@ export function AlgarveWorksB() {
                 {/* Wide-Image */}
                 <div
                   className="overflow-clip max-[767px]:!mt-4 max-[767px]:!h-[95vw] max-[767px]:!w-full"
-                  style={{ width: "60%", height: "40vw", marginTop: "-0.7vw", marginLeft: "auto", marginRight: "auto", borderRadius: "1.67vw" }}
+                  style={{ width: "60%", height: "40vw", marginTop: "-0.7vw", marginLeft: "auto", marginRight: "auto" }}
                 >
                   <img
                     src={img?.url ?? "/grid/g01.jpg"}

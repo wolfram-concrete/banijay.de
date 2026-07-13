@@ -63,7 +63,8 @@ export function AlgarveNewsStack() {
               className="inline-flex items-center text-black max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
               style={{
                 padding: "0.83vw 1.39vw",
-                borderRadius: "2.22vw",
+                // Heike-Regel: CTAs max. 8px Radius (keine Pille)
+                borderRadius: "8px",
                 border: "0.12vw solid #000",
                 fontSize: "1.1vw",
               }}
@@ -93,12 +94,10 @@ export function AlgarveNewsStack() {
                 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>
+                  {/* Bildcontainer ECKIG (Heike-Regel: keine abgerundeten Container) */}
                   <div
-                    className="overflow-clip max-[767px]:!h-[56vw] max-[767px]:!rounded-[4vw]"
-                    style={{
-                      borderRadius: "1.11vw",
-                      height: "15vw",
-                    }}
+                    className="overflow-clip max-[767px]:!h-[56vw]"
+                    style={{ height: "15vw" }}
                   >
                     <img
                       src={item.img}

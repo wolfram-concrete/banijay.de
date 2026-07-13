@@ -22,12 +22,12 @@ export function AlgarveImageStatement({
   cta?: { text: string; href: string };
 }) {
   return (
-    <section style={{ background: "#f8f7f3" }} className="py-12 lg:py-20">
+    <section style={{ background: "transparent" }} className="py-12 lg:py-20">
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         <Reveal>
           <div
             className="relative overflow-hidden max-[767px]:!py-[26vw]"
-            style={{ borderRadius: "1.67vw", paddingTop: "11vw", paddingBottom: "11vw" }}
+            style={{ paddingTop: "11vw", paddingBottom: "11vw" }}
           >
             <div className="absolute inset-0">
               <img src={image} alt="" className="h-full w-full object-cover" />
@@ -39,7 +39,6 @@ export function AlgarveImageStatement({
               style={{
                 width: "62%",
                 gap: "1.2vw",
-                borderRadius: "1.67vw",
                 background: "rgba(0,0,0,0.32)",
                 padding: "clamp(1.5rem, 2.6vw, 3rem)",
                 backdropFilter: "blur(10px)",
@@ -73,7 +72,7 @@ export function AlgarveImageStatement({
                   href={cta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#f8f7f3] px-6 py-3 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-white"
+                  className="mt-2 inline-flex items-center gap-2 rounded-[8px] bg-[#f8f7f3] px-6 py-3 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-white"
                 >
                   {cta.text} <ArrowUpRight size={16} />
                 </a>

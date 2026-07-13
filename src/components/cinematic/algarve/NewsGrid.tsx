@@ -101,7 +101,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
             <>
               {/* Bildcontainer übernimmt IMMER das native Seitenverhältnis des Original-
                   Thumbnails (kein Crop). Feature-Karten sind breiter → automatisch größer. */}
-              <div className="relative overflow-hidden rounded-xl" style={{ background: "#e8e6df" }}>
+              <div className="relative overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
                 <img
                   src={item.img}
                   alt=""
@@ -110,7 +110,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
                 />
                 {social && item.source && (
                   <span
-                    className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.08em]"
+                    className="absolute left-3 top-3 rounded-[4px] px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.08em]"
                     style={{
                       background: "rgba(14,13,11,0.55)",
                       color: "#f8f7f3",
@@ -125,7 +125,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
               </div>
               <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>
               <h2
-                className={`mt-1.5 leading-snug text-foreground ${social ? "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden" : ""}`}
+                className={`mt-1.5 leading-snug text-[#f8f7f3] ${social ? "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden" : ""}`}
                 style={{ fontFamily: SHARP, fontSize: "1.05rem", lineHeight: "126%", fontWeight: 500 }}
               >
                 {item.title}
@@ -175,7 +175,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
           <button
             type="button"
             onClick={() => setCount((c) => Math.min(items.length, c + BATCH))}
-            className="group inline-flex items-center gap-2 rounded-full bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
+            className="group inline-flex items-center gap-2 rounded-[8px] bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
             style={{ padding: "0.9rem 2rem", fontFamily: SHARP, fontSize: "1rem", fontWeight: 500 }}
           >
             Weitere News laden

@@ -19,21 +19,22 @@
   /* Surfaces — Phase 2 „Banijay Kinetic": warmes Editorial (Algarve-Anmutung) */
   /* Body-Paper exakt = Section-Paper (#f8f7f3) → keine Farbdifferenz (z. B. hinter
      gepinnten Sektionen). */
-  --background: #f8f7f3;
-  --surface: #eceae3;
-  --surface-2: #e3e0d7;
-  --foreground: #0e0d0b;
-  --muted: #eceae3;
-  --muted-foreground: #6b675f;
-  --border: #dbd8ce;
+  --background: #0a0208; /* V2-Mood: dunkle Basis (Task #69) */
+  /* V2-Mood (Task #69): Surfaces/Foreground auf dunkel invertiert */
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-2: rgba(255, 255, 255, 0.1);
+  --foreground: #f8f7f3;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(248, 247, 243, 0.55);
+  --border: rgba(248, 247, 243, 0.16);
 
   /* Accent — Banijay Coral */
   --accent: #ff4370;
   --accent-foreground: #ffffff;
 
-  /* Placeholder-Flächen */
-  --placeholder: #e4e1d8;
-  --placeholder-foreground: #908c82;
+  /* Placeholder-Flächen (V2: dunkel) */
+  --placeholder: rgba(255, 255, 255, 0.08);
+  --placeholder-foreground: rgba(248, 247, 243, 0.4);
 
   --radius: 0.5rem;
 }
@@ -385,4 +386,103 @@ html.lenis body { height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bento-kenburns { animation: none; }
+}
+
+/* Companies-Lightbox (Task #61): kleiner Flip-Wechsel beim Blättern —
+   die Farbkarte remountet pro Company (key) und kippt kurz herein. */
+@keyframes bentoFlipIn {
+  0%   { opacity: 0; transform: perspective(1600px) rotateY(-7deg) scale(0.97); }
+  100% { opacity: 1; transform: perspective(1600px) rotateY(0deg) scale(1); }
+}
+.bento-flip {
+  animation: bentoFlipIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: 50% 50%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bento-flip { animation: none; }
+}
+
+/* MoodBackdrop-Atmen (13.07.): CSS-Animation auf der INNEREN Glow-Fläche —
+   getrennt vom Scroll-Transform der äußeren Ebene (ein Writer pro Element,
+   sonst flackert der Glow beim Scrollen). */
+@keyframes moodBreathe {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+.mood-breathe {
+  animation: moodBreathe 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mood-breathe { animation: none; }
+}
+
+/* Editorial-Marquee (Task #56): endloser Bildlauf — Track enthält die Bildreihe
+   ZWEIMAL, -50% translate loopt nahtlos. Bilder grayscale, Farbe beim Hover
+   (BYQ-Referenz). */
+@keyframes editorialMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 0.6vw)); }
+}
+.editorial-marquee-track {
+  width: max-content;
+  animation: editorialMarquee 45s linear infinite;
+  will-change: transform;
+}
+.editorial-marquee-item img {
+  filter: grayscale(1);
+  transition: filter 0.4s;
+}
+.editorial-marquee-item:hover img {
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .editorial-marquee-track { animation: none; }
+}
+
+/* Intro-Choreografie (13.07.): solange das Intro läuft (html[data-intro]),
+   bleibt der Header verborgen — mit dem Finale blendet er samt Magenta-B
+   (Menü-Element) weich ein. */
+.site-header-root {
+  transition: opacity 0.6s ease;
+}
+html[data-intro="1"] .site-header-root {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   V2 MOOD-TOKENS — dark / moody magenta / brombeere (Task #69)
+   Spektrum aus den Figma-Designs 48:1342 (Indigo) + 64:380 (warmes
+   Brombeer-Schwarz); Magenta bleibt ausschließlich Akzent.
+   ============================================================ */
+:root {
+  --mood-ink: #0a0208;      /* Basis-Schwarz (warm) */
+  --mood-berry: #2e0b20;    /* Brombeere */
+  --mood-warm: #291f22;     /* warmes Brombeer-Schwarz (Figma 64:380) */
+  --mood-indigo: #14094a;   /* Indigo, leicht entschärft ggü. Figma #07015C */
+  --mood-paper: #f8f7f3;    /* Text auf dunkel */
+  --mood-accent: #ff4370;   /* Magenta vibrant — nur Akzent */
+}
+
+/* Milchglas-Panel (Figma 48:1543 + Mood-Demo): Magenta-Alpha-Fläche, blur,
+   Kante OHNE Konturlinie (Licht-Aura), ECKIG (Heike; Figma zeigt 20px — offen). */
+.glass-panel {
+  background: linear-gradient(150deg, rgba(255, 67, 112, 0.13) 0%, rgba(255, 67, 112, 0.07) 55%, rgba(255, 67, 112, 0.1) 100%);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow:
+    0 0 2px rgba(255, 255, 255, 0.14),
+    0 0 22px rgba(255, 255, 255, 0.09),
+    inset 0 0 28px rgba(255, 255, 255, 0.055),
+    0 30px 70px -35px rgba(0, 0, 0, 0.7);
+  color: var(--mood-paper);
+}
+
+/* V2-Typo (10.07.): ALLE H1 in Anton (Display, condensed) — überschreibt auch
+   Inline-fontFamily der Module (!important im Stylesheet schlägt Inline-Styles). */
+h1 {
+  font-family: var(--font-anton), var(--font-sharp), sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.01em;
 }

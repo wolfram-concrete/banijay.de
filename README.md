@@ -15,7 +15,17 @@ News-Grid ist ein CSS-Grid-Masonry mit nativen Thumbnail-Proportionen + Feature-
 ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden starten.
 Die Subpage-Heroes (About/Companies/Career/Contact) starten als kleiner Video-Container
 in Banijay-b-Form (Desktop: b-/„D"-Halbkreis rechts; mobil: Torbogen oben) und skalieren
-über gestaffelte Farb-Layer auf Full-Screen. Der vollständige Verlauf steht in `CHANGELOG.md`.
+über gestaffelte Farb-Layer auf Full-Screen.
+
+**Redesign V2 (Branch `redesign-v2`):** die Site ist auf einen durchgehenden dark/moody
+Look umgestellt — ein globaler `MoodBackdrop` (Schwarz/Brombeere/Magenta mit wandernden
+Glows), transparente Sections, Milchglas-Panels und eckige Container (Design-Vorgabe: keine
+abgerundeten Ecken außer minimalen Curvings an CTAs). Die Home öffnet mit einer
+Intro-Animation (Sternenstaub → weißes B → Brennglas-Reveal) und einem Full-Size-Brennglas-
+Hero, dessen radiale Unterkante sich beim Scrollen formt und über einen Farbfächer in die
+Statement-Section übergeht. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
+All3Media-Fusion) und öffnen als Scroll-Flip-Lightbox. Das „Banijay Ökosystem" erscheint als
+gepinnte Atom-Orbit-Grafik. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
 ## Stack
 

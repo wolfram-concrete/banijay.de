@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { NAV_ITEMS, CONTACT, SOCIAL } from "@/data/site";
 
 // Footer — großes Rounded-Panel mit Nav-Links, Kontakt + Social-Buttons, darunter
@@ -33,14 +32,16 @@ function IconLinkedin() {
 }
 
 export function SiteFooter() {
-  const pathname = usePathname();
-  // Home als einzige Ausnahme dunkel; alle anderen Seiten wie /about invertiert.
-  const inverted = pathname !== "/";
+  // V2-Mood (10.07.): Footer ÜBERALL invertiert — auf dem dunklen Backdrop hätte
+  // die Ink-Card zu wenig Kontrast (Home war zuvor die Ausnahme).
+  const inverted = true;
 
   // Card-Grund (BG) und Schrift (FG) je nach Variante; Außenfläche OUTER.
   const BG = inverted ? ACCENT : INK;
   const FG = inverted ? INK : ACCENT;
-  const OUTER = inverted ? PAPER : ACCENT;
+  // V2-Mood: Außenfläche ÜBERALL transparent — der globale MoodBackdrop
+  // scheint auch hinter/unter dem Footer durch (vorher Paper bzw. Magenta).
+  const OUTER = "transparent";
 
   return (
     <footer
@@ -66,7 +67,6 @@ export function SiteFooter() {
             position: "relative",
             background: BG,
             color: FG,
-            borderRadius: "1.67vw",
             paddingTop: "4.44vw",
             paddingBottom: "2.5vw",
             overflow: "hidden",

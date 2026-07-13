@@ -82,11 +82,14 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
 export async function AlgarveCareerSocialFeed({
   headline,
   subline,
+  dark,
 }: {
   headline?: string;
   subline?: string;
+  /** V2-Mood (Task #69): transparent auf dem MoodBackdrop, Typo in Paper. */
+  dark?: boolean;
 } = {}) {
   const posts = await fetchSocialPosts();
   if (posts.length === 0) return null; // Feed nicht verfügbar → Section ausblenden
-  return <AlgarveCareerSocialSlider posts={posts} headline={headline} subline={subline} />;
+  return <AlgarveCareerSocialSlider posts={posts} headline={headline} subline={subline} dark={dark} />;
 }

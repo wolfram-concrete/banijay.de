@@ -23,7 +23,7 @@ export function AlgarveCareerJobsPreview() {
   const mobileCount = Math.max(3, Math.ceil(total / 2));
   const jobs = CAREER_JOBS.slice(0, desktopCount);
   return (
-    <section id="jobs" style={{ background: "#f8f7f3", paddingTop: "5.56vw", paddingBottom: "5.56vw" }}>
+    <section id="jobs" style={{ background: "transparent", paddingTop: "5.56vw", paddingBottom: "5.56vw" }}>
       <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
         {/* Kopf */}
         <div
@@ -33,13 +33,13 @@ export function AlgarveCareerJobsPreview() {
           <div className="max-w-[47vw] max-[767px]:!max-w-full">
             <h2
               className="m-0 uppercase max-[767px]:!text-[8vw]"
-              style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.12vw", color: "#0e0d0b" }}
+              style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.12vw", color: "#f8f7f3" }}
             >
               {CAREER.jobs.headline}
             </h2>
             <p
               className="max-[767px]:!text-[4vw]"
-              style={{ marginTop: "1.11vw", fontSize: "1.25vw", lineHeight: "145%", color: "rgba(0,0,0,0.64)" }}
+              style={{ marginTop: "1.11vw", fontSize: "1.25vw", lineHeight: "145%", color: "rgba(248,247,243,0.64)" }}
             >
               {CAREER.jobs.text}
             </p>
@@ -49,7 +49,7 @@ export function AlgarveCareerJobsPreview() {
             href={CAREER.jobs.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!hidden"
+            className="inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!hidden"
           >
             {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
           </a>
@@ -64,12 +64,12 @@ export function AlgarveCareerJobsPreview() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${job.title} bei ${job.company} — in neuem Tab öffnen`}
-              className={`group flex items-center justify-between text-[#0e0d0b] no-underline transition-colors hover:text-[#ff4370] max-[767px]:!flex-col max-[767px]:!items-start max-[767px]:!gap-3 ${i >= mobileCount ? "max-[767px]:!hidden" : ""}`}
+              className={`group flex items-center justify-between text-[#f8f7f3] no-underline transition-colors hover:text-[#ff4370] max-[767px]:!flex-col max-[767px]:!items-start max-[767px]:!gap-3 ${i >= mobileCount ? "max-[767px]:!hidden" : ""}`}
               style={{
                 gap: "2vw",
                 paddingTop: "1.94vw",
                 paddingBottom: "1.94vw",
-                borderTop: "0.08vw solid rgba(0,0,0,0.14)",
+                borderTop: "0.08vw solid rgba(248,247,243,0.14)",
               }}
             >
               <span
@@ -79,7 +79,7 @@ export function AlgarveCareerJobsPreview() {
                 {job.title}
               </span>
               <span className="flex shrink-0 items-center max-[767px]:!flex-wrap" style={{ gap: "1.11vw" }}>
-                <span className="flex items-center text-black/60 transition-colors group-hover:text-[#ff4370] max-[767px]:!text-[2.8vw]" style={{ gap: "0.83vw", ...META }}>
+                <span className="flex items-center text-[#f8f7f3]/60 transition-colors group-hover:text-[#ff4370] max-[767px]:!text-[2.8vw]" style={{ gap: "0.83vw", ...META }}>
                   <span>{job.company}</span>
                   <span style={{ opacity: 0.4 }}>·</span>
                   <span>{job.location}</span>
@@ -100,7 +100,7 @@ export function AlgarveCareerJobsPreview() {
           href={CAREER.jobs.cta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center justify-center gap-2 rounded-full bg-[#0e0d0b] font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
+          className="hidden items-center justify-center gap-2 rounded-[8px] bg-[#0e0d0b] font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
         >
           {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
         </a>

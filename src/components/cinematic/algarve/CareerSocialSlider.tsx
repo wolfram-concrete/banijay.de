@@ -27,14 +27,14 @@ function Card({ post }: { post: SocialPost }) {
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex shrink-0 flex-col overflow-clip no-underline max-[767px]:!w-[58vw]"
-      style={{ width: "19.5vw", background: "#fff", borderRadius: "0.83vw", boxShadow: "0 0.5vw 1.6vw -0.5vw rgba(0,0,0,0.16)", color: INK }}
+      className="group glass-panel flex shrink-0 flex-col overflow-clip no-underline max-[767px]:!w-[58vw]"
+      style={{ width: "19.5vw", color: "#f8f7f3" }}
     >
-      <div className="relative overflow-clip" style={{ aspectRatio: "4 / 5", background: "#e8e6df" }}>
+      <div className="relative overflow-clip" style={{ aspectRatio: "4 / 5", background: "rgba(255,255,255,0.08)" }}>
         <img src={post.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
         <span
           className="absolute max-[767px]:!text-[2.8vw]"
-          style={{ top: "0.7vw", left: "0.7vw", background: "rgba(14,13,11,0.55)", color: "#f8f7f3", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", borderRadius: "999px", padding: "0.22vw 0.6vw", fontFamily: SHARP, fontSize: "0.55vw", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}
+          style={{ top: "0.7vw", left: "0.7vw", background: "rgba(14,13,11,0.55)", color: "#f8f7f3", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", borderRadius: "4px", padding: "0.22vw 0.6vw", fontFamily: SHARP, fontSize: "0.55vw", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}
         >
           {post.source}
         </span>
@@ -47,7 +47,7 @@ function Card({ post }: { post: SocialPost }) {
           {post.text}
         </p>
         <div className="flex items-center justify-between" style={{ gap: "0.75vw" }}>
-          <span className="max-[767px]:!text-[3vw]" style={{ fontSize: "0.62vw", color: "rgba(14,13,11,0.5)", fontFamily: SHARP }}>
+          <span className="max-[767px]:!text-[3vw]" style={{ fontSize: "0.62vw", color: "rgba(248,247,243,0.55)", fontFamily: SHARP }}>
             {post.date}
           </span>
           <span
@@ -66,12 +66,15 @@ export function AlgarveCareerSocialSlider({
   posts,
   headline = "#workatBanijay",
   subline = "Einblicke, Menschen und Momente aus der Banijay-Welt — direkt aus unseren Kanälen.",
+  dark = true, // V2: gesamte Site ist moody-dark
 }: {
   posts: SocialPost[];
   /** Überschrift der Section (Default = Career „#workatBanijay"). */
   headline?: string;
   /** Begleit-Copy rechts. */
   subline?: string;
+  /** V2-Mood (Task #69): transparent auf dem MoodBackdrop, Typo in Paper. */
+  dark?: boolean;
 }) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
@@ -112,14 +115,14 @@ export function AlgarveCareerSocialSlider({
   );
 
   return (
-    <section ref={root} className="overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
+    <section ref={root} className="overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: dark ? "transparent" : "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
       <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* Headline */}
         <div className="mb-[3vw] flex items-end justify-between gap-8 max-[767px]:!mb-[8vw] max-[767px]:!flex-col max-[767px]:!items-start">
-          <h2 className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.139vw", color: INK }}>
+          <h2 className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.139vw", color: dark ? "#f8f7f3" : INK }}>
             {headline}
           </h2>
-          <p className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: "rgba(14,13,11,0.6)" }}>
+          <p className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: dark ? "rgba(248,247,243,0.6)" : "rgba(14,13,11,0.6)" }}>
             {subline}
           </p>
         </div>

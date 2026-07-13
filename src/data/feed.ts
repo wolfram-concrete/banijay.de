@@ -5,7 +5,7 @@ import type { SocialPost } from "@/components/cinematic/algarve/CareerSocialSlid
 // werden zu einer Liste zusammengeführt und nach Datum (absteigend) sortiert — auf der
 // News-Page „zwischengemischt" statt getrennter Slider-Section.
 
-export type FeedRubrik = "News" | "Primetime" | "Podcast" | "Social";
+export type FeedRubrik = "Presse" | "Primetime" | "Podcast" | "Social";
 
 export type FeedItem = {
   id: string;
@@ -34,7 +34,7 @@ function newsRubrik(category: string): Exclude<FeedRubrik, "Social"> {
   const c = category.toLowerCase();
   if (c.includes("wolter")) return "Podcast";
   if (c.includes("primetime")) return "Primetime";
-  return "News";
+  return "Presse";
 }
 
 export function mergeFeed(news: NewsItem[], social: SocialPost[]): FeedItem[] {
