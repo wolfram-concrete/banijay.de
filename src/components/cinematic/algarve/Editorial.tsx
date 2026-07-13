@@ -8,8 +8,16 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
+import { homeStats } from "@/data/site";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+// Impact-Zahlen (aus dem entfernten Testimonials-Modul) — getönte Glas-Panels
+// im stateofaidesign-Aufbau. Tints moody statt Pastell.
+const STAT_TINTS = ["rgba(255,67,112,0.14)", "rgba(46,55,201,0.16)", "rgba(6,93,255,0.14)", "rgba(22,200,255,0.12)"];
+const STATS = homeStats()
+  .slice(0, 4)
+  .map((s, i) => ({ value: s.value, label: s.label, tint: STAT_TINTS[i] }));
 
 // EDITORIAL-SECTION (Task #56, Wolfram 13.07.) — Marcus zur Historie und
 // Zukunft von Banijay, Anlass: Abschluss der Fusion Banijay Entertainment +
@@ -70,32 +78,52 @@ export function AlgarveEditorial() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      gsap.set("[data-ed-line]", { yPercent: 115 });
-      gsap.set("[data-ed-amp]", { scale: 0, rotate: -25, transformOrigin: "50% 60%", display: "inline-block" });
-      ScrollTrigger.create({
-        trigger: "[data-ed-head]",
-        start: "top 82%",
-        once: true,
-        onEnter: () => {
-          gsap.to("[data-ed-line]", { yPercent: 0, duration: 1.15, stagger: 0.14, ease: "power4.out" });
-          gsap.to("[data-ed-amp]", { scale: 1, rotate: 0, duration: 0.8, delay: 0.6, ease: "back.out(2.2)" });
-        },
-      });
+      // HEADLINE wie das AnimatedHeading-Modul über der Companies-Liste
+      // (Wolfram 13.07.): zwei uppercase-Zeilen konvergieren gescrubbt — obere
+      // von oben, untere von unten — mit zentral aufwachsendem Sternstaub.
+      const vh = window.innerHeight;
+      const hFirst = root.current?.querySelector<HTMLElement>("[data-ed-hl-first]");
+      const hLast = root.current?.querySelector<HTMLElement>("[data-ed-hl-last]");
+      const hDust = root.current?.querySelector<HTMLElement>("[data-ed-head-dust]");
+      if (hFirst && hLast) {
+        const htl = gsap.timeline({
+          scrollTrigger: { trigger: "[data-ed-head]", start: "top bottom", end: "bottom 90%", scrub: 0.8 },
+        });
+        htl
+          .from(hFirst, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
+          .from(hLast, { y: 0.15 * vh, ease: "none", duration: 1 }, 0);
+        if (hDust) {
+          htl.fromTo(
+            hDust,
+            { autoAlpha: 0, scale: 0.55, transformOrigin: "50% 50%" },
+            { autoAlpha: 0.7, scale: 1, ease: "power2.out", duration: 0.8 },
+            0.1,
+          );
+        }
+      }
 
+      // BILD-MODUL-CHOREOGRAFIE (Referenz, Wolfram 13.07.): erst faded das große
+      // Marcus-Bild auf und schiebt sich leicht nach links — dann swipen von
+      // rechts die Fact-Boxen (Stat-Panels) in den frei werdenden Raum, danach
+      // folgt der Artikeltext.
       const imgWrap = root.current?.querySelector<HTMLElement>("[data-ed-img]");
       const imgEl = imgWrap?.querySelector("img");
+      const stats = gsap.utils.toArray<HTMLElement>("[data-ed-stat]");
       if (imgWrap && imgEl) {
-        gsap.set(imgWrap, { clipPath: "inset(100% 0% 0% 0%)" });
-        gsap.set(imgEl, { scale: 1.25 });
-        ScrollTrigger.create({
-          trigger: imgWrap,
-          start: "top 82%",
-          once: true,
-          onEnter: () => {
-            gsap.to(imgWrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.25, ease: "power3.inOut" });
-            gsap.to(imgEl, { scale: 1, duration: 2, ease: "power2.out" });
-          },
+        gsap.set(imgWrap, { autoAlpha: 0, xPercent: 12, scale: 1.06, transformOrigin: "left center" });
+        gsap.set(imgEl, { scale: 1.22 });
+        gsap.set(stats, { autoAlpha: 0, xPercent: 60 });
+        const enter = gsap.timeline({
+          scrollTrigger: { trigger: imgWrap, start: "top 80%", once: true },
         });
+        enter
+          // ① aufblenden
+          .to(imgWrap, { autoAlpha: 1, scale: 1, duration: 1.1, ease: "power3.out" }, 0)
+          .to(imgEl, { scale: 1, duration: 2, ease: "power2.out" }, 0)
+          // ② nach links schieben (macht rechts Platz)
+          .to(imgWrap, { xPercent: 0, duration: 1.0, ease: "power3.inOut" }, 0.55)
+          // ③ Fact-Boxen swipen von rechts rein
+          .to(stats, { autoAlpha: 1, xPercent: 0, duration: 0.9, stagger: 0.12, ease: "power3.out" }, 0.9);
       }
 
       gsap.set("[data-ed-reveal]", { autoAlpha: 0, y: 56 });
@@ -133,19 +161,43 @@ export function AlgarveEditorial() {
 
       <div className="relative z-[1] mx-auto" style={{ maxWidth: "1800px", paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* headline-article — ZEITLOS (13.07.): kein Eyebrow, kein Datum.
-            Zeilen in Overflow-Masken für den Hoch-Reveal. */}
-        <div data-ed-head className="flex flex-col items-start gap-5" style={{ marginBottom: "5vw" }}>
-          <h2
-            className="m-0"
-            style={{ fontFamily: SHARP, fontSize: "clamp(2.6rem, 7.5vw, 8rem)", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.03em" }}
+            Optik wie die Headline über der Companies-Liste (AnimatedHeading,
+            Wolfram 13.07.): zentriert, uppercase, groß; die zwei Zeilen
+            konvergieren gescrubbt (obere von oben, untere von unten) auf
+            zentralem Sternstaub. */}
+        <div
+          data-ed-head
+          className="relative flex flex-col items-center justify-center overflow-clip text-center"
+          style={{ marginBottom: "5vw", minHeight: "min(84vh, 760px)" }}
+        >
+          {/* zentraler Sternstaub hinter der Headline (wächst mit dem Scrub) */}
+          <div
+            data-ed-head-dust
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0"
+            style={{
+              maskImage: "linear-gradient(180deg, transparent 0%, black 14%, black 86%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 14%, black 86%, transparent 100%)",
+            }}
           >
-            <span className="block overflow-hidden">
-              <span data-ed-line className="block">Eine neue Ära:</span>
-            </span>
-            <span className="block overflow-hidden">
-              <span data-ed-line className="block">
-                Banijay <span data-ed-amp style={{ fontStyle: "italic", color: "#ff4370" }}>&</span> All3Media.
-              </span>
+            <DustLayer boost={0.85} center={{ x: 0.5, y: 0.5 }} radius={0.6} />
+          </div>
+          <h2
+            className="relative m-0"
+            style={{
+              fontFamily: SHARP,
+              fontSize: "7vw",
+              lineHeight: "112%",
+              fontWeight: 500,
+              textTransform: "uppercase",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {/* kein per-Zeilen-overflow-hidden → die Ä-Punkte bleiben sichtbar;
+                der Translate wird vom overflow-clip des Panels gefasst. */}
+            <span data-ed-hl-first className="block">Eine neue Ära:</span>
+            <span data-ed-hl-last className="block">
+              Banijay <span data-ed-amp style={{ fontStyle: "italic", color: "#ff4370" }}>&</span> All3Media.
             </span>
           </h2>
         </div>
@@ -160,6 +212,34 @@ export function AlgarveEditorial() {
           </div>
 
           <div className="flex flex-col" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>
+            {/* STAT-BLÖCKE (Wolfram 13.07., stateofaidesign-Aufbau) — neben dem
+                Einstiegsbild: große Zahl + Label auf getönten Glas-Panels
+                (moody statt Pastell). */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {STATS.map((s) => (
+                <div
+                  key={s.label}
+                  data-ed-stat
+                  className="flex flex-col justify-between"
+                  style={{
+                    minHeight: "clamp(11rem, 16vw, 15rem)",
+                    padding: "clamp(1.4rem, 2vw, 2.2rem)",
+                    background: s.tint,
+                    backdropFilter: "blur(14px) saturate(1.3)",
+                    WebkitBackdropFilter: "blur(14px) saturate(1.3)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+                  }}
+                >
+                  <span style={{ fontFamily: SHARP, fontSize: "clamp(2.6rem, 4.4vw, 4.4rem)", fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
+                    {s.value}
+                  </span>
+                  <span style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.25rem)", lineHeight: "128%", color: "rgba(248,247,243,0.8)" }}>
+                    {s.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             {/* Lead — zeitlos: Historie → Zukunft */}
             <p data-ed-reveal className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.8rem)", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.02em" }}>
               Vom einzelnen Produktionshaus zum Ökosystem mit über 40 Companies — und jetzt Teil eines globalen Powerhouses: Die Fusion von Banijay Entertainment und All3Media eröffnet dem deutschen Netzwerk das nächste Kapitel.

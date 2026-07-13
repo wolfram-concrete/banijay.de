@@ -22,8 +22,10 @@ Look umgestellt — ein globaler `MoodBackdrop` (Schwarz/Brombeere/Magenta mit w
 Glows), transparente Sections, Milchglas-Panels und eckige Container (Design-Vorgabe: keine
 abgerundeten Ecken außer minimalen Curvings an CTAs). Die Home öffnet mit einer
 Intro-Animation (Sternenstaub → weißes B → Brennglas-Reveal) und einem Full-Size-Brennglas-
-Hero, dessen radiale Unterkante sich beim Scrollen formt und über einen Farbfächer in die
-Statement-Section übergeht. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
+Hero (above the fold, ohne statische Headline). Beim Scrollen formt sich die radiale
+Unterkante, „WE ARE BANIJAY" läuft als Ticker herein, magenta Satelliten-Ringe wandern heraus
+und ein radialer Magenta-Veil (symmetrisch zum Ring-Radius) leitet moody in die
+Statement-Section über. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
 All3Media-Fusion) und öffnen als Scroll-Flip-Lightbox. Das „Banijay Ökosystem" erscheint als
 gepinnte Atom-Orbit-Grafik. Der vollständige Verlauf steht in `CHANGELOG.md`.
 

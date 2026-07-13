@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { DustLayer } from "./algarve/DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -270,30 +271,10 @@ export function AlgarveHome() {
       // translateY(100%)/rotateX(-90) sauber) — sonst parst GSAP die 100% aus dem
       // computed Style als px-Baseline und vermischt sie mit dem yPercent-Tween,
       // wodurch die Back-Ebene vertikal auf 100% hängen bliebe.
-      // Beim Neu-Laden: das Hintergrund-Video fängt RUHIG an (blendet langsam ein und
-      // läuft), während die Typo zunächst KOMPLETT ausgeblendet ist. Erst danach (nach
-      // einer kurzen Vorlaufzeit, siehe startHero-Delay) kommt die Typo herein.
-      gsap.set("[data-hero-typo]", { autoAlpha: 0 });
+      // Hintergrund-Video/Bild blendet ruhig ein. KEINE Hero-Intro-Headline
+      // mehr (Wolfram 13.07.): der Hero ist above the fold full size nur das
+      // B-Visual — die Headline kommt als Marquee erst beim Scrollen (unten).
       gsap.fromTo("[data-hero-vid]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.6, ease: "power2.out" });
-
-      // Timeline PAUSIERT bauen — sie startet erst nach dem Preloader-Cut (Event
-      // „banijay:introdone"), damit die Hero-Animation nicht unsichtbar hinter dem
-      // Overlay abläuft. Die gsap.set-Startlagen oben greifen sofort → der Hero
-      // steht während des Preloaders bereits korrekt (Front sichtbar, Back verdeckt).
-      const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-      // Intro-Finale (v4): die Headline skaliert auf UND die Wörter schieben
-      // sich GELAYERT aus ihren Masken hoch (WE → ARE → BANIJAY, gestaffelt).
-      tl.fromTo(
-        "[data-hero-typo]",
-        { autoAlpha: 0, scale: 0.8 },
-        { autoAlpha: 1, scale: 1, duration: 1.0, ease: "power3.out" },
-        0,
-      ).fromTo(
-        "[data-hero-word]",
-        { yPercent: 118 },
-        { yPercent: 0, duration: 1.05, stagger: 0.14, ease: "power4.out" },
-        0.05,
-      );
       // Die H1-Animation startet ERST, wenn der Preloader-Übergang vollständig
       // abgeschlossen ist — das Event „banijay:introdone" feuert im onComplete NACH
       // dem Cutout-Aufziehen. Fallback nach 5s, falls kein Preloader läuft.
@@ -303,27 +284,51 @@ export function AlgarveHome() {
       // SATELLITEN-RINGE (v2): identische Kurven-Kopien FÄCHERN aus der Zirkel-
       // Kontur nach unten auf — gescrubbt beim Scrollen Richtung Statement.
       // Kein Scale (Radius bleibt gleich!), nur der Scheitel wandert (attr cy).
-      // FARBFÄCHER: erst NACHDEM sich die Kurve geformt hat (Trigger später
-      // als früher: Zone bei 45% Viewport) schieben sich die Farb-Layer aus
-      // der Kurve heraus. Die Satelliten-Ringe sind vorerst RAUS (Wolfram
-      // 13.07.: „die gibt es momentan noch nicht").
+      // ÜBERGANGSZONE (v6, Career-Referenz): erst NACHDEM sich die Kurve
+      // geformt hat, swiped der MAGENTA-Titel „WE ARE BANIJAY" von links nach
+      // rechts über den dunklen Staub-Grund, DANN fächern die weißen
+      // Planetenringe (gleichradig) auf. Danach folgt das Statement.
       const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 45%", end: "bottom 40%", scrub: 0.7 },
+        scrollTrigger: { trigger: orbitZone.current, start: "top 60%", end: "bottom 35%", scrub: 0.7 },
       });
-      const fanLayers = gsap.utils.toArray<SVGPathElement>("[data-hero-fan]");
-      fanLayers.forEach((layer) => gsap.set(layer, { y: -Number(layer.dataset.shift), autoAlpha: 0 }));
-      fanLayers.forEach((layer, i) => {
-        fan.to(layer, { y: 0, autoAlpha: 1, duration: 1, ease: "power2.out" }, i * 0.12);
+      // Titel-Marquee blendet ein (die Endlos-Bewegung läuft per CSS)
+      gsap.set("[data-hero-marquee]", { autoAlpha: 0 });
+      fan.to("[data-hero-marquee]", { autoAlpha: 1, ease: "power2.out", duration: 0.8 }, 0.1);
+      // Planetenringe: gleichradig, mittelachsig, fächern gestaffelt nach unten
+      const rings = gsap.utils.toArray<SVGCircleElement>("[data-hero-ring]");
+      gsap.set(rings, { autoAlpha: 0 });
+      rings.forEach((ring, i) => {
+        const top = Number(ring.dataset.top);
+        fan.to(ring, { attr: { cy: top - 800 }, autoAlpha: 1, duration: 1.1, ease: "power2.out" }, 0.5 + i * 0.16);
       });
+      // Magenta-Punkte: erscheinen + kreisen ERST, wenn ihr Ring VOLLSTÄNDIG
+      // eingeblendet ist (Wolfram 13.07.). Die Kreis-Bahn läuft per rAF, aber
+      // der Punkt bleibt unsichtbar, bis das Ende seines Ring-Fades im fan-TL
+      // erreicht ist. Ring-Zuordnung über center (= ring.top − 800).
+      const ringTops = rings.map((r) => Number(r.dataset.top));
+      gsap.utils.toArray<SVGCircleElement>("[data-hero-ringdot]").forEach((dot) => {
+        const center = Number(dot.dataset.center);
+        const ringTop = center + 800;
+        const ringIdx = ringTops.indexOf(ringTop);
+        // Ring-Fade beginnt bei 0.5 + i*0.16 (dur 1.1) → Punkt erst am Ende sichtbar
+        const ringEnd = 0.5 + (ringIdx >= 0 ? ringIdx : 0) * 0.16 + 1.1;
+        gsap.set(dot, { autoAlpha: 0 });
+        fan.to(dot, { autoAlpha: 1, duration: 0.25, ease: "power1.out" }, ringEnd);
 
-      // Start NACH der Intro-Choreografie (banijay:introdone aus IntroOverlay).
-      // Fallback deutlich hinter der Intro-Länge (~3.4s), falls kein Intro läuft.
-      const startHero = () => tl.play();
-      if ((window as { __introDone?: boolean }).__introDone) gsap.delayedCall(0.3, startHero);
-      else {
-        window.addEventListener("banijay:introdone", () => gsap.delayedCall(0.15, startHero), { once: true });
-        gsap.delayedCall(6, startHero);
-      }
+        const amp = (Number(dot.dataset.amp) * Math.PI) / 180;
+        const phase = Number(dot.dataset.phase) * Math.PI * 2;
+        const proxy = { p: phase };
+        gsap.to(proxy, {
+          p: phase + Math.PI * 2,
+          duration: Number(dot.dataset.dur),
+          ease: "none",
+          repeat: -1,
+          onUpdate: () => {
+            const a = Math.PI / 2 + amp * Math.sin(proxy.p);
+            gsap.set(dot, { attr: { cx: 800 + 800 * Math.cos(a), cy: center + 800 * Math.sin(a) } });
+          },
+        });
+      });
     },
     { scope: root },
   );
@@ -338,14 +343,15 @@ export function AlgarveHome() {
           schneidet exakt entlang der (animierten) Rundung. */}
       <section
         ref={heroSection}
-        className="relative flex min-h-[120vh] flex-col overflow-hidden max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
+        className="relative z-[2] flex min-h-[120vh] flex-col overflow-hidden max-[479px]:!min-h-screen max-[479px]:!pb-[11vw]"
         style={{
           background: "transparent",
           paddingTop: "6.5rem",
           paddingBottom: "13vh",
           // START: GERADE Unterkante (13.07.) — die radiale 50vw-Kurve formt
           // sich erst beim Scrollen (applyCurve im useGSAP, ein Wert für
-          // Section, Zirkel-Kontur und Linsen-Pill im Shader).
+          // Section, Zirkel-Kontur und Linsen-Pill im Shader). z-2 > Übergangs-
+          // zone (z-1) → das Brennglas überlagert die obere Marquee-Hälfte.
           borderRadius: "0",
         }}
       >
@@ -406,61 +412,97 @@ export function AlgarveHome() {
             boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)",
           }}
         />
-        <div ref={content} className="relative flex flex-1 flex-col" style={{ zIndex: 2, paddingLeft: "2vw", paddingRight: "2vw" }}>
-          <div className="flex flex-1 flex-col justify-between text-center" style={{ gap: "0.83vw" }}>
-            {/* V2-Hero-Typo (13.07. v4): VERSALIEN, noch größer, OHNE Punkt.
-                Die Wörter kommen GELAYERT herein — jedes schiebt sich aus einer
-                eigenen Overflow-Maske hoch (gestaffelt, siehe Hero-Timeline). */}
-            {/* Headline WEITER OBEN (13.07.): nicht mehr mittig zentriert */}
-            <div data-hero-typo className="flex flex-1 items-start justify-center" style={{ paddingTop: "13vh" }}>
-              <h1
-                className="m-0 p-0 text-center uppercase text-white"
-                style={{ fontSize: "clamp(3rem, 14vw, 18rem)", lineHeight: 1.0, whiteSpace: "nowrap" }}
-              >
-                {["We", "Are", "Banijay"].map((w, i) => (
-                  <span key={w} className="inline-block overflow-hidden align-top" style={{ marginRight: i < 2 ? "0.22em" : 0 }}>
-                    <span data-hero-word className="inline-block">
-                      {w}
-                    </span>
-                  </span>
-                ))}
-              </h1>
-            </div>
-          </div>
-        </div>
+        {/* KEINE Intro-Headline mehr im Hero (13.07.): above the fold nur das
+            B-Visual full size. Die Headline erscheint als Marquee beim Scrollen
+            (unten in der Übergangszone), sobald sich der Radius formt. */}
+        <div ref={content} className="relative flex flex-1 flex-col" style={{ zIndex: 2, paddingLeft: "2vw", paddingRight: "2vw" }} />
       </section>
 
-      {/* ── SATELLITEN-RINGE (Wolfram 13.07., v2): KEINE kleineren Radien mehr —
-          alle Ringe sind KOPIEN derselben Kurve (Basis-Radius ≈ Linsen-Pill/
-          Zirkel-Kontur, r=770 im 1600er-System) und FÄCHERN mittelachsig nach
-          unten auf, bis der Übergang ins Statement kommt. Satelliten pendeln
-          auf dem sichtbaren Bogen. */}
-      <div ref={orbitZone} aria-hidden className="pointer-events-none relative overflow-hidden" style={{ height: "46vh", marginTop: "-3vh" }}>
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 443" preserveAspectRatio="xMidYMid slice" fill="none">
-          {/* FARBFÄCHER (Wolfram 13.07., Career-Hero-Palette): radiale Flächen-
-              Layer wachsen synchron zum Scroll aus der Hero-Kurve und gehen
-              nach unten weg — der letzte (Magenta) füllt in die Statement-
-              Fläche hinein (dort übernimmt das Veil in DustStage). */}
+      {/* ── ÜBERGANGSZONE (Wolfram 13.07. v6, Career-Referenz): dunkler
+          Staub-Grund; der MAGENTA-Titel „WE ARE BANIJAY" swiped von links nach
+          rechts; aus der radialen Hero-Kante fächern 3–4 gleichradige weiße
+          Planetenringe auf, auf denen je ein kleiner Magenta-Punkt kreist.
+          Im Hintergrund der Sternenstaub. Danach (via DustStage-Veil) folgt
+          folgt (via DustStage-Veil) das Statement. */}
+      <div ref={orbitZone} aria-hidden className="pointer-events-none relative z-[1] overflow-visible" style={{ height: "78vh", marginTop: "-3vh" }}>
+        {/* Sternenstaub-Hintergrund */}
+        <div
+          className="absolute inset-0 opacity-70"
+          style={{
+            maskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 100%)",
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 100%)",
+          }}
+        >
+          <DustLayer boost={0.85} center={{ x: 0.5, y: 0.1 }} radius={0.8} />
+        </div>
+
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="xMidYMid slice" fill="none">
+          {/* PLANETENRINGE: gleichradig (r=800), mittelachsig (cx=800), Bögen
+              öffnen nach UNTEN (cy = Scheitel − 800) und fächern gestaffelt auf
+              dem dunklen Staub-Grund auf (weiße Linien, wie in der Referenz). */}
           {[
-            { v: 24, color: "#e71d7d" },
-            { v: 110, color: "#2e37c9" },
-            { v: 205, color: "#065dff" },
-            { v: 305, color: "#16c8ff" },
-            { v: 410, color: "#ff4370" },
-          ].map((f, i) => (
-            <path
-              key={`fan${i}`}
-              data-hero-fan
-              data-shift={f.v - 24}
-              d={`M 0 ${f.v - 800} A 800 800 0 0 0 1600 ${f.v - 800} L 1600 1400 L 0 1400 Z`}
-              fill={f.color}
+            { top: 190, alpha: 0.5 },
+            { top: 300, alpha: 0.4 },
+            { top: 420, alpha: 0.3 },
+            { top: 550, alpha: 0.22 },
+          ].map((ring, i) => (
+            <circle
+              key={`ring${i}`}
+              data-hero-ring
+              data-top={ring.top}
+              cx={800}
+              cy={190 - 800}
+              r={800}
+              stroke={`rgba(248,247,243,${ring.alpha})`}
+              strokeWidth={1.4}
             />
           ))}
-          {/* Die Satelliten-Ringe + Bahnpunkte sind vorerst RAUS (Wolfram
-              13.07.: „die gibt es dann momentan noch nicht") — hier stand
-              zuletzt das gleichradige Ring-System; bei Bedarf aus der
-              Git-Historie zurückholbar. */}
+          {/* Je Ring ein kreisender Magenta-Punkt (Scheitel unten ± Amplitude) */}
+          {[
+            { top: 300, amp: 20, dur: 30, phase: 0.15, r: 6 },
+            { top: 420, amp: 26, dur: 42, phase: 0.6, r: 5 },
+            { top: 550, amp: 22, dur: 54, phase: 0.35, r: 5.5 },
+          ].map((d, i) => (
+            <circle
+              key={`dot${i}`}
+              data-hero-ringdot
+              data-center={d.top - 800}
+              data-amp={d.amp}
+              data-dur={d.dur}
+              data-phase={d.phase}
+              cx={800}
+              cy={d.top}
+              r={d.r}
+              fill="#ff4370"
+              style={{ filter: "drop-shadow(0 0 8px #ff4370)" }}
+            />
+          ))}
         </svg>
+
+        {/* TITEL-MARQUEE: „WE ARE BANIJAY" FULL SIZE (breiter als der Screen),
+            läuft endlos von RECHTS nach LINKS. Sitzt mit der Mittelachse GENAU
+            auf der Hero-Unterkante (translateY -50%) → die OBERE HÄLFTE liegt
+            hinter dem Brennglas (Hero z-2 überlagert), die untere Hälfte ist
+            sichtbar. Magenta, überragt den Screen. */}
+        <div
+          data-hero-marquee
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 overflow-hidden"
+          style={{ top: "0", transform: "translateY(-62%)", zIndex: 1 }}
+        >
+          <div className="hero-title-marquee">
+            {[0, 1].map((dup) => (
+              <span
+                key={dup}
+                className="whitespace-nowrap uppercase"
+                // Anton = bolderer Display-Schnitt (Wolfram 13.07.), kein „·"-Trenner
+                style={{ fontFamily: "var(--font-anton), sans-serif", fontWeight: 400, fontSize: "clamp(5rem, 20vw, 30rem)", lineHeight: 0.9, letterSpacing: "0", color: "#ff4370", paddingRight: "0.5em" }}
+              >
+                We Are Banijay&nbsp;&nbsp;&nbsp;
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -61,10 +61,20 @@ export function DustStage() {
   return (
     <div ref={root} aria-hidden className="pointer-events-none absolute inset-0 z-0">
       <div className="sticky top-0 h-screen overflow-clip">
-        {/* Magenta-Fläche (Statement-Start) — UNMASKIERT, damit sie nahtlos an
-            den Magenta-Fächer der Hero-Übergangszone anschließt */}
-        <div ref={veil} className="absolute inset-0" style={{ background: "#ff4370" }} />
-        {/* Staub, weich maskiert (kein harter Schnitt beim Ein-/Ausscrollen) */}
+        {/* Magenta-Fläche (Statement-Start) — RADIALER Gradient, symmetrisch zum
+            Radius der Satelliten-Ringe (Wolfram 13.07.): der Übergang moody →
+            magenta folgt derselben nach unten geöffneten Kurve wie die Ringe
+            (Zentrum weit oben mittig), damit die Kante weich und bogenförmig ist
+            statt hart-horizontal. */}
+        <div
+          ref={veil}
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(140% 150% at 50% -60%, rgba(255,67,112,0) 52%, rgba(255,67,112,0.55) 66%, #ff4370 80%)",
+          }}
+        />
+        {/* Heller Staub (moody-Phase, nach dem Ausblenden des Veils) */}
         <div
           className="absolute inset-0"
           style={{

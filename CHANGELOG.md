@@ -5,6 +5,25 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-13
 
+### Home-Feinschliff: Hero, Übergang & Editorial (13.07., Nachmittag)
+- **Hero above the fold, ohne Intro-Headline:** die statische Hero-Headline entfällt —
+  „WE ARE BANIJAY" erscheint erst beim Scrollen als Ticker (`AlgarveHome.tsx`).
+- **Ticker „WE ARE BANIJAY":** läuft von **rechts nach links**, ohne Mittelpunkt-Trenner,
+  in **Anton** fett/groß (`heroTitleMarquee`-Keyframe umgedreht).
+- **Planeten-Gating:** die magenta Satelliten erscheinen und zirkulieren erst, wenn ihre
+  Radius-Linie vollständig eingeblendet ist.
+- **Übergang moody → magenta weicher:** der Veil-Gradient ist jetzt **radial** und
+  symmetrisch zum Radius der Satelliten-Ringe (nach unten geöffnete Kurve) statt harter
+  horizontaler Kante (`DustStage.tsx`).
+- **Invertierten Sternenstaub** aus der Magenta-Statement-Fläche wieder entfernt
+  („sah aus wie Schmutz").
+- **Editorial-Bildmodul (Referenz-Choreografie):** das große Marcus-Porträt **faded auf**,
+  **schiebt sich nach links** und macht rechts Platz — dann **swipen die Fact-Boxen von
+  rechts herein**, danach folgt der Artikeltext (`Editorial.tsx`).
+- **Editorial-Headline** „Eine neue Ära: Banijay & All3Media" bekommt den Look der Headline
+  über der Companies-Liste: zentriert, uppercase, groß, Zeilen **konvergieren** gescrubbt
+  (obere von oben, untere von unten) auf zentralem Sternstaub; magenta italic „&".
+
 ### Moody-Inversion der ganzen Site (Task #69, 10.–13.07.)
 - **Globaler MoodBackdrop** (`MoodBackdrop.tsx`, in `(frontend)/layout.tsx`): jede Seite
   trägt denselben dark/moody Grund (Schwarz → Brombeere → Magenta-dunkel → Indigo) mit

@@ -402,6 +402,38 @@ html.lenis body { height: auto; }
   .bento-flip { animation: none; }
 }
 
+/* Hero-Titel-Marquee (13.07.): „WE ARE BANIJAY" läuft endlos von RECHTS nach
+   LINKS am unteren Hero-Rand (Track = Text ZWEIMAL, 0 → -50% = nahtlos). */
+@keyframes heroTitleMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.hero-title-marquee {
+  display: inline-flex;
+  width: max-content;
+  animation: heroTitleMarquee 26s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-marquee { animation: none; }
+}
+
+/* Love-Brands-Logo-Ticker (13.07.): endloser Lauf RECHTS → LINKS unter dem
+   Statement (Track = Logo-Reihe ZWEIMAL). Langsam (60s). */
+@keyframes loveBrandsTicker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.love-brands-track {
+  display: inline-flex;
+  width: max-content;
+  animation: loveBrandsTicker 60s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .love-brands-track { animation: none; }
+}
+
 /* MoodBackdrop-Atmen (13.07.): CSS-Animation auf der INNEREN Glow-Fläche —
    getrennt vom Scroll-Transform der äußeren Ebene (ein Writer pro Element,
    sonst flackert der Glow beim Scrollen). */

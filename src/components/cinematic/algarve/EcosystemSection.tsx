@@ -90,7 +90,8 @@ function orbitPoint(orbit: number, deg: number) {
 
 export function AlgarveEcosystem() {
   const root = useRef<HTMLElement>(null);
-  const [active, setActive] = useState<string | null>("entertainment");
+  // Keine geöffnete Card beim Eintritt (Wolfram 13.07.): Cards erst auf Klick.
+  const [active, setActive] = useState<string | null>(null);
 
   useGSAP(
     () => {
@@ -231,7 +232,7 @@ export function AlgarveEcosystem() {
       </div>
 
       {/* Der Teller: zentriert, flach, mit vertikalen Gyroskop-Ringen ums Zentrum */}
-      <div data-eco-reveal className="relative mx-auto mt-8 w-full max-w-[1500px]" style={{ aspectRatio: "1600 / 640" }}>
+      <div data-eco-reveal className="relative mx-auto mt-8 w-full max-w-[1760px]" style={{ aspectRatio: "1600 / 640" }}>
         <svg className="absolute inset-0 h-full w-full" viewBox="-200 0 1600 640" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden>
           {/* Gekippte Orbits: jede Gruppe trägt ihre eigene Rotation — Punkte
               darin bewegen sich im lokalen (ungekippten) System bahntreu. */}

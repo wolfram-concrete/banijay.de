@@ -6,7 +6,7 @@ import { AlgarveAnimatedHeading } from "@/components/cinematic/algarve/AnimatedH
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
-import { AlgarveTestimonials } from "@/components/cinematic/algarve/Testimonials";
+import { LoveBrandsTicker } from "@/components/cinematic/algarve/LoveBrandsTicker";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
@@ -54,6 +54,10 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* LOVE-BRANDS-TICKER (#64): endlose Logo-Banderole unterhalb des
+          Statements/Ökosystems, läuft von links nach rechts. */}
+      <LoveBrandsTicker />
+
       {/* „Unsere Companies" — holistisches Bento-Grid ALLER Companies (Media-Background
           + Aufbau-Stagger + Klick-Detail). Die Headline „Ein System …" lebt als
           Swap-Phase in der Ökosystem-Section darüber. */}
@@ -69,8 +73,7 @@ export default function HomePage() {
           ihre Optik lebt jetzt als Lightbox-Ebene IM Companies-Modul weiter. */}
       <AlgarveAnimatedHeading dark lines={["Ein Dach.", "Viele", "Handschriften."]} />
 
-      {/* Stimmen & Zahlen (section_testimonials) */}
-      <AlgarveTestimonials />
+      {/* Quote-/Testimonials-Section auf der Home entfernt (13.07.) */}
 
       {/* Marcus Wolter / Führung (section_founder) — Divider-Linie entfernt (13.07.) */}
       <AlgarveFounders />
