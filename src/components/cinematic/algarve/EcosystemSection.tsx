@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ECOSYSTEM, ECO_CATEGORIES } from "@/data/ecosystem";
 import { COMPANIES_DIRECTORY } from "@/data/companiesDirectory";
+import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -64,7 +65,7 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
 
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
-const SWAP_LINES = ["Ein System", `mit über ${COMPANIES_DIRECTORY.length}`, "Companies."] as const;
+const SWAP_LINES = ["Ein Ökosystem", `mit über ${COMPANIES_DIRECTORY.length}`, "Companies."] as const;
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",
@@ -231,9 +232,17 @@ export function AlgarveEcosystem() {
         </h2>
       </div>
 
-      {/* Der Teller: zentriert, flach, mit vertikalen Gyroskop-Ringen ums Zentrum */}
-      <div data-eco-reveal className="relative mx-auto mt-8 w-full max-w-[1760px]" style={{ aspectRatio: "1600 / 640" }}>
-        <svg className="absolute inset-0 h-full w-full" viewBox="-200 0 1600 640" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden>
+      {/* Der Teller: zentriert, mit vertikalen Gyroskop-Ringen ums Zentrum. Größer
+          skaliert (Wolfram 14.07.): engeres viewBox (weniger Leerrand → Grafik füllt
+          den Raum), höheres max-width auf großen Screens. */}
+      <div data-eco-reveal className="relative mx-auto mt-8 w-full max-w-[2000px]" style={{ aspectRatio: "1300 / 640" }}>
+        {/* VERDICHTETER STERNENSTAUB im Zentrum (Wolfram 14.07.): eigene, eng um
+            die Mitte konzentrierte Staubebene HINTER den Orbits — dichter Kern
+            hinter dem B, fällt radial ab. Liegt vor dem Glow, unter SVG/B/Cards. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
+          <DustLayer boost={1.2} center={{ x: 0.5, y: 0.5 }} radius={0.42} />
+        </div>
+        <svg className="absolute inset-0 h-full w-full" viewBox="-50 0 1300 640" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden>
           {/* Gekippte Orbits: jede Gruppe trägt ihre eigene Rotation — Punkte
               darin bewegen sich im lokalen (ungekippten) System bahntreu. */}
           {ORBITS.map((o, i) => (
@@ -275,7 +284,7 @@ export function AlgarveEcosystem() {
           style={{
             // toFixed: Browser normalisieren Style-Attribute auf wenige
             // Nachkommastellen → volle Float-Präzision = Hydration-Mismatch
-            left: `${(((STAGE.cx + 200) / 1600) * 100).toFixed(3)}%`,
+            left: `${(((STAGE.cx + 50) / 1300) * 100).toFixed(3)}%`,
             top: `${((STAGE.cy / 640) * 100).toFixed(3)}%`,
             transform: "translate(-50%, -50%)",
           }}
@@ -287,7 +296,7 @@ export function AlgarveEcosystem() {
           const p = orbitPoint(pos.orbit, pos.deg);
           const isActive = cat.key === active;
           // Responsive Anker: Randnähe → Card klappt nach innen auf (kein Clipping)
-          const fx = (p.x + 200) / 1600;
+          const fx = (p.x + 50) / 1300;
           const anchorX = fx > 0.76 ? "-92%" : fx < 0.24 ? "-8%" : "-50%";
           return (
             <div

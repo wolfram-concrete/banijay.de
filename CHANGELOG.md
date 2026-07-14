@@ -5,6 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Hero-Planeten & Ringe, B-Farbsensibilität, Warp-Blende, Ökosystem-Scale, Buttons & Back-to-Top (14.07., Nacht)
+- **Hero-Planeten rund + volle Bahn** (`AlgarveHome.tsx`): die Satelliten liegen jetzt als
+  px-runde HTML-Dots über der Zone (statt verzerrter SVG-Kreise im gestreckten SVG) und laufen
+  ihre Linie komplett ab — sie wandern an beiden Rändern aus dem Bild.
+- **Satellitenringe konzentrisch + sequenziell**: EINE Schar mit gemeinsamem Zentrum (oberste
+  Linie am stärksten gebogen, nach unten flacher), die VERZÖGERT — erst nach dem Formen der
+  Hero-Wölbung — von oben nach unten nacheinander auffächert.
+- **B-Logo Farbsensibilität**: die Hero-/Orbit-Magenta-Zone ist als `data-nav-theme="magenta"`
+  getaggt → das B oben rechts schaltet auf Magenta-Flächen zuverlässig auf Schwarz.
+- **Warp-Blende zum Team** (`TeamWarpBlende.tsx`): an der Headline „Ein Dach. Viele
+  Handschriften." beschleunigt der Sternenstaub in einen Hyperspace-Warp (radiale Streaks),
+  blitzt auf und blendet als Blende in die Team-Section über. Headline dort „Unser Team".
+- **Ökosystem größer skaliert** (`EcosystemSection.tsx`): engeres, symmetrisches viewBox
+  (`-50 0 1300 640`) + höheres max-width (2000px) → die Orbit-Grafik füllt den Raum; im Zentrum
+  ein **verdichteter Sternenstaub-Kern** (eigene DustLayer, kleiner Radius, mehr Boost).
+  Swap-Headline „Ein System" → „Ein Ökosystem".
+- **Buttons vereinheitlicht**: die Pillen-Buttons (CTA-Fill, Footer-/Header-Social,
+  MagneticButton) auf 8px-Radius angeglichen (Heike-Regel — keine Pillen; runde Icon-Buttons
+  bleiben rund).
+- **Back-to-Top-Widget** (`BackToTop.tsx`): subtiler 8px-Glas-Chip unten rechts, erscheint nach
+  ~3 Sektionen und scrollt weich nach oben (Lenis).
+
 ### Editorial-Sticky-Scroll, Hero-Feinschliff & Bento-Balance (14.07., spät)
 - **Editorial als Sticky-Scroll** (`EditorialStickyScene.tsx`): 150→135vh-Section mit sticky
   100vh-Wrapper; das große Marcus-Bild settlet full-size, zieht sich nach links zusammen,

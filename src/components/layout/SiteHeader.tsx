@@ -480,7 +480,7 @@ export function SiteHeader() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Instagram — ${SOCIAL.instagram.handle}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-[8px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
                     style={{ borderColor: INK }}
                   >
                     <IconInstagram />
@@ -491,7 +491,7 @@ export function SiteHeader() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`LinkedIn — ${SOCIAL.linkedin.handle}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-[8px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
                     style={{ borderColor: INK }}
                   >
                     <IconLinkedin />

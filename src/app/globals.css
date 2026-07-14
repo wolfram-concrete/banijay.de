@@ -280,7 +280,7 @@ html.lenis body { height: auto; }
   position: absolute;
   inset: 0;
   background: var(--cta-bg);
-  border-radius: 999px;
+  border-radius: 8px; /* Heike-Regel: CTAs max. 8px (keine Pille) — angeglichen 14.07. */
   transform: scale(0);
   transform-origin: 84% 50%;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);

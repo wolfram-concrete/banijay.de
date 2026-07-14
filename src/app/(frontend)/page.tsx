@@ -4,6 +4,7 @@ import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesB
 import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSection";
 import { AlgarveAnimatedHeading } from "@/components/cinematic/algarve/AnimatedHeading";
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
+import { TeamWarpBlende } from "@/components/cinematic/algarve/TeamWarpBlende";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
 import { LoveBrandsTicker } from "@/components/cinematic/algarve/LoveBrandsTicker";
@@ -72,9 +73,13 @@ export default function HomePage() {
           ihre Optik lebt jetzt als Lightbox-Ebene IM Companies-Modul weiter. */}
       <AlgarveAnimatedHeading dark lines={["Ein Dach.", "Viele", "Handschriften."]} />
 
+      {/* WARP-BLENDE (Wolfram 14.07.): der Sternenstaub der Headline beschleunigt
+          in einen Hyperspace-Warp und blendet als „Blende" in die Team-Section. */}
+      <TeamWarpBlende />
+
       {/* Quote-/Testimonials-Section auf der Home entfernt (13.07.) */}
 
-      {/* Marcus Wolter / Führung (section_founder) — Divider-Linie entfernt (13.07.) */}
+      {/* Unser Team / Führung (section_founder) — Divider-Linie entfernt (13.07.) */}
       <AlgarveFounders />
 
       {/* Bild-zu-Logo-Masken-Reveal → Magenta-Fläche leitet in die News über */}

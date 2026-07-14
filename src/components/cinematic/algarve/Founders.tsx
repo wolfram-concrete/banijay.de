@@ -181,7 +181,7 @@ export function AlgarveFounders() {
               marginBottom: "3.5vw",
             }}
           >
-            Team
+            Unser Team
           </h2>
 
           {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP). Die zwei
@@ -217,7 +217,7 @@ export function AlgarveFounders() {
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
         <h2 className="m-0 mb-8 uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
-          Team
+          Unser Team
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
           {LEADERSHIP.slice(0, 11).map((p, i) => {

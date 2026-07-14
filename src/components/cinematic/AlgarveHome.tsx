@@ -19,6 +19,18 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SECTION_BG = "transparent";
 
+// Satelliten-Schar (Wolfram 14.07.): EIN Zentrum wie die bauchige Hero-Kante —
+// yTop = Kantenpunkt (x=0/1600), yBottom = Bezier-Kontrollpunkt bei x=800
+// (Scheitel = (yTop+yBottom)/2). Oberste Linie am stärksten gebogen, nach unten
+// flacher. Die Werte dienen SVG-Pfaden UND der Planeten-Bahn-Berechnung.
+const VB_H = 780;
+const LINES = [
+  { yTop: 20, yBottom: 440, alpha: 0.7, dur: 26, phase: 0.1 },
+  { yTop: 218, yBottom: 592, alpha: 0.54, dur: 38, phase: 0.55 },
+  { yTop: 411, yBottom: 749, alpha: 0.4, dur: 48, phase: 0.3 },
+  { yTop: 601, yBottom: 909, alpha: 0.28, dur: 34, phase: 0.8 },
+];
+
 export function AlgarveHome() {
   const root = useRef<HTMLDivElement>(null);
   const heroImg = useRef<HTMLImageElement>(null);
@@ -283,32 +295,48 @@ export function AlgarveHome() {
       // ÜBERGANGSZONE (Wolfram 14.07.): reines Magenta hinter der Hero-Kante,
       // KEIN Gradient — es arbeiten nur die weißen Linien, die sich full-size
       // (edge-to-edge) gestaffelt aus der Kante herausziehen.
+      // VERZÖGERT AUFFÄCHERN (Wolfram 14.07.): die Ringe erscheinen ERST, wenn
+      // die Hero-Form fertig gebildet und weit hochgescrollt ist (später Trigger-
+      // Start), und wachsen dann von oben nach unten NACHEINANDER aus der Kante
+      // heraus — klar getrennte Onsets, sichtbares „Rauswachsen nach unten".
       const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 70%", end: "bottom 40%", scrub: 0.7 },
+        scrollTrigger: { trigger: orbitZone.current, start: "top 50%", end: "bottom 55%", scrub: 0.7 },
       });
       const rings = gsap.utils.toArray<SVGGElement>("[data-hero-ring]");
-      gsap.set(rings, { autoAlpha: 0, y: -46 });
       rings.forEach((ring, i) => {
-        fan.to(ring, { autoAlpha: 1, y: 0, duration: 1.1, ease: "power2.out" }, 0.3 + i * 0.18);
+        fan.fromTo(
+          ring,
+          { autoAlpha: 0, y: -44 },
+          { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" },
+          i * 0.9,
+        );
       });
 
-      // MAGENTA-PLANETEN: swipen entlang ihrer Linie (Quadratic-Bezier: x=1600·t,
-      // y = yTop·(1−2t+2t²) + 2t(1−t)·yBottom). t oszilliert um die Mitte ± amp.
-      gsap.utils.toArray<SVGCircleElement>("[data-hero-planet]").forEach((dot) => {
-        const yTop = Number(dot.dataset.ytop);
-        const yBottom = Number(dot.dataset.ybottom);
-        const amp = Number(dot.dataset.amp);
-        const proxy = { p: Number(dot.dataset.phase) * Math.PI * 2 };
+      // WEISSE PLANETEN als perfekt RUNDE HTML-Dots (Wolfram 14.07.): im SVG
+      // (preserveAspectRatio="none") würden Kreise horizontal verzerrt — deshalb
+      // liegen die Dots als px-runde Divs über der Zone und folgen ihrer Linie in
+      // Prozent-Koordinaten (x=t·100 %, y aus dem Quadratic-Bezier). Sie laufen
+      // ihre Bahn KOMPLETT ab (t leicht über 0/1 hinaus) und wandern aus dem Bild.
+      const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
+      dots.forEach((dot, i) => {
+        const ln = LINES[i];
+        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, i * 0.9 + 0.25);
+        if (reduce) {
+          dot.style.left = "50%";
+          dot.style.top = ((((ln.yTop + ln.yBottom) / 2) / VB_H) * 100).toFixed(3) + "%";
+          return;
+        }
+        const proxy = { t: ln.phase };
         gsap.to(proxy, {
-          p: proxy.p + Math.PI * 2,
-          duration: Number(dot.dataset.dur),
+          t: ln.phase + 1,
+          duration: ln.dur,
           ease: "none",
           repeat: -1,
           onUpdate: () => {
-            const t = 0.5 + amp * Math.sin(proxy.p);
-            const x = 1600 * t;
-            const y = yTop * (1 - 2 * t + 2 * t * t) + 2 * t * (1 - t) * yBottom;
-            gsap.set(dot, { attr: { cx: x.toFixed(1), cy: y.toFixed(1) } });
+            const te = -0.08 + (proxy.t % 1) * 1.16; // etwas über die Ränder → aus dem Bild
+            const y = ln.yTop * (1 - te) * (1 - te) + 2 * te * (1 - te) * ln.yBottom + ln.yTop * te * te;
+            dot.style.left = (te * 100).toFixed(3) + "%";
+            dot.style.top = ((y / VB_H) * 100).toFixed(3) + "%";
           },
         });
       });
@@ -383,20 +411,15 @@ export function AlgarveHome() {
       </section>
 
       {/* ── ÜBERGANGSZONE: weiße Satellitenringe + weicher Magenta-Übergang ── */}
-      <div ref={orbitZone} aria-hidden className="pointer-events-none relative z-[1]" style={{ height: "78vh", marginTop: "-3vh", background: "#ff4370" }}>
-        {/* KEIN Gradient, KEIN Staub, KEINE Punkte (Wolfram 14.07.) — reines
-            Magenta, es arbeiten NUR die weißen Linien. preserveAspectRatio="none"
-            + edge-to-edge-Pfade → die Linien gehen full-size bis an beide Ränder. */}
+      <div ref={orbitZone} data-nav-theme="magenta" aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: "#ff4370" }}>
+        {/* KEIN Gradient, KEIN Staub (Wolfram 14.07.) — reines Magenta, es arbeiten
+            NUR die weißen Linien. preserveAspectRatio="none" + edge-to-edge-Pfade
+            → die Linien gehen full-size bis an beide Ränder. Konzentrische Schar
+            (LINES): oberste Linie am stärksten gebogen (hugt die Hero-Wölbung),
+            nach unten flacher auffächernd. */}
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="none" fill="none">
-          {/* Edge-to-edge-Linien, deren Bogen der bauchigen Hero-Unterkante folgt.
-              Auf den Linien swipen kleine Magenta-Planeten (Wolfram 14.07.). */}
-          {[
-            { yTop: 30, yBottom: 300, alpha: 0.62, amp: 0.15, dur: 26, phase: 0.1 },
-            { yTop: 130, yBottom: 430, alpha: 0.5, amp: 0.19, dur: 38, phase: 0.55 },
-            { yTop: 250, yBottom: 560, alpha: 0.38, amp: 0.16, dur: 48, phase: 0.3 },
-            { yTop: 380, yBottom: 690, alpha: 0.26, amp: 0.13, dur: 34, phase: 0.8 },
-          ].map((r, i) => (
-            <g key={`ring${i}`} data-hero-ring data-ytop={r.yTop} data-ybottom={r.yBottom}>
+          {LINES.map((r, i) => (
+            <g key={`ring${i}`} data-hero-ring>
               <path
                 d={`M 0 ${r.yTop} Q 800 ${r.yBottom} 1600 ${r.yTop}`}
                 stroke={`rgba(248,247,243,${r.alpha})`}
@@ -405,22 +428,34 @@ export function AlgarveHome() {
                 // weicher weißer Glow auf den Linien (Wolfram 14.07.)
                 style={{ filter: "drop-shadow(0 0 5px rgba(248,247,243,0.85)) drop-shadow(0 0 14px rgba(248,247,243,0.45))" }}
               />
-              {i < 3 && (
-                <circle
-                  data-hero-planet
-                  data-ytop={r.yTop}
-                  data-ybottom={r.yBottom}
-                  data-amp={r.amp}
-                  data-dur={r.dur}
-                  data-phase={r.phase}
-                  r={7}
-                  fill="#f8f7f3"
-                  style={{ filter: "drop-shadow(0 0 9px rgba(248,247,243,0.9)) drop-shadow(0 0 18px rgba(248,247,243,0.5))" }}
-                />
-              )}
             </g>
           ))}
         </svg>
+
+        {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
+            Linie und laufen komplett aus dem Bild (GSAP setzt left/top in %). */}
+        {LINES.slice(0, 3).map((_, i) => {
+          const size = 14 - i * 2;
+          return (
+            <div
+              key={`dot${i}`}
+              data-hero-dot
+              className="absolute"
+              style={{
+                left: "-12%",
+                top: "0%",
+                width: size,
+                height: size,
+                marginLeft: -size / 2,
+                marginTop: -size / 2,
+                borderRadius: "50%",
+                background: "#f8f7f3",
+                opacity: 0,
+                boxShadow: "0 0 9px rgba(248,247,243,0.9), 0 0 18px rgba(248,247,243,0.5)",
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

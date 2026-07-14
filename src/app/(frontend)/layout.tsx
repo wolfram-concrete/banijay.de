@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/cinematic/SmoothScroll";
 import { MoodBackdrop } from "@/components/cinematic/algarve/MoodBackdrop";
+import { BackToTop } from "@/components/layout/BackToTop";
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function FrontendLayout({ children }: { children: React.ReactNode
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <BackToTop />
     </>
   );
 }
