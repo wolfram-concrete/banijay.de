@@ -6,6 +6,7 @@ import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLoc
 import { AlgarveCareerTomorrowStack } from "@/components/cinematic/algarve/CareerTomorrowStack";
 import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
 import { AlgarveAboutDrift } from "@/components/cinematic/algarve/AboutDrift";
+import { AlgarveSatelliteRings } from "@/components/cinematic/algarve/SatelliteRingsBand";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 
@@ -49,6 +50,9 @@ export default function CareerPage() {
         headline={"Kein passender Job\ndabei?"}
         copy="Erzähl uns, was du mitbringst — wir freuen uns über deine Initiativbewerbung und melden uns bei dir."
       />
+
+      {/* Satellitenringe wachsen von der Seite ins Layout (Wolfram 14.07.) */}
+      <AlgarveSatelliteRings side="left" />
     </>
   );
 }

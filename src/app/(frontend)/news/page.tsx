@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { NewsFilter } from "@/components/cinematic/algarve/NewsFilter";
+import { AlgarveSatelliteRings } from "@/components/cinematic/algarve/SatelliteRingsBand";
 import { fetchSocialPosts } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { mergeFeed } from "@/data/feed";
 import { NEWS } from "@/data/news";
@@ -32,6 +33,9 @@ export default async function NewsPage() {
           <NewsFilter items={feed} />
         </div>
       </section>
+
+      {/* Satellitenringe wachsen von der Seite ins Layout (Wolfram 14.07.) */}
+      <AlgarveSatelliteRings side="right" />
     </>
   );
 }

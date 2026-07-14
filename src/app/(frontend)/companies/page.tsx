@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesBento";
+import { AlgarveSatelliteRings } from "@/components/cinematic/algarve/SatelliteRingsBand";
 
 export const metadata: Metadata = {
   title: "Companies",
@@ -21,6 +22,9 @@ export default function CompaniesPage() {
         statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr — sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
       />
       <AlgarveCompaniesBento />
+
+      {/* Satellitenringe wachsen von der Seite ins Layout (Wolfram 14.07.) */}
+      <AlgarveSatelliteRings side="right" />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
+import { AlgarveSatelliteRings } from "@/components/cinematic/algarve/SatelliteRingsBand";
 import { CONTACT_PAGE } from "@/data/contact";
 import { CONTACT } from "@/data/site";
 
@@ -143,6 +144,9 @@ export default function ContactPage() {
           </div>
         </Reveal>
       </Section>
+
+      {/* Satellitenringe wachsen von der Seite ins Layout (Wolfram 14.07.) */}
+      <AlgarveSatelliteRings side="left" />
     </>
   );
 }
