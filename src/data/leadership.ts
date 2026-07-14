@@ -10,9 +10,9 @@ export interface Leader {
 
 export const LEADERSHIP: Leader[] = [
   { name: "Marcus Wolter", role: "CEO", img: "/people/lead-1.jpg" },
-  { name: "Knut Kremling", role: "COO", img: "/people/lead-2.jpg" },
+  { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.jpg" },
   { name: "Michael Laegel", role: "CFO", img: "/people/lead-3.jpg" },
-  { name: "Simone Lenzen", role: "Director Communications", img: "/people/lead-4.jpg" },
+  { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
   { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/lead-5.jpg" },
   { name: "Natali Naso", role: "Director Human Resources", img: "/people/lead-6.jpg" },
   { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/lead-7.jpg" },

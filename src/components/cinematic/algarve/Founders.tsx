@@ -32,6 +32,8 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
   "/people/lead-2.jpg": "50% 14%",
+  "/people/knut-kremling.jpg": "50% 8%",
+  "/people/simone-lenzen.jpg": "50% 12%",
   "/people/lead-3.jpg": "50% 12%",
   "/people/lead-4.jpg": "50% 22%",
   "/people/lead-5.jpg": "50% 20%",

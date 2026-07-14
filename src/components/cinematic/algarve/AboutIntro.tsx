@@ -70,6 +70,21 @@ export function AlgarveAboutIntro({
         scrollTrigger: { trigger: root.current, start: "top top", end: "+=38%", scrub: 0.4 },
       });
 
+      // Love-Brands-Ticker (Wolfram 14.07.): ERST das Statement, DANN die Love-
+      // Brands — der Ticker ist zunächst unsichtbar und blendet erst ein, wenn
+      // das Statement aufgebaut ist (~30 % Scroll in die Section), und läuft dann
+      // links→rechts durch.
+      const love = root.current?.querySelector<HTMLElement>("[data-love-brands]");
+      if (love) {
+        gsap.set(love, { autoAlpha: 0, y: 24 });
+        ScrollTrigger.create({
+          trigger: root.current,
+          start: "top top-=28%",
+          once: true,
+          onEnter: () => gsap.to(love, { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }),
+        });
+      }
+
       // fadeExit: nach dem Lese-Fenster blendet das Statement im Sticky-Panel
       // weich aus — dahinter wird die überlappende Folge-Section sichtbar.
       if (fadeExit) {

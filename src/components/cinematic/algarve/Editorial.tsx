@@ -102,28 +102,28 @@ export function AlgarveEditorial() {
         }
       }
 
-      // BILD-MODUL-CHOREOGRAFIE (Referenz, Wolfram 13.07.): erst faded das große
-      // Marcus-Bild auf und schiebt sich leicht nach links — dann swipen von
-      // rechts die Fact-Boxen (Stat-Panels) in den frei werdenden Raum, danach
-      // folgt der Artikeltext.
+      // BILD-MODUL-CHOREOGRAFIE (Wolfram 14.07., Loom-Referenz): GEPINNTE Szene —
+      // beim Scrollen ist das Marcus-Bild zuerst groß/mittig zu sehen, schiebt
+      // sich nach LINKS, und von RECHTS rattern die Fact-Boxen gestaffelt herein;
+      // danach löst der Pin und der Screen scrollt zum restlichen Artikeltext.
+      const scene = root.current?.querySelector<HTMLElement>("[data-ed-scene]");
       const imgWrap = root.current?.querySelector<HTMLElement>("[data-ed-img]");
-      const imgEl = imgWrap?.querySelector("img");
       const stats = gsap.utils.toArray<HTMLElement>("[data-ed-stat]");
-      if (imgWrap && imgEl) {
-        gsap.set(imgWrap, { autoAlpha: 0, xPercent: 12, scale: 1.06, transformOrigin: "left center" });
-        gsap.set(imgEl, { scale: 1.22 });
-        gsap.set(stats, { autoAlpha: 0, xPercent: 60 });
-        const enter = gsap.timeline({
-          scrollTrigger: { trigger: imgWrap, start: "top 80%", once: true },
+      const desktop = window.matchMedia("(min-width: 768px)").matches;
+      if (scene && imgWrap && desktop) {
+        // Start: Bild groß & mittig (nach rechts translatiert + hochskaliert)
+        gsap.set(imgWrap, { xPercent: 40, scale: 1.16, transformOrigin: "center center" });
+        gsap.set(stats, { autoAlpha: 0, xPercent: 90 });
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: scene, start: "top top", end: "+=150%", pin: true, scrub: 0.7, anticipatePin: 1 },
         });
-        enter
-          // ① aufblenden
-          .to(imgWrap, { autoAlpha: 1, scale: 1, duration: 1.1, ease: "power3.out" }, 0)
-          .to(imgEl, { scale: 1, duration: 2, ease: "power2.out" }, 0)
-          // ② nach links schieben (macht rechts Platz)
-          .to(imgWrap, { xPercent: 0, duration: 1.0, ease: "power3.inOut" }, 0.55)
-          // ③ Fact-Boxen swipen von rechts rein
-          .to(stats, { autoAlpha: 1, xPercent: 0, duration: 0.9, stagger: 0.12, ease: "power3.out" }, 0.9);
+        tl
+          // ① Bild wandert nach links in seine Position, verkleinert sich auf 1
+          .to(imgWrap, { xPercent: 0, scale: 1, ease: "power2.inOut", duration: 0.42 }, 0)
+          // ② Fact-Boxen rattern von rechts herein (gestaffelt)
+          .to(stats, { autoAlpha: 1, xPercent: 0, ease: "power2.out", stagger: 0.12, duration: 0.5 }, 0.44)
+          // ③ kurzer Halt, bevor der Pin löst
+          .to({}, { duration: 0.16 });
       }
 
       gsap.set("[data-ed-reveal]", { autoAlpha: 0, y: 56 });
@@ -202,14 +202,15 @@ export function AlgarveEditorial() {
           </h2>
         </div>
 
-        {/* BILD-MODUL (Wolfram 13.07. v2): das große Marcus-Bild faded auf und
-            schiebt sich nach links — von rechts swipen die Fact-Boxen INS Bild
-            (Glas-Panels ÜBER der rechten Bildhälfte, nicht daneben). */}
-        <div className="relative" style={{ marginBottom: "clamp(3rem, 6vw, 7rem)" }}>
-          {/* großes Porträt links (fade-up + slide-left) */}
-          <div data-ed-img className="relative w-full overflow-hidden md:w-[56%]" style={{ aspectRatio: "4 / 5" }}>
-            <img src="/editorial/marcus-hof.jpg" alt="Marcus Wolter, CEO Banijay Germany" className="h-full w-full object-cover" style={{ objectPosition: "50% 30%" }} />
-          </div>
+        {/* BILD-MODUL — GEPINNTE Szene (Wolfram 14.07., Loom-Referenz): Bild groß/
+            mittig → wandert nach links → Fact-Boxen rattern von rechts herein →
+            dann löst der Pin und der Screen scrollt zum Artikeltext. */}
+        <div data-ed-scene className="relative flex min-h-screen items-center" style={{ marginBottom: "clamp(2rem, 4vw, 5rem)" }}>
+          <div className="relative w-full">
+            {/* großes Porträt links → wandert nach links */}
+            <div data-ed-img className="relative w-full overflow-hidden md:w-[56%]" style={{ aspectRatio: "4 / 5" }}>
+              <img src="/editorial/marcus-hof.jpg" alt="Marcus Wolter, CEO Banijay Germany" className="h-full w-full object-cover" style={{ objectPosition: "50% 30%" }} />
+            </div>
 
           {/* FACT-BOXEN — Desktop absolut ÜBER der rechten Bildhälfte (swipen von
               rechts ins Bild), Mobile als Grid unter dem Bild. Glas-Panels mit
@@ -237,6 +238,7 @@ export function AlgarveEditorial() {
                 </span>
               </div>
             ))}
+          </div>
           </div>
         </div>
 

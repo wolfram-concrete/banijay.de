@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -115,8 +116,18 @@ export function AlgarveCareerSocialSlider({
   );
 
   return (
-    <section ref={root} className="overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: dark ? "transparent" : "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
-      <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+    <section ref={root} className="relative overflow-clip max-[767px]:!pt-[5.56vw]" style={{ background: dark ? "transparent" : "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
+      {/* Sternenstaub im Hintergrund (Wolfram 14.07.) — nur im moody-dark-Modus */}
+      {dark && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-70"
+          style={{ zIndex: 0, maskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 88%, transparent 100%)", WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 88%, transparent 100%)" }}
+        >
+          <DustLayer boost={0.8} center={{ x: 0.78, y: 0.12 }} radius={0.9} />
+        </div>
+      )}
+      <div className="relative" style={{ paddingLeft: "2vw", paddingRight: "2vw", zIndex: 1 }}>
         {/* Headline */}
         <div className="mb-[3vw] flex items-end justify-between gap-8 max-[767px]:!mb-[8vw] max-[767px]:!flex-col max-[767px]:!items-start">
           <h2 className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "4.44vw", lineHeight: "104%", fontWeight: 500, letterSpacing: "-0.139vw", color: dark ? "#f8f7f3" : INK }}>

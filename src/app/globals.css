@@ -418,11 +418,11 @@ html.lenis body { height: auto; }
   .hero-title-marquee { animation: none; }
 }
 
-/* Love-Brands-Logo-Ticker (13.07.): endloser Lauf RECHTS → LINKS direkt unter
+/* Love-Brands-Logo-Ticker (14.07.): endloser Lauf LINKS → RECHTS direkt unter
    dem Statement (Track = Logo-Reihe ZWEIMAL). Sehr langsam (90s). */
 @keyframes loveBrandsTicker {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
 .love-brands-track {
   display: inline-flex;

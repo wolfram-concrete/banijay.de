@@ -9,22 +9,15 @@ import { DustLayer } from "./algarve/DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// V2-Hero (Umbau 13.07. v8, Wolfram-Diktat):
-//  • Der Hero ist zweilagig: OBEN das Brennglas (WebGL-Linse), das ein
-//    KOMPOSIT aus dem roten Glas-B (Motiv) UND der Headline „WE ARE BANIJAY"
-//    bricht — die Buchstaben sind INNERHALB der Linse gebrochen sichtbar.
-//  • Dahinter (außerhalb der Linse) liegt dasselbe B-Motiv soft-blurry als
-//    Background — Linse und Background laufen SYNCHRON (dieselbe Quelle).
-//  • Das B-Motiv softet nach unten aus; DARUNTER gibt es keinen Bildgrund mehr,
-//    die Schrift steht dort auf dem Sternenstaub-Hintergrund.
-//  • Die Headline ist ab dem ersten Laden unten sichtbar und WANDERT beim
-//    Scrollen (scroll-getrieben) — der obere Teil läuft dabei in die Linse und
-//    wird gebrochen, der untere Teil steht auf dem Staub.
-//  • Die UNTERE Linsenkante ist bauchig (radiale Kurve, formt sich beim Scroll);
-//    aus ihr wandern magenta Satellitenringe heraus (Übergangszone unten).
+// V2-Hero (Umbau 14.07., Wolfram-Diktat):
+//  • FULLSCREEN-Brennglas: die WebGL-Linse füllt den kompletten Viewport und
+//    zeigt das rote Glas-B scharf, an den Kanten radial gebrochen, außen blurry.
+//  • KEINE Headline (vorerst komplett entfernt).
+//  • Beim Scrollen formt sich die untere Kante bauchig (radiale Kurve); aus ihr
+//    fächern WEISSE Satellitenringe heraus; ein weicher Übergang leitet in die
+//    Magenta-Statement-Section.
 
 const SECTION_BG = "transparent";
-const COPY = "WE ARE BANIJAY  "; // Headline-Einheit (Em-Spaces = Lücke)
 
 export function AlgarveHome() {
   const root = useRef<HTMLDivElement>(null);
@@ -32,9 +25,8 @@ export function AlgarveHome() {
   const orbitZone = useRef<HTMLDivElement>(null);
   const heroSection = useRef<HTMLElement>(null);
   const contour = useRef<HTMLDivElement>(null);
-  const marqueeTrack = useRef<HTMLDivElement>(null);
-  // Kurven-Fortschritt 0..1: Hero startet unten GERADE, die radiale Kurve formt
-  // sich beim Scrollen (Section-Radius + Linsen-Pill im Shader, ein Wert).
+  // Kurven-Fortschritt 0..1: Hero startet unten GERADE, die Kurve formt sich
+  // beim Scrollen (Section-Radius, Zirkel-Kontur, Linsen-Pill im Shader).
   const curveP = useRef(0);
 
   const lensCanvas = useRef<HTMLCanvasElement>(null);
@@ -45,36 +37,43 @@ export function AlgarveHome() {
     const box = lensBox.current;
     const img = heroImg.current;
     const section = canvas?.parentElement as HTMLElement | null;
-    const track = marqueeTrack.current;
-    if (!canvas || !box || !img || !section || !track) return;
+    if (!canvas || !box || !img || !section) return;
     const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true });
     if (!gl) {
+      img.style.filter = "none";
       canvas.style.display = "none";
       return;
     }
 
     const VERT = `attribute vec2 aPos; varying vec2 vUv; void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.,1.); }`;
-    // Der Shader sampelt eine SCREEN-SPACE-Textur (Motiv-Komposit: B + Schrift),
-    // Mapping ist 1:1 (uv = px/uRes) — dadurch liegt die gebrochene Schrift in
-    // der Linse deckungsgleich über der DOM-Schrift unterhalb der Linse.
     const FRAG = `precision mediump float;
       varying vec2 vUv;
       uniform sampler2D uTex;
-      uniform vec2 uRes;   // Canvas px
-      uniform vec2 uC;     // Linsen-Zentrum px (y-down)
-      uniform vec2 uH;     // Halbmaße px
-      uniform float uRL;   // Radius OBEN
-      uniform float uRR;   // Radius UNTEN (Pill = Halbbreite × curveP)
-      uniform float uBand; // Feder-Breite der Kantenzone px
-      uniform float uDisp; // max. Brechungs-Versatz px
+      uniform vec2 uRes;
+      uniform vec2 uC;
+      uniform vec2 uH;
+      uniform float uRL;
+      uniform float uRR;
+      uniform float uBand;
+      uniform float uDisp;
+      uniform vec2 uVid;
+      uniform float uZoom;
+      uniform vec2 uOff;
 
       float sd(vec2 p){
         float r = (p.y > uC.y) ? uRR : uRL;
         vec2 q = abs(p - uC) - uH + vec2(r);
         return min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0))) - r;
       }
+      vec2 cover(vec2 px){
+        float sc = max(uRes.x / uVid.x, uRes.y / uVid.y) * 1.3;
+        vec2 disp = uVid * sc;
+        vec2 off = vec2((uRes.x - disp.x) * 0.5, (uRes.y - disp.y) * 1.0);
+        vec2 uv = (px - off) / disp;
+        return (uv - 0.5) / uZoom + 0.5;
+      }
       void main(){
-        vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes; // y-down wie DOM
+        vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes;
         float d = sd(px);
         float alpha = 1.0 - smoothstep(-1.5, 1.5, d);
         if (alpha <= 0.003) discard;
@@ -83,8 +82,8 @@ export function AlgarveHome() {
         n = normalize(n + vec2(1e-5));
         float k = 1.0 - smoothstep(0.0, uBand, -d);
         k = pow(clamp(k, 0.0, 1.0), 1.7);
-        vec2 sp = px - n * (k * uDisp);
-        vec2 uv = sp / uRes; // 1:1 Screen-Space
+        vec2 sp = px - n * (k * uDisp) + uOff;
+        vec2 uv = cover(sp);
         vec3 col = texture2D(uTex, uv).rgb;
         vec2 duv = vec2(k * 3.5) / uRes;
         vec3 blur = (texture2D(uTex, uv + vec2(duv.x, 0.)).rgb + texture2D(uTex, uv - vec2(duv.x, 0.)).rgb
@@ -119,27 +118,18 @@ export function AlgarveHome() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     const U = (n: string) => gl.getUniformLocation(prog, n);
 
-    // MOTIV-KOMPOSIT (2D-Canvas): das scharfe B + die Headline werden hier
-    // screen-space zusammengezeichnet und als Linsen-Textur hochgeladen.
-    const motif = document.createElement("canvas");
-    const mctx = motif.getContext("2d")!;
-    const dprOf = () => Math.min(devicePixelRatio || 1, 2);
-
     let raf = 0;
     let visible = true;
     let hxCur = 0;
-    let cssW = 0, cssH = 0, fontPx = 0, baseY = 0, copyW = 1;
-    let fontReady = false;
-    let lastX = NaN;
+    const dprOf = () => Math.min(devicePixelRatio || 1, 2);
 
     const resize = () => {
       const dpr = dprOf();
-      cssW = section.clientWidth;
-      cssH = section.clientHeight;
-      canvas.width = motif.width = Math.round(cssW * dpr);
-      canvas.height = motif.height = Math.round(cssH * dpr);
-      canvas.style.width = cssW + "px";
-      canvas.style.height = cssH + "px";
+      const sw = section.clientWidth, sh = section.clientHeight;
+      canvas.width = Math.round(sw * dpr);
+      canvas.height = Math.round(sh * dpr);
+      canvas.style.width = sw + "px";
+      canvas.style.height = sh + "px";
       const sr = section.getBoundingClientRect();
       const br = box.getBoundingClientRect();
       const cx = (br.left - sr.left + br.width / 2) * dpr;
@@ -154,50 +144,39 @@ export function AlgarveHome() {
       hxCur = hx;
       gl.uniform1f(U("uBand"), 120 * dpr);
       gl.uniform1f(U("uDisp"), 30 * dpr);
-      // Typo-Maße 1:1 zur DOM-Marquee (clamp(5rem,20vw,30rem), bottom 4vh)
-      fontPx = Math.max(80, Math.min(0.2 * cssW, 480));
-      baseY = cssH - 0.04 * window.innerHeight - fontPx * 0.14;
-      mctx.font = `400 ${fontPx * dpr}px "Anton", sans-serif`;
-      copyW = mctx.measureText(COPY).width / dpr;
-      lastX = NaN; // Neuzeichnen erzwingen
     };
 
-    const drawMotif = (xpx: number) => {
-      const dpr = dprOf();
-      mctx.clearRect(0, 0, motif.width, motif.height);
-      // ① scharfes B-Motiv, cover-fit (leichtes Upscale), vertikal zentriert
-      if (img.complete && img.naturalWidth) {
-        const sc = Math.max(motif.width / img.naturalWidth, motif.height / img.naturalHeight) * 1.25;
-        const dw = img.naturalWidth * sc, dh = img.naturalHeight * sc;
-        mctx.drawImage(img, (motif.width - dw) / 2, (motif.height - dh) * 0.42, dw, dh);
-      }
-      // ② Headline in Magenta, screen-space, an derselben Position wie die DOM-Schrift
-      mctx.font = `400 ${fontPx * dpr}px "Anton", sans-serif`;
-      mctx.fillStyle = "#ff4370";
-      mctx.textBaseline = "alphabetic";
-      mctx.textAlign = "left";
-      const cw = copyW * dpr;
-      let x = (xpx * dpr) % cw;
-      if (x > 0) x -= cw;
-      for (; x < motif.width + cw; x += cw) mctx.fillText(COPY, x, baseY * dpr);
+    let uploaded = false;
+    const upload = () => {
+      if (uploaded || !img.complete || !img.naturalWidth) return;
       gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, motif);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.uniform2f(U("uVid"), img.naturalWidth, img.naturalHeight);
+      uploaded = true;
     };
+    upload();
+    img.addEventListener("load", upload);
 
-    const draw = () => {
-      if (visible) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const zoomAt = (now: number) => (reduce ? 1.015 : 1.015 + 0.045 * (0.5 - 0.5 * Math.cos(((now % 26000) / 26000) * Math.PI * 2)));
+    const mouse = { x: 0, y: 0 };
+    const eased = { x: 0, y: 0 };
+    const onMouse = (e: MouseEvent) => {
+      mouse.x = e.clientX / window.innerWidth - 0.5;
+      mouse.y = e.clientY / window.innerHeight - 0.5;
+    };
+    window.addEventListener("mousemove", onMouse, { passive: true });
+
+    const draw = (now: number) => {
+      if (visible && uploaded) {
         const dpr = dprOf();
-        // Marquee scroll-getrieben: über den Hero-Scroll wandert die Schrift um
-        // eine Kopie-Breite nach links; steht bei Scroll 0 still.
-        const heroH = section.clientHeight;
-        const prog = Math.max(0, Math.min(1, (window.scrollY || 0) / heroH));
-        const xpx = -prog * copyW;
-        track.style.transform = `translateX(${xpx.toFixed(2)}px)`;
-        if (fontReady && Math.abs(xpx - lastX) > 0.4) {
-          drawMotif(xpx);
-          lastX = xpx;
-        }
+        const z = zoomAt(now);
+        eased.x += (mouse.x - eased.x) * 0.04;
+        eased.y += (mouse.y - eased.y) * 0.04;
+        img.style.transform = `scale(${(1.05 * z).toFixed(4)}) translate(${(-eased.x * 10).toFixed(1)}px, ${(-eased.y * 6).toFixed(1)}px)`;
+        gl.uniform1f(U("uZoom"), z);
         gl.uniform1f(U("uRR"), Math.max(1, hxCur * curveP.current));
+        gl.uniform2f(U("uOff"), reduce ? 0 : eased.x * 26 * dpr, reduce ? 0 : eased.y * 16 * dpr);
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -206,20 +185,7 @@ export function AlgarveHome() {
     };
 
     resize();
-    // Font laden, dann initial zeichnen (sonst backt der erste Frame Fallback-Font)
-    const startFonts = () => {
-      fontReady = true;
-      lastX = NaN;
-      drawMotif(0);
-    };
-    if ((document as unknown as { fonts?: FontFaceSet }).fonts) {
-      document.fonts.load(`400 100px "Anton"`).then(() => document.fonts.ready).then(startFonts).catch(startFonts);
-    } else {
-      startFonts();
-    }
-    img.addEventListener("load", () => drawMotif(lastX || 0));
     raf = requestAnimationFrame(draw);
-
     const ro = new ResizeObserver(resize);
     ro.observe(section);
     ro.observe(box);
@@ -227,6 +193,8 @@ export function AlgarveHome() {
     io.observe(section);
     return () => {
       cancelAnimationFrame(raf);
+      img.removeEventListener("load", upload);
+      window.removeEventListener("mousemove", onMouse);
       ro.disconnect();
       io.disconnect();
     };
@@ -262,9 +230,9 @@ export function AlgarveHome() {
         });
       }
 
-      // ÜBERGANGSZONE: aus der radialen Linsenkante fächern magenta Satelliten-
-      // ringe auf; jeder Ring trägt einen kreisenden Magenta-Punkt (erst sichtbar,
-      // wenn sein Ring vollständig eingeblendet ist). Danach der Magenta-Übergang.
+      // ÜBERGANGSZONE: aus der radialen Linsenkante fächern WEISSE Satelliten-
+      // ringe auf; jeder trägt einen kreisenden Magenta-Punkt (erst sichtbar, wenn
+      // sein Ring vollständig eingeblendet ist). Danach der Magenta-Übergang.
       const fan = gsap.timeline({
         scrollTrigger: { trigger: orbitZone.current, start: "top 60%", end: "bottom 35%", scrub: 0.7 },
       });
@@ -303,81 +271,55 @@ export function AlgarveHome() {
 
   return (
     <div ref={root} style={{ background: SECTION_BG }}>
-      {/* ── ZWEI-LAGEN-HERO ───────────────────────────────────────────────── */}
+      {/* ── FULLSCREEN-BRENNGLAS-HERO ─────────────────────────────────────── */}
       <section
         ref={heroSection}
-        className="relative z-[2] flex min-h-screen flex-col overflow-visible max-[479px]:!pb-[11vw]"
-        style={{ background: "transparent", paddingTop: "6.5rem" }}
+        className="relative z-[2] flex min-h-screen flex-col overflow-hidden max-[479px]:!min-h-screen"
+        style={{ background: "transparent", borderRadius: "0" }}
       >
-        {/* STERNENSTAUB-Grund des Heros — die Schrift steht (unterhalb der Linse)
-            auf diesem Staub (Wolfram 13.07.). */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ zIndex: 0 }}
-        >
+        {/* Sternenstaub-Grund — sichtbar unterhalb der Kurve, sobald sie sich formt */}
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* B-MOTIV als soft-blurry Background (dieselbe Quelle wie die Linse →
-            beide laufen synchron). Softet nach unten aus → darunter nur Staub.
-            Gleichzeitig TEXTUR-Quelle der Linse (scharfe Pixel via drawImage). */}
+        {/* Hintergrund: das rote Glas-B FULLSCREEN — außerhalb der Linse soft-blurry
+            (CSS-filter). Der Subtil-Zoom kommt synchron aus dem Linsen-rAF. */}
         <img
           ref={heroImg}
           src="/hero-v2/b-red.jpg"
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{
-            zIndex: 0,
-            filter: "blur(20px) saturate(1.05) brightness(0.9)",
-            transform: "scale(1.06)",
-            objectPosition: "50% 30%",
-            maskImage: "linear-gradient(180deg, #000 0%, #000 42%, rgba(0,0,0,0.55) 60%, transparent 76%)",
-            WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 42%, rgba(0,0,0,0.55) 60%, transparent 76%)",
-          }}
+          style={{ zIndex: 0, filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
         />
 
-        {/* HEADLINE-LAYER (z-1) — steht VOR dem Bild. Im Bereich der Linse (z-2)
-            wird sie vom Canvas überdeckt und dort GEBROCHEN aus der Textur
-            gezeigt; unterhalb der Linse steht sie frei auf dem Staub. */}
+        {/* Fokus oben: das Bild softet nach unten dunkel ab */}
         <div
-          data-hero-marquee
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 overflow-hidden"
-          style={{ bottom: "4vh", zIndex: 1 }}
-        >
-          <div ref={marqueeTrack} className="flex w-max" style={{ willChange: "transform" }}>
-            <span
-              className="whitespace-nowrap uppercase"
-              style={{ fontFamily: "var(--font-anton), sans-serif", fontWeight: 400, fontSize: "clamp(5rem, 20vw, 30rem)", lineHeight: 0.9, letterSpacing: "0", color: "#ff4370" }}
-            >
-              WE ARE BANIJAY&emsp;&emsp;WE ARE BANIJAY&emsp;&emsp;
-            </span>
-          </div>
-        </div>
+          className="pointer-events-none absolute inset-0"
+          style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(10,2,8,0) 46%, rgba(10,2,8,0.5) 74%, rgba(10,2,8,0.9) 100%)" }}
+        />
 
-        {/* ZIRKEL-KONTUR auf der radialen Linsen-Unterkante */}
+        {/* Zirkel-Kontur auf der radialen Unterkante */}
         <div
           ref={contour}
           aria-hidden
-          className="pointer-events-none absolute inset-x-0"
-          style={{ zIndex: 2, bottom: "26vh", height: "50vw", opacity: 0, borderRadius: "0", boxShadow: "inset 0 -1px 0 rgba(248,247,243,0.25)" }}
+          className="pointer-events-none absolute inset-x-0 bottom-0"
+          style={{ zIndex: 2, height: "50vw", opacity: 0, borderRadius: "0", boxShadow: "inset 0 -1px 0 rgba(248,247,243,0.25)" }}
         />
 
-        {/* BRENNGLAS-LINSE (z-2, oberer Layer): bricht das Kompositmotiv (B +
-            Buchstaben). Außerhalb der Form transparent → dort scheint der
-            Background/Staub + die freie Schrift durch. */}
+        {/* BRENNGLAS-LINSE (WebGL) — full size (inset 0). Außerhalb der Form
+            transparent. Bewusste Kunden-Ausnahme der Keine-Rundungen-Regel. */}
         <canvas ref={lensCanvas} aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 2 }} />
         <div
           ref={lensBox}
           aria-hidden
           className="pointer-events-none absolute"
-          style={{ top: 0, left: 0, right: 0, bottom: "26vh", zIndex: 2, borderRadius: "0", boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)" }}
+          style={{ inset: "0", borderRadius: "0", boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)" }}
         />
       </section>
 
-      {/* ── ÜBERGANGSZONE: magenta Satellitenringe + Magenta-Übergang ──────── */}
+      {/* ── ÜBERGANGSZONE: weiße Satellitenringe + weicher Magenta-Übergang ── */}
       <div ref={orbitZone} aria-hidden className="pointer-events-none relative z-[1] overflow-visible" style={{ height: "78vh", marginTop: "-3vh" }}>
         <div
           className="absolute inset-0 opacity-70"
@@ -387,6 +329,7 @@ export function AlgarveHome() {
         </div>
 
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="xMidYMid slice" fill="none">
+          {/* WEISSE Satellitenringe (Wolfram 14.07.): gleichradig, mittelachsig */}
           {[
             { top: 190, alpha: 0.5 },
             { top: 300, alpha: 0.4 },
@@ -400,9 +343,8 @@ export function AlgarveHome() {
               cx={800}
               cy={190 - 800}
               r={800}
-              stroke={`rgba(255,67,112,${Math.min(1, ring.alpha + 0.25)})`}
-              strokeWidth={1.6}
-              style={{ filter: "drop-shadow(0 0 6px rgba(255,67,112,0.55))" }}
+              stroke={`rgba(248,247,243,${ring.alpha})`}
+              strokeWidth={1.4}
             />
           ))}
           {[
@@ -426,12 +368,15 @@ export function AlgarveHome() {
           ))}
         </svg>
 
-        {/* MAGENTA-ÜBERGANG — folgt der BIEGUNG der Satellitenringe (Zentrum weit
-            oben, „Smile"-Bogen). Oben transparent (Staub), unten voll Magenta →
-            nahtlos in die Statement-Fläche. */}
+        {/* MAGENTA-ÜBERGANG — sehr weich (viele Stops), folgt der Ring-Biegung
+            (Zentrum weit oben, „Smile"-Bogen). Oben transparent (Staub), unten
+            voll Magenta → nahtlos in die Statement-Fläche. */}
         <div
           className="absolute inset-0"
-          style={{ background: "radial-gradient(112% 128% at 50% -28%, rgba(255,67,112,0) 58%, rgba(255,67,112,0.5) 72%, #ff4370 84%)" }}
+          style={{
+            background:
+              "radial-gradient(125% 140% at 50% -34%, rgba(255,67,112,0) 46%, rgba(255,67,112,0.08) 58%, rgba(255,67,112,0.24) 68%, rgba(255,67,112,0.5) 78%, rgba(255,67,112,0.8) 88%, #ff4370 96%)",
+          }}
         />
       </div>
     </div>

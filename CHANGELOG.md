@@ -3,6 +3,24 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [redesign-v2] — Branch (Preview) — 2026-07-14
+
+### Preloader-Warp, fullscreen Hero, Editorial-Pin, Lightbox 16:9 & People-Fotos (14.07.)
+- **Preloader neu** (`PreloaderParticles.tsx` + `IntroOverlay.tsx`): eigenes Canvas-Partikel-
+  system statt skalierter Bitmap — scharfe Punkte formen aus der Mitte die B-Form (dichter),
+  dann schießen sie als **Warp-Tunnel** (Streaks/Bewegungsunschärfe) auf die Kamera zu.
+  Als Background das **Eclipse-Weltraum-Visual** (`/preloader/eclipse-bg.jpg`), leicht zoomend.
+- **Home-Hero fullscreen** (`AlgarveHome.tsx`): Brennglas füllt den Viewport, Headline entfernt,
+  Satellitenringe wieder **weiß**, moody→magenta-Übergang deutlich weicher (viele Stops).
+- **Editorial als gepinnte Choreografie** (`Editorial.tsx`): Bild groß/mittig → wandert nach
+  links → Fact-Boxen rattern von rechts gestaffelt herein → Pin löst → Artikeltext.
+- **Companies-Lightbox 16:9** (`CompaniesBento.tsx`): Cards im 16:9-Format (statt 84vh-Hochformat);
+  Companies ohne Content bekommen Platzhaltertext an denselben Stellen.
+- **Statement → Love-Brands** (`AboutIntro.tsx`): erst das Statement, dann blenden die Love-
+  Brands ein und laufen **links→rechts** durch.
+- **Social-Section**: Sternenstaub im Hintergrund ergänzt (`CareerSocialSlider.tsx`).
+- **People/TEAM**: echte Fotos für **Knut Kremling** und **Simone Lenzen** (`leadership.ts`).
+
 ## [redesign-v2] — Branch (Preview) — 2026-07-13
 
 ### Neue Seite: Ecosystem (Task #67, 13.07.)

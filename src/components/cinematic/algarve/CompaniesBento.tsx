@@ -307,7 +307,9 @@ export function AlgarveCompaniesBento() {
                     key={card.id}
                     data-flip-card
                     className="sticky mx-auto flex w-full max-w-[1240px] flex-col justify-between overflow-hidden p-[3.2vw] max-[767px]:!p-[6vw]"
-                    style={{ top: "8vh", height: "84vh", backgroundColor: tint, color: PAPER }}
+                    // 16:9-Format (Wolfram 14.07.) statt 84vh-Hochformat → passt in
+                    // den Viewport, ragt nicht mehr heraus. maxHeight als Sicherung.
+                    style={{ top: "9vh", aspectRatio: "16 / 9", maxHeight: "82vh", backgroundColor: tint, color: PAPER }}
                   >
                     {/* FULLSIZE-Video im Background + Farb-Tint + Scrim */}
                     <video
@@ -339,16 +341,15 @@ export function AlgarveCompaniesBento() {
 
                     {/* Bottom links: Claim + Text + Keywords + CTA (Platzhalter: nur Name/Tags) */}
                     <div className="relative flex flex-col items-start gap-4 max-[767px]:!max-w-full" style={{ zIndex: 3, maxWidth: "46%" }}>
-                      {card.profile && (
-                        <h4 className="m-0 max-[767px]:!text-[5.4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.2rem, 1.9vw, 2.1rem)", lineHeight: "118%", fontWeight: 500 }}>
-                          {card.profile}
-                        </h4>
-                      )}
-                      {card.body && (
-                        <p className="m-0 max-[767px]:!text-[3.8vw]" style={{ fontSize: "clamp(0.9rem, 1.05vw, 1.15rem)", lineHeight: "145%", color: "rgba(248,247,243,0.78)" }}>
-                          {card.body}
-                        </p>
-                      )}
+                      {/* Platzhalter (Wolfram 14.07.): Companies ohne eigenen Content
+                          bekommen an denselben Stellen wie die anderen einen neutralen
+                          Text, damit die Lightbox nicht leer wirkt. */}
+                      <h4 className="m-0 max-[767px]:!text-[5.4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.2rem, 1.9vw, 2.1rem)", lineHeight: "118%", fontWeight: 500 }}>
+                        {card.profile || "Teil des Banijay-Ökosystems"}
+                      </h4>
+                      <p className="m-0 max-[767px]:!text-[3.8vw]" style={{ fontSize: "clamp(0.9rem, 1.05vw, 1.15rem)", lineHeight: "145%", color: "rgba(248,247,243,0.78)" }}>
+                        {card.body || "Eine eigenständige Company im Banijay-Netzwerk — eigene Handschrift, eigenes Team. Profil folgt in Kürze."}
+                      </p>
                       {card.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {card.tags.map((t) => (

@@ -10,7 +10,7 @@ const LOGOS = COMPANIES_DIRECTORY.filter((c) => c.logo).map((c) => ({ src: c.log
 
 export function LoveBrandsTicker() {
   return (
-    <section aria-label="Love Brands" className="relative overflow-hidden" style={{ background: "transparent", paddingTop: "2.5vw", paddingBottom: "0.5vw" }}>
+    <section data-love-brands aria-label="Love Brands" className="relative overflow-hidden" style={{ background: "transparent", paddingTop: "2.5vw", paddingBottom: "0.5vw" }}>
       {/* keine Headline über dem Ticker (Wolfram 13.07.) */}
       {/* Kantenfade links/rechts → die Logos „faden" beim Ein-/Auslaufen (Wolfram 13.07.) */}
       <div
