@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -26,6 +26,20 @@ const NAME = {
 } as const;
 const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 0.95rem)", lineHeight: "122%" } as const;
 
+// „Ein Dach. Viele Handschriften." — Intro-Headline im Warp-Overlay (Wolfram 14.07.)
+const ED_LINE = {
+  fontFamily: "var(--font-sharp), sans-serif",
+  fontSize: "7vw",
+  lineHeight: "132%",
+  fontWeight: 500,
+  textAlign: "center",
+  textTransform: "uppercase",
+  margin: 0,
+  color: "#f8f7f3",
+} as const;
+const WARP_N = 560; // subtiler Sternenstaub
+const easeInQ = (t: number) => t * t;
+
 // Fokuspunkt je Portrait (object-position), damit die Gesichter im Crop nie
 // abgeschnitten werden — Portraits mit Kopf weit oben brauchen einen stärkeren
 // Top-Bias. Default: leicht nach oben versetzt.
@@ -48,6 +62,89 @@ export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
   const mTeam = useRef<HTMLDivElement>(null); // Mobile-Team-Container (für End-Pin)
+  // Warp-Intro-Overlay (Wolfram 14.07.): „Ein Dach"-Headline + Hyperspace-Warp,
+  // der als Blende ausblendet und das Team-Grid AN GLEICHER STELLE freigibt.
+  const warpOverlay = useRef<HTMLDivElement>(null);
+  const warpCanvas = useRef<HTMLCanvasElement>(null);
+  const edHead = useRef<HTMLDivElement>(null);
+  const edFirst = useRef<HTMLHeadingElement>(null);
+  const edMiddle = useRef<HTMLHeadingElement>(null);
+  const edLast = useRef<HTMLHeadingElement>(null);
+  const warpProg = useRef(0);
+
+  // WARP-CANVAS: subtiler radialer Sternenstaub → Hyperspace-Streaks → kurzer
+  // Flash-Puls (voll ausblendend, KEIN Glow-Rest). Getrieben von warpProg.
+  useEffect(() => {
+    const canvas = warpCanvas.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    let W = 0, H = 0, raf = 0;
+    const resize = () => {
+      W = canvas.width = Math.round(canvas.clientWidth * dpr);
+      H = canvas.height = Math.round(canvas.clientHeight * dpr);
+    };
+    resize();
+    type S = { ang: number; rad: number; size: number; mag: boolean };
+    const stars: S[] = [];
+    for (let i = 0; i < WARP_N; i++) {
+      stars.push({ ang: Math.random() * Math.PI * 2, rad: 0.05 + Math.random() * 0.6, size: 0.4 + Math.random() * 1.0, mag: Math.random() < 0.05 });
+    }
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      const p = Math.max(0, Math.min(1, warpProg.current));
+      const cx = W / 2, cy = H / 2;
+      const R = Math.min(W, H);
+      // Warp startet SPÄT (erst ab p>0.35) und ist die Blende.
+      const warp = p < 0.35 ? 0 : Math.min(1, (p - 0.35) / 0.5);
+      const ew = easeInQ(warp);
+      // Flash als kurzer Puls (Dreieck) — voll aus, kein bleibender Glow.
+      const flashRaw = p < 0.6 ? 0 : (p - 0.6) / 0.4; // 0..1
+      const flash = Math.max(0, 1 - Math.abs(flashRaw - 0.5) * 2) * (flashRaw > 0 ? 1 : 0);
+      const S_MAX = 24;
+      for (const s of stars) {
+        const dirx = Math.cos(s.ang), diry = Math.sin(s.ang);
+        const base = s.rad * R * 0.5;
+        if (warp <= 0) {
+          // SUBTILER Ruhe-Staub
+          const a = 0.34 * (s.mag ? 1.2 : 1);
+          if (a <= 0.02) continue;
+          ctx.beginPath();
+          ctx.arc(cx + dirx * base, cy + diry * base, s.size * dpr, 0, Math.PI * 2);
+          ctx.fillStyle = s.mag ? `rgba(255,67,112,${a})` : `rgba(248,247,243,${a})`;
+          ctx.fill();
+        } else {
+          const s1 = 1 + ew * S_MAX;
+          const s0 = 1 + Math.max(0, ew - 0.06) * S_MAX;
+          const a = Math.max(0, 1 - ew * 0.72);
+          if (a <= 0.02) continue;
+          ctx.beginPath();
+          ctx.moveTo(cx + dirx * base * s0, cy + diry * base * s0);
+          ctx.lineTo(cx + dirx * base * s1, cy + diry * base * s1);
+          ctx.lineWidth = s.size * dpr * (1 + ew * 3);
+          ctx.lineCap = "round";
+          ctx.strokeStyle = s.mag ? `rgba(255,67,112,${a})` : `rgba(248,247,243,${a})`;
+          ctx.stroke();
+        }
+      }
+      if (flash > 0.01) {
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.7);
+        g.addColorStop(0, `rgba(255,255,255,${0.42 * flash})`);
+        g.addColorStop(0.5, `rgba(255,67,112,${0.14 * flash})`);
+        g.addColorStop(1, "rgba(255,67,112,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    raf = requestAnimationFrame(draw);
+    window.addEventListener("resize", resize, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -84,6 +181,7 @@ export function AlgarveFounders() {
       if (reduce) {
         gsap.set(tiles, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
         gsap.set(metas, { opacity: 1, y: 0 });
+        gsap.set(warpOverlay.current, { autoAlpha: 0 }); // Team direkt sichtbar
         return;
       }
 
@@ -91,37 +189,42 @@ export function AlgarveFounders() {
       // Danach ein kurzer Halte-Beat: das komplette Team steht, BEVOR der Pin löst
       // (auf der Home steigt danach im LogoReveal das Video darüber; auf About folgt
       // die Partner-Section). KEINE Magenta-Zwischenebene mehr.
+      const vh = window.innerHeight;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
-          // Lang genug, dass der Pin erst LÖST, wenn das Video (LogoReveal, -100vh)
-          // die Bühne komplett gedeckt hat → das Team steht die ganze Zeit still
-          // (Namen fertig in der ersten Hälfte, danach langer Halte-Beat, über den
-          // das Video von unten voll drüberzieht).
+          // Eine gepinnte Bühne trägt ALLES: Ein-Dach-Intro → Warp-Blende →
+          // Team-Grid-Aufbau → langer Halte-Beat (über den das LogoReveal-Video,
+          // -100vh, von unten drüberzieht). Länger, weil das Intro Platz braucht.
           start: "top top",
-          end: "+=210%",
+          end: "+=340%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
         },
       });
-      tl.to(tiles, {
-        x: 0,
-        y: 0,
-        scale: 1,
-        rotation: 0,
-        opacity: 1,
-        ease: "power2.out",
-        stagger: 0.04,
-        duration: 0.45,
-      });
-      // Erst NACHDEM alle Karten eingerastet sind, faden Name + Titel gestaffelt ein
-      // — bewusst KOMPAKT (kleiner Stagger/kurze Dauer), damit ALLE Namen früh
-      // vollständig stehen (bis ~55 % des Pins), lange bevor das Video aufsteigt.
-      tl.to(metas, { opacity: 1, y: 0, ease: "power2.out", stagger: 0.02, duration: 0.26 }, 0.48);
-      // Langer Halte-Beat: komplett aufgebautes Team + alle Namen stehen still, BEVOR
-      // im LogoReveal der Videocontainer von unten darüber aufsteigt.
-      tl.to({}, { duration: 0.9 }, 0.9);
+
+      // ① INTRO: „Ein Dach. Viele Handschriften." konvergiert auf SUBTILEM Staub,
+      //    dann kurzer HALT. Der Warp (Blende) kommt bewusst SPÄTER.
+      tl.from(edFirst.current, { y: -0.14 * vh, ease: "none", duration: 0.3 }, 0)
+        .from(edLast.current, { y: 0.14 * vh, ease: "none", duration: 0.3 }, 0)
+        .from(edMiddle.current, { scale: 1.16, ease: "none", duration: 0.24 }, 0.05);
+      tl.to({}, { duration: 0.16 }, 0.3);
+      // ② WARP (später): treibt das Canvas; „Ein Dach" blendet aus.
+      const wp = { v: 0 };
+      tl.to(wp, { v: 1, ease: "none", duration: 0.4, onUpdate: () => (warpProg.current = wp.v) }, 0.46);
+      tl.to(edHead.current, { autoAlpha: 0, ease: "power1.in", duration: 0.2 }, 0.56);
+      // ③ BLENDE: Warp-Overlay blendet aus → das Team-Grid erscheint AN GLEICHER
+      //    STELLE (kein Scroll-Übergang, kein Glow-Rest).
+      tl.to(warpOverlay.current, { autoAlpha: 0, ease: "power1.inOut", duration: 0.18 }, 0.82);
+
+      // ④ TEAM-GRID entfaltet sich NACH der Blende in die finalen Grid-Plätze …
+      tl.to(tiles, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1, ease: "power2.out", stagger: 0.04, duration: 0.5 }, 1.0);
+      // … dann faden Name + Titel gestaffelt ein.
+      tl.to(metas, { opacity: 1, y: 0, ease: "power2.out", stagger: 0.02, duration: 0.26 }, 1.5);
+      // ⑤ Langer Halte-Beat: komplettes Team steht still, BEVOR im LogoReveal der
+      //    Videocontainer (-100vh) von unten darüberzieht.
+      tl.to({}, { duration: 0.9 }, 1.9);
     },
     { scope: root },
   );
@@ -207,6 +310,23 @@ export function AlgarveFounders() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* WARP-INTRO-OVERLAY (Wolfram 14.07.): „Ein Dach. Viele Handschriften."
+            auf subtilem Staub → Warp-Blende → blendet aus und gibt das Grid AN
+            GLEICHER STELLE frei. Der opake moody Grund verdeckt das Grid im Intro. */}
+        <div
+          ref={warpOverlay}
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ zIndex: 10, background: "radial-gradient(62% 55% at 50% 44%, #4a1234 0%, #290a1c 55%, #160410 100%)" }}
+        >
+          <canvas ref={warpCanvas} className="absolute inset-0 h-full w-full" style={{ zIndex: 0 }} />
+          <div ref={edHead} className="absolute inset-0 flex flex-col items-center justify-center" style={{ zIndex: 2 }}>
+            <h2 ref={edFirst} style={ED_LINE}>Ein Dach.</h2>
+            <h2 ref={edMiddle} style={ED_LINE}>Viele</h2>
+            <h2 ref={edLast} style={ED_LINE}>Handschriften.</h2>
           </div>
         </div>
       </div>

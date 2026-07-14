@@ -5,6 +5,25 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Pausenclown Media, Warp→Team-Merge, Companies-Page-Umbau, Zahlentafeln-Coloring, Back-to-Top-Hover & News kantig (14.07., Nacht II)
+- **Pausenclown Media** neu in die Companies aufgenommen (`companyCards.ts` + `companiesDirectory.ts` per
+  `fromCard`): Label mit Food-Experte Sebastian Lege — Content aus Marcus' Anschreiben, nichts erfunden.
+  Logo (runder Patch) + Sebastian-Bild optimiert (`/company-logos/pausenclown-media.png`,
+  `/companies/pausenclown-media.jpg`). Erscheint in Home-Bento, Ökosystem-Akkordeon, Love-Brands-Ticker
+  und auf /companies. CompanyCards-CTA blendet ohne URL aus (neue Labels ohne Website).
+- **„Ein Dach → Warp → Team" als EINE gepinnte Bühne** (`Founders.tsx`): der Warp-Intro liegt jetzt IN der
+  Team-Section — Headline auf subtilem Staub → Halt → Warp-Blende (Flash als Puls, kein Glow-Rest) →
+  das Team-Grid erscheint AN GLEICHER STELLE (kein Scroll-Übergang). `TeamWarpBlende.tsx` entfernt.
+- **Companies-Page umgebaut** (`companies/page.tsx` + `AlgarveHome`-`variant`): Hero wie Home, darunter kein
+  Magenta, sondern dunkler moody Sternenstaub; mittelachsiges Statement animiert nach den Ringen ein;
+  dasselbe Companies-Bento; CTA/Kontaktformular raus. Auf dark → B-Logo weiß.
+- **Zahlentafeln an die Farbrange** (`EditorialStickyScene.tsx`): Lavendel/Mint → Magenta `#ff4370` +
+  tiefe Brombeere `#4a1636` (Mint verwenden wir nicht).
+- **Back-to-Top-Hover**: kippt ins Magenta, hebt sich an, Pfeil rückt hoch, Magenta-Glow.
+- **News-Bildcontainer kantig** im Nav-Slider (Header) — `0.83vw` → `0`.
+- **Hero-Bilder auf 2880px** hochoptimiert (lanczos3 + Unsharp, q95, 4:4:4); helles „We Are Banijay"-Motiv
+  (Quelle nur 1344px — höher aufgelöster Export würde weiter schärfen).
+
 ### Brennglas raus, Hero-Bild + -Optimierung, Ticker-Richtung, Editorial-Pin & Warp-Scroll-Stop (14.07., spät-Nacht)
 - **Brennglas-Logik entfernt** (`AlgarveHome.tsx`): die WebGL-Linse (Shader, Refraktion, `lensCanvas`/
   `lensBox`) ist raus. Der Hero zeigt das crispe Vollbild-Motiv; der Dark→Hell-Crossfade („We Are

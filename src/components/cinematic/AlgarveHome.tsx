@@ -31,7 +31,16 @@ const LINES = [
   { yTop: 601, yBottom: 909, alpha: 0.28, dur: 34, phase: 0.8 },
 ];
 
-export function AlgarveHome() {
+export function AlgarveHome({
+  variant = "home",
+  statement,
+}: {
+  /** "home" = Magenta-Übergangszone; "companies" = dunkler moody Staub + Statement */
+  variant?: "home" | "companies";
+  /** Mittelachsiges Statement, das NACH den Satellitenringen einanimiert (companies) */
+  statement?: string;
+} = {}) {
+  const dark = variant === "companies";
   const root = useRef<HTMLDivElement>(null);
   const heroImg = useRef<HTMLImageElement>(null);
   const heroImgB = useRef<HTMLImageElement>(null);
@@ -141,6 +150,27 @@ export function AlgarveHome() {
           },
         });
       });
+
+      // MITTELACHSIGES STATEMENT (companies): animiert ein, sobald es NACH den
+      // Ringen in den Viewport scrollt (fade + scale + leichter Aufstieg).
+      const st = root.current?.querySelector<HTMLElement>("[data-hero-statement]");
+      if (st) {
+        if (reduce) {
+          gsap.set(st, { autoAlpha: 1 });
+        } else {
+          gsap.fromTo(
+            st,
+            { autoAlpha: 0, scale: 0.92, y: 34 },
+            {
+              autoAlpha: 1,
+              scale: 1,
+              y: 0,
+              ease: "power2.out",
+              scrollTrigger: { trigger: st, start: "top 80%", end: "top 45%", scrub: 0.6 },
+            },
+          );
+        }
+      }
     },
     { scope: root },
   );
@@ -151,7 +181,7 @@ export function AlgarveHome() {
           Hero-Form beim Scrollen bildet, werden die Ecken außerhalb der Form
           freigeschnitten — dahinter liegt SOFORT reines Magenta (kein dunkler
           Background mehr). Deckt den Hero-Unterbau + die Übergangszone ab. */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0" style={{ top: "26vh", bottom: 0, background: "#ff4370", zIndex: 0 }} />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0" style={{ top: "26vh", bottom: 0, background: dark ? "transparent" : "#ff4370", zIndex: 0 }} />
 
       {/* ── FULLSCREEN-HERO (ohne Brennglas) ──────────────────────────────── */}
       <section
@@ -200,13 +230,17 @@ export function AlgarveHome() {
         />
       </section>
 
-      {/* ── ÜBERGANGSZONE: weiße Satellitenringe + weicher Magenta-Übergang ── */}
-      <div ref={orbitZone} data-nav-theme="magenta" aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: "#ff4370" }}>
-        {/* KEIN Gradient, KEIN Staub (Wolfram 14.07.) — reines Magenta, es arbeiten
-            NUR die weißen Linien. preserveAspectRatio="none" + edge-to-edge-Pfade
-            → die Linien gehen full-size bis an beide Ränder. Konzentrische Schar
-            (LINES): oberste Linie am stärksten gebogen (hugt die Hero-Wölbung),
-            nach unten flacher auffächernd. */}
+      {/* ── ÜBERGANGSZONE: weiße Satellitenringe. Home = Magenta; Companies =
+          transparent auf dem globalen moody Backdrop + eigener Sternenstaub. ── */}
+      <div ref={orbitZone} data-nav-theme={dark ? "dark" : "magenta"} aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: dark ? "transparent" : "#ff4370" }}>
+        {dark && (
+          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
+            <DustLayer boost={0.85} center={{ x: 0.5, y: 0.42 }} radius={0.95} />
+          </div>
+        )}
+        {/* Konzentrische Schar (LINES): oberste Linie am stärksten gebogen (hugt
+            die Hero-Wölbung), nach unten flacher auffächernd. preserveAspectRatio=
+            "none" + edge-to-edge-Pfade → full-size bis an beide Ränder. */}
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="none" fill="none">
           {LINES.map((r, i) => (
             <g key={`ring${i}`} data-hero-ring>
@@ -247,6 +281,34 @@ export function AlgarveHome() {
           );
         })}
       </div>
+
+      {/* MITTELACHSIGES STATEMENT (companies, Wolfram 14.07.): animiert ein, sobald
+          es nach den Satellitenringen in den Viewport kommt — auf dem globalen
+          moody Sternenstaub-Backdrop. */}
+      {statement && (
+        <section
+          data-nav-theme="dark"
+          className="relative z-[1] flex items-center justify-center overflow-clip max-[767px]:!px-[6vw]"
+          style={{ minHeight: "82vh", paddingLeft: "6vw", paddingRight: "6vw" }}
+        >
+          <p
+            data-hero-statement
+            className="max-[767px]:!text-[7.4vw]"
+            style={{
+              fontFamily: "var(--font-sharp), sans-serif",
+              fontSize: "clamp(1.9rem, 3.6vw, 4.2rem)",
+              lineHeight: "122%",
+              fontWeight: 500,
+              textAlign: "center",
+              color: "#f8f7f3",
+              maxWidth: "20ch",
+              opacity: 0,
+            }}
+          >
+            {statement}
+          </p>
+        </section>
+      )}
     </div>
   );
 }

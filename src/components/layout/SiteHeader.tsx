@@ -80,7 +80,7 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
               transition: `transform 0.6s cubic-bezier(0.22,1,0.36,1) ${120 + i * 55}ms, opacity 0.5s ease ${120 + i * 55}ms`,
             }}
           >
-            <div className="overflow-clip max-[767px]:!h-[40vw]" style={{ borderRadius: "0.83vw", height: "11vw" }}>
+            <div className="overflow-clip max-[767px]:!h-[40vw]" style={{ borderRadius: 0, height: "11vw" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={n.img}

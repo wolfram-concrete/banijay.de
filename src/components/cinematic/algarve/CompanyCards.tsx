@@ -253,8 +253,9 @@ export function AlgarveCompanyCards() {
                   </div>
                 )}
 
-                {/* CTA → externe Website (neuer Tab). Hover = radialer Farb-Invert
-                    (siehe .cta-invert in globals.css), kein ruckelnder Pfeil. */}
+                {/* CTA → externe Website (neuer Tab). Nur wenn eine URL vorliegt —
+                    neue Labels (z. B. Pausenclown Media) haben noch keine Website. */}
+                {card.externalUrl && (
                 <a
                   href={card.externalUrl}
                   target="_blank"
@@ -281,6 +282,7 @@ export function AlgarveCompanyCards() {
                     <span aria-hidden>↗</span>
                   </span>
                 </a>
+                )}
               </div>
 
               {/* Schwebendes Media-Panel (Company-Bild) rechts unten — nur Desktop.

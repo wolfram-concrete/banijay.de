@@ -3,7 +3,6 @@ import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesBento";
 import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSection";
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
-import { TeamWarpBlende } from "@/components/cinematic/algarve/TeamWarpBlende";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
 import { LoveBrandsTicker } from "@/components/cinematic/algarve/LoveBrandsTicker";
@@ -67,18 +66,10 @@ export default function HomePage() {
           bis Heike #58 liefert). */}
       <AlgarveEditorial />
 
-      {/* Konvergierende Headline (section_animated-heading).
-          Die Kompetenzfelder-Flip-Cards (ServicesStack) sind entfallen (#61) —
-          ihre Optik lebt jetzt als Lightbox-Ebene IM Companies-Modul weiter. */}
-      {/* WARP-BLENDE mit Scroll-Stop (Wolfram 14.07.): gepinnte Bühne — die
-          Headline „Ein Dach. Viele Handschriften." baut sich auf, HÄLT (Stop),
-          per Scroll löst der Hyperspace-Warp als Blende, dann baut sich die
-          Team-Section darunter auf. */}
-      <TeamWarpBlende />
-
-      {/* Quote-/Testimonials-Section auf der Home entfernt (13.07.) */}
-
-      {/* Unser Team / Führung (section_founder) — Divider-Linie entfernt (13.07.) */}
+      {/* „Ein Dach. Viele Handschriften." → Warp-Blende → Team liegt jetzt als
+          EINE gepinnte Bühne IN <AlgarveFounders /> (Wolfram 14.07.): die Headline
+          baut sich auf subtilem Staub auf, der Warp blendet über und gibt das Team
+          AN GLEICHER STELLE frei — kein Scroll-Übergang, keine Zwischen-Section. */}
       <AlgarveFounders />
 
       {/* Bild-zu-Logo-Masken-Reveal → Magenta-Fläche leitet in die News über */}

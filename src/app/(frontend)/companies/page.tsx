@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
-import { AlgarveCompanyCards } from "@/components/cinematic/algarve/CompanyCards";
-import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
+import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
+import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesBento";
 
 export const metadata: Metadata = {
   title: "Companies",
@@ -9,27 +8,18 @@ export const metadata: Metadata = {
     "Die Banijay-World: spezialisierte Companies, Labels, Live-Einheiten, Talent-Managements und Plattformen — geclustert nach Kompetenzfeldern.",
 };
 
+// COMPANIES-PAGE (Wolfram 14.07.): Hero wie auf der Home (Bild + radiale Kurve +
+// Satellitenringe), darunter KEIN Magenta, sondern der globale dunkle moody
+// Sternenstaub. Danach ein mittelachsiges Statement, das nach den Ringen ein-
+// animiert, dann DASSELBE Companies-Bento wie auf der Home. Kein CTA-Formular mehr.
 export default function CompaniesPage() {
   return (
     <>
-      {/* Hero */}
-      <AlgarvePageHero
-        headline={"Die Welt\ndahinter"}
-        label="Companies"
-        body="25+ Companies und Labels, jede mit eigener Handschrift. Gemeinsam entwickeln sie Shows, Reality, Fiction, Comedy, Digital und Live-Erlebnisse für den deutschen Markt."
-        highlights={["Shows", "Reality", "Fiction", "Comedy", "Digital", "Live-Erlebnisse"]}
-        image="/grid/companies-hero-poster.jpg"
-        video="/video/companies-hero.mp4"
+      <AlgarveHome
+        variant="companies"
+        statement="Über 40 eigenständige Companies und Labels — ein Ökosystem, das Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
       />
-
-      {/* Companies-Vorstellung — farbige Teaser-Card-Bühne (Algarve-Fold-away) */}
-      <AlgarveCompanyCards />
-
-      {/* Kontakt-Formular (ersetzt den früheren Abschluss-CTA) */}
-      <AlgarveContactForm
-        headline="Die richtige Company für deine Idee, dein Format oder deine Partnerschaft?"
-        copy="Sag uns, worum es geht – wir bringen dich mit der passenden Handschrift zusammen."
-      />
+      <AlgarveCompaniesBento />
     </>
   );
 }

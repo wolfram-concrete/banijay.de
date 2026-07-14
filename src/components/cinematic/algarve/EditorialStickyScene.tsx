@@ -18,10 +18,12 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const ASIDE_W = 470;
 
-type Fact = { value: number; suffix: string; label: string; bg: string; heightPct: number };
+// Farbrange der Website (Wolfram 14.07.): Magenta + tiefe Brombeere statt
+// Lavendel/Mint (Mint verwenden wir NICHT). fg/labelColor je Card lesbar.
+type Fact = { value: number; suffix: string; label: string; bg: string; fg: string; labelColor: string; border?: string; heightPct: number };
 const FACTS: Fact[] = [
-  { value: 25, suffix: "+", label: "Companies & Labels im deutschen Netzwerk", bg: "#CDABFE", heightPct: 60 },
-  { value: 1300, suffix: "", label: "Mitarbeitende hinter den Formaten", bg: "#D1DDD3", heightPct: 40 },
+  { value: 25, suffix: "+", label: "Companies & Labels im deutschen Netzwerk", bg: "#ff4370", fg: "#0e0d0b", labelColor: "rgba(14,13,11,0.72)", heightPct: 60 },
+  { value: 1300, suffix: "", label: "Mitarbeitende hinter den Formaten", bg: "#4a1636", fg: "#f8f7f3", labelColor: "rgba(248,247,243,0.66)", border: "1px solid rgba(255,255,255,0.12)", heightPct: 40 },
 ];
 
 const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
@@ -120,7 +122,7 @@ export function EditorialStickyScene() {
                   key={f.label}
                   data-fact-card
                   className="flex flex-col justify-between overflow-clip max-md:!h-auto max-md:!min-h-[9rem]"
-                  style={{ height: `${f.heightPct}%`, background: f.bg, padding: "16px", color: "#2b2b2b" }}
+                  style={{ height: `${f.heightPct}%`, background: f.bg, border: f.border, padding: "16px", color: f.fg }}
                 >
                   <span
                     data-fact-num
@@ -128,7 +130,7 @@ export function EditorialStickyScene() {
                   >
                     0
                   </span>
-                  <span style={{ fontSize: "clamp(0.95rem, 1.05vw, 1.15rem)", lineHeight: "132%", color: "rgba(43,43,43,0.78)", maxWidth: "22ch" }}>
+                  <span style={{ fontSize: "clamp(0.95rem, 1.05vw, 1.15rem)", lineHeight: "132%", color: f.labelColor, maxWidth: "22ch" }}>
                     {f.label}
                   </span>
                 </div>

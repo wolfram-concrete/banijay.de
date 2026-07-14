@@ -345,6 +345,23 @@ export const COMPANY_CARDS: CompanyCard[] = [
     image: "/companies/endemol-shine-polska.jpg",
     imageAlt: "Endemol Shine Polska – Teaserbild",
   },
+  {
+    // NEU (Marcus-Info 14.07.): Label mit Food-Experte Sebastian Lege.
+    // Content aus dem internen Anschreiben — nichts erfunden. Noch keine Website.
+    id: "pausenclown-media",
+    index: "21",
+    cluster: "Production & Formats",
+    kind: "label",
+    name: "Pausenclown Media",
+    profile: "Neues Label mit Food-Experte Sebastian Lege — Content, Talent und Distribution eng verzahnt.",
+    body: "Gemeinsam mit TV-Persönlichkeit und Produktentwickler Sebastian Lege gegründet: Entertainment aus Publikumssicht für TV, Streaming, Social Media und Live. Geschäftsführung Arno Schneppenheim, Executive Producer Imke Runde.",
+    tags: ["Food-Entertainment", "Digital", "Label"],
+    knownFor: ["Sebastian Lege", "b/esser (YouTube)", "ZDF & VOX"],
+    context: "Neugründung 2026 — Talent, Content und Distribution eng verzahnt.",
+    externalUrl: "",
+    image: "/companies/pausenclown-media.jpg",
+    imageAlt: "Pausenclown Media – Sebastian Lege",
+  },
 ];
 
 /** Badge-Label je Card-Kind (nur wenn ≠ "company"). */
