@@ -7,7 +7,6 @@ import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
 import { AlgarveWorldNetwork } from "@/components/cinematic/algarve/WorldNetwork";
 import { AlgarvePartnerStack } from "@/components/cinematic/algarve/PartnerStack";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
-import { AlgarveSatelliteRings } from "@/components/cinematic/algarve/SatelliteRingsBand";
 import { ABOUT } from "@/data/about";
 import { STATS } from "@/data/site";
 
@@ -66,9 +65,6 @@ export default function AboutPage() {
         headline="Lass uns über Entertainment sprechen, das Menschen erreicht."
         copy="Für Projekte, Presse, Partnerschaften oder einfach ein Hallo."
       />
-
-      {/* Satellitenringe wachsen von der Seite ins Layout (Wolfram 14.07.) */}
-      <AlgarveSatelliteRings side="left" />
     </>
   );
 }

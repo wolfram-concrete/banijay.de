@@ -5,12 +5,6 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
-### Satellitenringe-Band unten auf allen Subpages (14.07., Nacht VII)
-- **Neues Element `SatelliteRingsBand.tsx`**: im unteren Bereich jeder Subpage (NICHT Home) wächst einmal
-  eine Schar konzentrischer Satellitenringe radial-symmetrisch von der Seitenkante ins Layout (Grow-Reveal
-  beim Reinscrollen), mit laufenden Orbit-Dots auf dem globalen Sternenstaub. `side="left|right"`-Prop,
-  auf about/career/contact links, companies/news rechts eingesetzt.
-
 ### Formular-Linien, Header-Titel, Hero-Tempo, Drift→Career & diverse Detailkorrekturen (14.07., Nacht VI)
 - **Formular global auf Unterstrich-Linien** (`ContactForm.tsx`, `contact/page.tsx`, `globals.css`): keine
   Kästen mehr — transparente Felder, nur eine dünne weiße Unterkante, kein Radius. Gilt für About/Career
