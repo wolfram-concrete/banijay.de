@@ -10,6 +10,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Banijay", href: "/" },
   { label: "Companies", href: "/companies" },
+  { label: "Ecosystem", href: "/ecosystem" },
   { label: "News", href: "/news" },
   { label: "About", href: "/about" },
   { label: "Career", href: "/career" },

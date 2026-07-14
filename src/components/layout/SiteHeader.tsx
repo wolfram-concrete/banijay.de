@@ -135,6 +135,7 @@ const PAGE_LABEL: Record<string, string> = {
   // „/" (Home) absichtlich NICHT gelistet — das eingerastete Label soll nur auf
   // Unterseiten als Orientierung erscheinen, nicht auf der Startseite.
   "/companies": "Companies",
+  "/ecosystem": "Ecosystem",
   "/about": "About",
   "/career": "Career",
   "/news": "News",

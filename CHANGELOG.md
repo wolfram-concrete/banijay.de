@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-13
 
+### Neue Seite: Ecosystem (Task #67, 13.07.)
+- **`/ecosystem`** (`ecosystem/page.tsx` + `EcosystemDirectory.tsx`): eigene Seite hinter
+  Companies in der Nav. PageHero „Ein System. Viele Handschriften." + vollständiges
+  Ökosystem-Verzeichnis, gruppiert nach den offiziellen Kategorien (Entertainment, Fiction,
+  Live, Audio, Artists, Distribution & Brand, Tech). Einheitlich hohe Zeilen, hauchdünne
+  Trennlinien, externe Links mit ↗ — redaktionelle Reihenfolge, kein Ranking (Listen-UI-Prinzipien).
+  Nav-Eintrag + Docked-Label ergänzt.
+
 ### Linsen-Brechung, Editorial-Fact-Boxen, Preloader- & Ökosystem-Feinschliff (13.07., spät)
 - **Hero — Buchstaben-Brechung in der Linse** (`AlgarveHome.tsx`): die Headline „WE ARE BANIJAY"
   wird jetzt in die Linsen-Textur gebacken (Komposit aus Glas-B + Schrift) — die Buchstaben
