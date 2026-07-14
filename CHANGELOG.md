@@ -9,9 +9,10 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Brennglas-Logik entfernt** (`AlgarveHome.tsx`): die WebGL-Linse (Shader, Refraktion, `lensCanvas`/
   `lensBox`) ist raus. Der Hero zeigt das crispe Vollbild-Motiv; der Dark→Hell-Crossfade („We Are
   Banijay" blendet ein) bleibt als schlanke CSS-Transition, plus ruhiges Zoom-„Atmen". Kein Blur mehr.
-- **Hero-Bild getauscht** auf das „We Are Banijay"-Motiv (`rlqFEztxtc`) und **beide Hero-Bilder
-  optimiert** — helles Motiv auf 1920px hochskaliert (lanczos3 + leichtes Schärfen), dunkles 2880px
-  best-quality (q93, 4:4:4).
+- **Hero-Bild getauscht** auf das „We Are Banijay"-Motiv (`rlqFEztxtc`) und **beide Hero-Bilder auf
+  2880px optimiert** — helles Motiv (Quelle nur 1344px) via lanczos3 + Unsharp-Mask, q95, KEIN
+  Chroma-Subsampling (saubere Textkanten); dunkles Basis-Visual aus der 5504px-Quelle. Hinweis: eine
+  höher aufgelöste Export-Version des Headline-Motivs würde die Schärfe weiter anheben.
 - **Love-Brands-Ticker** läuft jetzt **rechts → links** (Keyframe gedreht).
 - **Editorial als echter PIN** (`EditorialStickyScene.tsx`): das Marcus-Bild steht full-size, die
   Bühne pinnt (Scroll-Stop), beim Weiterscrollen zieht sich das Bild nach links und die Fakten-Spalte
