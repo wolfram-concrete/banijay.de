@@ -371,17 +371,19 @@ export function SiteHeader() {
               )}
             </button>
 
-            {/* Eingerastetes Seiten-Label — gleiche Wortmarke, regular, rechtsbündig
-                unter MENU. Erscheint beim Scrollen als Orientierung. */}
+            {/* Eingerastetes Seiten-Label — gleiche Wortmarke, regular. Sitzt LINKS
+                OBEN neben dem B-Logo (Wolfram 14.07.), oben mit dem B ausgerichtet.
+                Erscheint beim Scrollen als Orientierung. */}
             {pageLabel && !open && (
               <span
                 aria-hidden
-                className="pointer-events-none absolute right-0 top-full uppercase transition-all duration-[450ms] ease-out"
+                className="pointer-events-none absolute right-full top-0 uppercase transition-all duration-[450ms] ease-out"
                 style={{
-                  marginTop: "0.4rem",
+                  marginTop: "0.62rem",
+                  marginRight: "0.7rem",
                   transformOrigin: "top right",
                   fontFamily: "var(--font-sharp), sans-serif",
-                  fontWeight: 400,
+                  fontWeight: 600,
                   fontSize: "0.9rem",
                   lineHeight: 1,
                   letterSpacing: "0.06em",

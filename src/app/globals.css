@@ -63,6 +63,17 @@
   border-color: var(--color-border);
 }
 
+/* Formular-Linien-Felder (Wolfram 14.07.): Unterstrich statt Kasten. Muss die
+   globale `* { border-color }`-Regel schlagen — beide ungelayered, daher gewinnt
+   die höhere Spezifität hier (Tailwind-Utilities liegen in @layer und verlieren
+   gegen die ungelayerte *-Regel, deshalb diese explizite Klasse). */
+.cf-field {
+  border-bottom-color: rgba(248, 247, 243, 0.42);
+}
+.cf-field:focus {
+  border-bottom-color: rgba(248, 247, 243, 0.95);
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);

@@ -27,7 +27,7 @@ const H4 = {
   letterSpacing: "-0.104vw",
 } as const;
 
-export function AlgarveCodeOfConductBand() {
+export function AlgarveCodeOfConductBand({ background }: { background?: React.ReactNode } = {}) {
   const root = useRef<HTMLDivElement>(null);
   const words = CAREER.codeOfConduct.text.split(" ");
 
@@ -65,8 +65,10 @@ export function AlgarveCodeOfConductBand() {
       className="max-[767px]:!h-[150vh]"
       style={{ background: "transparent", height: "220vh", position: "relative", overflow: "clip" }}
     >
-      <div className="flex items-center justify-center" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
-        <div className="flex flex-col items-center" style={{ padding: "2vw" }}>
+      <div className="flex items-center justify-center overflow-clip" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
+        {/* Optionaler Hintergrund-Layer (Career: driftende Bewegtbild-Collage) */}
+        {background}
+        <div className="relative z-10 flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
             className="m-0 mx-auto flex flex-wrap justify-center text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
             style={{ ...H4, maxWidth: "55.28vw", columnGap: "0.6vw", rowGap: 0 }}

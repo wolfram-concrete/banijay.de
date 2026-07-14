@@ -5,7 +5,6 @@ import { AlgarveEcosystemDirectory } from "@/components/cinematic/algarve/Ecosys
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
 import { AlgarveWorldNetwork } from "@/components/cinematic/algarve/WorldNetwork";
-import { AlgarveAboutDrift } from "@/components/cinematic/algarve/AboutDrift";
 import { AlgarvePartnerStack } from "@/components/cinematic/algarve/PartnerStack";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
@@ -48,10 +47,6 @@ export default function AboutPage() {
 
       {/* 06 Banijay World — Territory-Holdings/Netzwerk (dunkler Farb-Break) */}
       <AlgarveWorldNetwork />
-
-      {/* 06b Drift — frei schwebende Video-Snippets aus dem Banijay-Unternehmenstrailer
-          mit Scroll-/Maus-Parallax (Off-White-Bühne + Grain). */}
-      <AlgarveAboutDrift />
 
       {/* 07 Leadership — Algarve Founder-Grid */}
       <AlgarveFounders />

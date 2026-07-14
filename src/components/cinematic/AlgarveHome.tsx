@@ -64,7 +64,7 @@ export function AlgarveHome({
   const curveP = useRef(0);
 
   // 3-FRAME-EINBLEND-ANIMATION (Wolfram 14.07.): nach der Intro spielt der Hero
-  // eine kurze Sequenz — ① dunkler Screen „flackert auf" (Bildröhre schaltet ein),
+  // eine kurze Sequenz — ① dunkler Screen blendet weich auf (langsam heller),
   // ② Frame 2 blendet transparent → klar ein (wird lebendig, leuchtet mehr),
   // ③ Frame 3 blendet ein und bringt die Font „We Are Banijay" in den Hintergrund.
   useEffect(() => {
@@ -80,20 +80,16 @@ export function AlgarveHome({
       }
       gsap
         .timeline()
-        // ① dunkel → Flackern (Screen schaltet ein)
+        // ① dunkel → langsam heller (weiche Blende, KEIN Flackern mehr — Wolfram
+        //    14.07.): Frame 1 blendet ruhig aus Schwarz auf, dann kurz halten.
         .set(f1, { opacity: 0 })
-        .to(f1, { opacity: 1, duration: 0.09 })
-        .to(f1, { opacity: 0.18, duration: 0.06 })
-        .to(f1, { opacity: 1, duration: 0.05 })
-        .to(f1, { opacity: 0.5, duration: 0.05 })
-        .to(f1, { opacity: 1, duration: 0.14 })
-        .to({}, { duration: 0.45 }) // dunkel halten
+        .to(f1, { opacity: 1, duration: 1.0, ease: "power2.inOut" })
+        .to({}, { duration: 0.2 }) // kurz halten
         // ② wird lebendig (Frame 2 transparent → klar)
-        .to(f2, { opacity: 1, duration: 2.0, ease: "power2.inOut" })
-        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3) — bewusst
-        // lang & weich (Wolfram 14.07.: „smoother, nicht so grob/schnell"). Erst
-        // wenn Frame 2 fast steht, dann sanfte sine-Kurve über 3,6 s.
-        .to(f3, { opacity: 1, duration: 3.6, ease: "sine.inOut" }, "-=0.3");
+        .to(f2, { opacity: 1, duration: 1.3, ease: "power2.inOut" })
+        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3) — weich,
+        // aber insgesamt zügiger (Wolfram 14.07.: „etwas beschleunigen").
+        .to(f3, { opacity: 1, duration: 2.3, ease: "sine.inOut" }, "-=0.25");
     };
     // Intro bereits durch → sofort. Sonst: auf das Intro-Event warten. Läuft gar
     // KEIN Intro (Subpages ohne Preloader), startet die Sequenz nach kurzem Beat
@@ -242,7 +238,7 @@ export function AlgarveHome({
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* 3-FRAME-VISUAL (Wolfram 14.07.): Frame 1 dunkel (Base, flackert auf),
+        {/* 3-FRAME-VISUAL (Wolfram 14.07.): Frame 1 dunkel (Base, blendet weich auf),
             Frame 2 „wird lebendig", Frame 3 mit der Font „We Are Banijay" — blenden
             per Sequenz (useEffect) transparent → klar übereinander. */}
         <img

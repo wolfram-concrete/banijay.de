@@ -5,6 +5,7 @@ import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJ
 import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
 import { AlgarveCareerTomorrowStack } from "@/components/cinematic/algarve/CareerTomorrowStack";
 import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfConductBand";
+import { AlgarveAboutDrift } from "@/components/cinematic/algarve/AboutDrift";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 
@@ -36,8 +37,9 @@ export default function CareerPage() {
       {/* 05 BANIJAY TOMORROW — ruhige Feature-Section (Bild + Text + CTA, Parallax) */}
       <AlgarveCareerTomorrowStack />
 
-      {/* 06 Code of Conduct */}
-      <AlgarveCodeOfConductBand />
+      {/* 06 Code of Conduct — mit driftender Bewegtbild-Collage im Hintergrund
+          (von der About-Seite hierher verlegt, Wolfram 14.07.) */}
+      <AlgarveCodeOfConductBand background={<AlgarveAboutDrift asBackground />} />
 
       {/* 06b #workatBanijay — Social-Feed (Juicer-JSON, eigene Cards) */}
       <AlgarveCareerSocialFeed />

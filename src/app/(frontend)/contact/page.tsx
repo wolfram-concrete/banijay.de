@@ -88,8 +88,8 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Formular (Logik in Phase 2) */}
-            <form className="rounded-xl border border-border bg-surface p-6 lg:p-8">
+            {/* Formular (Logik in Phase 2) — kein Kasten, nur Linien-Felder */}
+            <form className="pt-1">
               <div className="space-y-5">
                 {CONTACT_PAGE.formFields.map((field) => (
                   <div key={field.name}>
@@ -104,14 +104,14 @@ export default function ContactPage() {
                         id={field.name}
                         name={field.name}
                         rows={5}
-                        className="w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:border-accent"
+                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
                       />
                     ) : field.type === "select" ? (
                       <select
                         id={field.name}
                         name={field.name}
                         defaultValue=""
-                        className="w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:border-accent"
+                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
                       >
                         <option value="" disabled>
                           Bitte wählen
@@ -127,7 +127,7 @@ export default function ContactPage() {
                         id={field.name}
                         name={field.name}
                         type={field.type}
-                        className="w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:border-accent"
+                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
                       />
                     )}
                   </div>

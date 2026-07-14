@@ -18,7 +18,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
-const MAGENTA = "#ff4370";
 
 export function AlgarveEcosystemDirectory() {
   const root = useRef<HTMLElement>(null);
@@ -36,7 +35,6 @@ export function AlgarveEcosystemDirectory() {
     { scope: root },
   );
 
-  const total = ECO_CATEGORIES.reduce((n, c) => n + c.companies.length, 0);
 
   return (
     <section ref={root} className="relative" style={{ background: "transparent", color: PAPER, paddingTop: "6vw", paddingBottom: "8vw" }}>
@@ -46,9 +44,6 @@ export function AlgarveEcosystemDirectory() {
           <p style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.6rem)", lineHeight: "120%", fontWeight: 500, letterSpacing: "-0.02em" }}>
             Ein System, viele Handschriften: eigenständige Companies, Labels und Plattformen — geclustert nach
             Kompetenzfeldern, verbunden durch dasselbe Netzwerk.
-          </p>
-          <p className="mt-4" style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.15rem)", lineHeight: "150%", color: "rgba(248,247,243,0.6)" }}>
-            {total} Einträge · Reihenfolge redaktionell nach Kategorien — kein Ranking.
           </p>
         </div>
 
@@ -61,7 +56,6 @@ export function AlgarveEcosystemDirectory() {
                 <h2 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.5rem, 2.6vw, 2.4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}>
                   {cat.label}
                 </h2>
-                <span style={{ fontFamily: SHARP, fontSize: "0.95rem", color: MAGENTA }}>{cat.companies.length}</span>
               </div>
 
               {/* Companies — einheitliche Zeilen, hauchdünne Trennlinien */}

@@ -45,12 +45,12 @@ export function AlgarveCareerLocations() {
           unsichtbar). */}
       <div
         data-nav-theme="magenta"
-        className="mx-auto max-[767px]:!rounded-[6vw] max-[767px]:!px-[7vw] max-[767px]:!py-[10vw]"
+        className="mx-auto max-[767px]:!px-[7vw] max-[767px]:!py-[10vw]"
         style={{
           maxWidth: "1440px",
           background: MAGENTA,
           color: INK,
-          borderRadius: "2.5vw",
+          borderRadius: "0",
           paddingTop: "4.44vw",
           paddingBottom: "4.44vw",
           paddingLeft: "4.44vw",

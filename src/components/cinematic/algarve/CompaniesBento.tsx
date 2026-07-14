@@ -30,10 +30,16 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 
-// KOMPAKTES UNIFORM-RASTER (Wolfram 14.07.): keine großen Feature-Spans mehr —
-// alle Kacheln gleich groß, 4-spaltig, niedrige Zeilen. So passen mehr Companies
-// auf deutlich weniger Scrollhöhe (der ganze Aufbau schrumpft zusammen).
-const SPAN: Record<number, string> = {};
+// BENTO-RHYTHMUS (Wolfram 14.07.): 4-spaltig, aber MIT variierenden Kachelgrößen
+// (Bento-Logik beibehalten) — große Feature-Cards über col-start gemischt links/
+// rechts, kleinere Cards clustern via dense. Kompaktere Zeilen (11.5vw) halten den
+// Aufbau trotzdem niedrig. Wiederholt sich alle 12 Kacheln.
+const SPAN: Record<number, string> = {
+  0: "md:col-span-2 md:row-span-2", //  groß, LINKS (Anker oben)
+  4: "md:col-span-2 md:col-start-2 md:row-span-2", // groß, RECHTS
+  7: "md:row-span-2 md:col-start-3", // hoch, RECHTS
+  9: "md:col-span-2 md:col-start-2", // breit, RECHTS
+};
 const spanFor = (i: number) => SPAN[i % 12] ?? "";
 
 // Exemplarisches Bewegtbild: stabile Zuordnung Company → Trailer-Loop

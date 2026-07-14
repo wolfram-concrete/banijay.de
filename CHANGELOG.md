@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Formular-Linien, Header-Titel, Hero-Tempo, Drift→Career & diverse Detailkorrekturen (14.07., Nacht VI)
+- **Formular global auf Unterstrich-Linien** (`ContactForm.tsx`, `contact/page.tsx`, `globals.css`): keine
+  Kästen mehr — transparente Felder, nur eine dünne weiße Unterkante, kein Radius. Gilt für About/Career
+  (Master-Modul) + die eigene /contact-Seite. Neue Klasse `.cf-field` schlägt die globale `*{border-color}`-Regel.
+- **Companies-Bento**: Bento-Logik wiederhergestellt (4-spaltig MIT variierenden Feature-Card-Größen), kompakte
+  Zeilen (11.5vw) + ganze Karte als Website-Link bleiben.
+- **Header-Seitentitel**: sitzt jetzt links oben neben dem B-Logo, bündig mit dessen Oberkante, im fetteren
+  Schnitt (weight 600).
+- **Hero-Sequenz**: Frame-1-Flackern entfernt → weiche Blende (0→1); Gesamtsequenz ~35 % schneller.
+- **Ökosystem-Verzeichnis** (`EcosystemDirectory.tsx`): kleine Ziffern hinter den Genre-Headlines raus,
+  „X Einträge · Reihenfolge redaktionell…"-Zeile raus.
+- **Career-Standorte** (`CareerLocations.tsx`): runde Ecken der Magenta-Box entfernt (Heike).
+- **BANIJAY-TOMORROW-CTA**: Default weiße Kontur auf transparent, Hover magenta gefüllt.
+- **About-Drift → Career**: die driftende Bewegtbild-Collage von der About-Seite entfernt und als
+  Hintergrund-Layer in die Career-Code-of-Conduct-Section gelegt; großes mittiges Video entfernt.
+
 ### Companies-Grid kompakt, Editorial-Facts-Accordion, iconic-IP-Banderole & Ökosystem-Labels (14.07., Nacht V)
 - **Companies-Bento kompakt** (`CompaniesBento.tsx`): große Feature-Spans raus → uniformes 4er-Grid,
   Zeilen 13vw → 11.5vw. Mehr Companies auf deutlich weniger Scrollhöhe. Die **ganze Karte** ist jetzt der

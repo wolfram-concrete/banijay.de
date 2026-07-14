@@ -14,8 +14,8 @@ const BG = "transparent";
 // speed = vertikale Parallax-Tiefe. Bewusst ruhiger als das Template (× ~0.55),
 // damit die Container beim Scrollen nicht so weit driften und oben nicht so schnell
 // von der (magenta) Nachbar-Section angeschnitten werden.
+// Großer mittiger Container (cls „k") entfernt (Wolfram 14.07.).
 const ITEMS = [
-  { cls: "k", clip: "clip-11", speed: 0.04, mouse: 0.01, label: "XI" }, // Hero (mittig, hinten)
   { cls: "a", clip: "clip-01", speed: 0.05, mouse: 0.018, label: "I" },
   { cls: "b", clip: "clip-02", speed: 0.11, mouse: 0.03, label: "II" },
   { cls: "c", clip: "clip-03", speed: 0.2, mouse: 0.05, label: "III" },
@@ -28,7 +28,7 @@ const ITEMS = [
   { cls: "j", clip: "clip-10", speed: 0.34, mouse: 0.075, label: "X" },
 ];
 
-export function AlgarveAboutDrift() {
+export function AlgarveAboutDrift({ asBackground = false }: { asBackground?: boolean } = {}) {
   const root = useRef<HTMLElement>(null);
 
   // Videos nur abspielen, wenn die Sektion sichtbar ist (spart Decode).
@@ -128,7 +128,7 @@ export function AlgarveAboutDrift() {
   }, []);
 
   return (
-    <section ref={root} className="drift-section" aria-label="Banijay Entertainment im Bewegtbild">
+    <section ref={root} className={`drift-section${asBackground ? " drift-section--bg" : ""}`} aria-label="Banijay Entertainment im Bewegtbild">
       <style>{CSS}</style>
       {ITEMS.map((it) => (
         <div key={it.cls} data-drift data-speed={it.speed} data-mouse={it.mouse} className={`float-img float-img--${it.cls}`}>
@@ -144,6 +144,9 @@ export function AlgarveAboutDrift() {
 
 const CSS = `
 .drift-section{position:relative;width:100%;height:124vh;min-height:860px;background:${BG};overflow:hidden}
+/* Als Hintergrund-Layer (Career Code-of-Conduct): füllt die Eltern-Bühne, dezent,
+   nicht interaktiv (Wolfram 14.07.). */
+.drift-section--bg{position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:.4;pointer-events:none;z-index:0}
 .drift-section::before{content:'';position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.8;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")}
 .float-img{position:absolute;overflow:hidden;will-change:transform}
 .float-img video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.12);will-change:transform}
