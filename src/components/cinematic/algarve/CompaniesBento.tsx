@@ -30,16 +30,22 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 
-// BENTO-RHYTHMUS (Wolfram 14.07.): 4-spaltig mit variierenden Kachel-BREITEN
-// (Bento-Logik bleibt), aber KEINE row-span mehr → alle Zeilen gleich hoch, dense
-// füllt Lücken, das Grid schließt unten BÜNDIG ab (kein einzelnes großes Element,
-// das unten heraussteht). Wiederholt sich alle 12 Kacheln.
+// BENTO-RHYTHMUS (Wolfram 14.07.): 4-spaltig mit variierenden Kacheln — BREITE
+// (col-span-2) UND HOCHFORMATIGE, über zwei Zeilen gehende (row-span-2) Cards,
+// dense füllt Lücken. Wiederholt sich alle 12 Kacheln.
 const SPAN: Record<number, string> = {
-  0: "md:col-span-2", // breit, LINKS (Anker oben)
-  5: "md:col-span-2", // breit, Mitte
-  10: "md:col-span-2", // breit, unten
+  0: "md:col-span-2", // breit (2×1)
+  2: "md:row-span-2", // hochformat (1×2)
+  5: "md:col-span-2", // breit (2×1)
+  8: "md:row-span-2", // hochformat (1×2)
 };
-const spanFor = (i: number) => SPAN[i % 12] ?? "";
+// SAUBERER UNTERER ABSCHLUSS (Wolfram 14.07.): die LETZTEN Kacheln bekommen KEINEN
+// Span (uniformer „Schwanz") → unten steht nichts über, das Grid wirkt ruhig; die
+// row-span/hochformat-Cards leben nur im oberen/mittleren Teil.
+const TAIL_UNIFORM = 8;
+const spanFor = (i: number, total: number) => (i >= total - TAIL_UNIFORM ? "" : SPAN[i % 12] ?? "");
+// Fläche einer Kachel (colspan × rowspan) — für die bündige Rest-Füllung der letzten Zeile.
+const areaOf = (s: string) => (s.includes("col-span-2") ? 2 : 1) * (s.includes("row-span-2") ? 2 : 1);
 
 // Exemplarisches Bewegtbild: stabile Zuordnung Company → Trailer-Loop
 const REEL: Record<string, string> = Object.fromEntries(
@@ -174,11 +180,12 @@ export function AlgarveCompaniesBento() {
             );
             // Die LETZTE Kachel füllt die Restspalten der letzten Zeile → das Grid
             // schließt unten immer BÜNDIG ab (Wolfram 14.07., gilt für alle Rubriken).
+            // Rest aus der GESAMT-FLÄCHE (colspan × rowspan) der übrigen Kacheln.
             const LAST_FILL: Record<number, string> = { 1: "", 2: "md:col-span-2", 3: "md:col-span-3", 4: "md:col-span-4" };
             const span =
               i === cards.length - 1
-                ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, _c, k) => n + (spanFor(k).includes("col-span-2") ? 2 : 1), 0) % 4)] ?? ""
-                : spanFor(i);
+                ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, _c, k) => n + areaOf(spanFor(k, cards.length)), 0) % 4)] ?? ""
+                : spanFor(i, cards.length);
             const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${span}`;
             return card.url ? (
               <a

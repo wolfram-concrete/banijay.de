@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Companies-Bento: Hochformat-Cards zurück, Boden bleibt sauber (14.07., Nacht X)
+- **Companies-Bento** (`CompaniesBento.tsx`): wieder über zwei Zeilen gehende, HOCHFORMATIGE Cards
+  (row-span-2) + breite Cards (col-span-2) für echte Bento-Variety — die Feature-Cards leben aber nur im
+  oberen/mittleren Teil; die letzten Kacheln bleiben uniform („Schwanz") und die letzte Kachel füllt die
+  Restzeile (flächenbasiert, row-span mitgezählt) → unten steht nichts über, sauberer/ruhiger Abschluss.
+
 ### Header-Titel mittelachsig zum B & Statement-Wort-Reveal (14.07., Nacht IX)
 - **Header-Seitentitel** (`SiteHeader.tsx`): sitzt jetzt vertikal auf der Mittelachse des rechten B-Logos
   (Mitte-zu-Mitte statt oben bündig), global auf allen Seiten.
