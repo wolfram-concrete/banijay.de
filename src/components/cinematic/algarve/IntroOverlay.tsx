@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { PreloaderParticles, type PreloaderParticlesHandle } from "./PreloaderParticles";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 // INTRO-CHOREOGRAFIE (Wolfram 14.07., überarbeitet):
 //   ① dunkler Purple/Magenta-Grund
@@ -37,12 +38,31 @@ export function IntroOverlay() {
         document.documentElement.style.overflow = "";
         (window as { __lenis?: { start: () => void } }).__lenis?.start();
         setDone(true);
+        // Nach dem Entsperren neu vermessen — der gepinnte Hero (radialer Aufbau)
+        // wurde ggf. während der Scroll-Sperre erstellt (Wolfram 14.07.).
+        requestAnimationFrame(() => ScrollTrigger.refresh());
       };
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // PRELOADER NUR BEIM ALLERERSTEN LADEN (Wolfram 14.07.): einmal pro Browser-
+      // Session. Kommt man später per Client-Navigation (z. B. von Career) wieder auf
+      // die Home, wird der Preloader übersprungen — der Hero startet direkt.
+      const INTRO_KEY = "banijay:intro-shown";
+      let alreadyShown = false;
+      try {
+        alreadyShown = sessionStorage.getItem(INTRO_KEY) === "1";
+      } catch {
+        /* sessionStorage evtl. blockiert → dann zeigen wir das Intro */
+      }
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || alreadyShown) {
         finish();
         cleanup();
         return;
+      }
+      try {
+        sessionStorage.setItem(INTRO_KEY, "1");
+      } catch {
+        /* ignore */
       }
 
       document.documentElement.dataset.intro = "1";

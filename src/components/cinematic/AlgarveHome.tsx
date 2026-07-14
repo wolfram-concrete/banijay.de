@@ -120,14 +120,18 @@ export function AlgarveHome({
         applyCurve(1);
       } else {
         applyCurve(0);
-        // PHASE 1 (Wolfram 14.07.): zuerst formt sich NUR der radiale Kreis (Kurve),
-        // sauber abgeschlossen im ersten Drittel des Hero-Scrolls — danach ein ruhiger
-        // Scroll-Beat, BEVOR die Ringe kommen.
+        // PHASE 1 (Wolfram 14.07.): der Hero ist GEPINNT — die Seite bleibt fixed und
+        // der erste Scroll baut NUR den radialen Kreis (Kurve) auf. Erst wenn die Kurve
+        // steht, löst der Pin und die ganze Seite scrollt normal weiter (vorher nicht).
+        // Gilt global auf allen Seiten (auch ohne Preloader).
         ScrollTrigger.create({
           trigger: heroSection.current,
           start: "top top",
-          end: "42% top",
-          scrub: 0.8,
+          end: "+=60%",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 0.6,
           onUpdate: (self) => applyCurve(self.progress),
         });
         // Ruhiges „Atmen": beide Visuals zoomen langsam (behält Leben ohne Linse).

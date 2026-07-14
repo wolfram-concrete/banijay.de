@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Preloader nur beim Erst-Load & gepinnter Hero-Scroll-Übergang (14.07., Nacht XI)
+- **Preloader nur beim allerersten Laden** (`IntroOverlay.tsx`): einmal pro Browser-Session (sessionStorage-
+  Flag). Zurück-Navigation auf die Home (z. B. von Career) startet den Hero direkt, ohne Preloader.
+- **Gepinnter Hero-Übergang, global** (`AlgarveHome.tsx`): der Hero ist beim ersten Scroll GEPINNT — die Seite
+  bleibt fixed und der Scroll baut nur den radialen Kreis auf; erst wenn die Kurve steht, löst der Pin und die
+  ganze Seite scrollt normal weiter. Gilt auf allen Seiten (auch ohne Preloader). Nach dem Intro
+  `ScrollTrigger.refresh()`, damit der Pin sauber vermessen wird.
+
 ### Companies-Bento: Hochformat-Cards zurück, Boden bleibt sauber (14.07., Nacht X)
 - **Companies-Bento** (`CompaniesBento.tsx`): wieder über zwei Zeilen gehende, HOCHFORMATIGE Cards
   (row-span-2) + breite Cards (col-span-2) für echte Bento-Variety — die Feature-Cards leben aber nur im
