@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Hero-Scroll-Choreografie sequenziert (14.07., Nacht VIII)
+- **Hero-Scroll global** (`AlgarveHome.tsx`): klar getrennte Phasen statt „alles auf einmal / zu wild". ①
+  Erst formt sich der radiale Kreis (Kurve fertig im ersten Drittel des Hero-Scrolls), ② ein ruhiger
+  Scroll-Beat, ③ dann wachsen die Satellitenringe LANGSAM und nacheinander aus der radialen Kante (scaleY
+  von der Oberkante statt Hereinrutschen; späterer Trigger, längerer Scroll-Weg, weiterer Stagger).
+
 ### Editorial-Facts geschlossene Fläche, Companies-Grid bündig, LoveBrands raus & „Die Story" ausgerichtet (14.07., Nacht VII)
 - **Editorial-Facts** (`EditorialStickyScene.tsx`): abwechselnd Magenta/Schwarz (keine Brombeere), KEINE
   Trenner/Gaps → eine geschlossene Fläche; breiterer Container (470→540px) + mehr Padding; die geöffnete

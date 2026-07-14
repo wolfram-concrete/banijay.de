@@ -120,11 +120,14 @@ export function AlgarveHome({
         applyCurve(1);
       } else {
         applyCurve(0);
+        // PHASE 1 (Wolfram 14.07.): zuerst formt sich NUR der radiale Kreis (Kurve),
+        // sauber abgeschlossen im ersten Drittel des Hero-Scrolls — danach ein ruhiger
+        // Scroll-Beat, BEVOR die Ringe kommen.
         ScrollTrigger.create({
           trigger: heroSection.current,
           start: "top top",
-          end: "70% top",
-          scrub: 0.6,
+          end: "42% top",
+          scrub: 0.8,
           onUpdate: (self) => applyCurve(self.progress),
         });
         // Ruhiges „Atmen": beide Visuals zoomen langsam (behält Leben ohne Linse).
@@ -135,21 +138,22 @@ export function AlgarveHome({
         );
       }
 
-      // VERZÖGERT AUFFÄCHERN (Wolfram 14.07.): die Ringe erscheinen ERST, wenn
-      // die Hero-Form fertig gebildet und weit hochgescrollt ist (später Trigger-
-      // Start), und wachsen dann von oben nach unten NACHEINANDER aus der Kante
-      // heraus — klar getrennte Onsets, sichtbares „Rauswachsen nach unten".
-      // KNAPPER (Wolfram 14.07.): näher an der Hero-Kante starten, engerer Stagger.
+      // PHASE 2 (Wolfram 14.07.): ERST wenn der Kreis steht und der Screen ein Stück
+      // weitergescrollt ist, wachsen die Satellitenringe LANGSAM und klar NACHEINANDER
+      // aus der radialen Kante heraus (nicht mehr alles auf einmal / zu wild). Späterer
+      // Trigger-Start (Beat nach der Kurve), längerer Scroll-Weg, weiterer Stagger.
       const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 62%", end: "bottom 68%", scrub: 0.7 },
+        scrollTrigger: { trigger: orbitZone.current, start: "top 38%", end: "bottom 30%", scrub: 1.2 },
       });
       const rings = gsap.utils.toArray<SVGGElement>("[data-hero-ring]");
       rings.forEach((ring, i) => {
+        // scaleY aus der Oberkante (transformOrigin oben) → die Ringe „wachsen" aus
+        // der radialen Kante nach unten, statt von oben hereinzurutschen.
         fan.fromTo(
           ring,
-          { autoAlpha: 0, y: -28 },
-          { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          i * 0.5,
+          { autoAlpha: 0, scaleY: 0.55, transformOrigin: "50% 0%" },
+          { autoAlpha: 1, scaleY: 1, duration: 0.9, ease: "power2.out" },
+          i * 0.9,
         );
       });
 
@@ -161,7 +165,7 @@ export function AlgarveHome({
       const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
       dots.forEach((dot, i) => {
         const ln = LINES[i];
-        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, i * 0.5 + 0.2);
+        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, i * 0.9 + 0.45);
         if (reduce) {
           dot.style.left = "50%";
           dot.style.top = ((((ln.yTop + ln.yBottom) / 2) / VB_H) * 100).toFixed(3) + "%";
