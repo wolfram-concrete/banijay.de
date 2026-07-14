@@ -7,20 +7,31 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// WARP-BLENDE (Wolfram 14.07.): an/nach der Headline „Ein Dach. Viele
-// Handschriften." beschleunigt der Sternenstaub in einen Hyperspace-Warp —
-// Streaks schießen radial aus der Mitte auf den Betrachter zu, blitzen kurz
-// auf und blenden aus. Das IST die Blende, die in die Team-Section überleitet.
-// Scroll-gescrubbt, sticky Canvas, clear→transparent (MoodBackdrop scheint durch).
+// WARP-BLENDE mit Scroll-Stop (Wolfram 14.07.): EINE gepinnte Bühne trägt die
+// ganze Choreografie —
+//   ① die Headline „Ein Dach. Viele Handschriften." konvergiert auf Sternenstaub
+//   ② PIN/HALT: die Headline steht (echter Scroll-Stop)
+//   ③ weiterscrollen löst den Hyperspace-WARP: der Staub schießt als radiale
+//      Streaks auf den Betrachter, blitzt auf und blendet aus (die Blende)
+//   ④ der Pin löst → die Team-Section darunter baut sich beim Weiterscrollen auf
+// Kein freies Durchscrollen mehr — jede Phase ist an den Scroll gekoppelt.
 
 const N = 900;
 const easeIn = (t: number) => t * t;
+const SHARP = "var(--font-sharp), sans-serif";
+const HEAD = ["Ein Dach.", "Viele", "Handschriften."];
 
 export function TeamWarpBlende() {
   const root = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const headline = useRef<HTMLDivElement>(null);
+  const first = useRef<HTMLHeadingElement>(null);
+  const middle = useRef<HTMLHeadingElement>(null);
+  const last = useRef<HTMLHeadingElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prog = useRef(0);
 
+  // WARP-CANVAS: radialer Sternenstaub → Hyperspace-Streaks, getrieben von prog.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -35,7 +46,6 @@ export function TeamWarpBlende() {
     };
     resize();
 
-    // Radialer Sternenstaub: jeder Punkt hat Richtung (ang) + Tiefe (rad).
     type S = { ang: number; rad: number; size: number; mag: boolean };
     const stars: S[] = [];
     for (let i = 0; i < N; i++) {
@@ -43,7 +53,7 @@ export function TeamWarpBlende() {
         ang: Math.random() * Math.PI * 2,
         rad: 0.05 + Math.random() * 0.62,
         size: 0.5 + Math.random() * 1.3,
-        mag: Math.random() < 0.06, // ein paar Magenta-Funken
+        mag: Math.random() < 0.06,
       });
     }
 
@@ -52,18 +62,17 @@ export function TeamWarpBlende() {
       const p = Math.max(0, Math.min(1, prog.current));
       const cx = W / 2, cy = H / 2;
       const R = Math.min(W, H);
-      // Phasen: 0–0.22 ruhiger Staub · 0.22–0.78 Warp · 0.78–1 Flash + Ausblenden
-      const warp = p < 0.22 ? 0 : Math.min(1, (p - 0.22) / 0.56);
+      const warp = p < 0.12 ? 0 : Math.min(1, (p - 0.12) / 0.66);
       const ew = easeIn(warp);
       const flash = p < 0.78 ? 0 : (p - 0.78) / 0.22;
-      const globalFade = 1 - flash; // Canvas löst sich am Ende auf → Team darunter
+      const globalFade = 1 - flash;
       const S_MAX = 26;
 
       for (const s of stars) {
         const dirx = Math.cos(s.ang), diry = Math.sin(s.ang);
         const base = s.rad * R * 0.5;
         if (warp <= 0) {
-          const a = 0.7 * globalFade * (s.mag ? 1 : 0.8);
+          const a = 0.68 * globalFade * (s.mag ? 1 : 0.8);
           if (a <= 0.02) continue;
           ctx.beginPath();
           ctx.arc(cx + dirx * base, cy + diry * base, s.size * dpr, 0, Math.PI * 2);
@@ -84,7 +93,6 @@ export function TeamWarpBlende() {
         }
       }
 
-      // Aufblitzender Kern am Ende der Blende
       if (flash > 0) {
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.7);
         g.addColorStop(0, `rgba(255,255,255,${0.5 * flash})`);
@@ -106,26 +114,78 @@ export function TeamWarpBlende() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) {
         prog.current = 0;
         return;
       }
-      ScrollTrigger.create({
-        trigger: root.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.6,
-        onUpdate: (self) => (prog.current = self.progress),
+      const vh = window.innerHeight;
+
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: stage.current,
+          start: "top top",
+          end: "+=210%",
+          pin: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+        },
       });
+
+      // ① Headline konvergiert (0 → 0.2): obere von oben, untere von unten,
+      //    mittlere skaliert herunter.
+      tl.from(first.current, { y: -0.15 * vh, duration: 0.2 }, 0)
+        .from(last.current, { y: 0.15 * vh, duration: 0.2 }, 0)
+        .from(middle.current, { scale: 1.2, duration: 0.16 }, 0.04);
+
+      // ② HALT (0.2 → 0.34): die Headline steht — der Scroll-Stop-Moment.
+      tl.to({}, { duration: 0.14 }, 0.2);
+
+      // ③ WARP (0.34 → 0.9): Staub beschleunigt in den Hyperspace, Headline
+      //    blendet aus, der Kern blitzt auf (Flash im Canvas via prog).
+      const warpProxy = { v: 0 };
+      tl.to(warpProxy, { v: 1, duration: 0.56, onUpdate: () => (prog.current = warpProxy.v) }, 0.34);
+      tl.to(headline.current, { autoAlpha: 0, ease: "power1.in", duration: 0.22 }, 0.42);
+
+      // ④ kurzer Tail-Halt → Pin löst, die Team-Section erscheint darunter.
+      tl.to({}, { duration: 0.1 }, 0.9);
     },
     { scope: root },
   );
 
   return (
-    <div ref={root} aria-hidden className="pointer-events-none relative" style={{ height: "135vh" }}>
-      <div className="sticky top-0 h-screen overflow-clip">
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+    <div ref={root} className="relative">
+      <div ref={stage} className="relative flex h-screen items-center justify-center overflow-clip">
+        {/* Warp-Canvas (Sternenstaub → Streaks) — hinter der Headline */}
+        <canvas ref={canvasRef} aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 0 }} />
+
+        {/* Headline „Ein Dach. Viele Handschriften." */}
+        <div ref={headline} className="relative flex flex-col max-[767px]:!px-[4vw]" style={{ zIndex: 2 }}>
+          <h2 ref={first} className="text-[#f8f7f3] max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
+            {HEAD[0]}
+          </h2>
+          <h2 ref={middle} className="text-[#f8f7f3] max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
+            {HEAD[1]}
+          </h2>
+          <h2 ref={last} className="text-[#f8f7f3] max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={LINE}>
+            {HEAD[2]}
+          </h2>
+        </div>
       </div>
     </div>
   );
 }
+
+const LINE = {
+  fontFamily: SHARP,
+  fontSize: "7vw",
+  lineHeight: "132%",
+  fontWeight: 500,
+  textAlign: "center",
+  textTransform: "uppercase",
+  margin: 0,
+  hyphens: "auto",
+  WebkitHyphens: "auto",
+  overflowWrap: "break-word",
+} as const;

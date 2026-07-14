@@ -421,8 +421,10 @@ html.lenis body { height: auto; }
 /* Love-Brands-Logo-Ticker (14.07.): endloser Lauf LINKS → RECHTS direkt unter
    dem Statement (Track = Logo-Reihe ZWEIMAL). Sehr langsam (90s). */
 @keyframes loveBrandsTicker {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
+  /* rechts → links (Wolfram 14.07.): Inhalt wandert nach links, Logos treten
+     von rechts ein und laufen links raus. */
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 .love-brands-track {
   display: inline-flex;

@@ -2,7 +2,6 @@ import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveCompaniesBento } from "@/components/cinematic/algarve/CompaniesBento";
 import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSection";
-import { AlgarveAnimatedHeading } from "@/components/cinematic/algarve/AnimatedHeading";
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
 import { TeamWarpBlende } from "@/components/cinematic/algarve/TeamWarpBlende";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
@@ -71,10 +70,10 @@ export default function HomePage() {
       {/* Konvergierende Headline (section_animated-heading).
           Die Kompetenzfelder-Flip-Cards (ServicesStack) sind entfallen (#61) —
           ihre Optik lebt jetzt als Lightbox-Ebene IM Companies-Modul weiter. */}
-      <AlgarveAnimatedHeading dark lines={["Ein Dach.", "Viele", "Handschriften."]} />
-
-      {/* WARP-BLENDE (Wolfram 14.07.): der Sternenstaub der Headline beschleunigt
-          in einen Hyperspace-Warp und blendet als „Blende" in die Team-Section. */}
+      {/* WARP-BLENDE mit Scroll-Stop (Wolfram 14.07.): gepinnte Bühne — die
+          Headline „Ein Dach. Viele Handschriften." baut sich auf, HÄLT (Stop),
+          per Scroll löst der Hyperspace-Warp als Blende, dann baut sich die
+          Team-Section darunter auf. */}
       <TeamWarpBlende />
 
       {/* Quote-/Testimonials-Section auf der Home entfernt (13.07.) */}

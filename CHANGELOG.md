@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Brennglas raus, Hero-Bild + -Optimierung, Ticker-Richtung, Editorial-Pin & Warp-Scroll-Stop (14.07., spät-Nacht)
+- **Brennglas-Logik entfernt** (`AlgarveHome.tsx`): die WebGL-Linse (Shader, Refraktion, `lensCanvas`/
+  `lensBox`) ist raus. Der Hero zeigt das crispe Vollbild-Motiv; der Dark→Hell-Crossfade („We Are
+  Banijay" blendet ein) bleibt als schlanke CSS-Transition, plus ruhiges Zoom-„Atmen". Kein Blur mehr.
+- **Hero-Bild getauscht** auf das „We Are Banijay"-Motiv (`rlqFEztxtc`) und **beide Hero-Bilder
+  optimiert** — helles Motiv auf 1920px hochskaliert (lanczos3 + leichtes Schärfen), dunkles 2880px
+  best-quality (q93, 4:4:4).
+- **Love-Brands-Ticker** läuft jetzt **rechts → links** (Keyframe gedreht).
+- **Editorial als echter PIN** (`EditorialStickyScene.tsx`): das Marcus-Bild steht full-size, die
+  Bühne pinnt (Scroll-Stop), beim Weiterscrollen zieht sich das Bild nach links und die Fakten-Spalte
+  fährt von RECHTS herein (Zahlen zählen hoch) — erst wenn sie stehen, löst der Pin. Deutlich
+  kleinerer Abstand zur Lead-Headline (kein 35vh-Leerraum mehr).
+- **„Ein Dach" → Warp → Team als Scroll-Stop** (`TeamWarpBlende.tsx`): Headline + Warp liegen jetzt
+  in EINER gepinnten Bühne — die Headline baut sich auf, HÄLT, per Scroll löst der Hyperspace-Warp
+  (Blende), dann löst der Pin und die Team-Section baut sich auf. Kein freies Durchscrollen mehr.
+
 ### Hero-Planeten & Ringe, B-Farbsensibilität, Warp-Blende, Ökosystem-Scale, Buttons & Back-to-Top (14.07., Nacht)
 - **Hero-Planeten rund + volle Bahn** (`AlgarveHome.tsx`): die Satelliten liegen jetzt als
   px-runde HTML-Dots über der Zone (statt verzerrter SVG-Kreise im gestreckten SVG) und laufen

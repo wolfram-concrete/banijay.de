@@ -10,9 +10,9 @@ import { DustLayer } from "./algarve/DustLayer";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // V2-Hero (Umbau 14.07., Wolfram-Diktat):
-//  • FULLSCREEN-Brennglas: die WebGL-Linse füllt den kompletten Viewport und
-//    zeigt das rote Glas-B scharf, an den Kanten radial gebrochen, außen blurry.
-//  • KEINE Headline (vorerst komplett entfernt).
+//  • FULLSCREEN-Visual: das helle „We Are Banijay"-Motiv füllt den Viewport;
+//    darunter das dunkle Basis-Visual, das langsam ins helle überblendet
+//    (Aufhell-Crossfade). KEINE WebGL-Brennglas-Linse mehr (14.07. entfernt).
 //  • Beim Scrollen formt sich die untere Kante bauchig (radiale Kurve); aus ihr
 //    fächern WEISSE Satellitenringe heraus; ein weicher Übergang leitet in die
 //    Magenta-Statement-Section.
@@ -34,231 +34,33 @@ const LINES = [
 export function AlgarveHome() {
   const root = useRef<HTMLDivElement>(null);
   const heroImg = useRef<HTMLImageElement>(null);
+  const heroImgB = useRef<HTMLImageElement>(null);
   const orbitZone = useRef<HTMLDivElement>(null);
   const heroSection = useRef<HTMLElement>(null);
   const contour = useRef<HTMLDivElement>(null);
   // Kurven-Fortschritt 0..1: Hero startet unten GERADE, die Kurve formt sich
-  // beim Scrollen (Section-Radius, Zirkel-Kontur, Linsen-Pill im Shader).
+  // beim Scrollen (Section-Radius + Zirkel-Kontur).
   const curveP = useRef(0);
 
-  const heroImgB = useRef<HTMLImageElement>(null);
-  const lensCanvas = useRef<HTMLCanvasElement>(null);
-  const lensBox = useRef<HTMLDivElement>(null);
-
+  // AUFHELL-CROSSFADE (Wolfram 14.07.): das dunkle Basis-Visual liegt unten, das
+  // helle „We Are Banijay"-Motiv blendet nach der Intro langsam darüber ein —
+  // wirkt, als würde die Helligkeit hochgezogen. (Ersetzt die frühere WebGL-Logik.)
   useEffect(() => {
-    const canvas = lensCanvas.current;
-    const box = lensBox.current;
-    const img = heroImg.current;
     const imgB = heroImgB.current;
-    const section = canvas?.parentElement as HTMLElement | null;
-    if (!canvas || !box || !img || !imgB || !section) return;
-    const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true });
-    if (!gl) {
-      img.style.filter = "none";
-      canvas.style.display = "none";
-      return;
-    }
-
-    const VERT = `attribute vec2 aPos; varying vec2 vUv; void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.,1.); }`;
-    const FRAG = `precision mediump float;
-      varying vec2 vUv;
-      uniform sampler2D uTex;
-      uniform sampler2D uTexB;
-      uniform float uMix;   // 0 = dunkles Visual, 1 = helles/farbiges → langsam aufhellen
-      uniform vec2 uRes;
-      uniform vec2 uC;
-      uniform vec2 uH;
-      uniform float uRL;
-      uniform float uRR;
-      uniform float uBand;
-      uniform float uDisp;
-      uniform vec2 uVid;
-      uniform float uZoom;
-      uniform vec2 uOff;
-
-      float sd(vec2 p){
-        // Radius weich zwischen oben (uRL) und unten (uRR) blenden statt harter
-        // Umschaltung an uC.y → keine Normalen-Naht (schwarze Linie) mehr.
-        float r = mix(uRL, uRR, smoothstep(uC.y - 14.0, uC.y + 14.0, p.y));
-        vec2 q = abs(p - uC) - uH + vec2(r);
-        return min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0))) - r;
-      }
-      vec2 cover(vec2 px){
-        float sc = max(uRes.x / uVid.x, uRes.y / uVid.y) * 1.3;
-        vec2 disp = uVid * sc;
-        vec2 off = vec2((uRes.x - disp.x) * 0.5, (uRes.y - disp.y) * 1.0);
-        vec2 uv = (px - off) / disp;
-        return (uv - 0.5) / uZoom + 0.5;
-      }
-      // Blend dunkles → helles Visual (Aufhellen)
-      vec3 smp(vec2 uv){ return mix(texture2D(uTex, uv).rgb, texture2D(uTexB, uv).rgb, uMix); }
-      void main(){
-        vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes;
-        float d = sd(px);
-        float alpha = 1.0 - smoothstep(-1.5, 1.5, d);
-        if (alpha <= 0.003) discard;
-        // ANALYTISCHE Kanten-Normale (keine Finite-Differenzen) — die dominante
-        // Box-Fläche gibt die Richtung; dadurch KEIN y-Vorzeichenwechsel an der
-        // Mittelachse mehr → die schwarze Naht/Linie in der Mitte verschwindet.
-        float rN = mix(uRL, uRR, smoothstep(uC.y - 14.0, uC.y + 14.0, px.y));
-        vec2 qn = abs(px - uC) - uH + vec2(rN);
-        vec2 n = (qn.x > qn.y)
-          ? vec2(sign(px.x - uC.x + 1e-4), 0.0)
-          : vec2(0.0, sign(px.y - uC.y + 1e-4));
-        float k = 1.0 - smoothstep(0.0, uBand, -d);
-        k = pow(clamp(k, 0.0, 1.0), 1.7);
-        vec2 sp = px - n * (k * uDisp) + uOff;
-        vec2 uv = cover(sp);
-        vec3 col = smp(uv);
-        vec2 duv = vec2(k * 3.5) / uRes;
-        vec3 blur = (smp(uv + vec2(duv.x, 0.)) + smp(uv - vec2(duv.x, 0.))
-                   + smp(uv + vec2(0., duv.y)) + smp(uv - vec2(0., duv.y))) * 0.25;
-        col = mix(col, blur, k * 0.8);
-        col *= 1.0 + k * 0.09;
-        gl_FragColor = vec4(col * alpha, alpha);
-      }`;
-
-    const mk = (type: number, src: string) => {
-      const sh = gl.createShader(type)!;
-      gl.shaderSource(sh, src);
-      gl.compileShader(sh);
-      return sh;
+    if (!imgB) return;
+    let done = false;
+    const brighten = () => {
+      if (done) return;
+      done = true;
+      imgB.style.transition = "opacity 4500ms ease";
+      imgB.style.opacity = "1";
     };
-    const prog = gl.createProgram()!;
-    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT));
-    gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FRAG));
-    gl.linkProgram(prog);
-    gl.useProgram(prog);
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "aPos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const U = (n: string) => gl.getUniformLocation(prog, n);
-    const mkTex = () => {
-      const t = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, t);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      return t;
-    };
-    // uTex = dunkles Basis-Visual (Unit 0), uTexB = helles/farbiges (Unit 1)
-    const tex = mkTex();
-    const texB = mkTex();
-    gl.uniform1i(U("uTex"), 0);
-    gl.uniform1i(U("uTexB"), 1);
-
-    let raf = 0;
-    let visible = true;
-    let hxCur = 0;
-    const dprOf = () => Math.min(devicePixelRatio || 1, 2);
-
-    const resize = () => {
-      const dpr = dprOf();
-      const sw = section.clientWidth, sh = section.clientHeight;
-      canvas.width = Math.round(sw * dpr);
-      canvas.height = Math.round(sh * dpr);
-      canvas.style.width = sw + "px";
-      canvas.style.height = sh + "px";
-      const sr = section.getBoundingClientRect();
-      const br = box.getBoundingClientRect();
-      const cx = (br.left - sr.left + br.width / 2) * dpr;
-      const cy = (br.top - sr.top + br.height / 2) * dpr;
-      const hx = (br.width / 2) * dpr;
-      const hy = (br.height / 2) * dpr;
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform2f(U("uRes"), canvas.width, canvas.height);
-      gl.uniform2f(U("uC"), cx, cy);
-      gl.uniform2f(U("uH"), hx, hy);
-      gl.uniform1f(U("uRL"), 1);
-      hxCur = hx;
-      gl.uniform1f(U("uBand"), 120 * dpr);
-      gl.uniform1f(U("uDisp"), 30 * dpr);
-    };
-
-    let uploaded = false, uploadedB = false;
-    const upload = () => {
-      if (uploaded || !img.complete || !img.naturalWidth) return;
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-      gl.uniform2f(U("uVid"), img.naturalWidth, img.naturalHeight);
-      uploaded = true;
-    };
-    const uploadB = () => {
-      if (uploadedB || !imgB.complete || !imgB.naturalWidth) return;
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, texB);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgB);
-      uploadedB = true;
-    };
-    upload();
-    uploadB();
-    img.addEventListener("load", upload);
-    imgB.addEventListener("load", uploadB);
-
-    // AUFHELL-RAMP (Wolfram 14.07.): uMix 0→1 blendet das dunkle Visual in das
-    // helle/farbige über — beginnt, wenn der Hero sichtbar wird (nach der Intro),
-    // damit man das langsame „Heller-werden" wirklich sieht.
-    let brightenStart = 0;
-    const startBrighten = () => { if (!brightenStart) brightenStart = performance.now(); };
-    if ((window as { __introDone?: boolean }).__introDone) startBrighten();
-    window.addEventListener("banijay:introdone", startBrighten);
-    const brightenFallback = window.setTimeout(startBrighten, 6000);
-
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const zoomAt = (now: number) => (reduce ? 1.015 : 1.015 + 0.045 * (0.5 - 0.5 * Math.cos(((now % 26000) / 26000) * Math.PI * 2)));
-    const mouse = { x: 0, y: 0 };
-    const eased = { x: 0, y: 0 };
-    const onMouse = (e: MouseEvent) => {
-      mouse.x = e.clientX / window.innerWidth - 0.5;
-      mouse.y = e.clientY / window.innerHeight - 0.5;
-    };
-    window.addEventListener("mousemove", onMouse, { passive: true });
-
-    const draw = (now: number) => {
-      if (visible && uploaded) {
-        const dpr = dprOf();
-        const z = zoomAt(now);
-        eased.x += (mouse.x - eased.x) * 0.04;
-        eased.y += (mouse.y - eased.y) * 0.04;
-        const tf = `scale(${(1.05 * z).toFixed(4)}) translate(${(-eased.x * 10).toFixed(1)}px, ${(-eased.y * 6).toFixed(1)}px)`;
-        img.style.transform = tf;
-        imgB.style.transform = tf;
-        // Aufhellen: uMix 0→1 (smoothstep) über ~4.5s ab Start
-        const t = brightenStart && uploadedB ? Math.min(1, (now - brightenStart) / 4500) : 0;
-        const eMix = t * t * (3 - 2 * t);
-        gl.uniform1f(U("uMix"), eMix);
-        imgB.style.opacity = String(eMix);
-        gl.uniform1f(U("uZoom"), z);
-        gl.uniform1f(U("uRR"), Math.max(1, hxCur * curveP.current));
-        gl.uniform2f(U("uOff"), reduce ? 0 : eased.x * 26 * dpr, reduce ? 0 : eased.y * 16 * dpr);
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-      }
-      raf = requestAnimationFrame(draw);
-    };
-
-    resize();
-    raf = requestAnimationFrame(draw);
-    const ro = new ResizeObserver(resize);
-    ro.observe(section);
-    ro.observe(box);
-    const io = new IntersectionObserver(([en]) => (visible = en.isIntersecting), { threshold: 0.02 });
-    io.observe(section);
+    if ((window as { __introDone?: boolean }).__introDone) brighten();
+    window.addEventListener("banijay:introdone", brighten);
+    const fallback = window.setTimeout(brighten, 6000);
     return () => {
-      cancelAnimationFrame(raf);
-      img.removeEventListener("load", upload);
-      imgB.removeEventListener("load", uploadB);
-      window.removeEventListener("banijay:introdone", startBrighten);
-      window.clearTimeout(brightenFallback);
-      window.removeEventListener("mousemove", onMouse);
-      ro.disconnect();
-      io.disconnect();
+      window.removeEventListener("banijay:introdone", brighten);
+      window.clearTimeout(fallback);
     };
   }, []);
 
@@ -274,10 +76,6 @@ export function AlgarveHome() {
           contour.current.style.opacity = String(v);
           contour.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
         }
-        if (lensBox.current) {
-          const px = Math.round(v * 999);
-          lensBox.current.style.borderRadius = `0 0 ${px}px ${px}px`;
-        }
       };
       if (reduce) {
         applyCurve(1);
@@ -290,11 +88,14 @@ export function AlgarveHome() {
           scrub: 0.6,
           onUpdate: (self) => applyCurve(self.progress),
         });
+        // Ruhiges „Atmen": beide Visuals zoomen langsam (behält Leben ohne Linse).
+        gsap.fromTo(
+          [heroImg.current, heroImgB.current],
+          { scale: 1.06 },
+          { scale: 1.14, duration: 26, ease: "sine.inOut", yoyo: true, repeat: -1 },
+        );
       }
 
-      // ÜBERGANGSZONE (Wolfram 14.07.): reines Magenta hinter der Hero-Kante,
-      // KEIN Gradient — es arbeiten nur die weißen Linien, die sich full-size
-      // (edge-to-edge) gestaffelt aus der Kante herausziehen.
       // VERZÖGERT AUFFÄCHERN (Wolfram 14.07.): die Ringe erscheinen ERST, wenn
       // die Hero-Form fertig gebildet und weit hochgescrollt ist (später Trigger-
       // Start), und wachsen dann von oben nach unten NACHEINANDER aus der Kante
@@ -352,7 +153,7 @@ export function AlgarveHome() {
           Background mehr). Deckt den Hero-Unterbau + die Übergangszone ab. */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0" style={{ top: "26vh", bottom: 0, background: "#ff4370", zIndex: 0 }} />
 
-      {/* ── FULLSCREEN-BRENNGLAS-HERO ─────────────────────────────────────── */}
+      {/* ── FULLSCREEN-HERO (ohne Brennglas) ──────────────────────────────── */}
       <section
         ref={heroSection}
         className="relative z-[2] flex min-h-screen flex-col overflow-hidden max-[479px]:!min-h-screen"
@@ -363,17 +164,16 @@ export function AlgarveHome() {
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* ZWEI-LAYER-VISUAL (Wolfram 14.07.): unten das DUNKLE Visual, darüber das
-            HELLE/farbige — beide fullscreen soft-blurry (außerhalb der Linse) UND
-            Textur-Quellen der Linse. Das helle blendet langsam ein (uMix/opacity im
-            rAF) → wirkt, als würde die Helligkeit langsam hochgezogen. */}
+        {/* ZWEI-LAYER-VISUAL (Wolfram 14.07.): unten das DUNKLE Basis-Visual, darüber
+            das HELLE „We Are Banijay"-Motiv, das langsam einblendet (Crossfade).
+            Crisp/full-size (kein Blur, keine Linse mehr). */}
         <img
           ref={heroImg}
           src="/hero-v2/b-dark.jpg"
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0, filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
+          style={{ zIndex: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
         />
         <img
           ref={heroImgB}
@@ -381,10 +181,10 @@ export function AlgarveHome() {
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0, opacity: 0, filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
+          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
         />
 
-        {/* Fokus oben: das Bild softet nach unten dunkel ab */}
+        {/* Fokus: das Bild softet nach unten dunkel ab (Übergang in die Kurve) */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -397,16 +197,6 @@ export function AlgarveHome() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0"
           style={{ zIndex: 2, height: "50vw", opacity: 0, borderRadius: "0", boxShadow: "inset 0 -1px 0 rgba(248,247,243,0.25)" }}
-        />
-
-        {/* BRENNGLAS-LINSE (WebGL) — full size (inset 0). Außerhalb der Form
-            transparent. Bewusste Kunden-Ausnahme der Keine-Rundungen-Regel. */}
-        <canvas ref={lensCanvas} aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 2 }} />
-        <div
-          ref={lensBox}
-          aria-hidden
-          className="pointer-events-none absolute"
-          style={{ inset: "0", borderRadius: "0", boxShadow: "inset 0 0 4px rgba(255,255,255,0.2), inset 0 0 30px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.24)" }}
         />
       </section>
 
