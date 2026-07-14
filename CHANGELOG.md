@@ -5,6 +5,11 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Hero→Magenta-Übergang kompakter: 3 Ringe, enger, schneller zum Statement (14.07., Nacht XIII)
+- **Satellitenringe** (`AlgarveHome.tsx`): von 4 auf **3 Ringe** reduziert und in **engeren Abstand** gesetzt
+  (yTop-Gaps ~135 statt ~195); Übergangszone von 78vh → 52vh verkürzt und das Statement etwas früher
+  eingeblendet → man kommt schneller vom Hero zur Magenta-Section/zum Statement. Global.
+
 ### Companies-Bento: mehr Hochformat-Variety, keine Karte über 2 Spalten (14.07., Nacht XII)
 - **Companies-Bento** (`CompaniesBento.tsx`, Home + Companies = ein Modul): mehr variable, über zwei Zeilen
   gehende HOCHFORMAT-Cards (row-span-2) für mehr Bento-Charakter; die Rest-Füllung der letzten Kachel ist

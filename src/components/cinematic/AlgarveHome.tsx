@@ -33,11 +33,13 @@ const VB_H = 780;
 // yTop=-80 → ihre Endpunkte lagen ÜBER dem Container und wurden links/rechts
 // abgeschnitten. Jetzt yTop=30 → die Linie erreicht sichtbar beide Ränder. Sag
 // (Biegung) bleibt unverändert, also weiterhin synchron zur Hero-Wölbung.
+// NUR 3 RINGE in ENGEREM Abstand (Wolfram 14.07.): weniger Fächer → man kommt
+// schneller durch die Übergangszone zum Magenta/Statement. yTop-Abstände ~135
+// statt ~195. Farbe weiterhin Paper → Pink → Magenta.
 const LINES = [
-  { yTop: 30, yBottom: 450, alpha: 0.9, color: "248,247,243", dur: 26, phase: 0.1 },
-  { yTop: 228, yBottom: 602, alpha: 0.78, color: "255,163,190", dur: 38, phase: 0.55 },
-  { yTop: 421, yBottom: 759, alpha: 0.66, color: "255,108,150", dur: 48, phase: 0.3 },
-  { yTop: 611, yBottom: 919, alpha: 0.58, color: "255,67,112", dur: 34, phase: 0.8 },
+  { yTop: 30, yBottom: 430, alpha: 0.9, color: "248,247,243", dur: 26, phase: 0.1 },
+  { yTop: 165, yBottom: 560, alpha: 0.72, color: "255,120,158", dur: 40, phase: 0.55 },
+  { yTop: 300, yBottom: 690, alpha: 0.56, color: "255,67,112", dur: 34, phase: 0.3 },
 ];
 
 export function AlgarveHome({
@@ -204,7 +206,7 @@ export function AlgarveHome({
             y: 30,
             ease: "power3.out",
             stagger: { amount: 0.8, from: "start" },
-            scrollTrigger: { trigger: st, start: "top 82%", end: "top 45%", scrub: 0.8 },
+            scrollTrigger: { trigger: st, start: "top 90%", end: "top 50%", scrub: 0.8 },
           });
         }
       }
@@ -291,7 +293,7 @@ export function AlgarveHome({
         aria-hidden
         className="pointer-events-none relative z-[1] overflow-clip"
         style={{
-          height: "78vh",
+          height: "52vh",
           marginTop: "-3vh",
           background: "transparent",
           // Keine Top-Maske mehr (Wolfram 14.07.): die erste Linie liegt sichtbar bei
