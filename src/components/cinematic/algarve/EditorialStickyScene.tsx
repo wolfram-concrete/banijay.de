@@ -17,77 +17,50 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // Mobile / reduced motion: kein Pin — Bild oben, Accordion darunter.
 
 const SHARP = "var(--font-sharp), sans-serif";
-const ASIDE_W = 470;
+const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 
-// Alle Zahlen/Daten/Fakten von banijay.de (Wolfram 14.07.). fg/labelColor je Card
-// lesbar; Copy klappt in der Accordion auf.
-type Fact = {
-  value: number;
-  suffix: string;
-  label: string;
-  copy: string;
-  bg: string;
-  fg: string;
-  labelColor: string;
-  copyColor: string;
-  border?: string;
-};
+// Alle Zahlen/Daten/Fakten von banijay.de. Farbe kommt NICHT mehr je Fakt, sondern
+// abwechselnd Magenta/Schwarz (Wolfram 14.07.) → siehe TONE unten.
+type Fact = { value: number; suffix: string; label: string; copy: string };
 const FACTS: Fact[] = [
   {
     value: 40,
     suffix: "+",
     label: "Companies & Labels im deutschen Netzwerk",
     copy: "Produktionshäuser, Labels, Live-Einheiten, Talent-Managements und Plattformen — eigenständig, aber unter einem Dach.",
-    bg: "#ff4370",
-    fg: "#0e0d0b",
-    labelColor: "rgba(14,13,11,0.72)",
-    copyColor: "rgba(14,13,11,0.78)",
   },
   {
     value: 1300,
     suffix: "",
     label: "Mitarbeitende hinter den Formaten",
     copy: "Kreative, Produzent:innen, Redaktionen und Spezialist:innen an mehreren Standorten in Deutschland.",
-    bg: "#4a1636",
-    fg: "#f8f7f3",
-    labelColor: "rgba(248,247,243,0.66)",
-    copyColor: "rgba(248,247,243,0.8)",
-    border: "1px solid rgba(255,255,255,0.12)",
   },
   {
     value: 4,
     suffix: " Mrd.",
     label: "Views & Zuschauer erreicht",
     copy: "Reichweite über lineare, digitale und Social-Ausspielwege hinweg — Monat für Monat.",
-    bg: "#3a1230",
-    fg: "#f8f7f3",
-    labelColor: "rgba(248,247,243,0.66)",
-    copyColor: "rgba(248,247,243,0.8)",
-    border: "1px solid rgba(255,255,255,0.1)",
   },
   {
     value: 3000,
     suffix: "",
     label: "Stunden Entertainment im Jahr",
     copy: "Bühnenshows, Live-Sendungen, Serien, Online-Plattformen und Podcasts — Jahr für Jahr aus dem Verbund.",
-    bg: "#4a1636",
-    fg: "#f8f7f3",
-    labelColor: "rgba(248,247,243,0.66)",
-    copyColor: "rgba(248,247,243,0.8)",
-    border: "1px solid rgba(255,255,255,0.12)",
   },
   {
     value: 130,
     suffix: "+",
     label: "Companies weltweit",
     copy: "Lokale Marktnähe mit internationaler Banijay-Perspektive — Formate, die rund um den Globus laufen.",
-    bg: "#3a1230",
-    fg: "#f8f7f3",
-    labelColor: "rgba(248,247,243,0.66)",
-    copyColor: "rgba(248,247,243,0.8)",
-    border: "1px solid rgba(255,255,255,0.1)",
   },
 ];
+
+// Abwechselnd Magenta / Schwarz (keine Brombeere, keine Trenner → geschlossene
+// Fläche). Gerade Indizes Magenta (Ink-Typo), ungerade Schwarz (Paper-Typo).
+const TONE = (i: number) =>
+  i % 2 === 0
+    ? { bg: "#ff4370", fg: "#0e0d0b", label: "rgba(14,13,11,0.72)", copy: "rgba(14,13,11,0.78)" }
+    : { bg: "#0e0d0b", fg: "#f8f7f3", label: "rgba(248,247,243,0.6)", copy: "rgba(248,247,243,0.74)" };
 
 const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
@@ -176,14 +149,18 @@ export function EditorialStickyScene() {
               />
             </div>
 
-            {/* Fakten-Accordion rechts (Desktop absolut 470px, Mobile gestapelt) */}
+            {/* Fakten-Accordion rechts — EINE geschlossene Fläche: keine Trenner/Gaps,
+                Kacheln stoßen aneinander, abwechselnd Magenta/Schwarz. Die geöffnete
+                Kachel bekommt mehr Höhe (flex-grow), damit die Copy nicht an der Kante
+                klemmt (Wolfram 14.07.). */}
             <div
               ref={aside}
-              className="absolute right-0 top-0 z-[2] flex h-full flex-col gap-1.5 max-md:!static max-md:!mt-4 max-md:!h-auto max-md:!w-full"
+              className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-4 max-md:!h-auto max-md:!w-full"
               style={{ width: `${ASIDE_W}px` }}
             >
               {FACTS.map((f, i) => {
                 const isOpen = open === i;
+                const tone = TONE(i);
                 return (
                   <button
                     key={f.label}
@@ -191,8 +168,16 @@ export function EditorialStickyScene() {
                     data-fact-card
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="flex flex-1 flex-col justify-between overflow-hidden text-left max-md:!flex-none max-md:!min-h-[7.5rem]"
-                    style={{ background: f.bg, border: f.border, padding: "14px 16px", color: f.fg, cursor: "pointer" }}
+                    className="flex flex-col justify-between overflow-hidden text-left transition-[flex-grow] duration-500 ease-out max-md:!flex-none max-md:!min-h-[8.5rem]"
+                    style={{
+                      flexGrow: isOpen ? 2.1 : 1,
+                      flexShrink: 1,
+                      flexBasis: "0%",
+                      background: tone.bg,
+                      color: tone.fg,
+                      padding: "1.35rem 1.9rem",
+                      cursor: "pointer",
+                    }}
                   >
                     {/* Kopf: Zahl + Chevron */}
                     <div className="flex w-full items-start justify-between gap-3">
@@ -204,22 +189,23 @@ export function EditorialStickyScene() {
                       </span>
                       <ChevronDown
                         className="mt-1 h-5 w-5 shrink-0 transition-transform duration-300"
-                        style={{ opacity: 0.6, transform: isOpen ? "rotate(180deg)" : "none" }}
+                        style={{ opacity: 0.55, transform: isOpen ? "rotate(180deg)" : "none" }}
                       />
                     </div>
-                    {/* Label */}
-                    <span style={{ fontSize: "clamp(0.9rem, 1vw, 1.1rem)", lineHeight: "128%", color: f.labelColor, maxWidth: "24ch", marginTop: "0.5rem", fontWeight: 500 }}>
-                      {f.label}
-                    </span>
-                    {/* Copy — klappt per grid-rows-Trick auf (kein Layout-Sprung) */}
-                    <div
-                      className="grid transition-[grid-template-rows] duration-300 ease-out"
-                      style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
-                    >
-                      <div className="overflow-hidden">
-                        <p style={{ margin: "0.7rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "144%", color: f.copyColor, maxWidth: "34ch" }}>
-                          {f.copy}
-                        </p>
+                    {/* Label + aufklappende Copy */}
+                    <div>
+                      <span className="block" style={{ fontSize: "clamp(0.9rem, 1vw, 1.1rem)", lineHeight: "128%", color: tone.label, maxWidth: "28ch", fontWeight: 500 }}>
+                        {f.label}
+                      </span>
+                      <div
+                        className="grid transition-[grid-template-rows] duration-500 ease-out"
+                        style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                      >
+                        <div className="overflow-hidden">
+                          <p style={{ margin: "0.8rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "146%", color: tone.copy, maxWidth: "40ch" }}>
+                            {f.copy}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </button>

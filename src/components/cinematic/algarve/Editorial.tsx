@@ -7,7 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
 import { EditorialStickyScene } from "./EditorialStickyScene";
-import { LoveBrandsTicker } from "./LoveBrandsTicker";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -146,12 +145,6 @@ export function AlgarveEditorial() {
           </h2>
         </div>
 
-        {/* LOVE-BRANDS-TICKER (Wolfram 14.07., von der Home hierher verschoben) —
-            läuft rechts→links unter der About-Headline. */}
-        <div className="mb-[4vw] mt-[1vw]">
-          <LoveBrandsTicker />
-        </div>
-
         {/* BILD-MODUL als Sticky-Scroll-Interaktion (stateofaidesign-Vorbild) */}
         <EditorialStickyScene />
 
@@ -164,28 +157,30 @@ export function AlgarveEditorial() {
                 — Marcus Wolter, CEO Banijay Germany
               </span>
             </blockquote>
+        </div>
 
-            {/* „Die Story" — KEIN weißer Kasten mehr (Wolfram 14.07.): heller Text
-                auf dem moody Grund, DÜNNE weiße Linie oberhalb, linksbündig mit dem
-                Zitat/Text darüber (kein Box-Padding, das den Text einrückte). */}
-            <div
-              data-ed-reveal
-              className="flex flex-col"
-              style={{ gap: "1.6rem", paddingTop: "2.4rem", borderTop: "1px solid rgba(248,247,243,0.28)" }}
-            >
-              <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: PAPER }}>
-                Die Story
-              </h3>
-              <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(248,247,243,0.82)" }}>
-                <p className="m-0">
-                  Banijay ist seit 2008 konsequent als Verbund unternehmerisch geführter Produktionshäuser gewachsen — zuletzt 2020 mit dem Zusammenschluss mit Endemol Shine. In Deutschland entstand daraus ein Ökosystem eigenständiger Companies: Produktionshäuser, Labels und Plattformen, die Entertainment auf Bildschirme, Bühnen und in Feeds bringen — vom Prime-Time-Format bis zum Podcast.
-                </p>
-                <p className="m-0">
-                  Jetzt folgt der größte Schritt dieser Geschichte: Banijay Entertainment und All3Media bilden ein gemeinsames Haus — als 50/50-Joint-Venture der Banijay Group und RedBird IMI. Dahinter stehen 170 Companies in 25 Ländern, mehr als 265.000 Programmstunden und Formate wie MasterChef, The Traitors, Big Brother oder Peaky Blinders. „Gemeinsam beginnen wir ein neues Kapitel als globales Medien- und Entertainment-Powerhouse", sagt CEO Marco Bassetti.
-                </p>
-              </div>
+        {/* „Die Story" — bündig mit dem „deutsche Netzwerk"-Text unter dem Slider
+            (Wolfram 14.07.): dasselbe [1fr_3fr]-Raster wie der Bottom-Text, damit die
+            linke Kante exakt übereinstimmt. Dünne weiße Linie oberhalb bleibt. */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_3fr]" style={{ marginTop: "clamp(2.5rem, 5vw, 6rem)" }}>
+          <div className="max-md:hidden" />
+          <div
+            data-ed-reveal
+            className="flex flex-col"
+            style={{ gap: "1.6rem", paddingTop: "2.4rem", borderTop: "1px solid rgba(248,247,243,0.28)" }}
+          >
+            <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: PAPER }}>
+              Die Story
+            </h3>
+            <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(248,247,243,0.82)" }}>
+              <p className="m-0">
+                Banijay ist seit 2008 konsequent als Verbund unternehmerisch geführter Produktionshäuser gewachsen — zuletzt 2020 mit dem Zusammenschluss mit Endemol Shine. In Deutschland entstand daraus ein Ökosystem eigenständiger Companies: Produktionshäuser, Labels und Plattformen, die Entertainment auf Bildschirme, Bühnen und in Feeds bringen — vom Prime-Time-Format bis zum Podcast.
+              </p>
+              <p className="m-0">
+                Jetzt folgt der größte Schritt dieser Geschichte: Banijay Entertainment und All3Media bilden ein gemeinsames Haus — als 50/50-Joint-Venture der Banijay Group und RedBird IMI. Dahinter stehen 170 Companies in 25 Ländern, mehr als 265.000 Programmstunden und Formate wie MasterChef, The Traitors, Big Brother oder Peaky Blinders. „Gemeinsam beginnen wir ein neues Kapitel als globales Medien- und Entertainment-Powerhouse", sagt CEO Marco Bassetti.
+              </p>
             </div>
-
+          </div>
         </div>
       </div>
 

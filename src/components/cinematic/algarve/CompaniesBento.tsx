@@ -30,15 +30,14 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 
-// BENTO-RHYTHMUS (Wolfram 14.07.): 4-spaltig, aber MIT variierenden Kachelgrößen
-// (Bento-Logik beibehalten) — große Feature-Cards über col-start gemischt links/
-// rechts, kleinere Cards clustern via dense. Kompaktere Zeilen (11.5vw) halten den
-// Aufbau trotzdem niedrig. Wiederholt sich alle 12 Kacheln.
+// BENTO-RHYTHMUS (Wolfram 14.07.): 4-spaltig mit variierenden Kachel-BREITEN
+// (Bento-Logik bleibt), aber KEINE row-span mehr → alle Zeilen gleich hoch, dense
+// füllt Lücken, das Grid schließt unten BÜNDIG ab (kein einzelnes großes Element,
+// das unten heraussteht). Wiederholt sich alle 12 Kacheln.
 const SPAN: Record<number, string> = {
-  0: "md:col-span-2 md:row-span-2", //  groß, LINKS (Anker oben)
-  4: "md:col-span-2 md:col-start-2 md:row-span-2", // groß, RECHTS
-  7: "md:row-span-2 md:col-start-3", // hoch, RECHTS
-  9: "md:col-span-2 md:col-start-2", // breit, RECHTS
+  0: "md:col-span-2", // breit, LINKS (Anker oben)
+  5: "md:col-span-2", // breit, Mitte
+  10: "md:col-span-2", // breit, unten
 };
 const spanFor = (i: number) => SPAN[i % 12] ?? "";
 
@@ -173,7 +172,14 @@ export function AlgarveCompaniesBento() {
                 </div>
               </>
             );
-            const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${spanFor(i)}`;
+            // Die LETZTE Kachel füllt die Restspalten der letzten Zeile → das Grid
+            // schließt unten immer BÜNDIG ab (Wolfram 14.07., gilt für alle Rubriken).
+            const LAST_FILL: Record<number, string> = { 1: "", 2: "md:col-span-2", 3: "md:col-span-3", 4: "md:col-span-4" };
+            const span =
+              i === cards.length - 1
+                ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, _c, k) => n + (spanFor(k).includes("col-span-2") ? 2 : 1), 0) % 4)] ?? ""
+                : spanFor(i);
+            const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${span}`;
             return card.url ? (
               <a
                 key={card.id}

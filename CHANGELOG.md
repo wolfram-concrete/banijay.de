@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Editorial-Facts geschlossene Fläche, Companies-Grid bündig, LoveBrands raus & „Die Story" ausgerichtet (14.07., Nacht VII)
+- **Editorial-Facts** (`EditorialStickyScene.tsx`): abwechselnd Magenta/Schwarz (keine Brombeere), KEINE
+  Trenner/Gaps → eine geschlossene Fläche; breiterer Container (470→540px) + mehr Padding; die geöffnete
+  Kachel bekommt mehr Höhe (flex-grow) → Copy klemmt nicht mehr an der Kante.
+- **Companies-Bento bündig** (`CompaniesBento.tsx`): keine row-span mehr (einheitliche Zeilenhöhe), die
+  LETZTE Kachel füllt dynamisch die Restspalten der letzten Zeile → das Grid schließt unten immer bündig ab
+  (für alle Rubriken/Listen). Breite Feature-Cards (col-span-2) bleiben.
+- **Love-Brands-/Iconic-IP-Banderole entfernt** (`Editorial.tsx`, `LoveBrandsTicker.tsx` + `/public/formats` gelöscht).
+- **„Die Story"** sitzt jetzt bündig mit dem „deutsches Netzwerk"-Text unter dem Bild-Slider (gleiches
+  [1fr_3fr]-Raster inkl. gap → identische linke Kante).
+
 ### Formular-Linien, Header-Titel, Hero-Tempo, Drift→Career & diverse Detailkorrekturen (14.07., Nacht VI)
 - **Formular global auf Unterstrich-Linien** (`ContactForm.tsx`, `contact/page.tsx`, `globals.css`): keine
   Kästen mehr — transparente Felder, nur eine dünne weiße Unterkante, kein Radius. Gilt für About/Career
