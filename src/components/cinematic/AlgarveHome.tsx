@@ -186,24 +186,22 @@ export function AlgarveHome({
         });
       });
 
-      // MITTELACHSIGES STATEMENT (companies): animiert ein, sobald es NACH den
-      // Ringen in den Viewport scrollt (fade + scale + leichter Aufstieg).
+      // MITTELACHSIGES STATEMENT (companies): die Typo animiert Wort für Wort ein,
+      // sobald sie in den Viewport scrollt (opacity + Aufstieg, gescrubbt).
       const st = root.current?.querySelector<HTMLElement>("[data-hero-statement]");
       if (st) {
+        const words = Array.from(st.querySelectorAll<HTMLElement>("[data-hero-stmt-word]"));
+        gsap.set(st, { autoAlpha: 1 });
         if (reduce) {
-          gsap.set(st, { autoAlpha: 1 });
+          gsap.set(words, { autoAlpha: 1, y: 0 });
         } else {
-          gsap.fromTo(
-            st,
-            { autoAlpha: 0, scale: 0.92, y: 34 },
-            {
-              autoAlpha: 1,
-              scale: 1,
-              y: 0,
-              ease: "power2.out",
-              scrollTrigger: { trigger: st, start: "top 80%", end: "top 45%", scrub: 0.6 },
-            },
-          );
+          gsap.from(words, {
+            autoAlpha: 0,
+            y: 30,
+            ease: "power3.out",
+            stagger: { amount: 0.8, from: "start" },
+            scrollTrigger: { trigger: st, start: "top 82%", end: "top 45%", scrub: 0.8 },
+          });
         }
       }
     },
@@ -369,7 +367,13 @@ export function AlgarveHome({
               opacity: 0,
             }}
           >
-            {statement}
+            {/* Wort-für-Wort-Reveal beim Ins-Bild-Scrollen (Wolfram 14.07.) */}
+            {statement.split(" ").map((w, i, arr) => [
+              <span key={i} data-hero-stmt-word className="inline-block" style={{ willChange: "transform, opacity" }}>
+                {w}
+              </span>,
+              i < arr.length - 1 ? " " : "",
+            ])}
           </p>
         </section>
       )}

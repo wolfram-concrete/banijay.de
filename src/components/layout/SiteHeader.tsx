@@ -377,11 +377,11 @@ export function SiteHeader() {
             {pageLabel && !open && (
               <span
                 aria-hidden
-                className="pointer-events-none absolute right-full top-0 uppercase transition-all duration-[450ms] ease-out"
+                className="pointer-events-none absolute right-full top-1/2 uppercase transition-all duration-[450ms] ease-out"
                 style={{
-                  marginTop: "0.62rem",
+                  // Vertikal auf die MITTELACHSE des B-Logos gesetzt (Wolfram 14.07.).
                   marginRight: "0.7rem",
-                  transformOrigin: "top right",
+                  transformOrigin: "right center",
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontWeight: 600,
                   fontSize: "0.9rem",
@@ -392,7 +392,7 @@ export function SiteHeader() {
                   // Das weiße Hero-Label „übergibt" hierher: es rastet mit
                   // Shift + Herunterskalieren als kleine rote Wortmarke ein.
                   opacity: scrolled ? 1 : 0,
-                  transform: scrolled ? "translateY(0) scale(1)" : "translateY(-0.6rem) scale(1.6)",
+                  transform: scrolled ? "translateY(-50%) scale(1)" : "translateY(calc(-50% - 0.6rem)) scale(1.6)",
                 }}
               >
                 {pageLabel}

@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Header-Titel mittelachsig zum B & Statement-Wort-Reveal (14.07., Nacht IX)
+- **Header-Seitentitel** (`SiteHeader.tsx`): sitzt jetzt vertikal auf der Mittelachse des rechten B-Logos
+  (Mitte-zu-Mitte statt oben bündig), global auf allen Seiten.
+- **Statement-Typo-Animation** (`AlgarveHome.tsx`): das mittelachsige Statement animiert Wort für Wort ein,
+  sobald es ins Bild scrollt (opacity + Aufstieg, gescrubbt, Stagger von vorn) — gilt auf allen Subpages.
+
 ### Hero-Scroll-Choreografie sequenziert (14.07., Nacht VIII)
 - **Hero-Scroll global** (`AlgarveHome.tsx`): klar getrennte Phasen statt „alles auf einmal / zu wild". ①
   Erst formt sich der radiale Kreis (Kurve fertig im ersten Drittel des Hero-Scrolls), ② ein ruhiger
