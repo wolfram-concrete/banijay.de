@@ -34,10 +34,11 @@ const PAPER = "#f8f7f3";
 // (col-span-2) UND HOCHFORMATIGE, über zwei Zeilen gehende (row-span-2) Cards,
 // dense füllt Lücken. Wiederholt sich alle 12 Kacheln.
 const SPAN: Record<number, string> = {
-  0: "md:col-span-2", // breit (2×1)
-  2: "md:row-span-2", // hochformat (1×2)
-  5: "md:col-span-2", // breit (2×1)
-  8: "md:row-span-2", // hochformat (1×2)
+  0: "md:row-span-2", // hochformat (1×2)
+  2: "md:col-span-2", // breit (2×1)
+  4: "md:row-span-2", // hochformat (1×2)
+  7: "md:row-span-2", // hochformat (1×2)
+  9: "md:col-span-2", // breit (2×1)
 };
 // SAUBERER UNTERER ABSCHLUSS (Wolfram 14.07.): die LETZTEN Kacheln bekommen KEINEN
 // Span (uniformer „Schwanz") → unten steht nichts über, das Grid wirkt ruhig; die
@@ -181,7 +182,10 @@ export function AlgarveCompaniesBento() {
             // Die LETZTE Kachel füllt die Restspalten der letzten Zeile → das Grid
             // schließt unten immer BÜNDIG ab (Wolfram 14.07., gilt für alle Rubriken).
             // Rest aus der GESAMT-FLÄCHE (colspan × rowspan) der übrigen Kacheln.
-            const LAST_FILL: Record<number, string> = { 1: "", 2: "md:col-span-2", 3: "md:col-span-3", 4: "md:col-span-4" };
+            // Auf max. col-span-2 GECAPPT (Wolfram 14.07.): NIE eine Karte über 3–4
+            // Spalten ziehen (Bildcontainer wird zu groß). Lieber einen kleinen Rest
+            // offen lassen als eine Riesenkarte — der Boden bleibt „einigermaßen grade".
+            const LAST_FILL: Record<number, string> = { 1: "", 2: "md:col-span-2", 3: "md:col-span-2", 4: "" };
             const span =
               i === cards.length - 1
                 ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, _c, k) => n + areaOf(spanFor(k, cards.length)), 0) % 4)] ?? ""

@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Companies-Bento: mehr Hochformat-Variety, keine Karte über 2 Spalten (14.07., Nacht XII)
+- **Companies-Bento** (`CompaniesBento.tsx`, Home + Companies = ein Modul): mehr variable, über zwei Zeilen
+  gehende HOCHFORMAT-Cards (row-span-2) für mehr Bento-Charakter; die Rest-Füllung der letzten Kachel ist
+  jetzt auf **max. col-span-2 gecappt** → NIE mehr eine Company-Karte über 3–4 Spalten (Bildcontainer wurde
+  zu groß). Boden schließt weiterhin einigermaßen grade ab.
+
 ### Preloader nur beim Erst-Load & gepinnter Hero-Scroll-Übergang (14.07., Nacht XI)
 - **Preloader nur beim allerersten Laden** (`IntroOverlay.tsx`): einmal pro Browser-Session (sessionStorage-
   Flag). Zurück-Navigation auf die Home (z. B. von Career) startet den Hero direkt, ohne Preloader.
