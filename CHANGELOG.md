@@ -5,6 +5,23 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Editorial-Umbau, 3-Frame-Hero-Animation, Ring-/Gradient-Feinschliff & Korrekturpaket (14.07., Nacht III)
+- **3-Frame-Hero-Animation** (`AlgarveHome.tsx`): `Hero-frame-1/2/3.jpg` (2880px) als Sequenz nach der
+  Intro — dunkler Screen flackert auf → Frame 2 blendet transparent→klar ein (wird lebendig) → Frame 3
+  bringt die Font „We Are Banijay" in den Hintergrund. Ersetzt den alten b-dark/b-bright-Crossfade.
+- **Satellitenringe**: Abstände enger + progressiv (Gaps 100→150→210), Fade knapper (näher an der
+  Hero-Kante, engerer Stagger); Grund als Gradient vom moody Hero-Grund zum Magenta der 1. Section.
+- **Editorial** (`Editorial.tsx`): Headline → „About Banijay"; Lead-Text, „Der Blick nach vorn"-Liste
+  und CTAs entfernt; Marcus-Zitat (Original banijay.de) wieder rein; Love-Brands-Ticker von der Home
+  hierher verschoben.
+- **„Ein Dach → Warp → Team" entfernt** (`Founders.tsx`): kein Blendeneffekt mehr, schlichter Scroll;
+  die Headline „Ein Dach. Viele Handschriften." entfällt komplett.
+- **Videos**: all3media-Teaser (ab Sek 19) als Hover-Video über der Team-Section; MadeFor-Trailer
+  (ab Sek 09) als Bewegtbild in der Good-Humor-Company-Card.
+- **News-Menü-CTA** (unterstrichen + Pfeil → /news, kein Button); News-Bildcontainer im Nav-Slider kantig.
+- **Home-Companyliste**: Zahlen an den Rubrik-Buttons entfernt.
+- **Statement-Blöcke**: Home-Statement auf Lorem ipsum (Platzhalter), Zeilenabstand global erhöht (138%).
+
 ### Pausenclown Media, Warp→Team-Merge, Companies-Page-Umbau, Zahlentafeln-Coloring, Back-to-Top-Hover & News kantig (14.07., Nacht II)
 - **Pausenclown Media** neu in die Companies aufgenommen (`companyCards.ts` + `companiesDirectory.ts` per
   `fromCard`): Label mit Food-Experte Sebastian Lege — Content aus Marcus' Anschreiben, nichts erfunden.

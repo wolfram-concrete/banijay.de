@@ -117,6 +117,17 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
           }}
         />
       </div>
+
+      {/* CTA (Wolfram 14.07.): unterstrichener Text + Pfeil → alle Beiträge (kein Button) */}
+      <Link
+        href="/news"
+        onClick={onNavigate}
+        className="group mt-[1.4vw] flex w-fit items-center gap-1.5 no-underline max-[767px]:!mt-5 max-[767px]:!text-[3.8vw]"
+        style={{ color: INK, fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 500 }}
+      >
+        <span className="underline underline-offset-[5px]">Zu allen Beiträgen</span>
+        <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      </Link>
     </div>
   );
 }

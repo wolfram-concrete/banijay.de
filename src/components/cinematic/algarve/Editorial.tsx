@@ -2,13 +2,12 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useRef } from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
 import { EditorialStickyScene } from "./EditorialStickyScene";
+import { LoveBrandsTicker } from "./LoveBrandsTicker";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -38,25 +37,6 @@ const MARQUEE_IMAGES = [
   { src: "/editorial/studio.jpg", alt: "Produktion im Banijay-Netzwerk", big: false },
 ];
 
-const DEUTSCHLAND_PUNKTE = [
-  "filmpool fiction, filmpool entertainment und South & Browse verstärken das deutsche Ökosystem.",
-  "Marcus Wolter, CEO von Banijay Germany, übernimmt die Leitung der deutschen All3Media-Marken.",
-  "Die Integration folgt dem dezentralen Banijay-Modell: Länder-CEOs steuern ihre Märkte selbst.",
-  "Im ersten Jahr werden Synergien von rund 50 Millionen Euro erwartet.",
-];
-
-function Cta({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex items-center gap-2 rounded-[8px] border no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208]"
-      style={{ borderColor: PAPER, color: PAPER, padding: "0.7rem 1.4rem", fontFamily: SHARP, fontSize: "0.95rem", fontWeight: 500 }}
-    >
-      {children}
-      <ArrowUpRight className="h-4 w-4" />
-    </Link>
-  );
-}
 
 export function AlgarveEditorial() {
   const root = useRef<HTMLElement>(null);
@@ -104,13 +84,6 @@ export function AlgarveEditorial() {
         start: "top 86%",
         once: true,
         onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.14, ease: "power3.out" }),
-      });
-
-      gsap.set("[data-ed-li]", { autoAlpha: 0, x: -32 });
-      ScrollTrigger.batch("[data-ed-li]", {
-        start: "top 90%",
-        once: true,
-        onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }),
       });
     },
     { scope: root },
@@ -168,9 +141,15 @@ export function AlgarveEditorial() {
           >
             {/* kein per-Zeilen-overflow-hidden → die Ä-Punkte bleiben sichtbar;
                 der Translate wird vom overflow-clip des Panels gefasst. */}
-            <span data-ed-hl-first className="block">Back to</span>
-            <span data-ed-hl-last className="block">the Future.</span>
+            <span data-ed-hl-first className="block">About</span>
+            <span data-ed-hl-last className="block">Banijay.</span>
           </h2>
+        </div>
+
+        {/* LOVE-BRANDS-TICKER (Wolfram 14.07., von der Home hierher verschoben) —
+            läuft rechts→links unter der About-Headline. */}
+        <div className="mb-[4vw] mt-[1vw]">
+          <LoveBrandsTicker />
         </div>
 
         {/* BILD-MODUL als Sticky-Scroll-Interaktion (stateofaidesign-Vorbild) */}
@@ -178,10 +157,13 @@ export function AlgarveEditorial() {
 
         {/* ARTIKELTEXT — folgt unter dem Bild-Modul */}
         <div className="flex flex-col md:mx-auto md:max-w-[84%]" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>
-            {/* Lead — zeitlos: Historie → Zukunft */}
-            <p data-ed-reveal className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.8rem)", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.02em" }}>
-              Vom einzelnen Produktionshaus zum Ökosystem mit über 40 Companies — und jetzt Teil eines globalen Powerhouses: Die Fusion von Banijay Entertainment und All3Media eröffnet dem deutschen Netzwerk das nächste Kapitel.
-            </p>
+            {/* Marcus-Zitat (Original banijay.de, Wolfram 14.07.) */}
+            <blockquote data-ed-reveal className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.8rem)", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.02em" }}>
+              „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht."
+              <span className="mt-4 block" style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.2rem)", fontWeight: 500, color: SOFT }}>
+                — Marcus Wolter, CEO Banijay Germany
+              </span>
+            </blockquote>
 
             {/* Summary-Block: HELLES Milchglas mit dunkler Typo (Referenz-Optik
                 13.07.) — warm-weiße Fläche, starker Blur, hauchdünner Gloss oben,
@@ -212,18 +194,6 @@ export function AlgarveEditorial() {
               </div>
             </div>
 
-            {/* expect-halves */}
-            <div data-ed-reveal className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_3fr]">
-              <div style={{ fontFamily: SHARP, color: SOFT, fontStyle: "italic" }}>Der Blick nach vorn:</div>
-              <ul className="m-0 flex list-none flex-col gap-3 p-0" style={{ fontSize: "clamp(1rem, 1.2vw, 1.3rem)", lineHeight: "140%" }}>
-                {DEUTSCHLAND_PUNKTE.map((p) => (
-                  <li key={p} data-ed-li className="flex items-start gap-3">
-                    <span aria-hidden className="mt-[0.55em] h-[6px] w-[6px] shrink-0" style={{ background: "#ff4370" }} />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
         </div>
       </div>
 
@@ -258,10 +228,6 @@ export function AlgarveEditorial() {
               <p className="m-0">
                 Die Zukunft bleibt dezentral: Banijay Entertainment setzt auf ländergeführte Strukturen — Entscheidungen fallen dort, wo die Inhalte entstehen. Für Deutschland heißt das: Das Ökosystem um CEO Marcus Wolter wächst aus eigener Kraft weiter — jetzt mit über 40 Companies unter einem Dach.
               </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Cta href="/news">Alle News</Cta>
-              <Cta href="/companies">Zu den Companies</Cta>
             </div>
           </div>
         </div>

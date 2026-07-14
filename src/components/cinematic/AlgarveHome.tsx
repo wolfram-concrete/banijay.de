@@ -24,11 +24,13 @@ const SECTION_BG = "transparent";
 // (Scheitel = (yTop+yBottom)/2). Oberste Linie am stärksten gebogen, nach unten
 // flacher. Die Werte dienen SVG-Pfaden UND der Planeten-Bahn-Berechnung.
 const VB_H = 780;
+// Abstände enger + progressiv (Wolfram 14.07.): oben eng zusammen, nach unten
+// weiter auffächernd (Gaps 100 → 150 → 210). yBottom = Bezier-Kontrollpunkt.
 const LINES = [
-  { yTop: 20, yBottom: 440, alpha: 0.7, dur: 26, phase: 0.1 },
-  { yTop: 218, yBottom: 592, alpha: 0.54, dur: 38, phase: 0.55 },
-  { yTop: 411, yBottom: 749, alpha: 0.4, dur: 48, phase: 0.3 },
-  { yTop: 601, yBottom: 909, alpha: 0.28, dur: 34, phase: 0.8 },
+  { yTop: 30, yBottom: 420, alpha: 0.7, dur: 26, phase: 0.1 },
+  { yTop: 130, yBottom: 490, alpha: 0.54, dur: 38, phase: 0.55 },
+  { yTop: 280, yBottom: 600, alpha: 0.4, dur: 48, phase: 0.3 },
+  { yTop: 490, yBottom: 780, alpha: 0.28, dur: 34, phase: 0.8 },
 ];
 
 export function AlgarveHome({
@@ -42,8 +44,9 @@ export function AlgarveHome({
 } = {}) {
   const dark = variant === "companies";
   const root = useRef<HTMLDivElement>(null);
-  const heroImg = useRef<HTMLImageElement>(null);
-  const heroImgB = useRef<HTMLImageElement>(null);
+  const heroImg = useRef<HTMLImageElement>(null); // Frame 1 (dunkel)
+  const heroImgB = useRef<HTMLImageElement>(null); // Frame 2 (wird lebendig)
+  const heroImg3 = useRef<HTMLImageElement>(null); // Frame 3 („We Are Banijay")
   const orbitZone = useRef<HTMLDivElement>(null);
   const heroSection = useRef<HTMLElement>(null);
   const contour = useRef<HTMLDivElement>(null);
@@ -51,24 +54,41 @@ export function AlgarveHome({
   // beim Scrollen (Section-Radius + Zirkel-Kontur).
   const curveP = useRef(0);
 
-  // AUFHELL-CROSSFADE (Wolfram 14.07.): das dunkle Basis-Visual liegt unten, das
-  // helle „We Are Banijay"-Motiv blendet nach der Intro langsam darüber ein —
-  // wirkt, als würde die Helligkeit hochgezogen. (Ersetzt die frühere WebGL-Logik.)
+  // 3-FRAME-EINBLEND-ANIMATION (Wolfram 14.07.): nach der Intro spielt der Hero
+  // eine kurze Sequenz — ① dunkler Screen „flackert auf" (Bildröhre schaltet ein),
+  // ② Frame 2 blendet transparent → klar ein (wird lebendig, leuchtet mehr),
+  // ③ Frame 3 blendet ein und bringt die Font „We Are Banijay" in den Hintergrund.
   useEffect(() => {
-    const imgB = heroImgB.current;
-    if (!imgB) return;
-    let done = false;
-    const brighten = () => {
-      if (done) return;
-      done = true;
-      imgB.style.transition = "opacity 4500ms ease";
-      imgB.style.opacity = "1";
+    const f1 = heroImg.current, f2 = heroImgB.current, f3 = heroImg3.current;
+    if (!f1 || !f2 || !f3) return;
+    let played = false;
+    const play = () => {
+      if (played) return;
+      played = true;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set([f2, f3], { opacity: 1 });
+        return;
+      }
+      gsap
+        .timeline()
+        // ① dunkel → Flackern (Screen schaltet ein)
+        .set(f1, { opacity: 0 })
+        .to(f1, { opacity: 1, duration: 0.09 })
+        .to(f1, { opacity: 0.18, duration: 0.06 })
+        .to(f1, { opacity: 1, duration: 0.05 })
+        .to(f1, { opacity: 0.5, duration: 0.05 })
+        .to(f1, { opacity: 1, duration: 0.14 })
+        .to({}, { duration: 0.45 }) // dunkel halten
+        // ② wird lebendig (Frame 2 transparent → klar)
+        .to(f2, { opacity: 1, duration: 1.9, ease: "power2.inOut" })
+        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3)
+        .to(f3, { opacity: 1, duration: 2.1, ease: "power2.out" }, "-=0.5");
     };
-    if ((window as { __introDone?: boolean }).__introDone) brighten();
-    window.addEventListener("banijay:introdone", brighten);
-    const fallback = window.setTimeout(brighten, 6000);
+    if ((window as { __introDone?: boolean }).__introDone) play();
+    window.addEventListener("banijay:introdone", play);
+    const fallback = window.setTimeout(play, 6000);
     return () => {
-      window.removeEventListener("banijay:introdone", brighten);
+      window.removeEventListener("banijay:introdone", play);
       window.clearTimeout(fallback);
     };
   }, []);
@@ -99,7 +119,7 @@ export function AlgarveHome({
         });
         // Ruhiges „Atmen": beide Visuals zoomen langsam (behält Leben ohne Linse).
         gsap.fromTo(
-          [heroImg.current, heroImgB.current],
+          [heroImg.current, heroImgB.current, heroImg3.current],
           { scale: 1.06 },
           { scale: 1.14, duration: 26, ease: "sine.inOut", yoyo: true, repeat: -1 },
         );
@@ -109,16 +129,17 @@ export function AlgarveHome({
       // die Hero-Form fertig gebildet und weit hochgescrollt ist (später Trigger-
       // Start), und wachsen dann von oben nach unten NACHEINANDER aus der Kante
       // heraus — klar getrennte Onsets, sichtbares „Rauswachsen nach unten".
+      // KNAPPER (Wolfram 14.07.): näher an der Hero-Kante starten, engerer Stagger.
       const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 50%", end: "bottom 55%", scrub: 0.7 },
+        scrollTrigger: { trigger: orbitZone.current, start: "top 62%", end: "bottom 68%", scrub: 0.7 },
       });
       const rings = gsap.utils.toArray<SVGGElement>("[data-hero-ring]");
       rings.forEach((ring, i) => {
         fan.fromTo(
           ring,
-          { autoAlpha: 0, y: -44 },
-          { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" },
-          i * 0.9,
+          { autoAlpha: 0, y: -28 },
+          { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          i * 0.5,
         );
       });
 
@@ -130,7 +151,7 @@ export function AlgarveHome({
       const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
       dots.forEach((dot, i) => {
         const ln = LINES[i];
-        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, i * 0.9 + 0.25);
+        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, i * 0.5 + 0.2);
         if (reduce) {
           dot.style.left = "50%";
           dot.style.top = ((((ln.yTop + ln.yBottom) / 2) / VB_H) * 100).toFixed(3) + "%";
@@ -181,7 +202,20 @@ export function AlgarveHome({
           Hero-Form beim Scrollen bildet, werden die Ecken außerhalb der Form
           freigeschnitten — dahinter liegt SOFORT reines Magenta (kein dunkler
           Background mehr). Deckt den Hero-Unterbau + die Übergangszone ab. */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0" style={{ top: "26vh", bottom: 0, background: dark ? "transparent" : "#ff4370", zIndex: 0 }} />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0"
+        style={{
+          top: "26vh",
+          bottom: 0,
+          // Gradient (Wolfram 14.07.): vom moody Hero-Grund (oben, an der radialen
+          // Kante) zum Magenta der 1. Section (unten) durchlayern. Companies: dunkel.
+          background: dark
+            ? "transparent"
+            : "linear-gradient(180deg, #1e0816 0%, #1e0816 34%, #8a1e4e 58%, #ff4370 82%)",
+          zIndex: 0,
+        }}
+      />
 
       {/* ── FULLSCREEN-HERO (ohne Brennglas) ──────────────────────────────── */}
       <section
@@ -194,12 +228,12 @@ export function AlgarveHome({
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* ZWEI-LAYER-VISUAL (Wolfram 14.07.): unten das DUNKLE Basis-Visual, darüber
-            das HELLE „We Are Banijay"-Motiv, das langsam einblendet (Crossfade).
-            Crisp/full-size (kein Blur, keine Linse mehr). */}
+        {/* 3-FRAME-VISUAL (Wolfram 14.07.): Frame 1 dunkel (Base, flackert auf),
+            Frame 2 „wird lebendig", Frame 3 mit der Font „We Are Banijay" — blenden
+            per Sequenz (useEffect) transparent → klar übereinander. */}
         <img
           ref={heroImg}
-          src="/hero-v2/b-dark.jpg"
+          src="/hero-v2/frame-1.jpg"
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
@@ -207,7 +241,15 @@ export function AlgarveHome({
         />
         <img
           ref={heroImgB}
-          src="/hero-v2/b-bright.jpg"
+          src="/hero-v2/frame-2.jpg"
+          alt=""
+          draggable={false}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+        />
+        <img
+          ref={heroImg3}
+          src="/hero-v2/frame-3.jpg"
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
@@ -232,7 +274,7 @@ export function AlgarveHome({
 
       {/* ── ÜBERGANGSZONE: weiße Satellitenringe. Home = Magenta; Companies =
           transparent auf dem globalen moody Backdrop + eigener Sternenstaub. ── */}
-      <div ref={orbitZone} data-nav-theme={dark ? "dark" : "magenta"} aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: dark ? "transparent" : "#ff4370" }}>
+      <div ref={orbitZone} data-nav-theme={dark ? "dark" : "magenta"} aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: "transparent" }}>
         {dark && (
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
             <DustLayer boost={0.85} center={{ x: 0.5, y: 0.42 }} radius={0.95} />

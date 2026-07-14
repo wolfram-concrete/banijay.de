@@ -5,7 +5,6 @@ import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSectio
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
-import { LoveBrandsTicker } from "@/components/cinematic/algarve/LoveBrandsTicker";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
@@ -41,10 +40,9 @@ export default function HomePage() {
         <div className="relative z-[2]">
           <AlgarveAboutIntro
             fadeExit
-            text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
-            // LOVE-BRANDS-TICKER (#64) DIREKT unter dem Statement — läuft langsam
-            // rechts→links, blendet mit dem Statement aus (Wolfram 13.07.).
-            below={<LoveBrandsTicker />}
+            // Platzhalter (Wolfram 14.07.): Lorem ipsum in ~identischer Länge, bis
+            // finales Wording folgt.
+            text="Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi aliquip ex."
           />
         </div>
 

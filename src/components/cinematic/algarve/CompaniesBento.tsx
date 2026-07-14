@@ -46,6 +46,8 @@ const spanFor = (i: number) => SPAN[i % 12] ?? "";
 const REEL: Record<string, string> = Object.fromEntries(
   COMPANIES_DIRECTORY.map((c, i) => [c.id, `/company-media/reel-${(i % 6) + 1}.mp4`]),
 );
+// Echte Trailer je Company (Wolfram 14.07.) — überschreiben das generische Reel.
+REEL["good-humor"] = "/company-media/madefor-good-humor.mp4";
 
 // Flip-Card-Farbpalette (Ex-ServicesStack) — tintet die Fullsize-Videos
 const VIDEO_CARD_COLORS = [
@@ -66,14 +68,6 @@ export function AlgarveCompaniesBento() {
   const flipScroller = useRef<HTMLDivElement>(null);
   const [openAt, setOpenAt] = useState<number | null>(null);
   const [rubrik, setRubrik] = useState<string>("alle");
-
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { alle: COMPANIES_DIRECTORY.length };
-    ECO_CATEGORIES.forEach((c) => {
-      map[c.key] = COMPANIES_DIRECTORY.filter((d) => d.ecoKeys.includes(c.key)).length;
-    });
-    return map;
-  }, []);
 
   const cards = useMemo(
     () => (rubrik === "alle" ? COMPANIES_DIRECTORY : COMPANIES_DIRECTORY.filter((d) => d.ecoKeys.includes(rubrik))),
@@ -217,7 +211,6 @@ export function AlgarveCompaniesBento() {
                 style={{ fontFamily: SHARP }}
               >
                 {r.label}
-                <span className={isActive ? "text-white/70" : "text-[rgba(248,247,243,0.4)]"}>{counts[r.key]}</span>
               </button>
             );
           })}

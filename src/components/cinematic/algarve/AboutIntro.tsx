@@ -21,7 +21,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const H4 = {
   fontFamily: "var(--font-sharp), sans-serif",
   fontSize: "2.5vw",
-  lineHeight: "125%",
+  // Zeilenabstand global etwas erhöht (Wolfram 14.07.): 125% → 138%
+  lineHeight: "138%",
   fontWeight: 500,
   letterSpacing: "-0.104vw",
 } as const;
@@ -136,7 +137,7 @@ export function AlgarveAboutIntro({
       >
         <div data-intro-content className="flex w-full flex-col items-center" style={{ padding: "2vw" }}>
           <p
-            className="m-0 mx-auto text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
+            className="m-0 mx-auto text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[140%]"
             style={{ ...H4, maxWidth: "55.28vw" }}
           >
             {words.map((w, i) => (
