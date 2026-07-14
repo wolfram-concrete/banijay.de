@@ -43,6 +43,9 @@ export default function HomePage() {
           <AlgarveAboutIntro
             fadeExit
             text="Banijay Germany ist kein einzelnes Produktionshaus. Wir sind ein Netzwerk eigenständiger Companies, das Ideen entwickelt, Formate produziert und Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
+            // LOVE-BRANDS-TICKER (#64) DIREKT unter dem Statement — läuft langsam
+            // rechts→links, blendet mit dem Statement aus (Wolfram 13.07.).
+            below={<LoveBrandsTicker />}
           />
         </div>
 
@@ -53,10 +56,6 @@ export default function HomePage() {
           <AlgarveEcosystem />
         </div>
       </div>
-
-      {/* LOVE-BRANDS-TICKER (#64): endlose Logo-Banderole unterhalb des
-          Statements/Ökosystems, läuft von links nach rechts. */}
-      <LoveBrandsTicker />
 
       {/* „Unsere Companies" — holistisches Bento-Grid ALLER Companies (Media-Background
           + Aufbau-Stagger + Klick-Detail). Die Headline „Ein System …" lebt als

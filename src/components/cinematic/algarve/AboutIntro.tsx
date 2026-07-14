@@ -33,6 +33,7 @@ export function AlgarveAboutIntro({
   magentaExit = false,
   tall = false,
   fadeExit = false,
+  below,
 }: {
   text?: string;
   magentaExit?: boolean;
@@ -42,6 +43,9 @@ export function AlgarveAboutIntro({
       aus — die nächste Section liegt via -100vh-Overlap dahinter und kommt zum
       Vorschein, statt dass normal weitergescrollt wird. */
   fadeExit?: boolean;
+  /** Optionaler Inhalt DIREKT unter dem Statement im Sticky-Panel (z. B. der
+      Love-Brands-Ticker, Wolfram 13.07.) — blendet mit dem Statement aus. */
+  below?: React.ReactNode;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
@@ -112,10 +116,10 @@ export function AlgarveAboutIntro({
       }}
     >
       <div
-        className="flex items-center justify-center"
+        className="flex flex-col items-center justify-center"
         style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}
       >
-        <div data-intro-content style={{ padding: "2vw" }}>
+        <div data-intro-content className="flex w-full flex-col items-center" style={{ padding: "2vw" }}>
           <p
             className="m-0 mx-auto text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
             style={{ ...H4, maxWidth: "55.28vw" }}
@@ -128,6 +132,12 @@ export function AlgarveAboutIntro({
               </span>
             ))}
           </p>
+          {/* Optionaler Inhalt DIREKT unter dem Statement (Love-Brands-Ticker) */}
+          {below && (
+            <div className="w-full" style={{ marginTop: "clamp(2.5rem, 6vh, 5.5rem)" }}>
+              {below}
+            </div>
+          )}
         </div>
 
         {/* Gerundete Magenta-Blende (nur magentaExit / nur Mobile) */}

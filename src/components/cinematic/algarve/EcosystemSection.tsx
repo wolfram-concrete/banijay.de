@@ -182,7 +182,7 @@ export function AlgarveEcosystem() {
     // für den Scroll-Aufbau gepinnt ist.
     <section
       ref={root}
-      className="relative flex min-h-screen flex-col justify-center py-24 lg:py-28"
+      className="relative flex min-h-screen flex-col justify-start pt-[7vh] pb-24 lg:pt-[8vh]"
       style={{ background: "transparent", overflowX: "clip" }}
     >
       {/* Der Sternenstaub lebt NICHT mehr hier: er liegt als DustStage (sticky,
@@ -312,12 +312,14 @@ export function AlgarveEcosystem() {
                   // Background scheint durch, nur Blur + hauchdünne Gloss-Kante
                   background: isActive
                     ? "linear-gradient(165deg, rgba(255,67,112,0.72) 0%, rgba(255,67,112,0.5) 100%)"
-                    : "linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%)",
-                  backdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(14px) saturate(1.4)",
-                  WebkitBackdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(14px) saturate(1.4)",
+                    : "transparent",
+                  // inaktiv MAXIMAL transparent (Wolfram 13.07.): kaum Blur, nur
+                  // eine hauchdünne Kante — die Balken erscheinen sehr subtil.
+                  backdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(2px)",
+                  WebkitBackdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(2px)",
                   boxShadow: isActive
                     ? "inset 0 1px 0 rgba(255,255,255,0.35), 0 14px 30px -16px rgba(255,67,112,0.4)"
-                    : "inset 0 1px 0 rgba(255,255,255,0.22), 0 8px 20px -14px rgba(0,0,0,0.4)",
+                    : "inset 0 0 0 1px rgba(255,255,255,0.09)",
                   minWidth: isActive ? "min(240px, 82vw)" : 0,
                   maxWidth: "min(300px, 88vw)",
                   overflow: "hidden",

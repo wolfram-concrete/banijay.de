@@ -24,6 +24,7 @@ export function IntroOverlay() {
   const root = useRef<HTMLDivElement>(null);
   const bg = useRef<HTMLDivElement>(null);
   const dustB = useRef<HTMLDivElement>(null);
+  const dustGrow = useRef<HTMLDivElement>(null);
   const headline = useRef<HTMLDivElement>(null);
   const burst = useRef<HTMLDivElement>(null);
   const [done, setDone] = useState(false);
@@ -54,18 +55,22 @@ export function IntroOverlay() {
       window.scrollTo(0, 0);
 
       const lines = headline.current!.querySelectorAll("[data-intro-line]");
-      // Startlagen
-      gsap.set(dustB.current, { xPercent: -50, yPercent: -50, scale: 0.72, autoAlpha: 0, transformOrigin: "50% 50%" });
+      // Startlagen — die B-MASKE steht fix (kein Skalieren des ganzen Elements),
+      // NUR das Staubfeld darin wächst aus der Mitte auf und „sammelt" sich im B.
+      gsap.set(dustB.current, { xPercent: -50, yPercent: -50, autoAlpha: 1 });
+      gsap.set(dustGrow.current, { scale: 0.1, autoAlpha: 0, transformOrigin: "50% 50%" });
       gsap.set(lines, { yPercent: 120, autoAlpha: 0 });
       gsap.set(burst.current, { autoAlpha: 0, scale: 1, transformOrigin: "50% 50%" });
 
       const tl = gsap.timeline({ defaults: { ease: "power2.out" }, onComplete: cleanup });
-      // ② Staub-B wächst SUBTIL auf (kleine Scale-Reserve, damit es nur „atmet")
-      tl.to(dustB.current, { scale: 1, autoAlpha: 1, duration: 1.5, ease: "power2.out" }, 0.2)
+      // ② der Sternenstaub entsteht als winziger Punkt in der Mitte und wächst
+      //    größer und größer, bis er die B-Form (Maske) ausfüllt — er sammelt
+      //    sich also IM B-Container an (Wolfram 13.07.).
+      tl.to(dustGrow.current, { scale: 1.45, autoAlpha: 1, duration: 1.6, ease: "power1.out" }, 0.15)
         // ③ Headline blendet als Zweizeiler ein (Zeilen steigen aus der Maske) …
         .to(lines, { yPercent: 0, autoAlpha: 1, duration: 0.9, stagger: 0.14, ease: "power3.out" }, 1.55)
         // … und TAUSCHT das Staub-B aus (löst sich weich auf)
-        .to(dustB.current, { autoAlpha: 0, scale: 1.08, duration: 0.8, ease: "power2.inOut" }, 1.6)
+        .to(dustB.current, { autoAlpha: 0, duration: 0.8, ease: "power2.inOut" }, 1.6)
         // ④ EXPLOSION: das Staubfeld reißt auf und skaliert in die Kamera —
         //    Blende auf den Hero. Headline zieht leicht mit in die Tiefe.
         .to(burst.current, { autoAlpha: 1, duration: 0.3, ease: "power1.out" }, 2.75)
@@ -110,7 +115,10 @@ export function IntroOverlay() {
           maskSize: "contain",
         }}
       >
-        <DustLayer boost={1.2} center={{ x: 0.5, y: 0.5 }} radius={0.95} />
+        {/* wächst aus der Mitte auf (scale 0.1 → 1.45) und sammelt sich im B */}
+        <div ref={dustGrow} className="absolute inset-0">
+          <DustLayer boost={1.2} center={{ x: 0.5, y: 0.5 }} radius={0.95} />
+        </div>
       </div>
 
       {/* ③ Headline „Welcome to / a new Era" — Zweizeiler, steigt aus Masken auf */}

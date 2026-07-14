@@ -202,44 +202,46 @@ export function AlgarveEditorial() {
           </h2>
         </div>
 
-        {/* Umbau 13.07.: Bildcontainer LINKS in HOCHKANT (Nick-Harwart-Porträt),
-            Text rechts daneben. Bild klebt auf Desktop sticky, während der Text
-            vorbeiläuft. */}
-        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[2fr_3fr] md:gap-10">
-          {/* Hochkant-Bild links (Wipe-Reveal von unten + Zoom-Settle) */}
-          <div data-ed-img className="w-full self-start overflow-hidden md:sticky md:top-[6rem]" style={{ aspectRatio: "2 / 3" }}>
+        {/* BILD-MODUL (Wolfram 13.07. v2): das große Marcus-Bild faded auf und
+            schiebt sich nach links — von rechts swipen die Fact-Boxen INS Bild
+            (Glas-Panels ÜBER der rechten Bildhälfte, nicht daneben). */}
+        <div className="relative" style={{ marginBottom: "clamp(3rem, 6vw, 7rem)" }}>
+          {/* großes Porträt links (fade-up + slide-left) */}
+          <div data-ed-img className="relative w-full overflow-hidden md:w-[56%]" style={{ aspectRatio: "4 / 5" }}>
             <img src="/editorial/marcus-hof.jpg" alt="Marcus Wolter, CEO Banijay Germany" className="h-full w-full object-cover" style={{ objectPosition: "50% 30%" }} />
           </div>
 
-          <div className="flex flex-col" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>
-            {/* STAT-BLÖCKE (Wolfram 13.07., stateofaidesign-Aufbau) — neben dem
-                Einstiegsbild: große Zahl + Label auf getönten Glas-Panels
-                (moody statt Pastell). */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {STATS.map((s) => (
-                <div
-                  key={s.label}
-                  data-ed-stat
-                  className="flex flex-col justify-between"
-                  style={{
-                    minHeight: "clamp(11rem, 16vw, 15rem)",
-                    padding: "clamp(1.4rem, 2vw, 2.2rem)",
-                    background: s.tint,
-                    backdropFilter: "blur(14px) saturate(1.3)",
-                    WebkitBackdropFilter: "blur(14px) saturate(1.3)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
-                  }}
-                >
-                  <span style={{ fontFamily: SHARP, fontSize: "clamp(2.6rem, 4.4vw, 4.4rem)", fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
-                    {s.value}
-                  </span>
-                  <span style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.25rem)", lineHeight: "128%", color: "rgba(248,247,243,0.8)" }}>
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
+          {/* FACT-BOXEN — Desktop absolut ÜBER der rechten Bildhälfte (swipen von
+              rechts ins Bild), Mobile als Grid unter dem Bild. Glas-Panels mit
+              stärkerem Blur + Schlagschatten, damit sie auf dem Foto lesbar sind. */}
+          <div className="mt-4 grid grid-cols-2 gap-3 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:w-[52%] md:content-center md:gap-4">
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                data-ed-stat
+                className="flex flex-col justify-between"
+                style={{
+                  minHeight: "clamp(8.5rem, 13vw, 13rem)",
+                  padding: "clamp(1.2rem, 1.7vw, 2rem)",
+                  background: s.tint,
+                  backdropFilter: "blur(18px) saturate(1.4)",
+                  WebkitBackdropFilter: "blur(18px) saturate(1.4)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 24px 60px -32px rgba(0,0,0,0.75)",
+                }}
+              >
+                <span style={{ fontFamily: SHARP, fontSize: "clamp(2.3rem, 3.8vw, 3.8rem)", fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
+                  {s.value}
+                </span>
+                <span style={{ fontSize: "clamp(0.88rem, 1.05vw, 1.15rem)", lineHeight: "126%", color: "rgba(248,247,243,0.85)" }}>
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
 
+        {/* ARTIKELTEXT — folgt unter dem Bild-Modul */}
+        <div className="flex flex-col md:mx-auto md:max-w-[84%]" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>
             {/* Lead — zeitlos: Historie → Zukunft */}
             <p data-ed-reveal className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.8rem)", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.02em" }}>
               Vom einzelnen Produktionshaus zum Ökosystem mit über 40 Companies — und jetzt Teil eines globalen Powerhouses: Die Fusion von Banijay Entertainment und All3Media eröffnet dem deutschen Netzwerk das nächste Kapitel.
@@ -286,7 +288,6 @@ export function AlgarveEditorial() {
                 ))}
               </ul>
             </div>
-          </div>
         </div>
       </div>
 

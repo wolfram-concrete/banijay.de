@@ -21,11 +21,12 @@ in Banijay-b-Form (Desktop: b-/„D"-Halbkreis rechts; mobil: Torbogen oben) und
 Look umgestellt — ein globaler `MoodBackdrop` (Schwarz/Brombeere/Magenta mit wandernden
 Glows), transparente Sections, Milchglas-Panels und eckige Container (Design-Vorgabe: keine
 abgerundeten Ecken außer minimalen Curvings an CTAs). Die Home öffnet mit einer
-Intro-Animation (Sternenstaub → weißes B → Brennglas-Reveal) und einem Full-Size-Brennglas-
-Hero (above the fold, ohne statische Headline). Beim Scrollen formt sich die radiale
-Unterkante, „WE ARE BANIJAY" läuft als Ticker herein, magenta Satelliten-Ringe wandern heraus
-und ein radialer Magenta-Veil (symmetrisch zum Ring-Radius) leitet moody in die
-Statement-Section über. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
+Intro-Animation (Staub sammelt sich zur B-Form → „Welcome to a new Era" → Staub-Explosion als
+Blende auf den Hero) und einem zweilagigen Brennglas-Hero: die WebGL-Linse bricht ein Komposit
+aus dem roten Glas-B UND der Headline „WE ARE BANIJAY" (Buchstaben sind IN der Linse gebrochen
+sichtbar), unterhalb steht die Schrift auf Sternenstaub. Beim Scrollen formt sich die radiale
+Unterkante, magenta Satelliten-Ringe wandern heraus und ein Magenta-Übergang, der ihrer Biegung
+folgt, leitet in die Statement-Section über. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
 All3Media-Fusion) und öffnen als Scroll-Flip-Lightbox. Das „Banijay Ökosystem" erscheint als
 gepinnte Atom-Orbit-Grafik. Der vollständige Verlauf steht in `CHANGELOG.md`.
 

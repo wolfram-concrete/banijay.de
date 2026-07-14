@@ -5,6 +5,23 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-13
 
+### Linsen-Brechung, Editorial-Fact-Boxen, Preloader- & Ökosystem-Feinschliff (13.07., spät)
+- **Hero — Buchstaben-Brechung in der Linse** (`AlgarveHome.tsx`): die Headline „WE ARE BANIJAY"
+  wird jetzt in die Linsen-Textur gebacken (Komposit aus Glas-B + Schrift) — die Buchstaben
+  erscheinen INNERHALB der Linse gebrochen. Dahinter läuft dasselbe B-Motiv soft-blurry
+  synchron; unterhalb der Linse gibt es keinen Bildgrund mehr, die Schrift steht auf Sternenstaub.
+- **Hero — Satellitenringe magenta** (statt weiß, mit Glow); der moody→magenta-Übergang folgt
+  jetzt der BIEGUNG der Ringe (Smile-Bogen, gleiche Geometrie).
+- **Editorial — Fact-Boxen im Bild** (`Editorial.tsx`): die Stat-Panels liegen als Glas-Boxen
+  ÜBER der rechten Bildhälfte (swipen von rechts ins Bild) statt als Grid daneben; Artikeltext
+  folgt darunter.
+- **Love-Brands-Ticker** (`AboutIntro.tsx` + `LoveBrandsTicker.tsx`): sitzt jetzt DIREKT unter dem
+  Statement (im selben Sticky-Panel), läuft sehr langsam (90s) rechts→links mit weichem Kantenfade.
+- **Preloader — Staub sammelt sich im B** (`IntroOverlay.tsx`): die B-Maske steht fix, nur das
+  Staubfeld darin wächst aus der Mitte auf (klein → groß) und füllt die B-Form.
+- **Ökosystem-Section** (`EcosystemSection.tsx`): Headline + Grafik höher platziert; die
+  Kategorie-Chips maximal transparent (kein Fill, nur Haarlinie) → sehr subtil.
+
 ### Zwei-Layer-Hero, voll-Magenta-Statement & neuer Preloader (13.07., Abend)
 - **Zwei-Layer-Hero** (`AlgarveHome.tsx`): oben NUR das Brennglas (außerhalb seiner Form
   transparent — Moody-Grund scheint durch), darunter/dahinter die Headline „WE ARE BANIJAY".
