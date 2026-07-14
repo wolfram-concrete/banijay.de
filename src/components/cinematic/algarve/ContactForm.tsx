@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 
 const FIELD =
-  "w-full mb-0 pt-[0.56vw] pb-[0.56vw] px-[0.83vw] rounded-[8px] border border-[rgba(248,247,243,0.16)] bg-[rgba(255,255,255,0.06)] text-[#f8f7f3] leading-[135%] font-normal outline-none transition-colors focus:border-[rgba(248,247,243,0.55)] placeholder:text-[rgba(248,247,243,0.4)] max-[991px]:text-[2.286vw] max-[767px]:text-[3.6vw] max-[767px]:pt-[2.4vw] max-[767px]:pb-[2.4vw] max-[767px]:px-[3vw]";
+  "w-full mb-0 pt-[0.56vw] pb-[0.56vw] px-[0.83vw] rounded-[6px] border border-[rgba(248,247,243,0.16)] bg-[rgba(255,255,255,0.06)] text-[#f8f7f3] leading-[135%] font-normal outline-none transition-colors focus:border-[rgba(248,247,243,0.55)] placeholder:text-[rgba(248,247,243,0.4)] max-[991px]:text-[2.286vw] max-[767px]:text-[3.6vw] max-[767px]:pt-[2.4vw] max-[767px]:pb-[2.4vw] max-[767px]:px-[3vw]";
 const INPUT = `${FIELD} h-[3.33vw] text-[1.39vw] max-[991px]:h-[5.714vw] max-[767px]:h-[9.6vw]`;
 const TEXTAREA = `${FIELD} h-[8.33vw] resize-none text-[1.39vw] max-[767px]:h-[30vw]`;
 const LABEL =
@@ -42,7 +42,7 @@ function SubmitButton() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ fontFamily: SHARP }}
-      className={`cursor-pointer rounded-[8px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
+      className={`cursor-pointer rounded-[6px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
         hovered ? "bg-[#f8f7f3] text-[#0a0208]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >

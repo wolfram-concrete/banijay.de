@@ -165,26 +165,18 @@ export function AlgarveEditorial() {
               </span>
             </blockquote>
 
-            {/* Summary-Block: HELLES Milchglas mit dunkler Typo (Referenz-Optik
-                13.07.) — warm-weiße Fläche, starker Blur, hauchdünner Gloss oben,
-                eckig. Der dunkle Text sitzt satt lesbar auf der hellen Fläche. */}
+            {/* „Die Story" — KEIN weißer Kasten mehr (Wolfram 14.07.): heller Text
+                auf dem moody Grund, DÜNNE weiße Linie oberhalb, linksbündig mit dem
+                Zitat/Text darüber (kein Box-Padding, das den Text einrückte). */}
             <div
               data-ed-reveal
               className="flex flex-col"
-              style={{
-                gap: "1.8rem",
-                padding: "clamp(1.8rem, 3.6vw, 4.2rem)",
-                background: "linear-gradient(165deg, rgba(248,247,243,0.92) 0%, rgba(248,247,243,0.76) 100%)",
-                backdropFilter: "blur(24px) saturate(1.2)",
-                WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.85), 0 28px 70px -35px rgba(0,0,0,0.6)",
-                color: "#0a0208",
-              }}
+              style={{ gap: "1.6rem", paddingTop: "2.4rem", borderTop: "1px solid rgba(248,247,243,0.28)" }}
             >
-              <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500 }}>
+              <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: PAPER }}>
                 Die Story
               </h3>
-              <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(10,2,8,0.82)" }}>
+              <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(248,247,243,0.82)" }}>
                 <p className="m-0">
                   Banijay ist seit 2008 konsequent als Verbund unternehmerisch geführter Produktionshäuser gewachsen — zuletzt 2020 mit dem Zusammenschluss mit Endemol Shine. In Deutschland entstand daraus ein Ökosystem eigenständiger Companies: Produktionshäuser, Labels und Plattformen, die Entertainment auf Bildschirme, Bühnen und in Feeds bringen — vom Prime-Time-Format bis zum Podcast.
                 </p>

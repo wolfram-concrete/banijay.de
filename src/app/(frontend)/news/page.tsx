@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
+import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { NewsFilter } from "@/components/cinematic/algarve/NewsFilter";
 import { fetchSocialPosts } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { mergeFeed } from "@/data/feed";
@@ -17,12 +17,11 @@ export default async function NewsPage() {
 
   return (
     <>
-      {/* Hero */}
-      <AlgarvePageHero
-        headline={"Was\nläuft"}
-        label="News"
-        body="Premieren, Podcasts, Interviews und Primetime-Erfolge: Was gerade in der Banijay-Welt passiert."
-        image="/grid/g11.png"
+      {/* Hero — Home-Hero + seiten­eigenes Statement */}
+      <AlgarveHome
+        variant="companies"
+        frame3="/hero-v2/frame-3-news.jpg"
+        statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore."
       />
 
       {/* Ein gemischter Feed (News + Social, nach Datum) mit Rubrik-Filter

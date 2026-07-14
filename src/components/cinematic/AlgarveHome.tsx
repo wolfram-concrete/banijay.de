@@ -24,23 +24,33 @@ const SECTION_BG = "transparent";
 // (Scheitel = (yTop+yBottom)/2). Oberste Linie am stärksten gebogen, nach unten
 // flacher. Die Werte dienen SVG-Pfaden UND der Planeten-Bahn-Berechnung.
 const VB_H = 780;
-// Abstände enger + progressiv (Wolfram 14.07.): oben eng zusammen, nach unten
-// weiter auffächernd (Gaps 100 → 150 → 210). yBottom = Bezier-Kontrollpunkt.
+// Ringschar SYNCHRON zur Hero-Wölbung (Wolfram 14.07.): SELBE Krümmung wie zuvor
+// (Sags 210/187/169/154 = Hero-Radius), nur die KOMPLETTE Schar um −100 nach oben
+// geschoben → näher an die Hero-Kante (oberste Linie tuckt oben leicht weg).
+// FÄCHER-OPTIK: jeder Ring hat eine EIGENE Färbung, die von Paper (oben) über Pink
+// nach MAGENTA (unten) läuft — kein Background-Verlauf, die Farbe liegt auf den Ringen.
+// Ganze Schar +110 nach unten (Wolfram 14.07.): die oberste Linie startete mit
+// yTop=-80 → ihre Endpunkte lagen ÜBER dem Container und wurden links/rechts
+// abgeschnitten. Jetzt yTop=30 → die Linie erreicht sichtbar beide Ränder. Sag
+// (Biegung) bleibt unverändert, also weiterhin synchron zur Hero-Wölbung.
 const LINES = [
-  { yTop: 30, yBottom: 420, alpha: 0.7, dur: 26, phase: 0.1 },
-  { yTop: 130, yBottom: 490, alpha: 0.54, dur: 38, phase: 0.55 },
-  { yTop: 280, yBottom: 600, alpha: 0.4, dur: 48, phase: 0.3 },
-  { yTop: 490, yBottom: 780, alpha: 0.28, dur: 34, phase: 0.8 },
+  { yTop: 30, yBottom: 450, alpha: 0.9, color: "248,247,243", dur: 26, phase: 0.1 },
+  { yTop: 228, yBottom: 602, alpha: 0.78, color: "255,163,190", dur: 38, phase: 0.55 },
+  { yTop: 421, yBottom: 759, alpha: 0.66, color: "255,108,150", dur: 48, phase: 0.3 },
+  { yTop: 611, yBottom: 919, alpha: 0.58, color: "255,67,112", dur: 34, phase: 0.8 },
 ];
 
 export function AlgarveHome({
   variant = "home",
   statement,
+  frame3 = "/hero-v2/frame-3.jpg",
 }: {
   /** "home" = Magenta-Übergangszone; "companies" = dunkler moody Staub + Statement */
   variant?: "home" | "companies";
   /** Mittelachsiges Statement, das NACH den Satellitenringen einanimiert (companies) */
   statement?: string;
+  /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.jpg" */
+  frame3?: string;
 } = {}) {
   const dark = variant === "companies";
   const root = useRef<HTMLDivElement>(null);
@@ -49,7 +59,6 @@ export function AlgarveHome({
   const heroImg3 = useRef<HTMLImageElement>(null); // Frame 3 („We Are Banijay")
   const orbitZone = useRef<HTMLDivElement>(null);
   const heroSection = useRef<HTMLElement>(null);
-  const contour = useRef<HTMLDivElement>(null);
   // Kurven-Fortschritt 0..1: Hero startet unten GERADE, die Kurve formt sich
   // beim Scrollen (Section-Radius + Zirkel-Kontur).
   const curveP = useRef(0);
@@ -80,15 +89,24 @@ export function AlgarveHome({
         .to(f1, { opacity: 1, duration: 0.14 })
         .to({}, { duration: 0.45 }) // dunkel halten
         // ② wird lebendig (Frame 2 transparent → klar)
-        .to(f2, { opacity: 1, duration: 1.9, ease: "power2.inOut" })
-        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3)
-        .to(f3, { opacity: 1, duration: 2.1, ease: "power2.out" }, "-=0.5");
+        .to(f2, { opacity: 1, duration: 2.0, ease: "power2.inOut" })
+        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3) — bewusst
+        // lang & weich (Wolfram 14.07.: „smoother, nicht so grob/schnell"). Erst
+        // wenn Frame 2 fast steht, dann sanfte sine-Kurve über 3,6 s.
+        .to(f3, { opacity: 1, duration: 3.6, ease: "sine.inOut" }, "-=0.3");
     };
+    // Intro bereits durch → sofort. Sonst: auf das Intro-Event warten. Läuft gar
+    // KEIN Intro (Subpages ohne Preloader), startet die Sequenz nach kurzem Beat
+    // direkt — der Hero soll dort nicht sekundenlang dunkel bleiben.
     if ((window as { __introDone?: boolean }).__introDone) play();
     window.addEventListener("banijay:introdone", play);
-    const fallback = window.setTimeout(play, 6000);
+    const soft = window.setTimeout(() => {
+      if (document.documentElement.dataset.intro !== "1") play();
+    }, 260);
+    const fallback = window.setTimeout(play, 8000);
     return () => {
       window.removeEventListener("banijay:introdone", play);
+      window.clearTimeout(soft);
       window.clearTimeout(fallback);
     };
   }, []);
@@ -101,10 +119,6 @@ export function AlgarveHome({
         curveP.current = v;
         const r = (v * 50).toFixed(2);
         if (heroSection.current) heroSection.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
-        if (contour.current) {
-          contour.current.style.opacity = String(v);
-          contour.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
-        }
       };
       if (reduce) {
         applyCurve(1);
@@ -249,7 +263,7 @@ export function AlgarveHome({
         />
         <img
           ref={heroImg3}
-          src="/hero-v2/frame-3.jpg"
+          src={frame3}
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
@@ -263,18 +277,26 @@ export function AlgarveHome({
           style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(10,2,8,0) 46%, rgba(10,2,8,0.5) 74%, rgba(10,2,8,0.9) 100%)" }}
         />
 
-        {/* Zirkel-Kontur auf der radialen Unterkante */}
-        <div
-          ref={contour}
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0"
-          style={{ zIndex: 2, height: "50vw", opacity: 0, borderRadius: "0", boxShadow: "inset 0 -1px 0 rgba(248,247,243,0.25)" }}
-        />
+        {/* (Zirkel-Kontur entfernt, Wolfram 14.07.: die weiße Inset-Linie erzeugte
+            eine feine „Blitzerkante" auf der äußeren radialen Hero-Kante.) */}
       </section>
 
       {/* ── ÜBERGANGSZONE: weiße Satellitenringe. Home = Magenta; Companies =
           transparent auf dem globalen moody Backdrop + eigener Sternenstaub. ── */}
-      <div ref={orbitZone} data-nav-theme={dark ? "dark" : "magenta"} aria-hidden className="pointer-events-none relative z-[1] overflow-clip" style={{ height: "78vh", marginTop: "-3vh", background: "transparent" }}>
+      <div
+        ref={orbitZone}
+        data-nav-theme={dark ? "dark" : "magenta"}
+        aria-hidden
+        className="pointer-events-none relative z-[1] overflow-clip"
+        style={{
+          height: "78vh",
+          marginTop: "-3vh",
+          background: "transparent",
+          // Keine Top-Maske mehr (Wolfram 14.07.): die erste Linie liegt sichtbar bei
+          // yTop=30 und soll knackig bis an beide Ränder laufen — eine Maske würde die
+          // äußersten Enden wieder wegfaden (= wirkte „abgeschnitten links/rechts").
+        }}
+      >
         {dark && (
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
             <DustLayer boost={0.85} center={{ x: 0.5, y: 0.42 }} radius={0.95} />
@@ -288,11 +310,11 @@ export function AlgarveHome({
             <g key={`ring${i}`} data-hero-ring>
               <path
                 d={`M 0 ${r.yTop} Q 800 ${r.yBottom} 1600 ${r.yTop}`}
-                stroke={`rgba(248,247,243,${r.alpha})`}
+                stroke={`rgba(${r.color},${r.alpha})`}
                 strokeWidth={1.6}
                 vectorEffect="non-scaling-stroke"
-                // weicher weißer Glow auf den Linien (Wolfram 14.07.)
-                style={{ filter: "drop-shadow(0 0 5px rgba(248,247,243,0.85)) drop-shadow(0 0 14px rgba(248,247,243,0.45))" }}
+                // Glow in der jeweiligen Ring-Farbe (Fächer-Optik, Wolfram 14.07.)
+                style={{ filter: `drop-shadow(0 0 5px rgba(${r.color},0.85)) drop-shadow(0 0 14px rgba(${r.color},0.45))` }}
               />
             </g>
           ))}

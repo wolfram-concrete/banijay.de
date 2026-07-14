@@ -41,7 +41,7 @@ export function BackToTop() {
       aria-label="Nach oben"
       className="back-to-top fixed bottom-[2vw] right-[2vw] z-[90] flex h-11 w-11 items-center justify-center max-[767px]:!bottom-[5vw] max-[767px]:!right-[5vw]"
       style={{
-        borderRadius: "8px",
+        borderRadius: "6px",
         background: isHover ? "#ff4370" : "rgba(14,13,11,0.5)",
         border: isHover ? "1px solid #ff4370" : "1px solid rgba(248,247,243,0.18)",
         backdropFilter: "blur(10px)",

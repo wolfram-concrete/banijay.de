@@ -161,7 +161,7 @@ export function AlgarvePartnerStack() {
           <a
             data-partner-reveal
             href={partnership.cta.href}
-            className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+            className="inline-flex w-fit items-center gap-2 rounded-[6px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
             style={{ border: "0.12vw solid #0e0d0b", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.1vw", fontWeight: 500, marginTop: "1vw" }}
           >
             {partnership.cta.text}

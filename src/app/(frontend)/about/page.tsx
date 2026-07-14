@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
+import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
-import { AlgarveCeoTestimonial } from "@/components/cinematic/algarve/CeoTestimonial";
+import { AlgarveEcosystemDirectory } from "@/components/cinematic/algarve/EcosystemDirectory";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
 import { AlgarveWorldNetwork } from "@/components/cinematic/algarve/WorldNetwork";
@@ -20,36 +20,24 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      {/* 01 Hero */}
-      <AlgarvePageHero
-        headline={"We are\nBanijay"}
-        label="About"
-        body="Eigenständige Companies, bekannte Marken und kreative Teams — gebündelt unter einem starken Dach, mit weitreichender Präsenz im deutschen Entertainment."
-        highlights={["Companies", "Marken", "Teams", "Dach"]}
-        image="/grid/subpage-hero-poster.jpg"
+      {/* 01 Hero — Home-Hero (We-Are-Banijay-Sequenz + Satellitenringe), dann das
+          seiten­eigene Statement mittelachsig auf dunklem Sternenstaub. */}
+      <AlgarveHome
+        variant="companies"
+        frame3="/hero-v2/frame-3-about.jpg"
+        statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
       />
 
       {/* 02+03 Proof/Zahlen MIT integriertem Statement-Video: gepinnte Fakten-
-          Section; das gerundete Video-Modul im Grid skaliert IN dieser Section auf
-          Full-Screen (clip-path), danach das Prinzip-Statement Wort für Wort. */}
+          Section; das all3media-Video (wie auf der Home) skaliert IN dieser Section
+          auf Full-Screen (clip-path), danach das Marcus-Wolter-Zitat Wort für Wort.
+          Die Zahlen-Kacheln tragen jeweils ihren Copytext. (CEO-Testimonial-Section
+          entfällt — das Zitat lebt jetzt im Video-Statement, Wolfram 14.07.) */}
       <AlgarveProofVideo
         proofText={ABOUT.proof.text}
         stats={STATS}
-        statement={`${ABOUT.principle.headline} ${ABOUT.principle.text.split(". ")[0]}.`}
-      />
-
-      {/* 04 CEO / Führung — Testimonial-Section (Birkform) mit Magenta-Parallax */}
-      <AlgarveCeoTestimonial
-        heading="Führung"
-        role={ABOUT.ceo.role}
-        quote={ABOUT.ceo.quote}
-        name={ABOUT.ceo.name}
-        image="/people/marcus-wolter-2022.jpg"
-        cta={{ text: "Kontakt aufnehmen", href: "mailto:hello@banijay.de" }}
-        stats={[
-          { value: "25+", label: "Companies & Labels" },
-          { value: "1.300", label: "Mitarbeitende" },
-        ]}
+        video="/video/team-all3media.mp4"
+        statement={`„${ABOUT.ceo.quote}“`}
       />
 
       {/* 05 Internationalität — Text-Statement mit Standraum (tall): das Statement
@@ -72,7 +60,12 @@ export default function AboutPage() {
           der Team-Magenta-Exit übergibt nahtlos hierher) */}
       <AlgarvePartnerStack />
 
-      {/* 09 Kontakt-Formular (Eingabetemplate) */}
+      {/* 09 Ökosystem-Verzeichnis (Wolfram 14.07.: Ecosystem-Seite entfällt, ihre
+          Inhalte wandern ans Ende von About) — komplettes Companies-/Label-Verzeichnis
+          nach Kompetenzfeldern gruppiert. */}
+      <AlgarveEcosystemDirectory />
+
+      {/* 10 Kontakt-Formular (Eingabetemplate) */}
       <AlgarveContactForm
         headline="Lass uns über Entertainment sprechen, das Menschen erreicht."
         copy="Für Projekte, Presse, Partnerschaften oder einfach ein Hallo."

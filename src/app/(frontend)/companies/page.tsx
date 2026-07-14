@@ -17,7 +17,8 @@ export default function CompaniesPage() {
     <>
       <AlgarveHome
         variant="companies"
-        statement="Über 40 eigenständige Companies und Labels — ein Ökosystem, das Entertainment auf Bildschirme, Bühnen und in Feeds bringt."
+        frame3="/hero-v2/frame-3-companies.jpg"
+        statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr — sed diam nonumy eirmod tempor invidunt ut labore et dolore magna."
       />
       <AlgarveCompaniesBento />
     </>

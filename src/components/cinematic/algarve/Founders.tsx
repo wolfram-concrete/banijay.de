@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // überlappend) und entfalten sich beim Scrollen per gepinnter, gescrubter
 // GSAP-Timeline in ihr sauberes 5-Spalten-Grid. Mobile: einfaches 2-Spalten-Grid.
 
-const TEAM = LEADERSHIP.slice(0, 10); // 10 → sauberes 5×2-Grid im Pin-Viewport
+const TEAM = LEADERSHIP.slice(0, 11); // 11 (komplett, wie banijay.de) → 6er-Grid (6+5)
 
 const NAME = {
   fontFamily: "var(--font-sharp), sans-serif",
@@ -176,7 +176,7 @@ export function AlgarveFounders() {
               Reihe abschneiden). */}
           <div
             ref={grid}
-            className="grid w-full min-h-0 flex-1 grid-cols-5"
+            className="grid w-full min-h-0 flex-1 grid-cols-6"
             style={{ columnGap: "1.2vw", rowGap: "1.6vw", gridTemplateRows: "1fr 1fr", zIndex: 1 }}
           >
             {TEAM.map((p) => (

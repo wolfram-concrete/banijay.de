@@ -147,9 +147,20 @@ export function AlgarveProofVideo({
             >
               <CountUp value={s.value} />
             </span>
-            <p className="mt-[1vw] max-[767px]:!mt-[2vw] max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}>
-              {s.label}
-            </p>
+            <div className="mt-[1vw] max-[767px]:!mt-[2vw]">
+              <p className="max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}>
+                {s.label}
+              </p>
+              {/* Copytext je Kennzahl (Wolfram 14.07.) */}
+              {s.note && (
+                <p
+                  className="mt-[0.5vw] max-[767px]:!mt-[1.5vw] max-[767px]:!text-[3vw]"
+                  style={{ fontFamily: SHARP, fontSize: "0.82vw", fontWeight: 400, lineHeight: "128%", margin: 0, opacity: accent ? 0.72 : 0.66 }}
+                >
+                  {s.note}
+                </p>
+              )}
+            </div>
           </div>
         );
       })}

@@ -65,7 +65,7 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
 
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
-const SWAP_LINES = ["Ein Ökosystem", `mit über ${COMPANIES_DIRECTORY.length}`, "Companies."] as const;
+const SWAP_LINES = ["Ein Ökosystem", `über ${COMPANIES_DIRECTORY.length} Companies`, "und Labels."] as const;
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",
@@ -316,7 +316,7 @@ export function AlgarveEcosystem() {
               <div
                 data-eco-float
                 style={{
-                  borderRadius: 8,
+                  borderRadius: 6,
                   // SUBTIL & LEICHT (Wolfram 10.07.): kaum Eigenfläche — der
                   // Background scheint durch, nur Blur + hauchdünne Gloss-Kante
                   background: isActive
@@ -329,8 +329,8 @@ export function AlgarveEcosystem() {
                   boxShadow: isActive
                     ? "inset 0 1px 0 rgba(255,255,255,0.35), 0 14px 30px -16px rgba(255,67,112,0.4)"
                     : "inset 0 0 0 1px rgba(255,255,255,0.09)",
-                  minWidth: isActive ? "min(240px, 82vw)" : 0,
-                  maxWidth: "min(300px, 88vw)",
+                  minWidth: isActive ? "min(300px, 86vw)" : 0,
+                  maxWidth: "min(380px, 92vw)",
                   overflow: "hidden",
                 }}
               >
@@ -338,7 +338,7 @@ export function AlgarveEcosystem() {
                   type="button"
                   onClick={() => setActive(isActive ? null : cat.key)}
                   aria-expanded={isActive}
-                  className="flex w-full items-center gap-2 whitespace-nowrap px-3 py-1 text-left text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  className="flex w-full items-center gap-2 whitespace-nowrap px-3.5 py-1.5 text-left text-[1rem] font-semibold uppercase tracking-[0.12em]"
                   style={{ fontFamily: SHARP, color: "rgba(248,247,243,0.9)", cursor: "pointer" }}
                 >
                   {cat.label}
@@ -367,7 +367,7 @@ export function AlgarveEcosystem() {
                               href={c.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group inline-flex items-center gap-1 py-[3px] text-[0.8rem] no-underline"
+                              className="group inline-flex items-center gap-1 py-[3px] text-[1.15rem] no-underline"
                               style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500 }}
                             >
                               <span className="relative">
@@ -377,7 +377,7 @@ export function AlgarveEcosystem() {
                               <ArrowUpRight className="h-3 w-3 opacity-60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                             </a>
                           ) : (
-                            <span className="inline-block py-[3px] text-[0.8rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
+                            <span className="inline-block py-[3px] text-[1.15rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
                               {c.name}
                             </span>
                           )}

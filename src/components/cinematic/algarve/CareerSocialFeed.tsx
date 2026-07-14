@@ -52,10 +52,14 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
     if (!res.ok) return [];
     const data = (await res.json()) as { posts?: { items?: JuicerPost[] } };
     const items = data.posts?.items ?? [];
-    // Deduplizieren: der Juicer-Feed liefert denselben Inhalt gelegentlich doppelt.
-    // Zwei verschiedene LinkedIn-Posts nutzen z. T. DASSELBE Bild (z. B. dieselbe
-    // Zitat-Grafik von Stephan Denzer/Good Humor) bei leicht anderem Text — die
-    // Text-Dedup allein greift dann nicht. Daher zusätzlich über das BILD filtern.
+    // Deduplizieren: der Juicer-Feed liefert denselben Inhalt mehrfach. Beispiel
+    // „Plötzlich Schwester"/Good Humor: dieselbe Ankündigung ist mehrfach gepostet
+    // (Cross-/Reshare) — mit UNTERSCHIEDLICHER Post-URL UND unterschiedlichem Bild,
+    // aber praktisch identischem Text. url-/bild-/exakt-Text-Dedup greift da nicht.
+    // Daher zusätzlich über einen NORMALISIERTEN Text-Präfix (erste ~55 Zeichen,
+    // nur Buchstaben/Ziffern, lowercase) filtern → identische Ankündigungen fallen
+    // auf einen Eintrag zusammen, echte verschiedene Posts bleiben erhalten.
+    const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9äöüß]/gi, "").slice(0, 55);
     const seen = new Set<string>();
     return items
       .filter((p) => p.image && p.full_url)
@@ -69,10 +73,11 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
       .filter((post) => {
         // Bild-URL ohne Query/Cache-Params normalisieren (Juicer hängt teils ?…-Params an)
         const imgKey = post.image.split("?")[0];
-        if (seen.has(post.url) || seen.has(post.text) || seen.has(imgKey)) return false;
+        const textKey = norm(post.text);
+        if (seen.has(post.url) || seen.has(imgKey) || (textKey.length > 12 && seen.has(textKey))) return false;
         seen.add(post.url);
-        seen.add(post.text);
         seen.add(imgKey);
+        if (textKey.length > 12) seen.add(textKey);
         return true;
       })
       .slice(0, limit);

@@ -42,7 +42,7 @@ export function MagneticButton({
       onMouseLeave={reset}
       style={{ x: sx, y: sy }}
       className={cn(
-        "inline-flex h-12 items-center justify-center gap-2 rounded-[8px] px-7 text-sm font-medium tracking-wide transition-colors",
+        "inline-flex h-12 items-center justify-center gap-2 rounded-[6px] px-7 text-sm font-medium tracking-wide transition-colors",
         variant === "primary"
           ? "bg-[var(--bj-coral)] text-white hover:bg-[#ff5d78]"
           : "border border-white/25 text-white hover:bg-white/10",

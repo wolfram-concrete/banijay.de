@@ -49,7 +49,7 @@ export function AlgarveCareerJobsPreview() {
             href={CAREER.jobs.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-[8px] bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!hidden"
+            className="inline-flex shrink-0 items-center gap-2 rounded-[6px] bg-[#0e0d0b] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!hidden"
           >
             {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
           </a>
@@ -100,7 +100,7 @@ export function AlgarveCareerJobsPreview() {
           href={CAREER.jobs.cta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center justify-center gap-2 rounded-[8px] bg-[#0e0d0b] font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
+          className="hidden items-center justify-center gap-2 rounded-[6px] bg-[#0e0d0b] font-medium text-white transition-colors hover:bg-[#ff4370] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
         >
           {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
         </a>

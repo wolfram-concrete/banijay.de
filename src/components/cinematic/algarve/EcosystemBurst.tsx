@@ -326,7 +326,7 @@ export function AlgarveEcosystemBurst() {
             >
               <div
                 style={{
-                  borderRadius: 8,
+                  borderRadius: 6,
                   // SUBTIL & LEICHT (Wolfram 10.07.): kaum Eigenfläche — der
                   // Background scheint durch, nur Blur + hauchdünne Gloss-Kante
                   background: isActive

@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { Section, Eyebrow } from "@/components/wireframe";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
-import { AlgarvePageHero } from "@/components/cinematic/algarve/PageHero";
+import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
 import { CONTACT_PAGE } from "@/data/contact";
 import { CONTACT } from "@/data/site";
@@ -17,12 +17,10 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      {/* Hero */}
-      <AlgarvePageHero
-        headline={"Let’s\ntalk"}
-        label="Contact"
-        body="Für Projekte, Presse, Talente und Partnerschaften: Hier beginnt der richtige Kontakt zu Banijay Germany."
-        image="/grid/subpage-hero-poster.jpg"
+      {/* Hero — Home-Hero + seiten­eigenes Statement */}
+      <AlgarveHome
+        variant="companies"
+        statement="Für Projekte, Presse, Talente und Partnerschaften: Hier beginnt der richtige Kontakt zu Banijay Germany."
       />
 
       {/* Kontaktbereiche */}

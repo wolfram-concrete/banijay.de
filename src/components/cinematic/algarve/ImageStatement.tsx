@@ -72,7 +72,7 @@ export function AlgarveImageStatement({
                   href={cta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-2 rounded-[8px] bg-[#f8f7f3] px-6 py-3 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-white"
+                  className="mt-2 inline-flex items-center gap-2 rounded-[6px] bg-[#f8f7f3] px-6 py-3 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-white"
                 >
                   {cta.text} <ArrowUpRight size={16} />
                 </a>

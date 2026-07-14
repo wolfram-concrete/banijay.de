@@ -102,7 +102,7 @@ export function AlgarveCareerTomorrowStack() {
               href={tomorrow.cta.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-2 rounded-[8px] bg-[#0e0d0b] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+              className="inline-flex w-fit items-center gap-2 rounded-[6px] border border-transparent bg-[#0e0d0b] text-[#f8f7f3] no-underline transition-colors duration-300 hover:border-[#f8f7f3] hover:bg-transparent hover:text-[#f8f7f3] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
               style={{ padding: "0.95vw 1.9vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500, marginTop: "0.8vw" }}
             >
               {tomorrow.cta.text}

@@ -125,10 +125,10 @@ export function AlgarveCareerRoleStack() {
             <div
               key={card.index}
               data-role-card
-              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!h-[74vh] max-[767px]:!justify-start max-[767px]:!p-[6vw]"
+              className="sticky flex flex-col justify-between overflow-clip max-[767px]:!h-[64vh] max-[767px]:!justify-start max-[767px]:!p-[6vw]"
               style={{
                 top: "1.39vw",
-                height: "90vh",
+                height: "70vh",
                 padding: "4.44vw",
                 backgroundColor: card.bg,
                 color: card.fg,
@@ -136,13 +136,10 @@ export function AlgarveCareerRoleStack() {
                 transform: "perspective(2000px)",
               }}
             >
-              {/* Top: Titel + Index (Mobile order-1) */}
-              <div className="relative flex items-center justify-between max-[767px]:!order-1" style={{ zIndex: 3, gap: "2vw" }}>
+              {/* Top: Titel (Nummerierung entfernt, Wolfram 14.07.) */}
+              <div className="relative flex items-center max-[767px]:!order-1" style={{ zIndex: 3, gap: "2vw" }}>
                 <h3 className="uppercase max-[767px]:!text-[8vw]" style={{ ...H1, color: card.fg }}>
                   {card.title}
-                </h3>
-                <h3 className="max-[767px]:!text-[8vw]" style={{ ...H1, color: card.soft }}>
-                  {card.index}
                 </h3>
               </div>
 

@@ -146,7 +146,6 @@ const PAGE_LABEL: Record<string, string> = {
   // „/" (Home) absichtlich NICHT gelistet — das eingerastete Label soll nur auf
   // Unterseiten als Orientierung erscheinen, nicht auf der Startseite.
   "/companies": "Companies",
-  "/ecosystem": "Ecosystem",
   "/about": "About",
   "/career": "Career",
   "/news": "News",
@@ -491,7 +490,7 @@ export function SiteHeader() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Instagram — ${SOCIAL.instagram.handle}`}
-                    className="inline-flex items-center gap-2 rounded-[8px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-[6px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
                     style={{ borderColor: INK }}
                   >
                     <IconInstagram />
@@ -502,7 +501,7 @@ export function SiteHeader() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`LinkedIn — ${SOCIAL.linkedin.handle}`}
-                    className="inline-flex items-center gap-2 rounded-[8px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-[6px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white"
                     style={{ borderColor: INK }}
                   >
                     <IconLinkedin />

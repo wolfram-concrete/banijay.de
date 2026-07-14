@@ -268,7 +268,7 @@ export function AlgarveCompanyCards() {
                       "--cta-bg": card.bg,
                       marginTop: "0.83vw",
                       padding: "0.83vw 1.53vw",
-                      borderRadius: "8px",
+                      borderRadius: "6px",
                       fontFamily: "var(--font-sharp), sans-serif",
                       fontSize: "1.05vw",
                       fontWeight: 600,

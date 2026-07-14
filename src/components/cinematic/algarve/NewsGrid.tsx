@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
@@ -11,65 +11,21 @@ import type { FeedItem } from "@/data/feed";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// News-Grid (News-Seite) — Masonry mit NATIVEN Thumbnail-Proportionen (kein Crop).
-// Desktop: echtes CSS-Grid-Masonry (Pinterest-Packing über berechnete Row-Spans) mit
-// variablen Card-Größen — einzelne „Feature"-Karten sind 2 Spalten breit → sichtbare
-// Größenvarianz trotz gleicher (16:9-)Quellformate. Nutzt fast die volle Grid-Breite.
-// Mobile: eine Spalte, gestapelt (unverändert). Karten bauen sich beim Rein-scrollen
-// gestaffelt auf; „Weitere News laden" lädt batchweise nach (CMS-ready).
+// News-Grid (News-Seite) — schlichtes 4-Spalten-Grid (kein Masonry/Bento mehr,
+// Wolfram 14.07.). Uniforme, ECKIGE Karten (16:10-Thumbnail, object-cover). Die
+// Karten bauen sich beim Rein-scrollen gestaffelt auf; „Weitere laden" lädt
+// batchweise nach (CMS-ready). Externe Beiträge (Social + Presse) öffnen im Tab.
 
 const SHARP = "var(--font-sharp), sans-serif";
-const INITIAL = 21;
+const INITIAL = 20;
 const BATCH = 12;
-
-const ROW_UNIT = 8; // px — grid-auto-rows-Basis (Desktop-Masonry)
-const ROW_GAP = 44; // px — visueller Abstand unter jeder Karte (in den Row-Span eingerechnet)
-
-// Feature-Karten (2 Spalten breit) — deterministisch (kein Random) für ruhigen Rhythmus.
-const isFeature = (i: number) => i % 5 === 3;
 
 export function NewsGrid({ items }: { items: FeedItem[] }) {
   const [count, setCount] = useState(Math.min(INITIAL, items.length));
   const grid = useRef<HTMLDivElement>(null);
   const visible = items.slice(0, count);
 
-  // Masonry-Packing: jede Karte spannt so viele 8px-Rows, wie ihre gemessene Höhe
-  // (+ Abstand) braucht. Nur Desktop (md+, dort ist grid-auto-rows aktiv); mobil ist
-  // es eine simple Ein-Spalten-Liste → Row-Span wird zurückgesetzt.
-  const layout = useCallback(() => {
-    const g = grid.current;
-    if (!g) return;
-    const desktop = window.matchMedia("(min-width: 768px)").matches;
-    const cards = Array.from(g.querySelectorAll<HTMLElement>("[data-news-card]"));
-    cards.forEach((c) => {
-      if (!desktop) {
-        c.style.gridRowEnd = "";
-        return;
-      }
-      const span = Math.ceil((c.offsetHeight + ROW_GAP) / ROW_UNIT);
-      c.style.gridRowEnd = `span ${span}`;
-    });
-    ScrollTrigger.refresh();
-  }, []);
-
-  useEffect(() => {
-    layout();
-    const onResize = () => layout();
-    window.addEventListener("resize", onResize);
-    // Bilder laden ggf. NACH dem ersten Layout (native Höhe erst dann bekannt) → neu vermessen.
-    const imgs = grid.current ? Array.from(grid.current.querySelectorAll("img")) : [];
-    const onLoad = () => layout();
-    imgs.forEach((img) => {
-      if (!img.complete) img.addEventListener("load", onLoad, { once: true });
-    });
-    return () => {
-      window.removeEventListener("resize", onResize);
-      imgs.forEach((img) => img.removeEventListener("load", onLoad));
-    };
-  }, [count, layout]);
-
-  // Reveal: neue (noch nicht enthüllte) Karten gestaffelt einblenden, sobald sie in
-  // den Viewport kommen. Läuft beim ersten Mount UND nach jedem „Weitere laden".
+  // Reveal: neue Karten gestaffelt einblenden, sobald sie in den Viewport kommen.
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -88,27 +44,24 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
 
   return (
     <>
-      {/* Desktop: Grid-Masonry (grid-auto-rows + berechnete Row-Spans, dense-flow).
-          Mobile: eine Spalte (grid-cols-1, Karten mit mb als Abstand). */}
-      <div
-        ref={grid}
-        className="grid grid-cols-1 items-start gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:[grid-auto-flow:dense] md:[grid-auto-rows:8px]"
-      >
-        {visible.map((item, i) => {
-          const social = item.kind === "social";
-          const wrapClass = `group mb-11 block no-underline md:mb-0 ${isFeature(i) ? "sm:col-span-2" : ""}`;
+      <div ref={grid} className="grid grid-cols-1 items-start gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {visible.map((item) => {
+          const external = item.external;
+          const wrapClass = "group block no-underline";
+          // Kartenhöhe folgt dem Postingformat (Wolfram 14.07.): Social-Posts
+          // (LinkedIn/Insta) laufen im Hochformat, Pressebeiträge im 4:3-Querformat.
+          const ratioClass = item.kind === "social" ? "aspect-[4/5]" : "aspect-[4/3]";
           const inner = (
             <>
-              {/* Bildcontainer übernimmt IMMER das native Seitenverhältnis des Original-
-                  Thumbnails (kein Crop). Feature-Karten sind breiter → automatisch größer. */}
-              <div className="relative overflow-hidden" style={{ background: "rgba(255,255,255,0.08)" }}>
+              {/* Bildcontainer ECKIG — Format je Rubrik (Social hoch, Presse 4:3) */}
+              <div className={`relative ${ratioClass} overflow-hidden`} style={{ background: "rgba(255,255,255,0.08)" }}>
                 <img
                   src={item.img}
                   alt=""
                   loading="lazy"
-                  className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
                 />
-                {social && item.source && (
+                {item.source && (
                   <span
                     className="absolute left-3 top-3 rounded-[4px] px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.08em]"
                     style={{
@@ -125,26 +78,22 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
               </div>
               <p className="mt-4 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent">{item.date}</p>
               <h2
-                className={`mt-1.5 leading-snug text-[#f8f7f3] ${social ? "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden" : ""}`}
+                className="mt-1.5 overflow-hidden leading-snug text-[#f8f7f3] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]"
                 style={{ fontFamily: SHARP, fontSize: "1.05rem", lineHeight: "126%", fontWeight: 500 }}
               >
                 {item.title}
               </h2>
-              {/* CTA — visueller Affordance-Marker (ganze Karte ist klickbar). Hover: eine
-                  Underline läuft von links unter dem Text ein, der Pfeil rückt nach außen. */}
-              <span
-                className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent"
-                style={{ fontFamily: SHARP }}
-              >
+              {/* CTA — Affordance (ganze Karte klickbar) */}
+              <span className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent" style={{ fontFamily: SHARP }}>
                 <span className="relative">
-                  {social ? "Ansehen" : "Zum Beitrag"}
+                  {external ? "Ansehen" : "Zum Beitrag"}
                   <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
                 </span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </>
           );
-          return social ? (
+          return external ? (
             <a
               key={item.id}
               data-news-card
@@ -157,13 +106,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
               {inner}
             </a>
           ) : (
-            <Link
-              key={item.id}
-              data-news-card
-              href={item.href}
-              className={wrapClass}
-              style={{ willChange: "transform, opacity" }}
-            >
+            <Link key={item.id} data-news-card href={item.href} className={wrapClass} style={{ willChange: "transform, opacity" }}>
               {inner}
             </Link>
           );
@@ -175,7 +118,7 @@ export function NewsGrid({ items }: { items: FeedItem[] }) {
           <button
             type="button"
             onClick={() => setCount((c) => Math.min(items.length, c + BATCH))}
-            className="group inline-flex items-center gap-2 rounded-[8px] bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
+            className="group inline-flex items-center gap-2 rounded-[6px] bg-[#0e0d0b] text-[#f8f7f3] transition-colors duration-300 hover:bg-[#ff4370]"
             style={{ padding: "0.9rem 2rem", fontFamily: SHARP, fontSize: "1rem", fontWeight: 500 }}
           >
             Weitere News laden

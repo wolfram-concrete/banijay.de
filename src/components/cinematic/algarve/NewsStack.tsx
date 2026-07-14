@@ -64,7 +64,7 @@ export function AlgarveNewsStack() {
               style={{
                 padding: "0.83vw 1.39vw",
                 // Heike-Regel: CTAs max. 8px Radius (keine Pille)
-                borderRadius: "8px",
+                borderRadius: "6px",
                 border: "0.12vw solid #000",
                 fontSize: "1.1vw",
               }}

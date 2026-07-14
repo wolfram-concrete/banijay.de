@@ -7,15 +7,16 @@ import { PreloaderParticles, type PreloaderParticlesHandle } from "./PreloaderPa
 
 gsap.registerPlugin(useGSAP);
 
-// INTRO-CHOREOGRAFIE (Wolfram 14.07., Home):
+// INTRO-CHOREOGRAFIE (Wolfram 14.07., überarbeitet):
 //   ① dunkler Purple/Magenta-Grund
-//   ② scharfe Sternenstaub-Partikel wandern aus der Mitte in die B-FORM und
-//      werden dichter (echtes Partikelsystem, nicht mehr skalierte Bitmap)
-//   ③ die Headline „Welcome to / a new Era" blendet als Zweizeiler ein
-//   ④ die B-Partikel schießen als WARP-Tunnel (Streaks) auf die Kamera zu —
-//      eine Blende, die auf den Home-Hero aufreißt
-//   ⑤ Finale via Event „banijay:introdone".
-// Scroll ist während der ~4s gesperrt. Reduced Motion überspringt alles.
+//   ② DUST: aus dem Nichts fadet driftender, funkelnder Sternenstaub ein
+//   ③ ZOOM: das Staubfeld wird sanft herangezogen (Kamera schiebt rein)
+//   ④ FORM: der Staub verdichtet sich LANGSAM (mit Drehung/Drift, bleibt lebendig)
+//      in die B-Silhouette; parallel die Headline „Welcome to / a new Era"
+//   ⑤ WARP: die B-Partikel schießen als Streak-Tunnel auf die Kamera zu — Blende
+//      auf den Home-Hero
+//   ⑥ Finale via Event „banijay:introdone".
+// Scroll ist während der ~5,5 s gesperrt. Reduced Motion überspringt alles.
 
 export function IntroOverlay() {
   const root = useRef<HTMLDivElement>(null);
@@ -49,29 +50,37 @@ export function IntroOverlay() {
       (window as { __lenis?: { stop: () => void } }).__lenis?.stop();
       window.scrollTo(0, 0);
 
-      // Background-Visual (Eclipse) zoomt ganz leicht → wirkt lebendig
-      gsap.fromTo(bgImg.current, { scale: 1.03 }, { scale: 1.14, duration: 6, ease: "none" });
+      // Background-Visual (Eclipse) zoomt über die ganze Sequenz → wirkt lebendig
+      gsap.fromTo(bgImg.current, { scale: 1.02 }, { scale: 1.2, duration: 7.5, ease: "none" });
 
       const lines = headline.current!.querySelectorAll("[data-intro-line]");
       gsap.set(lines, { yPercent: 120, autoAlpha: 0 });
-      const fp = { v: 0 };
-      const wp = { v: 0 };
+      const dp = { v: 0 }; // Dust
+      const zp = { v: 1 }; // Zoom
+      const fp = { v: 0 }; // Form (B)
+      const wp = { v: 0 }; // Warp
 
       const tl = gsap.timeline({ defaults: { ease: "power2.out" }, onComplete: cleanup });
-      // ② FORM: Partikel wandern aus der Mitte in die B-Form (werden dichter/klarer)
-      tl.to(fp, { v: 1, duration: 1.6, ease: "power2.out", onUpdate: () => particles.current?.setForm(fp.v) }, 0.1)
-        // ③ Headline blendet als Zweizeiler ein
-        .to(lines, { yPercent: 0, autoAlpha: 1, duration: 0.9, stagger: 0.14, ease: "power3.out" }, 1.6)
-        // Lese-Beat
+      // ② DUST: Sternenstaub fadet aus dem Nichts ein (driftet, funkelt)
+      tl.to(dp, { v: 1, duration: 2.0, ease: "power2.out", onUpdate: () => particles.current?.setDust(dp.v) }, 0.15)
+        // ③ ZOOM: Kamera schiebt sanft ins Staubfeld
+        .to(zp, { v: 1.28, duration: 2.6, ease: "power1.inOut", onUpdate: () => particles.current?.setZoom(zp.v) }, 1.7)
+        // ④ FORM: Staub verdichtet sich LANGSAM ins B (bleibt lebendig)
+        .to(fp, { v: 1, duration: 3.0, ease: "power2.inOut", onUpdate: () => particles.current?.setForm(fp.v) }, 2.2)
+        // Headline blendet parallel als Zweizeiler ein
+        .to(lines, { yPercent: 0, autoAlpha: 1, duration: 1.0, stagger: 0.16, ease: "power3.out" }, 3.1)
+        // Lese-Beat, während das B fertig steht
         .to({}, { duration: 0.5 })
-        // ④ WARP: die B-Partikel schießen als Streaks auf die Kamera zu
-        .to(wp, { v: 1, duration: 1.35, ease: "power2.in", onUpdate: () => particles.current?.setWarp(wp.v) }, 2.75)
+        // ⑤ WARP: die B-Partikel schießen als Streaks auf die Kamera zu
+        .to(wp, { v: 1, duration: 1.35, ease: "power2.in", onUpdate: () => particles.current?.setWarp(wp.v) }, 5.7)
+        // Zoom zieht im Warp noch etwas nach (nahtloser Sog)
+        .to(zp, { v: 1.5, duration: 1.2, ease: "power2.in", onUpdate: () => particles.current?.setZoom(zp.v) }, 5.7)
         // Headline zieht leicht mit in die Tiefe und blendet aus
-        .to(lines, { autoAlpha: 0, scale: 1.5, duration: 0.6, ease: "power2.in", transformOrigin: "50% 50%" }, 2.85)
+        .to(lines, { autoAlpha: 0, scale: 1.5, duration: 0.6, ease: "power2.in", transformOrigin: "50% 50%" }, 5.8)
         // Deckgrund blendet aus → Hero-Reveal
-        .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 3.15)
+        .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 6.15)
         // Finale (Menü-B/Header), Overlay räumt danach auf
-        .call(finish, [], 3.55);
+        .call(finish, [], 6.55);
     },
     { scope: root },
   );

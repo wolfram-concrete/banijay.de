@@ -43,7 +43,7 @@ export function AlgarvePartnerGrid() {
             <a
               href="mailto:hello@banijay.de"
               className="inline-flex items-center gap-2 text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
-              style={{ border: "0.12vw solid #f8f7f3", borderRadius: "8px", padding: "0.83vw 1.39vw", fontFamily: SHARP, fontSize: "1.1vw" }}
+              style={{ border: "0.12vw solid #f8f7f3", borderRadius: "6px", padding: "0.83vw 1.39vw", fontFamily: SHARP, fontSize: "1.1vw" }}
             >
               Partner werden
               <ArrowUpRight className="h-[1.1vw] w-[1.1vw] max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />

@@ -89,7 +89,7 @@ export function SiteFooter() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Instagram — ${SOCIAL.instagram.handle}`}
-                      className="footer-social inline-flex items-center gap-2 rounded-[8px] border bg-transparent px-5 py-2.5 text-sm font-medium"
+                      className="footer-social inline-flex items-center gap-2 rounded-[6px] border bg-transparent px-5 py-2.5 text-sm font-medium"
                       style={{ ["--fg" as string]: FG, ["--bg" as string]: BG }}
                     >
                       <IconInstagram />
@@ -100,7 +100,7 @@ export function SiteFooter() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`LinkedIn — ${SOCIAL.linkedin.handle}`}
-                      className="footer-social inline-flex items-center gap-2 rounded-[8px] border bg-transparent px-5 py-2.5 text-sm font-medium"
+                      className="footer-social inline-flex items-center gap-2 rounded-[6px] border bg-transparent px-5 py-2.5 text-sm font-medium"
                       style={{ ["--fg" as string]: FG, ["--bg" as string]: BG }}
                     >
                       <IconLinkedin />

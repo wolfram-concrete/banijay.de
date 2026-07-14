@@ -117,7 +117,7 @@ export function AlgarveCeoTestimonial({
               {cta && (
                 <a
                   href={cta.href}
-                  className="inline-flex w-fit items-center gap-2 rounded-[8px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
+                  className="inline-flex w-fit items-center gap-2 rounded-[6px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
                   style={{ border: "0.12vw solid #f8f7f3", padding: "0.9vw 1.8vw", fontFamily: SHARP, fontSize: "1.05vw" }}
                 >
                   {cta.text}

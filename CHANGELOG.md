@@ -5,6 +5,36 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Home-Hero global, Preloader-Rework, Ecosystem→About, Team komplett & großes Korrekturpaket (14.07., Nacht IV)
+- **Home-Hero auf allen Seiten** (`AlgarveHome`): About/Companies/Career/News/Contact ersetzen den alten
+  `PageHero` durch die „We Are Banijay"-Frame-Sequenz + Satellitenringe + mittelachsiges Statement auf
+  dunklem Staub. Neue `frame3`-Prop → **je Seite passendes Typo-Bild** (`frame-3-about/career/companies/news.jpg`,
+  2880px optimiert). Auf Subpages (ohne Preloader) startet die Frame-Sequenz sofort (intro-aware Timing).
+- **Preloader-Rework** (`PreloaderParticles`/`IntroOverlay`): klar getrennte Beats — aus dem Nichts fadet
+  driftender/funkelnder Sternenstaub ein → Zoom → das B verdichtet sich langsam (mit Twinkle/Drift/Swirl,
+  bleibt lebendig) → Warp auf die Home. Neue Handles `setDust`/`setZoom`.
+- **Hero „We Are Banijay"-Fade** smoother (Frame 3: 3,6 s `sine.inOut` statt 2,1 s, startet später).
+- **Weiße „Blitzerkante" entfernt** (`AlgarveHome`): die `contour`-Div (weiße Inset-Linie auf der radialen
+  Hero-Unterkante) raus → global auf allen Heros keine helle Außenkante mehr.
+- **Satellitenringe**: ganze Schar +110 nach unten (erste Linie erreicht jetzt sichtbar beide Ränder statt
+  oben abgeschnitten), Top-Maske entfernt.
+- **Team komplett** (`Founders`): alle **11 Personen** (Abgleich mit banijay.de, inkl. Aylin Firat) im
+  **6er-Grid** statt 5×2.
+- **Globaler Sternenstaub** (`MoodBackdrop`): ambient `DustLayer` fix hinter allen Seiten → überall moody Staub.
+- **Ecosystem-Seite entfernt**: Route weg, Inhalte (`EcosystemDirectory`) ans Ende von **About** verschoben;
+  Navigation neu geordnet (**About über Companies**, Ecosystem raus).
+- **About-Zahlen-Section** (`ProofVideo`): Video → all3media (wie Home), Statement → Marcus-Wolter-Zitat,
+  jede Zahlen-Kachel trägt jetzt ihren Copytext, Companies **25+ → 40+** (`STATS`, single source). Separate
+  CEO-Testimonial-Section entfällt (Zitat lebt im Video-Statement).
+- **News**: Kartenhöhe je Postingformat (Social/LinkedIn+Insta = Hochformat 4:5, Presse = 4:3);
+  **Marcus-Wolter-Rubrik** mit echten Artikelbildern (og:image/Artikelfoto → `public/news/`, weboptimiert);
+  Rubrik-Filter mittelachsig (global gleich zur Companies-Section).
+- **Social-Feed-Dedup** (`CareerSocialFeed`): „Plötzlich Schwester"/Good-Humor-Post kam doppelt (Cross-Post
+  mit anderer URL+Bild, gleicher Text) → zusätzliche Dedup über normalisierten Text-Präfix (wirkt in allen Feeds).
+- **Career**: RoleStack-Cards flacher (90→70vh) + Nummerierung raus; TOMORROW-CTA Active-State = weiße Kontur +
+  transparenter Grund (statt Magenta-Fill).
+- **CTA-Radien** global 8px → 6px (Badges 4px unberührt). Diverse Hero-Statements auf Lorem ipsum (Platzhalter).
+
 ### Editorial-Umbau, 3-Frame-Hero-Animation, Ring-/Gradient-Feinschliff & Korrekturpaket (14.07., Nacht III)
 - **3-Frame-Hero-Animation** (`AlgarveHome.tsx`): `Hero-frame-1/2/3.jpg` (2880px) als Sequenz nach der
   Intro — dunkler Screen flackert auf → Frame 2 blendet transparent→klar ein (wird lebendig) → Frame 3

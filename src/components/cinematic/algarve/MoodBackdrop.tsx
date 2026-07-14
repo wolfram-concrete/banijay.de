@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -109,6 +110,19 @@ export function MoodBackdrop() {
         }}
       >
         <div className="mood-breathe h-full w-full" style={{ background: GLOW_COUNTER, animationDelay: "-4.5s" }} />
+      </div>
+      {/* Globaler Sternenstaub (Wolfram 14.07.): ambient über ALLEN Seiten — so
+          hat jede Seite überall den moody Staub-Background, nicht nur im Hero.
+          Ganzflächig, dezent, mit weichem Rand nach oben/unten. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: 0.6,
+          maskImage: "linear-gradient(180deg, transparent 0%, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 6%, black 94%, transparent 100%)",
+        }}
+      >
+        <DustLayer boost={0.7} center={{ x: 0.68, y: 0.3 }} radius={1.3} />
       </div>
       {/* konstante, abgeschwächte Diagonal-Blende */}
       <div className="absolute inset-0" style={{ background: SHADE }} />
