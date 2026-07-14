@@ -297,7 +297,14 @@ export function AlgarveEcosystem() {
           const isActive = cat.key === active;
           // Responsive Anker: Randnähe → Card klappt nach innen auf (kein Clipping)
           const fx = (p.x + 50) / 1300;
+          const fy = p.y / 640;
+          // Untere Bahn (Wolfram 14.07.): die Card würde nach unten aus der Section
+          // laufen → sie klappt stattdessen nach OBEN auf und bleibt immer lesbar.
+          const low = fy > 0.62;
           const anchorX = fx > 0.76 ? "-92%" : fx < 0.24 ? "-8%" : "-50%";
+          const anchorY = low ? "calc(-100% - 10px)" : "12px";
+          const originX = fx > 0.76 ? "92%" : fx < 0.24 ? "8%" : "50%";
+          const originY = low ? "100%" : "0%";
           return (
             <div
               key={cat.key}
@@ -306,9 +313,9 @@ export function AlgarveEcosystem() {
               style={{
                 left: `${(fx * 100).toFixed(3)}%`,
                 top: `${((p.y / 640) * 100).toFixed(3)}%`,
-                // Karte hängt UNTER ihrem Anker-Satelliten auf der Bahn
-                transform: `translate(${anchorX}, 12px) scale(${isActive ? 1.04 : 1})`,
-                transformOrigin: fx > 0.76 ? "92% 0%" : fx < 0.24 ? "8% 0%" : "50% 0%",
+                // Karte hängt an ihrem Anker-Satelliten (oben oder unten je Bahnlage)
+                transform: `translate(${anchorX}, ${anchorY}) scale(${isActive ? 1.04 : 1})`,
+                transformOrigin: `${originX} ${originY}`,
                 transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
                 zIndex: isActive ? 30 : 10,
               }}
@@ -338,7 +345,7 @@ export function AlgarveEcosystem() {
                   type="button"
                   onClick={() => setActive(isActive ? null : cat.key)}
                   aria-expanded={isActive}
-                  className="flex w-full items-center gap-2 whitespace-nowrap px-3.5 py-1.5 text-left text-[1rem] font-semibold uppercase tracking-[0.12em]"
+                  className="flex w-full items-center gap-2 whitespace-nowrap px-3.5 py-1.5 text-left text-[1.15rem] font-semibold uppercase tracking-[0.12em]"
                   style={{ fontFamily: SHARP, color: "rgba(248,247,243,0.9)", cursor: "pointer" }}
                 >
                   {cat.label}

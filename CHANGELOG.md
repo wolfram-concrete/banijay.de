@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Companies-Grid kompakt, Editorial-Facts-Accordion, iconic-IP-Banderole & Ökosystem-Labels (14.07., Nacht V)
+- **Companies-Bento kompakt** (`CompaniesBento.tsx`): große Feature-Spans raus → uniformes 4er-Grid,
+  Zeilen 13vw → 11.5vw. Mehr Companies auf deutlich weniger Scrollhöhe. Die **ganze Karte** ist jetzt der
+  Klick → externe Company-Website (falls URL vorhanden), sonst neutrale Kachel. Keine Flip-/Detailkarten.
+- **Editorial-Facts → Accordion** (`EditorialStickyScene.tsx`): alle 5 Zahlen/Fakten von banijay.de
+  (40+ Companies & Labels, 1.300 Mitarbeitende, 4 Mrd. Views, 3.000 Stunden, 130+ weltweit) statt nur 2 —
+  jede mit Copytext, per Single-Open-Accordion aufklappbar (erste offen), Zahlen zählen weiter hoch.
+- **Iconic-IP-Banderole** (`LoveBrandsTicker.tsx`): die Logobanderole unter „About Banijay" zeigt jetzt die
+  bekanntesten Formate (Wer wird Millionär?, The Masked Singer, Die Höhle der Löwen, TV total, Stromberg,
+  Kitchen Impossible, Schlag den Star, Temptation Island, Kampf der Realitystars, Promi Big Brother,
+  Die Verräter, NightWash) als Bild-Tiles (Stills aus dem Heike-Handover, weboptimiert unter `/public/formats`).
+  ⚠️ Interim mit Show-Stills — sobald saubere weiße Format-Logos vorliegen, 1:1 austauschbar.
+- **Ökosystem-Section** (`EcosystemSection.tsx`): untere Kategorie-Cards (Tech, Fiction) klappen jetzt nach
+  OBEN auf (kein Clipping am unteren Rand, immer lesbar); Label-Chips +15 % (1rem → 1.15rem).
+
 ### Home-Hero global, Preloader-Rework, Ecosystem→About, Team komplett & großes Korrekturpaket (14.07., Nacht IV)
 - **Home-Hero auf allen Seiten** (`AlgarveHome`): About/Companies/Career/News/Contact ersetzen den alten
   `PageHero` durch die „We Are Banijay"-Frame-Sequenz + Satellitenringe + mittelachsiges Statement auf

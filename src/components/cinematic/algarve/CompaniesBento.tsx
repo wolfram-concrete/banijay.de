@@ -30,16 +30,10 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 
-// Bento-Rhythmus (Desktop, grid-cols-3, dense): wiederholt sich alle 12 Kacheln.
-// AUSGEWOGEN (Wolfram 14.07.): große Feature-Cards NICHT nur links — via
-// col-start auch nach rechts gesetzt und über verschiedene Zeilen gemischt; die
-// kleineren Cards clustern dadurch (dense) links. So wirkt das Raster balancierter.
-const SPAN: Record<number, string> = {
-  0: "md:col-span-2 md:row-span-2", //  groß, LINKS (Anker oben)
-  4: "md:col-span-2 md:col-start-2 md:row-span-2", // groß, RECHTS
-  7: "md:row-span-2 md:col-start-3", // hoch, RECHTS
-  9: "md:col-span-2 md:col-start-2", // breit, RECHTS
-};
+// KOMPAKTES UNIFORM-RASTER (Wolfram 14.07.): keine großen Feature-Spans mehr —
+// alle Kacheln gleich groß, 4-spaltig, niedrige Zeilen. So passen mehr Companies
+// auf deutlich weniger Scrollhöhe (der ganze Aufbau schrumpft zusammen).
+const SPAN: Record<number, string> = {};
 const spanFor = (i: number) => SPAN[i % 12] ?? "";
 
 // Exemplarisches Bewegtbild: stabile Zuordnung Company → Trailer-Loop
@@ -125,63 +119,73 @@ export function AlgarveCompaniesBento() {
           })}
         </div>
 
-        {/* Bento-Grid — Companies der gewählten Rubrik (remount bei Wechsel).
-            3 Spalten + 17vw-Zeilen: auch die KLEINSTE Kachel bleibt groß. */}
-        <div key={rubrik} className="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:13vw]">
-          {cards.map((card, i) => (
-            <div
-              key={card.id}
-              data-bento-card
-              className={`group relative flex min-h-[42vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${spanFor(i)}`}
-              style={{ background: "#14100f" }}
-            >
-              {/* Exemplarisches Bewegtbild (Loop aus dem Banijay-Trailer) */}
-              <video
-                data-bento-video
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={card.image}
-                className="absolute inset-0 h-full w-full object-cover"
-              >
-                <source src={REEL[card.id]} type="video/mp4" />
-              </video>
-              {/* Scrim für Lesbarkeit */}
-              <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
+        {/* Bento-Grid — kompakt & uniform, 4-spaltig, niedrige Zeilen (Wolfram
+            14.07.): mehr Companies auf weniger Scrollhöhe. Die GANZE Karte ist der
+            Klick → externe Company-Website (nur wenn eine URL vorliegt), sonst eine
+            neutrale, nicht klickbare Kachel. Keine Flip-/Detailkarten mehr. */}
+        <div key={rubrik} className="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:11.5vw]">
+          {cards.map((card, i) => {
+            const inner = (
+              <>
+                {/* Exemplarisches Bewegtbild (Loop aus dem Banijay-Trailer) */}
+                <video
+                  data-bento-video
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={card.image}
+                  className="absolute inset-0 h-full w-full object-cover"
+                >
+                  <source src={REEL[card.id]} type="video/mp4" />
+                </video>
+                {/* Scrim für Lesbarkeit */}
+                <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
 
-              {/* Echtes weißes Company-Logo oben rechts (Platzhalter: keins) */}
-              {card.logo && (
-                <img
-                  src={card.logo}
-                  alt=""
-                  aria-hidden
-                  className="absolute right-[4%] top-[6%] h-[1.6rem] w-auto max-w-[34%] object-contain opacity-95 md:h-[1.9rem]"
-                />
-              )}
-
-              {/* Name + Website-Link (Wolfram 14.07.): keine Genre-Boxen mehr, keine
-                  Detail-Ebene — nur ein unterstrichener Hypertext-Link mit Pfeil zur
-                  Company-Website (nur wenn eine URL vorliegt). */}
-              <div className="relative z-10 flex flex-col gap-1.5 p-4 md:p-5">
-                <h3 className="m-0 text-white" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.6vw, 1.7rem)", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.01em" }}>
-                  {card.name}
-                </h3>
-                {card.url && (
-                  <a
-                    href={card.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/link inline-flex w-fit items-center gap-1.5 text-white/85 no-underline transition-colors hover:text-white"
-                    style={{ fontFamily: SHARP, fontSize: "clamp(0.8rem, 1vw, 0.98rem)", fontWeight: 500 }}
-                  >
-                    <span className="underline underline-offset-[5px]">Zur Website</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-0.5" />
-                  </a>
+                {/* Echtes weißes Company-Logo oben rechts (Platzhalter: keins) */}
+                {card.logo && (
+                  <img
+                    src={card.logo}
+                    alt=""
+                    aria-hidden
+                    className="absolute right-[4%] top-[6%] h-[1.4rem] w-auto max-w-[34%] object-contain opacity-95 md:h-[1.6rem]"
+                  />
                 )}
+
+                {/* Name + (falls URL) Website-Affordanz — der Klick liegt auf der
+                    ganzen Karte, daher hier nur ein Span (kein verschachteltes <a>). */}
+                <div className="relative z-10 flex flex-col gap-1 p-3 md:p-3.5">
+                  <h3 className="m-0 text-white" style={{ fontFamily: SHARP, fontSize: "clamp(0.95rem, 1.35vw, 1.5rem)", lineHeight: "106%", fontWeight: 500, letterSpacing: "-0.01em" }}>
+                    {card.name}
+                  </h3>
+                  {card.url && (
+                    <span className="inline-flex w-fit items-center gap-1.5 text-white/85 transition-colors group-hover:text-white" style={{ fontFamily: SHARP, fontSize: "clamp(0.72rem, 0.9vw, 0.9rem)", fontWeight: 500 }}>
+                      <span className="underline underline-offset-[5px]">Zur Website</span>
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
+                  )}
+                </div>
+              </>
+            );
+            const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${spanFor(i)}`;
+            return card.url ? (
+              <a
+                key={card.id}
+                data-bento-card
+                href={card.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${cls} no-underline`}
+                style={{ background: "#14100f" }}
+              >
+                {inner}
+              </a>
+            ) : (
+              <div key={card.id} data-bento-card className={cls} style={{ background: "#14100f" }}>
+                {inner}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
