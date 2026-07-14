@@ -8,16 +8,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
-import { homeStats } from "@/data/site";
+import { EditorialStickyScene } from "./EditorialStickyScene";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Impact-Zahlen (aus dem entfernten Testimonials-Modul) — getönte Glas-Panels
-// im stateofaidesign-Aufbau. Tints moody statt Pastell.
-const STAT_TINTS = ["rgba(255,67,112,0.14)", "rgba(46,55,201,0.16)", "rgba(6,93,255,0.14)", "rgba(22,200,255,0.12)"];
-const STATS = homeStats()
-  .slice(0, 4)
-  .map((s, i) => ({ value: s.value, label: s.label, tint: STAT_TINTS[i] }));
 
 // EDITORIAL-SECTION (Task #56, Wolfram 13.07.) — Marcus zur Historie und
 // Zukunft von Banijay, Anlass: Abschluss der Fusion Banijay Entertainment +
@@ -102,29 +96,8 @@ export function AlgarveEditorial() {
         }
       }
 
-      // BILD-MODUL-CHOREOGRAFIE (Wolfram 14.07., Loom-Referenz): GEPINNTE Szene —
-      // beim Scrollen ist das Marcus-Bild zuerst groß/mittig zu sehen, schiebt
-      // sich nach LINKS, und von RECHTS rattern die Fact-Boxen gestaffelt herein;
-      // danach löst der Pin und der Screen scrollt zum restlichen Artikeltext.
-      const scene = root.current?.querySelector<HTMLElement>("[data-ed-scene]");
-      const imgWrap = root.current?.querySelector<HTMLElement>("[data-ed-img]");
-      const stats = gsap.utils.toArray<HTMLElement>("[data-ed-stat]");
-      const desktop = window.matchMedia("(min-width: 768px)").matches;
-      if (scene && imgWrap && desktop) {
-        // Start: Bild groß & mittig (nach rechts translatiert + hochskaliert)
-        gsap.set(imgWrap, { xPercent: 40, scale: 1.16, transformOrigin: "center center" });
-        gsap.set(stats, { autoAlpha: 0, xPercent: 90 });
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: scene, start: "top top", end: "+=150%", pin: true, scrub: 0.7, anticipatePin: 1 },
-        });
-        tl
-          // ① Bild wandert nach links in seine Position, verkleinert sich auf 1
-          .to(imgWrap, { xPercent: 0, scale: 1, ease: "power2.inOut", duration: 0.42 }, 0)
-          // ② Fact-Boxen rattern von rechts herein (gestaffelt)
-          .to(stats, { autoAlpha: 1, xPercent: 0, ease: "power2.out", stagger: 0.12, duration: 0.5 }, 0.44)
-          // ③ kurzer Halt, bevor der Pin löst
-          .to({}, { duration: 0.16 });
-      }
+      // Das Bild-Modul lebt jetzt in <EditorialStickyScene /> (eigene Sticky-
+      // Scroll-Interaktion nach stateofaidesign.com — Wolfram 14.07.).
 
       gsap.set("[data-ed-reveal]", { autoAlpha: 0, y: 56 });
       ScrollTrigger.batch("[data-ed-reveal]", {
@@ -168,7 +141,7 @@ export function AlgarveEditorial() {
         <div
           data-ed-head
           className="relative flex flex-col items-center justify-center overflow-clip text-center"
-          style={{ marginBottom: "5vw", minHeight: "min(84vh, 760px)" }}
+          style={{ marginBottom: "2vw", minHeight: "min(46vh, 440px)" }}
         >
           {/* zentraler Sternstaub hinter der Headline (wächst mit dem Scrub) */}
           <div
@@ -195,52 +168,13 @@ export function AlgarveEditorial() {
           >
             {/* kein per-Zeilen-overflow-hidden → die Ä-Punkte bleiben sichtbar;
                 der Translate wird vom overflow-clip des Panels gefasst. */}
-            <span data-ed-hl-first className="block">Eine neue Ära:</span>
-            <span data-ed-hl-last className="block">
-              Banijay <span data-ed-amp style={{ fontStyle: "italic", color: "#ff4370" }}>&</span> All3Media.
-            </span>
+            <span data-ed-hl-first className="block">Back to</span>
+            <span data-ed-hl-last className="block">the Future.</span>
           </h2>
         </div>
 
-        {/* BILD-MODUL — GEPINNTE Szene (Wolfram 14.07., Loom-Referenz): Bild groß/
-            mittig → wandert nach links → Fact-Boxen rattern von rechts herein →
-            dann löst der Pin und der Screen scrollt zum Artikeltext. */}
-        <div data-ed-scene className="relative flex min-h-screen items-center" style={{ marginBottom: "clamp(2rem, 4vw, 5rem)" }}>
-          <div className="relative w-full">
-            {/* großes Porträt links → wandert nach links */}
-            <div data-ed-img className="relative w-full overflow-hidden md:w-[56%]" style={{ aspectRatio: "4 / 5" }}>
-              <img src="/editorial/marcus-hof.jpg" alt="Marcus Wolter, CEO Banijay Germany" className="h-full w-full object-cover" style={{ objectPosition: "50% 30%" }} />
-            </div>
-
-          {/* FACT-BOXEN — Desktop absolut ÜBER der rechten Bildhälfte (swipen von
-              rechts ins Bild), Mobile als Grid unter dem Bild. Glas-Panels mit
-              stärkerem Blur + Schlagschatten, damit sie auf dem Foto lesbar sind. */}
-          <div className="mt-4 grid grid-cols-2 gap-3 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:w-[52%] md:content-center md:gap-4">
-            {STATS.map((s) => (
-              <div
-                key={s.label}
-                data-ed-stat
-                className="flex flex-col justify-between"
-                style={{
-                  minHeight: "clamp(8.5rem, 13vw, 13rem)",
-                  padding: "clamp(1.2rem, 1.7vw, 2rem)",
-                  background: s.tint,
-                  backdropFilter: "blur(18px) saturate(1.4)",
-                  WebkitBackdropFilter: "blur(18px) saturate(1.4)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 24px 60px -32px rgba(0,0,0,0.75)",
-                }}
-              >
-                <span style={{ fontFamily: SHARP, fontSize: "clamp(2.3rem, 3.8vw, 3.8rem)", fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
-                  {s.value}
-                </span>
-                <span style={{ fontSize: "clamp(0.88rem, 1.05vw, 1.15rem)", lineHeight: "126%", color: "rgba(248,247,243,0.85)" }}>
-                  {s.label}
-                </span>
-              </div>
-            ))}
-          </div>
-          </div>
-        </div>
+        {/* BILD-MODUL als Sticky-Scroll-Interaktion (stateofaidesign-Vorbild) */}
+        <EditorialStickyScene />
 
         {/* ARTIKELTEXT — folgt unter dem Bild-Modul */}
         <div className="flex flex-col md:mx-auto md:max-w-[84%]" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>

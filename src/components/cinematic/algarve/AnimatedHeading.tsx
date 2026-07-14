@@ -17,7 +17,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const LINE = {
   fontFamily: "var(--font-sharp), sans-serif",
   fontSize: "7vw",
-  lineHeight: "110%",
+  lineHeight: "132%",
   fontWeight: 500,
   textAlign: "center",
   textTransform: "uppercase",

@@ -52,9 +52,10 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
     if (!res.ok) return [];
     const data = (await res.json()) as { posts?: { items?: JuicerPost[] } };
     const items = data.posts?.items ?? [];
-    // Deduplizieren: der Juicer-Feed liefert gelegentlich denselben Beitrag doppelt
-    // (z. B. „Nächster Drehstart … Good Humor" am Ende). Über URL UND Text-Inhalt
-    // filtern, sonst erscheint die Karte zweimal.
+    // Deduplizieren: der Juicer-Feed liefert denselben Inhalt gelegentlich doppelt.
+    // Zwei verschiedene LinkedIn-Posts nutzen z. T. DASSELBE Bild (z. B. dieselbe
+    // Zitat-Grafik von Stephan Denzer/Good Humor) bei leicht anderem Text — die
+    // Text-Dedup allein greift dann nicht. Daher zusätzlich über das BILD filtern.
     const seen = new Set<string>();
     return items
       .filter((p) => p.image && p.full_url)
@@ -66,11 +67,12 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
         date: formatDate(p.external_created_at),
       }))
       .filter((post) => {
-        const key = `${post.url}::${post.text}`;
-        if (seen.has(post.url) || seen.has(post.text) || seen.has(key)) return false;
+        // Bild-URL ohne Query/Cache-Params normalisieren (Juicer hängt teils ?…-Params an)
+        const imgKey = post.image.split("?")[0];
+        if (seen.has(post.url) || seen.has(post.text) || seen.has(imgKey)) return false;
         seen.add(post.url);
         seen.add(post.text);
-        seen.add(key);
+        seen.add(imgKey);
         return true;
       })
       .slice(0, limit);

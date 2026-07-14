@@ -5,6 +5,27 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Editorial-Sticky-Scroll, Hero-Feinschliff & Bento-Balance (14.07., spät)
+- **Editorial als Sticky-Scroll** (`EditorialStickyScene.tsx`): 150→135vh-Section mit sticky
+  100vh-Wrapper; das große Marcus-Bild settlet full-size, zieht sich nach links zusammen,
+  von rechts fährt eine 470px-Fact-Spalte (2 Cards `#CDABFE`/`#D1DDD3`, Zahlen zählen von 0)
+  herein. Kein horizontaler Scroll. Headline-Höhe reduziert (Bild näher dran).
+- **Editorial-Headline** → „Back to the Future".
+- **Hero — schwarze Linsen-Naht entfernt** (`AlgarveHome.tsx`): analytische Kanten-Normale
+  statt Finite-Differenzen → kein Vorzeichenwechsel an der Mittelachse mehr.
+- **Hero-Bild getauscht** (KjQfmrUkqp) + beide Visuals crisp re-optimiert (2880px, q92, 4:4:4).
+- **Hero-Ecken**: reines Magenta hinter dem Hero — beim Formen der Bauchigkeit erscheint
+  sofort Magenta statt dunklem Background.
+- **Übergangslinien**: edge-to-edge, mit weißem Glow; die kleinen **weißen Planeten** swipen
+  wieder auf den Linien.
+- **Companies-Bento ausgewogener**: große Feature-Cards via `col-start` auch rechts / über
+  verschiedene Zeilen gemischt (`CompaniesBento.tsx`).
+- **Social-Dedup** zusätzlich über die Bild-URL (kein doppelter LinkedIn-Artikel mehr).
+- **Statement-Glow**: verankerter radialer Glow direkt im Veil (kein separates Element).
+- Großer Headline-Zeilenabstand +20% (110%→132%). Der Magenta-Headline-Glow-Test wieder entfernt.
+
+
+
 ### Preloader-Warp, fullscreen Hero, Editorial-Pin, Lightbox 16:9 & People-Fotos (14.07.)
 - **Preloader neu** (`PreloaderParticles.tsx` + `IntroOverlay.tsx`): eigenes Canvas-Partikel-
   system statt skalierter Bitmap — scharfe Punkte formen aus der Mitte die B-Form (dichter),

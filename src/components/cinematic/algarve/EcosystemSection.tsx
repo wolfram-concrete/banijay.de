@@ -68,7 +68,7 @@ const SWAP_LINES = ["Ein System", `mit über ${COMPANIES_DIRECTORY.length}`, "Co
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",
-  lineHeight: "110%",
+  lineHeight: "132%",
   fontWeight: 500,
   textAlign: "center",
   textTransform: "uppercase",

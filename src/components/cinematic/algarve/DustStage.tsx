@@ -35,20 +35,14 @@ export function DustStage() {
         scrollTrigger: {
           trigger: root.current!.parentElement,
           start: "top top",
-          // ≈ Scroll-Strecke der Statement-Section (275vh − 100vh Viewport):
-          // das Wachstum lebt komplett in der Statement-Phase.
           end: "+=175%",
           scrub: 0.6,
         },
       });
-      // ⓪ MAGENTA-VEIL: das Statement liegt auf VOLLER Magenta-Fläche
-      //    (Wolfram 13.07.: „wenn das Statement erscheint muss der Background
-      //    bereits vollständig magenta sein"). Der Veil HÄLT deshalb erst, …
+      // ⓪ MAGENTA-VEIL (radialer Glow direkt im Veil, hinter der Schrift — kein
+      //    separates Element, verankert im Sticky). Hält, dann Übergang zum Ökosystem.
       tl.to({}, { duration: 0.5 })
-        // ① … und löst sich ERST danach auf (Statement blendet aus, Ökosystem
-        //    baut sich auf) — dahinter kommt der Moody-Grund zum Vorschein …
         .to(veil.current, { autoAlpha: 0, duration: 0.34, ease: "power1.inOut" }, 0.5)
-        // ② … und der zentrale Sternstaub wächst auf und bleibt stehen.
         .fromTo(
           inner.current,
           { scale: 0.5, autoAlpha: 0 },
@@ -66,7 +60,14 @@ export function DustStage() {
             Statement liegt komplett auf Magenta, kein dunkler oberer Rest. Der
             weiche moody→magenta-Übergang passiert VORHER (radialer Arc am unteren
             Rand der Übergangszone im Hero) und scrollt in diese Fläche hinein. */}
-        <div ref={veil} className="absolute inset-0" style={{ background: "#ff4370" }} />
+        {/* VOLL Magenta mit einem SUBTILEN radialen Glow direkt IM Veil — der
+            hellere Kern sitzt HINTER der Schrift (nicht „von unten"), verankert
+            im Sticky (Wolfram 14.07.). Kein separates Element. */}
+        <div
+          ref={veil}
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(62% 55% at 50% 44%, #ff5c86 0%, #ff4a76 34%, #ff4370 66%)" }}
+        />
         {/* Heller Staub (moody-Phase, nach dem Ausblenden des Veils) */}
         <div
           className="absolute inset-0"

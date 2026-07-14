@@ -30,13 +30,15 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 
-// Bento-Rhythmus (Desktop, grid-cols-4, dense): wiederholt sich alle 12 Kacheln —
-// einzelne „Feature"-Cards größer, funktioniert für jede Listenlänge/Filterung.
+// Bento-Rhythmus (Desktop, grid-cols-3, dense): wiederholt sich alle 12 Kacheln.
+// AUSGEWOGEN (Wolfram 14.07.): große Feature-Cards NICHT nur links — via
+// col-start auch nach rechts gesetzt und über verschiedene Zeilen gemischt; die
+// kleineren Cards clustern dadurch (dense) links. So wirkt das Raster balancierter.
 const SPAN: Record<number, string> = {
-  0: "md:col-span-2 md:row-span-2",
-  3: "md:col-span-2",
-  6: "md:row-span-2",
-  9: "md:col-span-2",
+  0: "md:col-span-2 md:row-span-2", //  groß, LINKS (Anker oben)
+  4: "md:col-span-2 md:col-start-2 md:row-span-2", // groß, RECHTS
+  7: "md:row-span-2 md:col-start-3", // hoch, RECHTS
+  9: "md:col-span-2 md:col-start-2", // breit, RECHTS
 };
 const spanFor = (i: number) => SPAN[i % 12] ?? "";
 

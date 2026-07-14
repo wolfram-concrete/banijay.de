@@ -29,6 +29,7 @@ export function AlgarveHome() {
   // beim Scrollen (Section-Radius, Zirkel-Kontur, Linsen-Pill im Shader).
   const curveP = useRef(0);
 
+  const heroImgB = useRef<HTMLImageElement>(null);
   const lensCanvas = useRef<HTMLCanvasElement>(null);
   const lensBox = useRef<HTMLDivElement>(null);
 
@@ -36,8 +37,9 @@ export function AlgarveHome() {
     const canvas = lensCanvas.current;
     const box = lensBox.current;
     const img = heroImg.current;
+    const imgB = heroImgB.current;
     const section = canvas?.parentElement as HTMLElement | null;
-    if (!canvas || !box || !img || !section) return;
+    if (!canvas || !box || !img || !imgB || !section) return;
     const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true });
     if (!gl) {
       img.style.filter = "none";
@@ -49,6 +51,8 @@ export function AlgarveHome() {
     const FRAG = `precision mediump float;
       varying vec2 vUv;
       uniform sampler2D uTex;
+      uniform sampler2D uTexB;
+      uniform float uMix;   // 0 = dunkles Visual, 1 = helles/farbiges → langsam aufhellen
       uniform vec2 uRes;
       uniform vec2 uC;
       uniform vec2 uH;
@@ -61,7 +65,9 @@ export function AlgarveHome() {
       uniform vec2 uOff;
 
       float sd(vec2 p){
-        float r = (p.y > uC.y) ? uRR : uRL;
+        // Radius weich zwischen oben (uRL) und unten (uRR) blenden statt harter
+        // Umschaltung an uC.y → keine Normalen-Naht (schwarze Linie) mehr.
+        float r = mix(uRL, uRR, smoothstep(uC.y - 14.0, uC.y + 14.0, p.y));
         vec2 q = abs(p - uC) - uH + vec2(r);
         return min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0))) - r;
       }
@@ -72,22 +78,29 @@ export function AlgarveHome() {
         vec2 uv = (px - off) / disp;
         return (uv - 0.5) / uZoom + 0.5;
       }
+      // Blend dunkles → helles Visual (Aufhellen)
+      vec3 smp(vec2 uv){ return mix(texture2D(uTex, uv).rgb, texture2D(uTexB, uv).rgb, uMix); }
       void main(){
         vec2 px = vec2(vUv.x, 1.0 - vUv.y) * uRes;
         float d = sd(px);
         float alpha = 1.0 - smoothstep(-1.5, 1.5, d);
         if (alpha <= 0.003) discard;
-        float e = 2.0;
-        vec2 n = vec2(sd(px + vec2(e,0.)) - sd(px - vec2(e,0.)), sd(px + vec2(0.,e)) - sd(px - vec2(0.,e)));
-        n = normalize(n + vec2(1e-5));
+        // ANALYTISCHE Kanten-Normale (keine Finite-Differenzen) — die dominante
+        // Box-Fläche gibt die Richtung; dadurch KEIN y-Vorzeichenwechsel an der
+        // Mittelachse mehr → die schwarze Naht/Linie in der Mitte verschwindet.
+        float rN = mix(uRL, uRR, smoothstep(uC.y - 14.0, uC.y + 14.0, px.y));
+        vec2 qn = abs(px - uC) - uH + vec2(rN);
+        vec2 n = (qn.x > qn.y)
+          ? vec2(sign(px.x - uC.x + 1e-4), 0.0)
+          : vec2(0.0, sign(px.y - uC.y + 1e-4));
         float k = 1.0 - smoothstep(0.0, uBand, -d);
         k = pow(clamp(k, 0.0, 1.0), 1.7);
         vec2 sp = px - n * (k * uDisp) + uOff;
         vec2 uv = cover(sp);
-        vec3 col = texture2D(uTex, uv).rgb;
+        vec3 col = smp(uv);
         vec2 duv = vec2(k * 3.5) / uRes;
-        vec3 blur = (texture2D(uTex, uv + vec2(duv.x, 0.)).rgb + texture2D(uTex, uv - vec2(duv.x, 0.)).rgb
-                   + texture2D(uTex, uv + vec2(0., duv.y)).rgb + texture2D(uTex, uv - vec2(0., duv.y)).rgb) * 0.25;
+        vec3 blur = (smp(uv + vec2(duv.x, 0.)) + smp(uv - vec2(duv.x, 0.))
+                   + smp(uv + vec2(0., duv.y)) + smp(uv - vec2(0., duv.y))) * 0.25;
         col = mix(col, blur, k * 0.8);
         col *= 1.0 + k * 0.09;
         gl_FragColor = vec4(col * alpha, alpha);
@@ -110,13 +123,21 @@ export function AlgarveHome() {
     const loc = gl.getAttribLocation(prog, "aPos");
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     const U = (n: string) => gl.getUniformLocation(prog, n);
+    const mkTex = () => {
+      const t = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      return t;
+    };
+    // uTex = dunkles Basis-Visual (Unit 0), uTexB = helles/farbiges (Unit 1)
+    const tex = mkTex();
+    const texB = mkTex();
+    gl.uniform1i(U("uTex"), 0);
+    gl.uniform1i(U("uTexB"), 1);
 
     let raf = 0;
     let visible = true;
@@ -146,16 +167,35 @@ export function AlgarveHome() {
       gl.uniform1f(U("uDisp"), 30 * dpr);
     };
 
-    let uploaded = false;
+    let uploaded = false, uploadedB = false;
     const upload = () => {
       if (uploaded || !img.complete || !img.naturalWidth) return;
+      gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
       gl.uniform2f(U("uVid"), img.naturalWidth, img.naturalHeight);
       uploaded = true;
     };
+    const uploadB = () => {
+      if (uploadedB || !imgB.complete || !imgB.naturalWidth) return;
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, texB);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgB);
+      uploadedB = true;
+    };
     upload();
+    uploadB();
     img.addEventListener("load", upload);
+    imgB.addEventListener("load", uploadB);
+
+    // AUFHELL-RAMP (Wolfram 14.07.): uMix 0→1 blendet das dunkle Visual in das
+    // helle/farbige über — beginnt, wenn der Hero sichtbar wird (nach der Intro),
+    // damit man das langsame „Heller-werden" wirklich sieht.
+    let brightenStart = 0;
+    const startBrighten = () => { if (!brightenStart) brightenStart = performance.now(); };
+    if ((window as { __introDone?: boolean }).__introDone) startBrighten();
+    window.addEventListener("banijay:introdone", startBrighten);
+    const brightenFallback = window.setTimeout(startBrighten, 6000);
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const zoomAt = (now: number) => (reduce ? 1.015 : 1.015 + 0.045 * (0.5 - 0.5 * Math.cos(((now % 26000) / 26000) * Math.PI * 2)));
@@ -173,7 +213,14 @@ export function AlgarveHome() {
         const z = zoomAt(now);
         eased.x += (mouse.x - eased.x) * 0.04;
         eased.y += (mouse.y - eased.y) * 0.04;
-        img.style.transform = `scale(${(1.05 * z).toFixed(4)}) translate(${(-eased.x * 10).toFixed(1)}px, ${(-eased.y * 6).toFixed(1)}px)`;
+        const tf = `scale(${(1.05 * z).toFixed(4)}) translate(${(-eased.x * 10).toFixed(1)}px, ${(-eased.y * 6).toFixed(1)}px)`;
+        img.style.transform = tf;
+        imgB.style.transform = tf;
+        // Aufhellen: uMix 0→1 (smoothstep) über ~4.5s ab Start
+        const t = brightenStart && uploadedB ? Math.min(1, (now - brightenStart) / 4500) : 0;
+        const eMix = t * t * (3 - 2 * t);
+        gl.uniform1f(U("uMix"), eMix);
+        imgB.style.opacity = String(eMix);
         gl.uniform1f(U("uZoom"), z);
         gl.uniform1f(U("uRR"), Math.max(1, hxCur * curveP.current));
         gl.uniform2f(U("uOff"), reduce ? 0 : eased.x * 26 * dpr, reduce ? 0 : eased.y * 16 * dpr);
@@ -194,6 +241,9 @@ export function AlgarveHome() {
     return () => {
       cancelAnimationFrame(raf);
       img.removeEventListener("load", upload);
+      imgB.removeEventListener("load", uploadB);
+      window.removeEventListener("banijay:introdone", startBrighten);
+      window.clearTimeout(brightenFallback);
       window.removeEventListener("mousemove", onMouse);
       ro.disconnect();
       io.disconnect();
@@ -230,38 +280,35 @@ export function AlgarveHome() {
         });
       }
 
-      // ÜBERGANGSZONE: aus der radialen Linsenkante fächern WEISSE Satelliten-
-      // ringe auf; jeder trägt einen kreisenden Magenta-Punkt (erst sichtbar, wenn
-      // sein Ring vollständig eingeblendet ist). Danach der Magenta-Übergang.
+      // ÜBERGANGSZONE (Wolfram 14.07.): reines Magenta hinter der Hero-Kante,
+      // KEIN Gradient — es arbeiten nur die weißen Linien, die sich full-size
+      // (edge-to-edge) gestaffelt aus der Kante herausziehen.
       const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 60%", end: "bottom 35%", scrub: 0.7 },
+        scrollTrigger: { trigger: orbitZone.current, start: "top 70%", end: "bottom 40%", scrub: 0.7 },
       });
-      const rings = gsap.utils.toArray<SVGCircleElement>("[data-hero-ring]");
-      gsap.set(rings, { autoAlpha: 0 });
+      const rings = gsap.utils.toArray<SVGGElement>("[data-hero-ring]");
+      gsap.set(rings, { autoAlpha: 0, y: -46 });
       rings.forEach((ring, i) => {
-        const top = Number(ring.dataset.top);
-        fan.to(ring, { attr: { cy: top - 800 }, autoAlpha: 1, duration: 1.1, ease: "power2.out" }, 0.5 + i * 0.16);
+        fan.to(ring, { autoAlpha: 1, y: 0, duration: 1.1, ease: "power2.out" }, 0.3 + i * 0.18);
       });
-      const ringTops = rings.map((r) => Number(r.dataset.top));
-      gsap.utils.toArray<SVGCircleElement>("[data-hero-ringdot]").forEach((dot) => {
-        const center = Number(dot.dataset.center);
-        const ringTop = center + 800;
-        const ringIdx = ringTops.indexOf(ringTop);
-        const ringEnd = 0.5 + (ringIdx >= 0 ? ringIdx : 0) * 0.16 + 1.1;
-        gsap.set(dot, { autoAlpha: 0 });
-        fan.to(dot, { autoAlpha: 1, duration: 0.25, ease: "power1.out" }, ringEnd);
 
-        const amp = (Number(dot.dataset.amp) * Math.PI) / 180;
-        const phase = Number(dot.dataset.phase) * Math.PI * 2;
-        const proxy = { p: phase };
+      // MAGENTA-PLANETEN: swipen entlang ihrer Linie (Quadratic-Bezier: x=1600·t,
+      // y = yTop·(1−2t+2t²) + 2t(1−t)·yBottom). t oszilliert um die Mitte ± amp.
+      gsap.utils.toArray<SVGCircleElement>("[data-hero-planet]").forEach((dot) => {
+        const yTop = Number(dot.dataset.ytop);
+        const yBottom = Number(dot.dataset.ybottom);
+        const amp = Number(dot.dataset.amp);
+        const proxy = { p: Number(dot.dataset.phase) * Math.PI * 2 };
         gsap.to(proxy, {
-          p: phase + Math.PI * 2,
+          p: proxy.p + Math.PI * 2,
           duration: Number(dot.dataset.dur),
           ease: "none",
           repeat: -1,
           onUpdate: () => {
-            const a = Math.PI / 2 + amp * Math.sin(proxy.p);
-            gsap.set(dot, { attr: { cx: 800 + 800 * Math.cos(a), cy: center + 800 * Math.sin(a) } });
+            const t = 0.5 + amp * Math.sin(proxy.p);
+            const x = 1600 * t;
+            const y = yTop * (1 - 2 * t + 2 * t * t) + 2 * t * (1 - t) * yBottom;
+            gsap.set(dot, { attr: { cx: x.toFixed(1), cy: y.toFixed(1) } });
           },
         });
       });
@@ -270,7 +317,13 @@ export function AlgarveHome() {
   );
 
   return (
-    <div ref={root} style={{ background: SECTION_BG }}>
+    <div ref={root} className="relative" style={{ background: SECTION_BG }}>
+      {/* MAGENTA-GRUND hinter dem Hero (Wolfram 14.07.): sobald sich die bauchige
+          Hero-Form beim Scrollen bildet, werden die Ecken außerhalb der Form
+          freigeschnitten — dahinter liegt SOFORT reines Magenta (kein dunkler
+          Background mehr). Deckt den Hero-Unterbau + die Übergangszone ab. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0" style={{ top: "26vh", bottom: 0, background: "#ff4370", zIndex: 0 }} />
+
       {/* ── FULLSCREEN-BRENNGLAS-HERO ─────────────────────────────────────── */}
       <section
         ref={heroSection}
@@ -282,15 +335,25 @@ export function AlgarveHome() {
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* Hintergrund: das rote Glas-B FULLSCREEN — außerhalb der Linse soft-blurry
-            (CSS-filter). Der Subtil-Zoom kommt synchron aus dem Linsen-rAF. */}
+        {/* ZWEI-LAYER-VISUAL (Wolfram 14.07.): unten das DUNKLE Visual, darüber das
+            HELLE/farbige — beide fullscreen soft-blurry (außerhalb der Linse) UND
+            Textur-Quellen der Linse. Das helle blendet langsam ein (uMix/opacity im
+            rAF) → wirkt, als würde die Helligkeit langsam hochgezogen. */}
         <img
           ref={heroImg}
-          src="/hero-v2/b-red.jpg"
+          src="/hero-v2/b-dark.jpg"
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           style={{ zIndex: 0, filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
+        />
+        <img
+          ref={heroImgB}
+          src="/hero-v2/b-bright.jpg"
+          alt=""
+          draggable={false}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ zIndex: 0, opacity: 0, filter: "blur(16px) saturate(1.05) brightness(0.92)", transform: "scale(1.05)", objectPosition: "50% 100%" }}
         />
 
         {/* Fokus oben: das Bild softet nach unten dunkel ab */}
@@ -320,64 +383,44 @@ export function AlgarveHome() {
       </section>
 
       {/* ── ÜBERGANGSZONE: weiße Satellitenringe + weicher Magenta-Übergang ── */}
-      <div ref={orbitZone} aria-hidden className="pointer-events-none relative z-[1] overflow-visible" style={{ height: "78vh", marginTop: "-3vh" }}>
-        <div
-          className="absolute inset-0 opacity-70"
-          style={{ maskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 100%)", WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 100%)" }}
-        >
-          <DustLayer boost={0.85} center={{ x: 0.5, y: 0.1 }} radius={0.8} />
-        </div>
-
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="xMidYMid slice" fill="none">
-          {/* WEISSE Satellitenringe (Wolfram 14.07.): gleichradig, mittelachsig */}
+      <div ref={orbitZone} aria-hidden className="pointer-events-none relative z-[1]" style={{ height: "78vh", marginTop: "-3vh", background: "#ff4370" }}>
+        {/* KEIN Gradient, KEIN Staub, KEINE Punkte (Wolfram 14.07.) — reines
+            Magenta, es arbeiten NUR die weißen Linien. preserveAspectRatio="none"
+            + edge-to-edge-Pfade → die Linien gehen full-size bis an beide Ränder. */}
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="none" fill="none">
+          {/* Edge-to-edge-Linien, deren Bogen der bauchigen Hero-Unterkante folgt.
+              Auf den Linien swipen kleine Magenta-Planeten (Wolfram 14.07.). */}
           {[
-            { top: 190, alpha: 0.5 },
-            { top: 300, alpha: 0.4 },
-            { top: 420, alpha: 0.3 },
-            { top: 550, alpha: 0.22 },
-          ].map((ring, i) => (
-            <circle
-              key={`ring${i}`}
-              data-hero-ring
-              data-top={ring.top}
-              cx={800}
-              cy={190 - 800}
-              r={800}
-              stroke={`rgba(248,247,243,${ring.alpha})`}
-              strokeWidth={1.4}
-            />
-          ))}
-          {[
-            { top: 300, amp: 20, dur: 30, phase: 0.15, r: 6 },
-            { top: 420, amp: 26, dur: 42, phase: 0.6, r: 5 },
-            { top: 550, amp: 22, dur: 54, phase: 0.35, r: 5.5 },
-          ].map((d, i) => (
-            <circle
-              key={`dot${i}`}
-              data-hero-ringdot
-              data-center={d.top - 800}
-              data-amp={d.amp}
-              data-dur={d.dur}
-              data-phase={d.phase}
-              cx={800}
-              cy={d.top}
-              r={d.r}
-              fill="#ff4370"
-              style={{ filter: "drop-shadow(0 0 8px #ff4370)" }}
-            />
+            { yTop: 30, yBottom: 300, alpha: 0.62, amp: 0.15, dur: 26, phase: 0.1 },
+            { yTop: 130, yBottom: 430, alpha: 0.5, amp: 0.19, dur: 38, phase: 0.55 },
+            { yTop: 250, yBottom: 560, alpha: 0.38, amp: 0.16, dur: 48, phase: 0.3 },
+            { yTop: 380, yBottom: 690, alpha: 0.26, amp: 0.13, dur: 34, phase: 0.8 },
+          ].map((r, i) => (
+            <g key={`ring${i}`} data-hero-ring data-ytop={r.yTop} data-ybottom={r.yBottom}>
+              <path
+                d={`M 0 ${r.yTop} Q 800 ${r.yBottom} 1600 ${r.yTop}`}
+                stroke={`rgba(248,247,243,${r.alpha})`}
+                strokeWidth={1.6}
+                vectorEffect="non-scaling-stroke"
+                // weicher weißer Glow auf den Linien (Wolfram 14.07.)
+                style={{ filter: "drop-shadow(0 0 5px rgba(248,247,243,0.85)) drop-shadow(0 0 14px rgba(248,247,243,0.45))" }}
+              />
+              {i < 3 && (
+                <circle
+                  data-hero-planet
+                  data-ytop={r.yTop}
+                  data-ybottom={r.yBottom}
+                  data-amp={r.amp}
+                  data-dur={r.dur}
+                  data-phase={r.phase}
+                  r={7}
+                  fill="#f8f7f3"
+                  style={{ filter: "drop-shadow(0 0 9px rgba(248,247,243,0.9)) drop-shadow(0 0 18px rgba(248,247,243,0.5))" }}
+                />
+              )}
+            </g>
           ))}
         </svg>
-
-        {/* MAGENTA-ÜBERGANG — sehr weich (viele Stops), folgt der Ring-Biegung
-            (Zentrum weit oben, „Smile"-Bogen). Oben transparent (Staub), unten
-            voll Magenta → nahtlos in die Statement-Fläche. */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(125% 140% at 50% -34%, rgba(255,67,112,0) 46%, rgba(255,67,112,0.08) 58%, rgba(255,67,112,0.24) 68%, rgba(255,67,112,0.5) 78%, rgba(255,67,112,0.8) 88%, #ff4370 96%)",
-          }}
-        />
       </div>
     </div>
   );
