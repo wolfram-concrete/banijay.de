@@ -55,7 +55,10 @@ const RING_MAGENTA = [
 // bis an BEIDE Screen-Ränder (Div breiter als 100vw → Seitenkanten off-screen, nie
 // L/R abgeschnitten), in Synchronkurve mit dem Hero (border-radius 0 0 50vw 50vw).
 const HERO_R = 50; // vw — Hero-Kurvenradius
-const RING_EXTRA = [2.5, 8, 13.5]; // vw — Radius-Zuwachs je Ring (nach außen wachsend)
+// Abstände wachsen nach AUSSEN (Wolfram 15.07.): Gap Hero→Ring1 = G, Ring1→Ring2 = 2G,
+// Ring2→Ring3 = 3G  →  kumulierter Radius-Zuwachs = G, 3G, 6G (mit G = 3vw).
+const RING_GAP = 3; // vw — Basis-Abstand
+const RING_EXTRA = [RING_GAP, RING_GAP * 3, RING_GAP * 6]; // = [3, 9, 18] vw
 
 export function AlgarveHome({
   variant = "home",
@@ -135,17 +138,19 @@ export function AlgarveHome({
       const rings = gsap.utils.toArray<HTMLElement>("[data-hero-ring]");
       const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
 
-      // RING-/DOT-REVEAL AN DIE KURVE GEKOPPELT (Wolfram 15.07.): die Ringe blenden in
-      // der LETZTEN Phase des Kurven-Aufbaus ein und stehen GENAU dann voll, wenn die
-      // Hero-Kurve fertig ist (v→1) → kein Versatz / Luftleerraum, kein separater Trigger.
+      // RING-/DOT-REVEAL AN DIE KURVE GEKOPPELT + SEQUENTIELL (Wolfram 15.07.): die drei
+      // Ringe bauen sich NACHEINANDER (innen → außen) über den Kurven-Fortschritt auf.
+      // Weil die Ringe konzentrisch an den Seiten schon während des Kurven-Aufbaus sichtbar
+      // sind, sieht man den gestaffelten Aufbau — und alle stehen, wenn die Kurve fertig ist
+      // (v→1) → kein Versatz/Luftleerraum. Innerster zuerst, äußerster zuletzt.
       const revealRings = (v: number) => {
         rings.forEach((ring, i) => {
-          const start = 0.78 + i * 0.04;
-          ring.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / (1 - start)));
+          const start = 0.45 + i * 0.18; // 0.45 · 0.63 · 0.81 — klar nacheinander
+          ring.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / 0.17));
         });
         dots.forEach((dot, i) => {
-          const start = 0.86 + i * 0.03;
-          dot.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / (1 - start)));
+          const start = 0.5 + i * 0.16; // folgen ihrem Ring, alle voll bei v→1
+          dot.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / 0.14));
         });
       };
 
@@ -159,10 +164,8 @@ export function AlgarveHome({
         applyCurve(1);
       } else {
         applyCurve(0);
-        // PHASE 1 (Wolfram 14.07.): der Hero ist GEPINNT — die Seite bleibt fixed und
-        // der erste Scroll baut NUR den radialen Kreis (Kurve) auf. In der Schlussphase
-        // blenden die Satellitenringe ein (revealRings), sodass sie mit der fertigen
-        // Kurve schon stehen. Danach löst der Pin und die Seite scrollt weiter.
+        // PHASE 1: der Hero ist GEPINNT — der erste Scroll baut die radiale Kurve auf; in
+        // der Schlussphase bauen sich die Ringe nacheinander auf (revealRings).
         ScrollTrigger.create({
           trigger: heroSection.current,
           start: "top top",
@@ -364,7 +367,7 @@ export function AlgarveHome({
         {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
             Linie und laufen komplett aus dem Bild (GSAP setzt left/top in %). */}
         {LINES.slice(0, 3).map((_, i) => {
-          const size = 14 - i * 2;
+          const size = 9 - i * 2; // kleiner (Wolfram 15.07.): 9 · 7 · 5 px
           return (
             <div
               key={`dot${i}`}

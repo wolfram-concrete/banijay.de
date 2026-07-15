@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Satellitenringe: sequentieller Aufbau, wachsende Abstände, Dots auf dem Radius (15.07., Nacht XIX)
+- **Ringe bauen sich NACHEINANDER auf** (`AlgarveHome.tsx`, global): innen → außen, gestaffelt an den
+  Kurven-Fortschritt gekoppelt (revealRings) — alle stehen, wenn die Hero-Kurve fertig ist (kein Versatz).
+- **Abstände wachsen nach außen**: Gap Hero→Ring1 = G, Ring1→Ring2 = 2G, Ring2→Ring3 = 3G (kumulierter
+  Radius-Zuwachs [3, 9, 18] vw).
+- **Planeten-Dots**: sitzen exakt auf dem Ring-Radius (Kreisgleichung zum konzentrischen Zentrum) und sind
+  kleiner (9 · 7 · 5 px).
+
 ### Konzentrische Satellitenringe (randbündig) + About-Facts-/Local-Layout (15.07., Nacht XVIII)
 - **Satellitenringe komplett neu** (`AlgarveHome.tsx`): jetzt KONZENTRISCH mit der Hero-Kurve (gleiches
   Kreiszentrum, wachsender Radius) und HINTER dem Hero gerendert. Die Ring-Divs sind breiter als 100vw →
