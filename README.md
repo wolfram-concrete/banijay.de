@@ -34,7 +34,16 @@ Magenta-Flächen auf Schwarz. An der Headline „Ein Dach. Viele Handschriften."
 Sternenstaub in einen Hyperspace-**Warp-Blende** und leitet in die Team-Section über; ein
 subtiles Back-to-Top-Widget erscheint nach einigen Sektionen unten rechts. Companies liegen in `companiesDirectory.ts` (40 Einträge inkl.
 All3Media-Fusion) und öffnen als Scroll-Flip-Lightbox. Das „Banijay Ökosystem" erscheint als
-gepinnte Atom-Orbit-Grafik. Der vollständige Verlauf steht in `CHANGELOG.md`.
+gepinnte Atom-Orbit-Grafik.
+
+Die Editorial-Section der Home trägt ein CEO-Porträt im großen Sticky-Bildcontainer, „Die Story"
+auf hellem Paper-Feld und einen **IP-Brands-Doppelslider** (zwei gegenläufige Reihen der
+ikonischen Formate in Original-Proportion, weboptimiert aus `/public/ip-brands`). Team-Headlines
+bauen sich global wortweise aus einer Maske auf. Die About-Facts stehen auf großen Screens
+zweispaltig (Copy links, Fakten-Block rechts), das Ökosystem-Verzeichnis in **4 Spalten**
+(CSS-columns). Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
+Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
+Film-Snippets ragen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
 ## Stack
 
