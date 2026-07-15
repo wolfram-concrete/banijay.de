@@ -39,7 +39,9 @@ gepinnte Atom-Orbit-Grafik.
 Die Editorial-Section der Home trägt ein CEO-Porträt im großen Sticky-Bildcontainer, „Die Story"
 auf hellem Paper-Feld und einen **IP-Brands-Doppelslider** (zwei gegenläufige Reihen der
 ikonischen Formate in Original-Proportion, weboptimiert aus `/public/ip-brands`). Team-Headlines
-bauen sich global wortweise aus einer Maske auf. Die About-Facts stehen auf großen Screens
+bauen sich global wortweise aus einer Maske auf; das Team-Grid ist auf sehr breiten Screens
+auf `max 1680px` gedeckelt und zentriert, damit die Porträt-Kacheln nicht bis an die Ränder
+laufen und weniger vom Gesicht beschnitten wird. Die About-Facts stehen auf großen Screens
 zweispaltig (Copy links, Fakten-Block rechts), das Ökosystem-Verzeichnis in **4 Spalten**
 (CSS-columns). Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
 Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
