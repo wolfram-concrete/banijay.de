@@ -235,7 +235,18 @@ export function AlgarveEcosystem() {
       {/* Der Teller: zentriert, mit vertikalen Gyroskop-Ringen ums Zentrum. Größer
           skaliert (Wolfram 14.07.): engeres viewBox (weniger Leerrand → Grafik füllt
           den Raum), höheres max-width auf großen Screens. */}
-      <div data-eco-reveal className="relative mx-auto mt-8 w-full max-w-[2000px]" style={{ aspectRatio: "1300 / 640" }}>
+      <div
+        data-eco-reveal
+        className="relative mx-auto mt-8"
+        style={{
+          aspectRatio: "1300 / 640",
+          // Zusätzlich über die HÖHE begrenzt (Wolfram 15.07.): auf niedrigeren Viewports
+          // (Laptop) wurde die Grafik sonst höher als der gepinnte 100vh-Screen → unten
+          // abgeschnitten (Orbits + aufgeklappte Entertainment-Karte). Die Breite wird so
+          // gedeckelt, dass die Höhe max. ~60vh bleibt → alles passt in den Viewport.
+          width: "min(100%, 2000px, calc(60vh * 1300 / 640))",
+        }}
+      >
         {/* VERDICHTETER STERNENSTAUB im Zentrum (Wolfram 14.07.): eigene, eng um
             die Mitte konzentrierte Staubebene HINTER den Orbits — dichter Kern
             hinter dem B, fällt radial ab. Liegt vor dem Glow, unter SVG/B/Cards. */}
@@ -366,15 +377,17 @@ export function AlgarveEcosystem() {
                   }}
                 >
                   <ul className="m-0 min-h-0 list-none overflow-hidden p-0">
-                    <div className="flex flex-col px-3.5 pb-3 pt-1">
+                    {/* Kompakter (Wolfram 15.07.): kleinere Zeilen/Padding → auch die
+                        11-zeilige Entertainment-Karte passt in den gepinnten Viewport. */}
+                    <div className="flex flex-col px-3.5 pb-2 pt-0.5">
                       {cat.companies.map((c) => (
-                        <li key={c.name} className="leading-snug">
+                        <li key={c.name} className="leading-tight">
                           {c.url ? (
                             <a
                               href={c.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group inline-flex items-center gap-1 py-[3px] text-[1.15rem] no-underline"
+                              className="group inline-flex items-center gap-1 py-[2px] text-[0.98rem] no-underline"
                               style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500 }}
                             >
                               <span className="relative">
@@ -384,7 +397,7 @@ export function AlgarveEcosystem() {
                               <ArrowUpRight className="h-3 w-3 opacity-60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                             </a>
                           ) : (
-                            <span className="inline-block py-[3px] text-[1.15rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
+                            <span className="inline-block py-[2px] text-[0.98rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
                               {c.name}
                             </span>
                           )}
