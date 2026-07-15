@@ -57,8 +57,10 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
   audio: { orbit: 0, deg: 188 },
   entertainment: { orbit: 0, deg: -4 },
   live: { orbit: 1, deg: -158 },
-  artists: { orbit: 1, deg: -26 },
-  distribution: { orbit: 2, deg: -104 },
+  // Artists weiter nach rechts/unten & Distribution weiter nach links/oben gezogen
+  // (Wolfram 15.07.) → die beiden oberen Karten überlappen nicht mehr.
+  artists: { orbit: 1, deg: -10 },
+  distribution: { orbit: 2, deg: -122 },
   fiction: { orbit: 2, deg: 62 },
   tech: { orbit: 3, deg: 138 },
 };
@@ -93,6 +95,8 @@ export function AlgarveEcosystem() {
   const root = useRef<HTMLElement>(null);
   // Keine geöffnete Card beim Eintritt (Wolfram 13.07.): Cards erst auf Klick.
   const [active, setActive] = useState<string | null>(null);
+  // Hover-Highlight (Wolfram 15.07.): beim Überfahren färbt sich die Card magenta.
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useGSAP(
     () => {
@@ -124,9 +128,12 @@ export function AlgarveEcosystem() {
       // x/y-Drift auf dem INNEREN Glas-Container. Wichtig: NICHT der äußere
       // [data-eco-card]-Wrapper (der trägt Anker-Transform + CSS-Transition —
       // zwei Writer auf transform waren die Ruckel-Ursache der V5-Floats).
+      // Float DEUTLICH ruhiger (Wolfram 15.07.: „warum tanzen die Karten"): winzige,
+      // langsame Drift statt sichtbarem Wabern — die Karten stehen quasi, nur ein Hauch
+      // Leben. Kleinere Amplitude verhindert auch, dass benachbarte Karten ineinander
+      // driften.
       gsap.utils.toArray<HTMLElement>("[data-eco-float]").forEach((el, i) => {
-        gsap.to(el, { y: "+=5", duration: 4.5 + (i % 4) * 0.9, ease: "sine.inOut", yoyo: true, repeat: -1, delay: i * 0.35 });
-        gsap.to(el, { x: "+=3", duration: 6.2 + (i % 3) * 1.1, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.4 + i * 0.27 });
+        gsap.to(el, { y: "+=1.5", duration: 7 + (i % 4) * 1.1, ease: "sine.inOut", yoyo: true, repeat: -1, delay: i * 0.35 });
       });
 
       // EXCHANGE-CHOREOGRAFIE (Wolfram 13.07.): die Section PINNT und tauscht
@@ -306,6 +313,8 @@ export function AlgarveEcosystem() {
           const pos = CHIP_POS[cat.key];
           const p = orbitPoint(pos.orbit, pos.deg);
           const isActive = cat.key === active;
+          const isHover = cat.key === hovered && !isActive;
+          const lit = isActive || isHover; // magenta bei Klick ODER Hover
           // Responsive Anker: Randnähe → Card klappt nach innen auf (kein Clipping)
           const fx = (p.x + 50) / 1300;
           const fy = p.y / 640;
@@ -321,6 +330,8 @@ export function AlgarveEcosystem() {
               key={cat.key}
               data-eco-card
               className="absolute"
+              onMouseEnter={() => setHovered(cat.key)}
+              onMouseLeave={() => setHovered((h) => (h === cat.key ? null : h))}
               style={{
                 left: `${(fx * 100).toFixed(3)}%`,
                 top: `${((p.y / 640) * 100).toFixed(3)}%`,
@@ -328,26 +339,31 @@ export function AlgarveEcosystem() {
                 transform: `translate(${anchorX}, ${anchorY}) scale(${isActive ? 1.04 : 1})`,
                 transformOrigin: `${originX} ${originY}`,
                 transition: "transform .35s cubic-bezier(.2,.8,.2,1)",
-                zIndex: isActive ? 30 : 10,
+                zIndex: isActive ? 30 : isHover ? 20 : 10,
               }}
             >
               <div
                 data-eco-float
                 style={{
                   borderRadius: 6,
-                  // SUBTIL & LEICHT (Wolfram 10.07.): kaum Eigenfläche — der
-                  // Background scheint durch, nur Blur + hauchdünne Gloss-Kante
+                  // Magenta bei Klick (voll) ODER Hover (subtiler Tint) — Wolfram 15.07.;
+                  // sonst maximal transparent (nur hauchdünne Kante).
                   background: isActive
                     ? "linear-gradient(165deg, rgba(255,67,112,0.72) 0%, rgba(255,67,112,0.5) 100%)"
+                    : isHover
+                    ? "linear-gradient(165deg, rgba(255,67,112,0.42) 0%, rgba(255,67,112,0.28) 100%)"
                     : "transparent",
-                  // inaktiv MAXIMAL transparent (Wolfram 13.07.): kaum Blur, nur
-                  // eine hauchdünne Kante — die Balken erscheinen sehr subtil.
-                  backdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(2px)",
-                  WebkitBackdropFilter: isActive ? "blur(18px) saturate(1.6)" : "blur(2px)",
+                  backdropFilter: lit ? "blur(18px) saturate(1.6)" : "blur(2px)",
+                  WebkitBackdropFilter: lit ? "blur(18px) saturate(1.6)" : "blur(2px)",
                   boxShadow: isActive
                     ? "inset 0 1px 0 rgba(255,255,255,0.35), 0 14px 30px -16px rgba(255,67,112,0.4)"
+                    : isHover
+                    ? "inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 24px -16px rgba(255,67,112,0.34)"
                     : "inset 0 0 0 1px rgba(255,255,255,0.09)",
-                  minWidth: isActive ? "min(300px, 86vw)" : 0,
+                  transition: "background .28s ease, box-shadow .28s ease, backdrop-filter .28s ease",
+                  // Content-Breite (Wolfram 15.07.): nur so breit wie der längste Inhalt,
+                  // gedeckelt bei 380px. Kein erzwungenes minWidth mehr.
+                  minWidth: 0,
                   maxWidth: "min(380px, 92vw)",
                   overflow: "hidden",
                 }}
@@ -373,6 +389,10 @@ export function AlgarveEcosystem() {
                   style={{
                     display: "grid",
                     gridTemplateRows: isActive ? "1fr" : "0fr",
+                    // Eingeklappt KEINE Breite beisteuern (Wolfram 15.07.): sonst zieht der
+                    // längste Company-Name die Chip-Breite auf. So ist der Chip nur so breit
+                    // wie sein Label; erst beim Aufklappen wächst er auf Content-Breite.
+                    width: isActive ? "auto" : 0,
                     transition: "grid-template-rows .45s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
