@@ -5,6 +5,15 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### About-Facts-Regeln vereinheitlicht + „Partner für Entertainment" Scroll-Fit (15.07., Nacht XXIII)
+- **About-Facts** (`ProofVideo.tsx`, `site.ts`, `CountUp.tsx`): die Content-Regeln der Editorial-Fact-Section
+  übertragen — Wording („Mitarbeiterinnen und Mitarbeiter", „Companies und Labels", „Views & Zuschauer
+  jährlich"), Einheiten-Suffixe (1.300+, 3.000 hrs.), Typo IMMER WEISS (auch auf der Magenta-Kachel), und der
+  Einheiten-Suffix kleiner als die Ziffer (0,56×, via neuer `suffixStyle`-Prop in CountUp).
+- **About „Partner für Entertainment"** (`PartnerStack.tsx`): Headline/Copy/CTA sind auf Desktop jetzt STICKY
+  oben und die (kleineren) Flip-Karten rasten darunter ein (Höhe 70→50vh, Tops auf ~36–45vh) → beim Scroll-Stop
+  sind Headline + Copy + CTA und die Karten gemeinsam im selben Screen sichtbar.
+
 ### Editorial-/Ökosystem-Textfeinschliff (15.07., Nacht XXII)
 - **Home Ökosystem-Swap-Headline** (`EcosystemSection.tsx`): Zeile „Ein Ökosystem" entfernt → jetzt zweizeilig
   „40+ Companies" / „& Labels".

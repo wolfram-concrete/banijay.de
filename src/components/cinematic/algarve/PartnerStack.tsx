@@ -22,7 +22,9 @@ const MAGENTA = "#ff4370";
 const INK = "#0e0d0b";
 const PAPER = "#f8f7f3";
 
-const CARD_TOPS = ["8vw", "11vw", "14vw", "17vw"];
+// Karten rasten TIEFER ein (Wolfram 15.07.): unter der sticky Headline/Copy/CTA →
+// beim Scroll-Stop sind Headline + Karte gemeinsam im selben Screen zu sehen.
+const CARD_TOPS = ["36vh", "39vh", "42vh", "45vh"];
 const CARD_SCALES = [0.7, 0.78, 0.86, 0.94];
 
 // Mobile: die Karten rasten TIEFER ein (unter der Sticky-Nav + Abstand zum MENU),
@@ -150,8 +152,11 @@ export function AlgarvePartnerStack() {
         {/* ── Intro-Block (schwarz auf Magenta) ────────────────────────────── */}
         <div
           data-partner-headline
-          className="relative z-[30] mx-auto flex max-w-[68vw] flex-col items-center text-center max-[767px]:!max-w-full"
-          style={{ gap: "1.2vw", marginBottom: "4.5vw" }}
+          // Desktop: Headline/Copy/CTA STICKY oben (Wolfram 15.07.) → bleiben sichtbar,
+          // während die (kleineren) Karten darunter im selben Screen stapeln. Mobile:
+          // eigener GSAP-Pin (unverändert).
+          className="relative z-[30] mx-auto flex max-w-[68vw] flex-col items-center text-center md:sticky md:top-[3vh] max-[767px]:!max-w-full"
+          style={{ gap: "1vw", marginBottom: "2vw" }}
         >
           <h2 data-partner-reveal className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "3.6vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.11vw", color: INK }}>
             {partnership.headline}
@@ -185,7 +190,7 @@ export function AlgarvePartnerStack() {
               style={{
                 position: "sticky",
                 top: CARD_TOPS[i],
-                height: "70vh",
+                height: "50vh",
                 marginBottom: i === 0 ? "2vw" : `${-2.8 * i}vw`,
                 transformOrigin: "50% 0%",
                 willChange: "transform, filter",

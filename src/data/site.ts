@@ -31,10 +31,11 @@ export interface Stat {
 
 /** Zahlenmodule. Auf Home max. 5 (Konzept Section 4). */
 export const STATS: Stat[] = [
-  { value: "1.300", label: "Mitarbeitende", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
-  { value: "40+", label: "Companies & Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
-  { value: "4 Mrd.", label: "Views & Zuschauer", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
-  { value: "3.000", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
+  // Wording + Einheiten-Suffixe wie in der Editorial-Fact-Section (Wolfram 15.07.).
+  { value: "1.300+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
+  { value: "40+", label: "Companies und Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
+  { value: "4 Mrd.", label: "Views & Zuschauer jährlich", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
+  { value: "3.000 hrs.", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
   { value: "130+", label: "Companies weltweit", note: "Lokale Marktnähe mit internationaler Banijay-Perspektive." },
   {
     value: "250 Mio. €",

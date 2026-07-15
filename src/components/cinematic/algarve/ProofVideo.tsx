@@ -25,7 +25,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
-const INK = "#0e0d0b";
 const ACCENT = "#ff4370";
 
 export function AlgarveProofVideo({
@@ -131,21 +130,21 @@ export function AlgarveProofVideo({
     <div className="grid grid-cols-2 gap-[1vw] md:grid-cols-3 max-[767px]:!gap-[3vw]">
       {nonAbout.map((s, i) => {
         const accent = i === 0;
-        // V2-Mood: Nicht-Akzent-Kacheln als helles Milchglas auf dunklem Backdrop;
-        // die Magenta-Akzent-Kachel behält Ink-Typo (bewusster Vibrant-Moment).
+        // Content-Regeln wie Editorial-Facts (Wolfram 15.07.): Typo IMMER WEISS (auch auf
+        // der Magenta-Akzent-Kachel), Einheiten-Suffix kleiner als die Ziffer.
         const bg = accent ? ACCENT : "rgba(255,255,255,0.06)";
         return (
           <div
             key={s.label}
             data-pv-source={!accent && i === nonAbout.length - 1 ? true : undefined}
             className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!p-[5vw] ${accent ? "col-span-2" : ""}`}
-            style={{ background: bg, color: accent ? INK : PAPER, padding: "1.6vw", minHeight: "9vw" }}
+            style={{ background: bg, color: PAPER, padding: "1.6vw", minHeight: "9vw" }}
           >
             <span
               className="max-[767px]:!text-[10.5vw]"
               style={{ fontFamily: SHARP, fontSize: accent ? "4.4vw" : "3.2vw", lineHeight: "100%", fontWeight: 500, letterSpacing: "-0.14vw", whiteSpace: "nowrap" }}
             >
-              <CountUp value={s.value} />
+              <CountUp value={s.value} suffixStyle={{ fontSize: "0.56em" }} />
             </span>
             <div className="mt-[1vw] max-[767px]:!mt-[2vw]">
               <p className="max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}>

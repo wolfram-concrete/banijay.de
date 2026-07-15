@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -20,7 +20,16 @@ function parse(value: string): { target: number; suffix: string } {
   return { target: parseInt(m[1].replace(/\./g, ""), 10), suffix: m[2] };
 }
 
-export function CountUp({ value, className }: { value: string; className?: string }) {
+export function CountUp({
+  value,
+  className,
+  suffixStyle,
+}: {
+  value: string;
+  className?: string;
+  /** Optionales Styling für den Einheiten-Suffix (z. B. kleinere Schrift). */
+  suffixStyle?: React.CSSProperties;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const { target, suffix } = parse(value);
   const [n, setN] = useState(0);
@@ -65,7 +74,7 @@ export function CountUp({ value, className }: { value: string; className?: strin
   return (
     <span ref={ref} className={className}>
       {n.toLocaleString("de-DE")}
-      {suffix}
+      {suffix && (suffixStyle ? <span style={suffixStyle}>{suffix}</span> : suffix)}
     </span>
   );
 }
