@@ -63,15 +63,6 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     ],
   },
   {
-    key: "fiction",
-    label: "Fiction",
-    companies: [
-      { name: "MadeFor", url: "https://madefor.film/" },
-      { name: "Good Humor", url: "https://goodhumor.de/" },
-      { name: "Dynamic Ally Pictures", url: "https://dynamic-ally-pictures.com/" },
-    ],
-  },
-  {
     key: "live",
     label: "Live",
     companies: [
@@ -124,6 +115,17 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Cape Cross Entertainment", url: "http://www.capecross.de/" },
       { name: "Cape Cross Postproduction", url: "http://www.capecross.de/" },
       { name: "Banijay Infrastructure" },
+    ],
+  },
+  // Fiction ans Ende (Wolfram 15.07.): unter Tech einsortiert → die 4 Spalten der
+  // „Ein System, viele Handschriften"-Section füllen sich ausgewogener.
+  {
+    key: "fiction",
+    label: "Fiction",
+    companies: [
+      { name: "MadeFor", url: "https://madefor.film/" },
+      { name: "Good Humor", url: "https://goodhumor.de/" },
+      { name: "Dynamic Ally Pictures", url: "https://dynamic-ally-pictures.com/" },
     ],
   },
 ];
