@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Konzentrische Satellitenringe (randbündig) + About-Facts-/Local-Layout (15.07., Nacht XVIII)
+- **Satellitenringe komplett neu** (`AlgarveHome.tsx`): jetzt KONZENTRISCH mit der Hero-Kurve (gleiches
+  Kreiszentrum, wachsender Radius) und HINTER dem Hero gerendert. Die Ring-Divs sind breiter als 100vw →
+  die geraden Seitenkanten liegen off-screen, die drei Bögen laufen bis an BEIDE Screen-Ränder (nie mehr
+  links/rechts abgeschnitten), in Synchronkurve mit dem Hero. Der Reveal ist an die KURVE gekoppelt (blenden
+  in der Schlussphase des Kurven-Aufbaus ein, stehen voll wenn die Kurve fertig ist) → kein Versatz/
+  Luftleerraum mehr, kein separater 38%-Trigger. Planeten-Dots laufen auf der konzentrischen Kreisbahn.
+- **About-Facts (`ProofVideo.tsx`)**: Intro-Copy links oben (Intro-Format, vorige Größe), top-aligned an der
+  Oberlänge; der Fakten-Block sitzt rechts daneben und bleedet nach rechts über das Grid hinaus — die Kacheln
+  überlappen nicht mehr. Das aus dem Fakten-Block skalierende Video startet erst ab Sekunde 19.
+- **About „Local everywhere" (`WorldNetwork.tsx`)**: der Bildcontainer streckt sich auf die volle Höhe der
+  Textspalte — Oberkante an der Headline, Unterkante bündig mit dem CTA „Banijay World ansehen".
+
 ### Satellitenringe: drei sichtbare Linien + weiche Rand-Enden (15.07., Nacht XVII)
 - **Satellitenringe** (`AlgarveHome.tsx`): auf der Home (Magenta) waren die pink/magenta Ringe unsichtbar →
   jetzt DREI **lichte weiße Linien** mit fallender Deckkraft (auf den dunklen Subpages bleiben die moody

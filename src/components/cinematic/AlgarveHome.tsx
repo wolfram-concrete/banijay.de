@@ -50,14 +50,12 @@ const RING_MAGENTA = [
   { alpha: 0.52, color: "255,255,255" },
 ];
 
-// RING-GEOMETRIE (Wolfram 14.07.): die Ringe besitzen EXAKT die border-radius-Kurve
-// des Heros (RING_RADIUS = Hero-Radius = 50vw), nur nach unten versetzt → immer
-// derselbe Kurvenradius wie der Hero, dann wachsen sie. 3 Ringe in ENGEM Abstand.
-const RING_RADIUS = 50; // vw — identisch zum Hero (borderRadius 0 0 50vw 50vw)
-const RING_H = 62; // vw — Div-Höhe (> Radius, damit die Ecken voll ausgebildet sind)
-const RING_BASE = 4; // vw — Tiefe des ersten Rings unter der Hero-Kante
-const RING_GAP = 6; // vw — enger Abstand zwischen den Ringen
-const ringDepth = (i: number) => RING_BASE + i * RING_GAP;
+// RING-GEOMETRIE (Wolfram 15.07.): KONZENTRISCH mit der Hero-Kurve — gleiches
+// Kreiszentrum, Radius wächst je Ring. Die Ringe liegen HINTER dem Hero und laufen
+// bis an BEIDE Screen-Ränder (Div breiter als 100vw → Seitenkanten off-screen, nie
+// L/R abgeschnitten), in Synchronkurve mit dem Hero (border-radius 0 0 50vw 50vw).
+const HERO_R = 50; // vw — Hero-Kurvenradius
+const RING_EXTRA = [2.5, 8, 13.5]; // vw — Radius-Zuwachs je Ring (nach außen wachsend)
 
 export function AlgarveHome({
   variant = "home",
@@ -134,19 +132,37 @@ export function AlgarveHome({
     () => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      const rings = gsap.utils.toArray<HTMLElement>("[data-hero-ring]");
+      const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
+
+      // RING-/DOT-REVEAL AN DIE KURVE GEKOPPELT (Wolfram 15.07.): die Ringe blenden in
+      // der LETZTEN Phase des Kurven-Aufbaus ein und stehen GENAU dann voll, wenn die
+      // Hero-Kurve fertig ist (v→1) → kein Versatz / Luftleerraum, kein separater Trigger.
+      const revealRings = (v: number) => {
+        rings.forEach((ring, i) => {
+          const start = 0.78 + i * 0.04;
+          ring.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / (1 - start)));
+        });
+        dots.forEach((dot, i) => {
+          const start = 0.86 + i * 0.03;
+          dot.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / (1 - start)));
+        });
+      };
+
       const applyCurve = (v: number) => {
         curveP.current = v;
         const r = (v * 50).toFixed(2);
         if (heroSection.current) heroSection.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
+        revealRings(v);
       };
       if (reduce) {
         applyCurve(1);
       } else {
         applyCurve(0);
         // PHASE 1 (Wolfram 14.07.): der Hero ist GEPINNT — die Seite bleibt fixed und
-        // der erste Scroll baut NUR den radialen Kreis (Kurve) auf. Erst wenn die Kurve
-        // steht, löst der Pin und die ganze Seite scrollt normal weiter (vorher nicht).
-        // Gilt global auf allen Seiten (auch ohne Preloader).
+        // der erste Scroll baut NUR den radialen Kreis (Kurve) auf. In der Schlussphase
+        // blenden die Satellitenringe ein (revealRings), sodass sie mit der fertigen
+        // Kurve schon stehen. Danach löst der Pin und die Seite scrollt weiter.
         ScrollTrigger.create({
           trigger: heroSection.current,
           start: "top top",
@@ -165,32 +181,16 @@ export function AlgarveHome({
         );
       }
 
-      // PHASE 2 (Wolfram 14.07.): ERST wenn der Kreis steht und der Screen ein Stück
-      // weitergescrollt ist, wachsen die Satellitenringe LANGSAM und klar NACHEINANDER
-      // aus der radialen Kante heraus (nicht mehr alles auf einmal / zu wild). Späterer
-      // Trigger-Start (Beat nach der Kurve), längerer Scroll-Weg, weiterer Stagger.
-      const fan = gsap.timeline({
-        scrollTrigger: { trigger: orbitZone.current, start: "top 38%", end: "bottom 30%", scrub: 1.2 },
-      });
-      const rings = gsap.utils.toArray<HTMLElement>("[data-hero-ring]");
-      rings.forEach((ring, i) => {
-        // Grow-Reveal: die Ringe fahren aus der Hero-Kante nach unten heraus (fade +
-        // leichter Aufstieg), klar nacheinander. Kurve = immer Hero-Kurve (border-radius).
-        fan.fromTo(ring, { autoAlpha: 0, y: -18 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" }, i * 0.9);
-      });
-
-      // PLANETEN-DOTS: laufen EXAKT auf der Ring-Kreisbahn. Der Ring ist eine
-      // border-radius-Kurve = Kreis mit Radius RING_RADIUS, Zentrum mittig, RING_RADIUS
-      // vw ÜBER der jeweiligen Ring-Tiefe. y aus der Kreisgleichung (in vw) → der Dot
-      // sitzt garantiert auf derselben Kurve wie der Ring.
-      const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
+      // PLANETEN-DOTS: laufen auf der KONZENTRISCHEN Ring-Kreisbahn (Zentrum HERO_R über
+      // der Orbit-Oberkante = Hero-Zentrum, Radius = HERO_R + RING_EXTRA[i]). y aus der
+      // Kreisgleichung (in vw) → der Dot sitzt garantiert auf derselben Kurve wie der Ring.
       dots.forEach((dot, i) => {
-        const cy = ringDepth(i) - RING_RADIUS; // Zentrum-y in vw (Orbit-Top-Koordinaten)
-        fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, i * 0.9 + 0.45);
+        const cy = -HERO_R; // Zentrum-y in vw (Orbit-Top-Koordinaten)
+        const radius = HERO_R + (RING_EXTRA[i] ?? 2.5);
         const place = (fx: number) => {
           const dx = (fx - 0.5) * 100; // horizontaler Abstand zur Mitte in vw
-          const inside = RING_RADIUS * RING_RADIUS - dx * dx;
-          const yvw = inside > 0 ? cy + Math.sqrt(inside) : -120;
+          const inside = radius * radius - dx * dx;
+          const yvw = inside > 0 ? cy + Math.sqrt(inside) : -999;
           dot.style.left = (fx * 100).toFixed(2) + "%";
           dot.style.top = `${yvw.toFixed(2)}vw`;
         };
@@ -323,59 +323,43 @@ export function AlgarveHome({
         ref={orbitZone}
         data-nav-theme={dark ? "dark" : "magenta"}
         aria-hidden
-        className="pointer-events-none relative z-[1] overflow-clip"
-        style={{
-          height: "52vh",
-          marginTop: "-3vh",
-          background: "transparent",
-          // Keine Top-Maske mehr (Wolfram 14.07.): die erste Linie liegt sichtbar bei
-          // yTop=30 und soll knackig bis an beide Ränder laufen — eine Maske würde die
-          // äußersten Enden wieder wegfaden (= wirkte „abgeschnitten links/rechts").
-        }}
+        className="pointer-events-none relative z-[1]"
+        style={{ height: "52vh", background: "transparent", overflow: "visible" }}
       >
         {dark && (
-          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
             <DustLayer boost={0.85} center={{ x: 0.5, y: 0.42 }} radius={0.95} />
           </div>
         )}
-        {/* SATELLITENRINGE als Div-Ringe mit EXAKT der Hero-Kurve (border-radius
-            0 0 50vw 50vw), nur um `ringDepth` nach unten versetzt → identischer
-            Kurvenradius wie der Hero. Nur die untere Wölbung liegt in der Zone, der
-            Rest (gerade Kanten oben) ist per overflow-clip abgeschnitten.
-            Wolfram 15.07.: horizontaler Fade-Mask an beiden Rändern → die Bögen
-            laufen weich aus, statt links/rechts hart abgeschnitten zu wirken. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            zIndex: 1,
-            // Radiale Maske (Wolfram 15.07.): opak in der unteren Mitte, weich auslaufend
-            // zu den Enden/Ecken hin → die Bogen-ANFÄNGE faden sanft aus statt links/rechts
-            // hart abgeschnitten zu wirken. Gilt für alle Pages.
-            maskImage: "radial-gradient(135% 128% at 50% 132%, #000 64%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(135% 128% at 50% 132%, #000 64%, transparent 100%)",
-          }}
-        >
-          {LINES.map((line, i) => {
-            const r = dark ? line : RING_MAGENTA[i] ?? line;
-            return (
-              <div
-                key={`ring${i}`}
-                data-hero-ring
-                aria-hidden
-                className="absolute left-0 w-full"
-                style={{
-                  top: `${ringDepth(i) - RING_H}vw`,
-                  height: `${RING_H}vw`,
-                  borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
-                  border: `1.6px solid rgba(${r.color},${r.alpha})`,
-                  boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
-                  willChange: "transform, opacity",
-                }}
-              />
-            );
-          })}
-        </div>
+        {/* KONZENTRISCHE SATELLITENRINGE (Wolfram 15.07.): gleiches Kreiszentrum wie die
+            Hero-Kurve (HERO_R über der Orbit-Oberkante = Hero-Zentrum), Radius wächst je
+            Ring. Der Div ist breiter als 100vw → die geraden Seitenkanten liegen
+            off-screen, die Bögen laufen bis an BEIDE Screen-Ränder (nie L/R abgeschnitten).
+            Die Ringe liegen HINTER dem Hero (Orbit-Zone z-1 < Hero z-2): die oberen/inneren
+            Teile deckt der Hero ab, nur die Bögen unter der Hero-Kurve zeigen sich. */}
+        {LINES.map((line, i) => {
+          const r = dark ? line : RING_MAGENTA[i] ?? line;
+          const e = RING_EXTRA[i] ?? 2.5;
+          return (
+            <div
+              key={`ring${i}`}
+              data-hero-ring
+              aria-hidden
+              className="absolute"
+              style={{
+                top: `-${HERO_R}vw`,
+                left: `-${e}vw`,
+                width: `${100 + 2 * e}vw`,
+                height: `${HERO_R + e}vw`,
+                borderRadius: `0 0 ${HERO_R + e}vw ${HERO_R + e}vw`,
+                border: `1.6px solid rgba(${r.color},${r.alpha})`,
+                boxShadow: `0 0 6px rgba(${r.color},0.5), 0 0 16px rgba(${r.color},0.28)`,
+                opacity: 0,
+                willChange: "opacity",
+              }}
+            />
+          );
+        })}
 
         {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
             Linie und laufen komplett aus dem Bild (GSAP setzt left/top in %). */}

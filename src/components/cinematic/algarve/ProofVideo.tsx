@@ -172,21 +172,24 @@ export function AlgarveProofVideo({
       {/* ── Gepinnte Bühne mit clip-path-Aufskalierung (Desktop + Mobile) ── */}
       <section ref={root} className="relative" style={{ height: "300vh", background: "transparent" }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
-          {/* Große Screens (Wolfram 15.07.): Intro-Copy LINKS, Fakten-Block als ein
-              Block RECHTS daneben — mittig ausbalanciert (mx-auto), nicht mehr alles
-              nach links verteilt. Mobile/responsive: gestapelt (Copy über Facts). */}
+          {/* Große Screens (Wolfram 15.07.): Intro-Copy LINKS oben bündig, der
+              Fakten-Block RECHTS daneben — top-aligned an der Oberlänge und nach rechts
+              über das Grid hinaus laufend (bleed bis fast an den Viewport-Rand).
+              Mobile/responsive: gestapelt (Copy über Facts). */}
           <div
-            className="mx-auto flex h-full w-full flex-col justify-center md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] md:items-center md:gap-[3.5vw] max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
-            style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
+            className="flex h-full w-full flex-col justify-center md:flex-row md:items-start md:justify-between max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
+            style={{ paddingLeft: "2vw", paddingRight: "0", paddingTop: "9vh", paddingBottom: "4vh" }}
           >
             <p
-              className="max-[767px]:!text-[5vw]"
-              style={{ fontFamily: SHARP, fontSize: "2.2vw", lineHeight: "130%", fontWeight: 500, color: PAPER, letterSpacing: "-0.03vw", margin: 0 }}
+              className="md:max-w-[34vw] md:pt-[0.4vw] md:shrink-0 max-[767px]:!text-[5vw]"
+              style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: PAPER, letterSpacing: "-0.03vw", margin: 0 }}
             >
               {proofText}
             </p>
 
-            <div className="md:!mt-0 mt-[2.5vw] max-[767px]:!mt-[8vw]">{bento}</div>
+            <div className="md:!mt-0 md:min-w-0 md:flex-1 md:pl-[4vw] md:pr-[2vw] mt-[2.5vw] max-[767px]:!mt-[8vw] max-[767px]:!pr-[4vw]">
+              {bento}
+            </div>
             {/* KEIN vorab sichtbarer Video-Container mehr — das Video wächst beim
                 Scrollen aus der grauen Quell-Kachel (data-pv-source) heraus. */}
           </div>
@@ -194,7 +197,22 @@ export function AlgarveProofVideo({
           {/* Wachsender Video-Container (clip-path von Quell-Kachel → full). Start
               unsichtbar (opacity 0) → kein Flash vor dem Scroll-In-Fade. */}
           <div ref={overlay} className="absolute inset-0 overflow-clip" style={{ willChange: "clip-path, opacity", opacity: 0 }}>
-            <video autoPlay muted loop playsInline poster={poster} className="absolute inset-0 h-full w-full object-cover">
+            {/* Video startet erst ab Sek 19 (Wolfram 15.07.) — initial + bei jedem
+                Loop zurück auf 19s springen. */}
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={poster}
+              className="absolute inset-0 h-full w-full object-cover"
+              onLoadedMetadata={(e) => {
+                if (e.currentTarget.currentTime < 19) e.currentTarget.currentTime = 19;
+              }}
+              onTimeUpdate={(e) => {
+                if (e.currentTarget.currentTime < 19) e.currentTarget.currentTime = 19;
+              }}
+            >
               <source src={video} type="video/mp4" />
             </video>
 

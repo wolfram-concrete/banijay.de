@@ -248,11 +248,13 @@ export function AlgarveWorldNetwork() {
               </a>
             </div>
 
-            {/* Cinematisches Banijay-Brand-Video (dasselbe wie auf der Home) */}
+            {/* Cinematisches Banijay-Brand-Video — Bildcontainer streckt sich auf die
+                volle Höhe der Textspalte (Oberkante Headline → Unterkante CTA), unten
+                rechts bündig mit dem CTA (Wolfram 15.07.). Mobile: festes Seitenverhältnis. */}
             <div
               data-wn-reveal
-              className="overflow-clip max-[767px]:!aspect-[16/10] max-[767px]:!h-auto"
-              style={{ height: "clamp(300px, 42vh, 480px)" }}
+              className="overflow-clip md:h-full md:self-stretch max-[767px]:!aspect-[16/10] max-[767px]:!h-auto"
+              style={{ minHeight: "clamp(300px, 42vh, 480px)" }}
             >
               <video
                 autoPlay
