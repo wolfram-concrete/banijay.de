@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Editorial-/Ökosystem-Textfeinschliff (15.07., Nacht XXII)
+- **Home Ökosystem-Swap-Headline** (`EcosystemSection.tsx`): Zeile „Ein Ökosystem" entfernt → jetzt zweizeilig
+  „40+ Companies" / „& Labels".
+- **Editorial „About Banijay"**: Punkt entfernt → „About Banijay".
+- **Editorial „Iconic IP"** (über dem IP-Slider): jetzt EINZEILER „Iconic IP" (Punkt weg), die zwei Wörter
+  konvergieren vertikal auf eine Zeile.
+- **Editorial Fact-Cards** (`EditorialStickyScene.tsx`): Label „Views & Zuschauer" → „Views & Zuschauer
+  jährlich"; Einheiten-Suffix (+/Mrd./hrs.) einheitlich & größer (≈32–46px statt 19–29px); „hrs" → „hrs.".
+- **Editorial**: Copytext-Block unter der IP-Bilderleiste entfernt.
+
 ### Preloader → Hero: Aufbau erst NACH dem Preloader (15.07., Nacht XXI)
 - **Home-Erstladen** (`IntroOverlay.tsx`, `AlgarveHome.tsx`): der Hero-Aufbau (3-Frame-Sequenz) startete bisher
   schon während der Preloader aus-/warp-blendet (bei ~6,5 s) → sichtbare Veränderung hinter dem laufenden

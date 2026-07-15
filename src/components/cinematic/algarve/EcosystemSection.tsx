@@ -66,7 +66,8 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
 
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
-const SWAP_LINES = ["Ein Ökosystem", "40+ Companies", "& Labels"] as const;
+// „Ein Ökosystem" entfernt (Wolfram 15.07.) → zweizeilige Swap-Headline.
+const SWAP_LINES = ["40+ Companies", "& Labels"] as const;
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",
@@ -223,11 +224,8 @@ export function AlgarveEcosystem() {
         <h2 data-eco-swap-first className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
           {SWAP_LINES[0]}
         </h2>
-        <h2 data-eco-swap-middle className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {SWAP_LINES[1]}
-        </h2>
         <h2 data-eco-swap-last className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {SWAP_LINES[2]}
+          {SWAP_LINES[1]}
         </h2>
       </div>
 

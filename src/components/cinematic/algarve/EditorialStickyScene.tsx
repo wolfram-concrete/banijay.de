@@ -39,12 +39,12 @@ const FACTS: Fact[] = [
   {
     value: 4,
     suffix: " Mrd.",
-    label: "Views & Zuschauer",
+    label: "Views & Zuschauer jährlich",
     copy: "Reichweite über lineare, digitale und Social-Ausspielwege hinweg — Monat für Monat.",
   },
   {
     value: 3000,
-    suffix: " hrs",
+    suffix: " hrs.",
     label: "Stunden Entertainment",
     copy: "Bühnenshows, Live-Sendungen, Serien, Online-Plattformen und Podcasts — Jahr für Jahr aus dem Verbund.",
   },
@@ -198,14 +198,14 @@ export function EditorialStickyScene() {
                       cursor: "pointer",
                     }}
                   >
-                    {/* Kopf: Zahl + Chevron. Ziffer 50% größer, Einheiten-Suffix 50%
-                        kleiner (Wolfram 15.07.). */}
+                    {/* Kopf: Zahl + Chevron. Große Ziffer; Einheiten-Suffix (+ / Mrd. /
+                        hrs.) einheitlich & etwas größer (Wolfram 15.07.). */}
                     <div className="flex w-full items-start justify-between gap-3">
                       <span style={{ fontFamily: SHARP, lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
                         <span data-fact-num style={{ fontSize: "clamp(3.3rem, 5.4vw, 87px)" }}>
                           0
                         </span>
-                        <span style={{ fontSize: "clamp(1.1rem, 1.8vw, 29px)", whiteSpace: "pre" }}>{f.suffix}</span>
+                        <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", whiteSpace: "pre" }}>{f.suffix}</span>
                       </span>
                       <ChevronDown
                         className="mt-1 h-5 w-5 shrink-0 transition-transform duration-300"

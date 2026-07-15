@@ -174,7 +174,7 @@ export function AlgarveEditorial() {
             {/* kein per-Zeilen-overflow-hidden → die Ä-Punkte bleiben sichtbar;
                 der Translate wird vom overflow-clip des Panels gefasst. */}
             <span data-ed-hl-first className="block">About</span>
-            <span data-ed-hl-last className="block">Banijay.</span>
+            <span data-ed-hl-last className="block">Banijay</span>
           </h2>
         </div>
 
@@ -220,8 +220,8 @@ export function AlgarveEditorial() {
           className="relative m-0"
           style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "112%", fontWeight: 500, textTransform: "uppercase", letterSpacing: "-0.02em" }}
         >
-          <span data-ed-hl2-first className="block">Iconic</span>
-          <span data-ed-hl2-last className="block">IP.</span>
+          <span data-ed-hl2-first className="inline-block">Iconic</span>
+          <span data-ed-hl2-last className="inline-block" style={{ marginLeft: "0.28em" }}>IP</span>
         </h2>
       </div>
 
@@ -257,22 +257,6 @@ export function AlgarveEditorial() {
         </div>
       </div>
 
-      {/* Bottom-Text + CTAs (Referenz: article-halves + bottom-button-wrap) */}
-      <div className="relative z-[1] mx-auto" style={{ maxWidth: "1800px", paddingLeft: "2vw", paddingRight: "2vw" }}>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_3fr]">
-          <div className="max-md:hidden" />
-          <div data-ed-reveal className="flex flex-col" style={{ gap: "3rem" }}>
-            <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(248,247,243,0.85)" }}>
-              <p className="m-0">
-                Für das deutsche Netzwerk ist die Fusion vor allem eins: Zuwachs an Handschriften. Mit filmpool kommt jahrzehntelange Fiction- und Factual-Kompetenz dazu, mit South &amp; Browse eine weitere eigenständige Produzentenstimme — Companies, die das Ökosystem breiter machen, ohne seine Logik zu ändern: eigenständige Häuser, ein gemeinsames System.
-              </p>
-              <p className="m-0">
-                Die Zukunft bleibt dezentral: Banijay Entertainment setzt auf ländergeführte Strukturen — Entscheidungen fallen dort, wo die Inhalte entstehen. Für Deutschland heißt das: Das Ökosystem um CEO Marcus Wolter wächst aus eigener Kraft weiter — jetzt mit über 40 Companies unter einem Dach.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
