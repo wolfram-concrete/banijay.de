@@ -216,18 +216,23 @@ export function AlgarveFounders() {
             <TeamHeadWords text="Unser Team" />
           </h2>
 
-          {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP). Die zwei
-              Reihen füllen die verfügbare Bühnenhöhe (1fr/1fr) und die Bilder
-              füllen ihre Zelle — so läuft das Grid nie über die 100vh-Bühne hinaus
-              (sonst würde overflow:hidden auf niedrigen/breiten Viewports die 2.
-              Reihe abschneiden). */}
+          {/* Raster (Wolfram 15.07.): 12-Spalten-Grid, DREI Reihen — oben die drei
+              Leader (Marcus, Knut, Michael Laegel) je col-span-4 (größer), darunter die
+              restlichen acht Member in ZWEI Reihen à 4 (col-span-3) → symmetrisch, alle
+              Personen innerhalb einer Bühne (100vh) sichtbar. Die Leader-Reihe ist etwas
+              höher (1.25fr). */}
           <div
             ref={grid}
-            className="grid w-full min-h-0 flex-1 grid-cols-6"
-            style={{ columnGap: "1.2vw", rowGap: "1.6vw", gridTemplateRows: "1fr 1fr", zIndex: 1 }}
+            className="grid w-full min-h-0 flex-1 grid-cols-12"
+            style={{ columnGap: "1.2vw", rowGap: "1.4vw", gridTemplateRows: "1.25fr 1fr 1fr", zIndex: 1 }}
           >
-            {TEAM.map((p) => (
-              <div key={p.name} data-team-tile className="flex min-h-0 flex-col" style={{ gap: "0.6vw", willChange: "transform" }}>
+            {TEAM.map((p, i) => (
+              <div
+                key={p.name}
+                data-team-tile
+                className={`flex min-h-0 flex-col ${i < 3 ? "col-span-4" : "col-span-3"}`}
+                style={{ gap: "0.6vw", willChange: "transform" }}
+              >
                 <div className="min-h-0 flex-1 overflow-clip" style={{ background: "rgba(255,255,255,0.08)" }}>
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }} />
                 </div>

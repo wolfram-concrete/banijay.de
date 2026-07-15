@@ -7,7 +7,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ECOSYSTEM, ECO_CATEGORIES } from "@/data/ecosystem";
-import { COMPANIES_DIRECTORY } from "@/data/companiesDirectory";
 import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -67,7 +66,7 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
 
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
-const SWAP_LINES = ["Ein Ökosystem", `über ${COMPANIES_DIRECTORY.length} Companies`, "und Labels."] as const;
+const SWAP_LINES = ["Ein Ökosystem", "40+ Companies", "& Labels"] as const;
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",

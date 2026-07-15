@@ -25,7 +25,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 const INK = "#0e0d0b";
-const SOFT = "rgba(248,247,243,0.62)";
 
 // IP-BRANDS DOPPELSLIDER (Wolfram 15.07.): die ikonischen Banijay-IPs laufen als
 // zwei gegenläufige Reihen. Jeder Container behält die Original-Proportion des
@@ -82,16 +81,17 @@ export function AlgarveEditorial() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // HEADLINE wie das AnimatedHeading-Modul über der Companies-Liste
-      // (Wolfram 13.07.): zwei uppercase-Zeilen konvergieren gescrubbt — obere
-      // von oben, untere von unten — mit zentral aufwachsendem Sternstaub.
+      // HEADLINE wie das AnimatedHeading-Modul: zwei uppercase-Zeilen konvergieren
+      // gescrubbt (obere von oben, untere von unten). Als Helper → mehrfach nutzbar
+      // (About Banijay + ICONIC IP über dem IP-Slider, Wolfram 15.07.).
       const vh = window.innerHeight;
-      const hFirst = root.current?.querySelector<HTMLElement>("[data-ed-hl-first]");
-      const hLast = root.current?.querySelector<HTMLElement>("[data-ed-hl-last]");
-      const hDust = root.current?.querySelector<HTMLElement>("[data-ed-head-dust]");
-      if (hFirst && hLast) {
+      const animHead = (headSel: string, firstSel: string, lastSel: string, dustSel?: string) => {
+        const hFirst = root.current?.querySelector<HTMLElement>(firstSel);
+        const hLast = root.current?.querySelector<HTMLElement>(lastSel);
+        const hDust = dustSel ? root.current?.querySelector<HTMLElement>(dustSel) : null;
+        if (!hFirst || !hLast) return;
         const htl = gsap.timeline({
-          scrollTrigger: { trigger: "[data-ed-head]", start: "top bottom", end: "bottom 90%", scrub: 0.8 },
+          scrollTrigger: { trigger: headSel, start: "top bottom", end: "bottom 90%", scrub: 0.8 },
         });
         htl
           .from(hFirst, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
@@ -104,7 +104,9 @@ export function AlgarveEditorial() {
             0.1,
           );
         }
-      }
+      };
+      animHead("[data-ed-head]", "[data-ed-hl-first]", "[data-ed-hl-last]", "[data-ed-head-dust]");
+      animHead("[data-ed-head2]", "[data-ed-hl2-first]", "[data-ed-hl2-last]");
 
       // Das Bild-Modul lebt jetzt in <EditorialStickyScene /> (eigene Sticky-
       // Scroll-Interaktion nach stateofaidesign.com — Wolfram 14.07.).
@@ -176,19 +178,10 @@ export function AlgarveEditorial() {
           </h2>
         </div>
 
-        {/* BILD-MODUL als Sticky-Scroll-Interaktion (stateofaidesign-Vorbild) */}
+        {/* BILD-MODUL als Sticky-Scroll-Interaktion — die Marcus-Quote liegt jetzt
+            unten links AUF dem Bild (Wolfram 15.07.), daher hier kein separater
+            Zitat-Block mehr. */}
         <EditorialStickyScene />
-
-        {/* ARTIKELTEXT — folgt unter dem Bild-Modul */}
-        <div className="flex flex-col md:mx-auto md:max-w-[84%]" style={{ gap: "clamp(2.5rem, 5vw, 6rem)" }}>
-            {/* Marcus-Zitat (Original banijay.de, Wolfram 14.07.) */}
-            <blockquote data-ed-reveal className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.4rem, 2.6vw, 2.8rem)", lineHeight: "118%", fontWeight: 500, letterSpacing: "-0.02em" }}>
-              „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht."
-              <span className="mt-4 block" style={{ fontSize: "clamp(0.95rem, 1.1vw, 1.2rem)", fontWeight: 500, color: SOFT }}>
-                — Marcus Wolter, CEO Banijay Germany
-              </span>
-            </blockquote>
-        </div>
 
         {/* „Die Story" — wieder auf HELLEM Containerfeld (Wolfram 15.07.): Paper-
             Box mit Ink-Typo, eckig (Heike), KEINE Trennlinie. Bündig im [1fr_3fr]-
@@ -204,20 +197,37 @@ export function AlgarveEditorial() {
               Die Story
             </h3>
             <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)" }}>
+              {/* Platzhalter (Wolfram 15.07.: Story-Text auf Lorem ipsum, bis finales Wording). */}
               <p className="m-0">
-                Banijay ist seit 2008 konsequent als Verbund unternehmerisch geführter Produktionshäuser gewachsen — zuletzt 2020 mit dem Zusammenschluss mit Endemol Shine. In Deutschland entstand daraus ein Ökosystem eigenständiger Companies: Produktionshäuser, Labels und Plattformen, die Entertainment auf Bildschirme, Bühnen und in Feeds bringen — vom Prime-Time-Format bis zum Podcast.
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
               </p>
               <p className="m-0">
-                Jetzt folgt der größte Schritt dieser Geschichte: Banijay Entertainment und All3Media bilden ein gemeinsames Haus — als 50/50-Joint-Venture der Banijay Group und RedBird IMI. Dahinter stehen 170 Companies in 25 Ländern, mehr als 265.000 Programmstunden und Formate wie MasterChef, The Traitors, Big Brother oder Peaky Blinders. „Gemeinsam beginnen wir ein neues Kapitel als globales Medien- und Entertainment-Powerhouse", sagt CEO Marco Bassetti.
+                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
               </p>
             </div>
           </div>
         </div>
       </div>
 
+      {/* ICONIC IP — fette Headline über dem Brand-Slider, animiert (Formatierung
+          wie „About Banijay": 7vw uppercase, konvergierende Zeilen) — Wolfram 15.07. */}
+      <div
+        data-ed-head2
+        className="relative z-[1] mx-auto flex flex-col items-center justify-center overflow-clip text-center"
+        style={{ maxWidth: "1800px", paddingLeft: "2vw", paddingRight: "2vw", marginTop: "5vw", minHeight: "min(38vh, 360px)" }}
+      >
+        <h2
+          className="relative m-0"
+          style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "112%", fontWeight: 500, textTransform: "uppercase", letterSpacing: "-0.02em" }}
+        >
+          <span data-ed-hl2-first className="block">Iconic</span>
+          <span data-ed-hl2-last className="block">IP.</span>
+        </h2>
+      </div>
+
       {/* IP-BRANDS DOPPELSLIDER full-width — zwei gegenläufige Reihen, kompaktes
           Raster, jeder Container in Original-Proportion (nichts beschnitten). */}
-      <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "6vw", marginBottom: "6vw" }}>
+      <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "2vw", marginBottom: "6vw" }}>
         <div className="flex flex-col" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
           {[
             { rows: BRANDS_TOP, dir: "is-left" },

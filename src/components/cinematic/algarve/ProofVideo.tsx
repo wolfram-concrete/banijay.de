@@ -210,7 +210,11 @@ export function AlgarveProofVideo({
                 if (e.currentTarget.currentTime < 19) e.currentTarget.currentTime = 19;
               }}
               onTimeUpdate={(e) => {
-                if (e.currentTarget.currentTime < 19) e.currentTarget.currentTime = 19;
+                // Start ab Sek 19; ~3s vor Ende zurückloopen → Banijay-Logo-Abbinder
+                // wird nicht mehr gezeigt (Wolfram 15.07.).
+                const v = e.currentTarget;
+                if (v.duration && v.currentTime > v.duration - 3) v.currentTime = 19;
+                else if (v.currentTime < 19) v.currentTime = 19;
               }}
             >
               <source src={video} type="video/mp4" />

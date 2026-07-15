@@ -22,29 +22,30 @@ const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 // Alle Zahlen/Daten/Fakten von banijay.de. Farbe kommt NICHT mehr je Fakt, sondern
 // abwechselnd Magenta/Schwarz (Wolfram 14.07.) → siehe TONE unten.
 type Fact = { value: number; suffix: string; label: string; copy: string };
+// Wording exakt wie auf der Originalseite (Wolfram 15.07.); Unit-Suffixe je Fakt.
 const FACTS: Fact[] = [
   {
     value: 40,
     suffix: "+",
-    label: "Companies & Labels im deutschen Netzwerk",
+    label: "Companies und Labels",
     copy: "Produktionshäuser, Labels, Live-Einheiten, Talent-Managements und Plattformen — eigenständig, aber unter einem Dach.",
   },
   {
     value: 1300,
-    suffix: "",
-    label: "Mitarbeitende hinter den Formaten",
+    suffix: "+",
+    label: "Mitarbeiterinnen und Mitarbeiter",
     copy: "Kreative, Produzent:innen, Redaktionen und Spezialist:innen an mehreren Standorten in Deutschland.",
   },
   {
     value: 4,
     suffix: " Mrd.",
-    label: "Views & Zuschauer erreicht",
+    label: "Views & Zuschauer",
     copy: "Reichweite über lineare, digitale und Social-Ausspielwege hinweg — Monat für Monat.",
   },
   {
     value: 3000,
-    suffix: "",
-    label: "Stunden Entertainment im Jahr",
+    suffix: " hrs",
+    label: "Stunden Entertainment",
     copy: "Bühnenshows, Live-Sendungen, Serien, Online-Plattformen und Podcasts — Jahr für Jahr aus dem Verbund.",
   },
   {
@@ -55,11 +56,11 @@ const FACTS: Fact[] = [
   },
 ];
 
-// Abwechselnd Magenta / Schwarz (keine Brombeere, keine Trenner → geschlossene
-// Fläche). Gerade Indizes Magenta (Ink-Typo), ungerade Schwarz (Paper-Typo).
+// Abwechselnd Magenta / Schwarz — Typo IMMER WEISS (Wolfram 15.07.: keine schwarze
+// Typo auf Magenta mehr).
 const TONE = (i: number) =>
   i % 2 === 0
-    ? { bg: "#ff4370", fg: "#0e0d0b", label: "rgba(14,13,11,0.72)", copy: "rgba(14,13,11,0.78)" }
+    ? { bg: "#ff4370", fg: "#f8f7f3", label: "rgba(248,247,243,0.82)", copy: "rgba(248,247,243,0.86)" }
     : { bg: "#0e0d0b", fg: "#f8f7f3", label: "rgba(248,247,243,0.6)", copy: "rgba(248,247,243,0.74)" };
 
 const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
@@ -83,7 +84,7 @@ export function EditorialStickyScene() {
 
       if (!desktop || reduce) {
         gsap.set([wrapEl, asideEl, cards], { clearProps: "all" });
-        nums.forEach((el, i) => (el.textContent = fmt(FACTS[i].value) + FACTS[i].suffix));
+        nums.forEach((el, i) => (el.textContent = fmt(FACTS[i].value)));
         return;
       }
 
@@ -117,7 +118,7 @@ export function EditorialStickyScene() {
         tl.to(card, { autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.14 }, 0.32 + i * 0.05);
         tl.to(
           numProxy[i],
-          { v: FACTS[i].value, duration: 0.2, onUpdate: () => (nums[i].textContent = fmt(numProxy[i].v) + FACTS[i].suffix) },
+          { v: FACTS[i].value, duration: 0.2, onUpdate: () => (nums[i].textContent = fmt(numProxy[i].v)) },
           0.32 + i * 0.05,
         );
       });
@@ -142,11 +143,29 @@ export function EditorialStickyScene() {
               className="absolute left-0 top-0 h-full w-full overflow-hidden max-md:!static max-md:!h-[62vw] max-md:!w-full"
             >
               <img
-                src="/editorial/nick-harwart.jpg"
-                alt="Banijay Germany"
+                src="/editorial/marcus-wolter.jpg"
+                alt="Marcus Wolter, CEO Banijay Germany"
                 className="h-full w-full object-cover"
-                style={{ objectPosition: "54% 40%" }}
+                style={{ objectPosition: "50% 32%" }}
               />
+              {/* Scrim unten für die Quote-Lesbarkeit */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "linear-gradient(180deg, rgba(10,2,8,0) 42%, rgba(10,2,8,0.5) 78%, rgba(10,2,8,0.82) 100%)" }}
+              />
+              {/* Marcus-Quote unten links auf dem Bild (weiß) — Wolfram 15.07. */}
+              <blockquote
+                className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw]"
+                style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(46rem, 64%)", color: "#f8f7f3" }}
+              >
+                <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
+                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht."
+                </p>
+                <span className="mt-3 block max-[767px]:!text-[3.2vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
+                  — Marcus Wolter, CEO Banijay Germany
+                </span>
+              </blockquote>
             </div>
 
             {/* Fakten-Accordion rechts — EINE geschlossene Fläche: keine Trenner/Gaps,
@@ -179,13 +198,14 @@ export function EditorialStickyScene() {
                       cursor: "pointer",
                     }}
                   >
-                    {/* Kopf: Zahl + Chevron */}
+                    {/* Kopf: Zahl + Chevron. Ziffer 50% größer, Einheiten-Suffix 50%
+                        kleiner (Wolfram 15.07.). */}
                     <div className="flex w-full items-start justify-between gap-3">
-                      <span
-                        data-fact-num
-                        style={{ fontFamily: SHARP, fontSize: "clamp(2.2rem, 3.6vw, 58px)", lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500 }}
-                      >
-                        0
+                      <span style={{ fontFamily: SHARP, lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
+                        <span data-fact-num style={{ fontSize: "clamp(3.3rem, 5.4vw, 87px)" }}>
+                          0
+                        </span>
+                        <span style={{ fontSize: "clamp(1.1rem, 1.8vw, 29px)", whiteSpace: "pre" }}>{f.suffix}</span>
                       </span>
                       <ChevronDown
                         className="mt-1 h-5 w-5 shrink-0 transition-transform duration-300"

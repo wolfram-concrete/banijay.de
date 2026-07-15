@@ -88,7 +88,20 @@ export function AlgarveLogoReveal() {
       <div className="sticky top-0 h-screen w-screen overflow-clip">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">
-          <video autoPlay muted loop playsInline poster="/brand/team-poster.jpg" className="absolute inset-0 h-full w-full object-cover">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/brand/team-poster.jpg"
+            className="absolute inset-0 h-full w-full object-cover"
+            // ~3s vor Ende zurückloopen (Wolfram 15.07.): der Banijay-Logo-Abbinder am
+            // Videoende wird nicht mehr gezeigt.
+            onTimeUpdate={(e) => {
+              const v = e.currentTarget;
+              if (v.duration && v.currentTime > v.duration - 3) v.currentTime = 0;
+            }}
+          >
             {/* „Design ohne Titel" (Wolfram 13.07.) — weboptimiert 1600w/crf34/muted */}
             <source src="/video/team-all3media.mp4" type="video/mp4" />
           </video>
