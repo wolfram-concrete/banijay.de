@@ -142,10 +142,10 @@ export function EditorialStickyScene() {
               className="absolute left-0 top-0 h-full w-full overflow-hidden max-md:!static max-md:!h-[62vw] max-md:!w-full"
             >
               <img
-                src="/editorial/marcus-hof.jpg"
-                alt="Marcus Wolter, CEO Banijay Germany"
+                src="/editorial/nick-harwart.jpg"
+                alt="Banijay Germany"
                 className="h-full w-full object-cover"
-                style={{ objectPosition: "center" }}
+                style={{ objectPosition: "54% 40%" }}
               />
             </div>
 

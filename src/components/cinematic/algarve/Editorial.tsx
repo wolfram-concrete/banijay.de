@@ -24,16 +24,47 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
+const INK = "#0e0d0b";
 const SOFT = "rgba(248,247,243,0.62)";
 
-// Marquee (Umbau 13.07.): Marcus-Bilder raus — stattdessen Produktions-/
-// Festival-Material. ⚠️ Für die All3Media-Produktionen (filmpool, South &
-// Browse) liegt noch KEIN Bildmaterial im Projekt (nur Logos) — sobald
-// Stills geliefert sind, hier ergänzen.
-const MARQUEE_IMAGES = [
-  { src: "/about-partners/live-experience-cologne-comedy-festival.jpg", alt: "Cologne Comedy Festival", big: true },
-  { src: "/grid/g12.jpg", alt: "Cologne Comedy Festival", big: false },
-  { src: "/editorial/studio.jpg", alt: "Produktion im Banijay-Netzwerk", big: false },
+// IP-BRANDS DOPPELSLIDER (Wolfram 15.07.): die ikonischen Banijay-IPs laufen als
+// zwei gegenläufige Reihen. Jeder Container behält die Original-Proportion des
+// Visuals (nichts beschnitten). „Wer wird Millionär" und „TV total" führen die
+// obere Reihe an → im ersten Screen garantiert sichtbar. Assets: /public/ip-brands
+// (weboptimiert aus assets/Bilder, Höhe 560).
+type Brand = { slug: string; name: string };
+const b = (slug: string, name: string): Brand => ({ slug, name });
+const BRANDS_TOP: Brand[] = [
+  b("wer-wird-millionar", "Wer wird Millionär"),
+  b("tv-total", "TV total"),
+  b("die-hohle-der-lowen", "Die Höhle der Löwen"),
+  b("the-masked-singer", "The Masked Singer"),
+  b("kitchen-impossible", "Kitchen Impossible"),
+  b("schlag-den-star", "Schlag den Star"),
+  b("promi-big-brother", "Promi Big Brother"),
+  b("temptation-island", "Temptation Island"),
+  b("kampf-der-realitystars", "Kampf der Realitystars"),
+  b("stromberg", "Stromberg"),
+  b("nightwash", "NightWash"),
+  b("barbara-salesch", "Barbara Salesch"),
+  b("der-lehrer", "Der Lehrer"),
+  b("tatort-munster", "Tatort Münster"),
+];
+const BRANDS_BOTTOM: Brand[] = [
+  b("the-50", "The 50"),
+  b("die-verrater", "Die Verräter"),
+  b("villa-der-versuchung", "Villa der Versuchung"),
+  b("richter-alexander-hold", "Richter Alexander Hold"),
+  b("kommissar-dupin", "Kommissar Dupin"),
+  b("die-landarztpraxis", "Die Landarztpraxis"),
+  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht"),
+  b("bitte-melde-dich", "Bitte melde dich"),
+  b("die-besten-comedians-deutschlands", "Die besten Comedians Deutschlands"),
+  b("dunentod", "Dünentod"),
+  b("rudi-voller-es-kann-nur-einen-geben", "Rudi Völler – Es kann nur einen geben"),
+  b("luminiscence", "Luminiscence"),
+  b("mcdonalds-stromberg-mockumentary", "Stromberg × McDonald's"),
+  b("tatort-nachtschatten", "Tatort Nachtschatten"),
 ];
 
 
@@ -159,20 +190,20 @@ export function AlgarveEditorial() {
             </blockquote>
         </div>
 
-        {/* „Die Story" — bündig mit dem „deutsche Netzwerk"-Text unter dem Slider
-            (Wolfram 14.07.): dasselbe [1fr_3fr]-Raster wie der Bottom-Text, damit die
-            linke Kante exakt übereinstimmt. Dünne weiße Linie oberhalb bleibt. */}
+        {/* „Die Story" — wieder auf HELLEM Containerfeld (Wolfram 15.07.): Paper-
+            Box mit Ink-Typo, eckig (Heike), KEINE Trennlinie. Bündig im [1fr_3fr]-
+            Raster wie der Bottom-Text. */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_3fr]" style={{ marginTop: "clamp(2.5rem, 5vw, 6rem)" }}>
           <div className="max-md:hidden" />
           <div
             data-ed-reveal
             className="flex flex-col"
-            style={{ gap: "1.6rem", paddingTop: "2.4rem", borderTop: "1px solid rgba(248,247,243,0.28)" }}
+            style={{ gap: "1.6rem", background: PAPER, color: INK, padding: "clamp(1.8rem, 3vw, 3rem)" }}
           >
-            <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: PAPER }}>
+            <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: INK }}>
               Die Story
             </h3>
-            <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(248,247,243,0.82)" }}>
+            <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)" }}>
               <p className="m-0">
                 Banijay ist seit 2008 konsequent als Verbund unternehmerisch geführter Produktionshäuser gewachsen — zuletzt 2020 mit dem Zusammenschluss mit Endemol Shine. In Deutschland entstand daraus ein Ökosystem eigenständiger Companies: Produktionshäuser, Labels und Plattformen, die Entertainment auf Bildschirme, Bühnen und in Feeds bringen — vom Prime-Time-Format bis zum Podcast.
               </p>
@@ -184,18 +215,31 @@ export function AlgarveEditorial() {
         </div>
       </div>
 
-      {/* Bild-Marquee full-width (Referenz: marquee cms-marquee) */}
+      {/* IP-BRANDS DOPPELSLIDER full-width — zwei gegenläufige Reihen, kompaktes
+          Raster, jeder Container in Original-Proportion (nichts beschnitten). */}
       <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "6vw", marginBottom: "6vw" }}>
-        <div className="editorial-marquee-track flex" style={{ gap: "1.2vw" }}>
-          {[0, 1].map((dup) => (
-            <div key={dup} aria-hidden={dup === 1} className="flex shrink-0" style={{ gap: "1.2vw" }}>
-              {MARQUEE_IMAGES.map((img) => (
-                <div
-                  key={`${dup}-${img.src}`}
-                  className="editorial-marquee-item shrink-0 overflow-hidden"
-                  style={{ width: img.big ? "min(42vw, 720px)" : "min(26vw, 460px)", height: "min(28vw, 480px)" }}
-                >
-                  <img src={img.src} alt={dup === 0 ? img.alt : ""} loading="lazy" className="h-full w-full object-cover" style={{ objectPosition: "50% 25%" }} />
+        <div className="flex flex-col" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+          {[
+            { rows: BRANDS_TOP, dir: "is-left" },
+            { rows: BRANDS_BOTTOM, dir: "is-right" },
+          ].map((row, ri) => (
+            <div key={ri} className={`ip-brands-track flex ${row.dir}`} style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+              {[0, 1].map((dup) => (
+                <div key={dup} aria-hidden={dup === 1} className="flex shrink-0" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+                  {row.rows.map((brand) => (
+                    <div
+                      key={`${dup}-${brand.slug}`}
+                      className="relative shrink-0 overflow-hidden"
+                      style={{ height: "clamp(108px, 13.5vw, 208px)" }}
+                    >
+                      <img
+                        src={`/ip-brands/${brand.slug}.webp`}
+                        alt={dup === 0 ? brand.name : ""}
+                        loading="lazy"
+                        className="block h-full w-auto"
+                      />
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

@@ -43,7 +43,10 @@ export function AlgarveLogoReveal() {
       // eingerastet ist (Section-Top = Viewport-Top → Timeline-Start), und wächst
       // dann aus der Mitte scharf über mask-size auf volle Größe.
       const bStart = Math.min(window.innerWidth, window.innerHeight) * 0.12;
-      const bEnd = Math.max(window.innerWidth, window.innerHeight) * 6;
+      // bEnd knapp bemessen (Wolfram 15.07.): das „b" deckt die Fläche GENAU am
+      // Ende voll magenta — kein Über-Wachsen mehr, das eine lange statische
+      // Magenta-Leerstrecke vor der News-Section erzeugt hat.
+      const bEnd = Math.max(window.innerWidth, window.innerHeight) * 3;
       growB.current?.style.setProperty("--bs", `${bStart}px`);
       gsap.set(growB.current, { opacity: 0 });
 
@@ -81,7 +84,7 @@ export function AlgarveLogoReveal() {
     // gedeckt hat und der Sticky-Container am Section-Ende hochscrollt, zeigt sich
     // darunter derselbe Magenta-Grund → nahtlos in die (magenta) News, kein Video-/
     // Ink-Flash. (Während der Video-Phase deckt das Video den Grund ohnehin voll.)
-    <section ref={root} className="relative overflow-clip" style={{ height: "260vh", marginTop: "-100vh", zIndex: 2, background: "#ff4370" }}>
+    <section ref={root} className="relative overflow-clip" style={{ height: "200vh", marginTop: "-100vh", zIndex: 2, background: "#ff4370" }}>
       <div className="sticky top-0 h-screen w-screen overflow-clip">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">

@@ -3,6 +3,26 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [redesign-v2] — Branch (Preview) — 2026-07-15
+
+### Editorial-Feinschliff, IP-Brands-Doppelslider, Team-Headline, News-Timing, About-Facts (15.07., Nacht XV)
+- **Editorial (Home)** (`EditorialStickyScene.tsx`, `Editorial.tsx`): großer Bildcontainer trägt jetzt das
+  Nick-Harwart-Porträt (weboptimiert, Crop auf Gesicht). „Die Story" wieder auf HELLEM Paper-Containerfeld
+  (Ink-Typo), dünne weiße Trennlinie entfernt.
+- **IP-Brands-Doppelslider** (`Editorial.tsx`, `globals.css`): die alte Bild-Marquee ist ein DOPPELSLIDER —
+  zwei gegenläufige Reihen (oben ←, unten →), kompaktes Raster (mehr Brands pro Screen). Jeder Container
+  behält die ORIGINAL-Proportion des Brand-Visuals (feste Höhe, Breite auto) → nichts beschnitten. „Wer wird
+  Millionär" und „TV total" führen die obere Reihe an (im ersten Screen sichtbar). 28 Brands weboptimiert
+  nach `/public/ip-brands`.
+- **Team-Headline** (`Founders.tsx`): „Unser Team" baut sich beim Ins-Bild-Scrollen wortweise aus einer Maske
+  auf (gestaffelt) — global auf allen Pages (Home + About), Desktop & Mobile.
+- **News-Timing (Home)** (`LogoReveal.tsx`): das Magenta-„b" deckt die Fläche jetzt GENAU am Ende voll (bEnd
+  von 6× auf 3× gekürzt, Section-Höhe 260→200vh) → die News-Section erscheint direkt, sobald der Screen
+  vollflächig magenta ist (keine lange leere Magenta-Strecke mehr).
+- **About-Facts-Layout** (`ProofVideo.tsx`): auf großen Screens sitzt die Intro-Copy LINKS und der Fakten-Block
+  als ein Block RECHTS daneben (mittig ausbalanciert statt links verteilt). Mobile/responsive: Copy wieder
+  über dem Facts-Block (gestapelt).
+
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
 ### Satellitenringe teilen exakt den Hero-Kurvenradius (14.07., Nacht XIV)

@@ -172,18 +172,21 @@ export function AlgarveProofVideo({
       {/* ── Gepinnte Bühne mit clip-path-Aufskalierung (Desktop + Mobile) ── */}
       <section ref={root} className="relative" style={{ height: "300vh", background: "transparent" }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
+          {/* Große Screens (Wolfram 15.07.): Intro-Copy LINKS, Fakten-Block als ein
+              Block RECHTS daneben — mittig ausbalanciert (mx-auto), nicht mehr alles
+              nach links verteilt. Mobile/responsive: gestapelt (Copy über Facts). */}
           <div
-            className="flex h-full flex-col max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
+            className="mx-auto flex h-full w-full flex-col justify-center md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] md:items-center md:gap-[3.5vw] max-[767px]:!px-[4vw] max-[767px]:!pt-[16vw]"
             style={{ maxWidth: "1440px", paddingLeft: "2vw", paddingRight: "2vw", paddingTop: "6vh", paddingBottom: "4vh" }}
           >
             <p
-              className="md:max-w-[52vw] max-[767px]:!text-[5vw]"
-              style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "132%", fontWeight: 500, color: PAPER, letterSpacing: "-0.03vw", margin: 0 }}
+              className="max-[767px]:!text-[5vw]"
+              style={{ fontFamily: SHARP, fontSize: "2.2vw", lineHeight: "130%", fontWeight: 500, color: PAPER, letterSpacing: "-0.03vw", margin: 0 }}
             >
               {proofText}
             </p>
 
-            <div className="mt-[2.5vw] max-[767px]:!mt-[8vw]">{bento}</div>
+            <div className="md:!mt-0 mt-[2.5vw] max-[767px]:!mt-[8vw]">{bento}</div>
             {/* KEIN vorab sichtbarer Video-Container mehr — das Video wächst beim
                 Scrollen aus der grauen Quell-Kachel (data-pv-source) heraus. */}
           </div>

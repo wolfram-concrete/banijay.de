@@ -44,6 +44,27 @@ const FOCUS: Record<string, string> = {
 };
 const focus = (img: string) => FOCUS[img] ?? "50% 20%";
 
+// Aufbauende Headline (Wolfram 15.07.): jedes Wort steigt aus einer Maske hoch
+// (gestaffelt), wenn die Team-Section ins Bild scrollt — global auf allen Pages.
+function TeamHeadWords({ text }: { text: string }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((w, i) => (
+        <span
+          key={i}
+          className="inline-block overflow-hidden"
+          style={{ verticalAlign: "top", paddingBottom: "0.14em", marginBottom: "-0.14em", marginRight: i < words.length - 1 ? "0.26em" : 0 }}
+        >
+          <span data-team-headword className="inline-block" style={{ willChange: "transform" }}>
+            {w}
+          </span>
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function AlgarveFounders() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
@@ -147,6 +168,31 @@ export function AlgarveFounders() {
     { scope: root },
   );
 
+  // Headline-Aufbau (Desktop + Mobile): Wörter steigen gestaffelt aus ihrer Maske,
+  // sobald die jeweilige „Unser Team"-Headline ins Bild scrollt.
+  useGSAP(
+    () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gsap.utils.toArray<HTMLElement>("[data-team-head]").forEach((head) => {
+        const words = head.querySelectorAll<HTMLElement>("[data-team-headword]");
+        if (!words.length) return;
+        if (reduce) {
+          gsap.set(words, { yPercent: 0 });
+          return;
+        }
+        gsap.set(words, { yPercent: 118 });
+        gsap.to(words, {
+          yPercent: 0,
+          ease: "power3.out",
+          duration: 0.9,
+          stagger: 0.12,
+          scrollTrigger: { trigger: head, start: "top 88%", once: true },
+        });
+      });
+    },
+    { scope: root },
+  );
+
   return (
     <section ref={root} style={{ background: "transparent" }}>
       {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
@@ -154,6 +200,7 @@ export function AlgarveFounders() {
         <div className="flex h-full w-full flex-col" style={{ padding: "6vw 2vw 3vw" }}>
           {/* TEAM — MITTELACHSIG (13.07.) + mehr Luft zum Portrait-Aufbau */}
           <h2
+            data-team-head
             className="m-0 text-center uppercase text-[#f8f7f3]"
             style={{
               fontFamily: "var(--font-sharp), sans-serif",
@@ -166,7 +213,7 @@ export function AlgarveFounders() {
               marginBottom: "3.5vw",
             }}
           >
-            Unser Team
+            <TeamHeadWords text="Unser Team" />
           </h2>
 
           {/* Grid (final = sauberes 5-Spalten-Grid; Startlage per GSAP). Die zwei
@@ -202,8 +249,8 @@ export function AlgarveFounders() {
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        <h2 className="m-0 mb-8 uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
-          Unser Team
+        <h2 data-team-head className="m-0 mb-8 uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
+          <TeamHeadWords text="Unser Team" />
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
           {LEADERSHIP.slice(0, 11).map((p, i) => {
