@@ -5,6 +5,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Preloader → Hero: Aufbau erst NACH dem Preloader (15.07., Nacht XXI)
+- **Home-Erstladen** (`IntroOverlay.tsx`, `AlgarveHome.tsx`): der Hero-Aufbau (3-Frame-Sequenz) startete bisher
+  schon während der Preloader aus-/warp-blendet (bei ~6,5 s) → sichtbare Veränderung hinter dem laufenden
+  Preloader. Jetzt wird das Auslöse-Signal (`banijay:introdone`) erst in `cleanup` gefeuert, also wenn das
+  Overlay komplett weg ist; Frame 1 startet auf `opacity: 0`. → Der Hero bleibt während des Preloaders
+  unverändert und baut sich erst danach vor dem Nutzer auf (kein Flackern, kein Frühstart).
+
+
 ### Hero-Frames schneller, Ringe sequenziell beim Scroll, Career-CoC-Magenta-Box weg (15.07., Nacht XX)
 - **Hero-Frame-Sequenz zügiger** (`AlgarveHome.tsx`, global): die 3-Frame-Einblendung (dunkel → lebendig →
   „We Are Banijay") läuft schneller ins letzte Frame — weiterhin smooth (weiche Eases). Dauern 0.7 / 0.85 /

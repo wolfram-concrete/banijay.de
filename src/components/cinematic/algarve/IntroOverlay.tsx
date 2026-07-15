@@ -34,6 +34,11 @@ export function IntroOverlay() {
         window.dispatchEvent(new Event("banijay:introdone"));
       };
       const cleanup = () => {
+        // Hero-Aufbau ERST JETZT freigeben (Wolfram 15.07.): finish() (→ „banijay:introdone")
+        // wandert vom Mid-Timeline-Punkt hierher, sodass die 3-Frame-Aufbau-Animation des
+        // Heros erst startet, wenn das Overlay komplett weg ist — keine Veränderung der
+        // Hero-Section, solange der Preloader läuft.
+        finish();
         delete document.documentElement.dataset.intro;
         document.documentElement.style.overflow = "";
         (window as { __lenis?: { start: () => void } }).__lenis?.start();
@@ -55,7 +60,7 @@ export function IntroOverlay() {
       }
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || alreadyShown) {
-        finish();
+        // Kein Intro → sofort aufräumen (cleanup ruft finish/„introdone" selbst).
         cleanup();
         return;
       }
@@ -97,10 +102,10 @@ export function IntroOverlay() {
         .to(zp, { v: 1.5, duration: 1.2, ease: "power2.in", onUpdate: () => particles.current?.setZoom(zp.v) }, 5.7)
         // Headline zieht leicht mit in die Tiefe und blendet aus
         .to(lines, { autoAlpha: 0, scale: 1.5, duration: 0.6, ease: "power2.in", transformOrigin: "50% 50%" }, 5.8)
-        // Deckgrund blendet aus → Hero-Reveal
-        .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 6.15)
-        // Finale (Menü-B/Header), Overlay räumt danach auf
-        .call(finish, [], 6.55);
+        // Deckgrund blendet aus → Hero-Reveal. Der Hero-Aufbau (finish/„introdone")
+        // wird NICHT mehr hier ausgelöst, sondern erst in cleanup (onComplete), wenn das
+        // Overlay komplett weg ist (Wolfram 15.07.).
+        .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 6.15);
     },
     { scope: root },
   );

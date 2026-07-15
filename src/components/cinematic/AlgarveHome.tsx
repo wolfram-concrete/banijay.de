@@ -287,7 +287,9 @@ export function AlgarveHome({
           alt=""
           draggable={false}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+          // Startet UNSICHTBAR (Wolfram 15.07.): der Hero baut sich erst auf, wenn der
+          // Preloader komplett weg ist — vorher keine sichtbare Veränderung, kein Flackern.
+          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
         />
         <img
           ref={heroImgB}
