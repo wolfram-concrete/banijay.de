@@ -5,6 +5,13 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Satellitenringe: drei sichtbare Linien + weiche Rand-Enden (15.07., Nacht XVII)
+- **Satellitenringe** (`AlgarveHome.tsx`): auf der Home (Magenta) waren die pink/magenta Ringe unsichtbar →
+  jetzt DREI **lichte weiße Linien** mit fallender Deckkraft (auf den dunklen Subpages bleiben die moody
+  Farben). Die frühere horizontale Rand-Maske ist durch eine **radiale Maske** ersetzt (opak in der unteren
+  Mitte, weich auslaufend zu den Enden/Ecken) → die Bogen-Anfänge faden sanft aus statt links/rechts hart
+  abgeschnitten zu wirken. Gilt global für alle Pages.
+
 ### About/News/Career-Feinschliff II (15.07., Nacht XVI)
 - **About „Local everywhere"** (`WorldNetwork.tsx`, `data/about.ts`): Headline von „Teil einer Welt…" auf
   **„Local everywhere"** geändert; Bildcontainer oben an der Headline-Oberlänge ausgerichtet (`items-start`);

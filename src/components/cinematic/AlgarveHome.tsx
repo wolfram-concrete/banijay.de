@@ -41,6 +41,15 @@ const LINES = [
   { alpha: 0.56, color: "255,67,112", dur: 34, phase: 0.3 },
 ];
 
+// Auf MAGENTA (Home) sind die pink/magenta Ringfarben unsichtbar → dort LICHTE
+// weiße Linien mit fallender Deckkraft, damit alle DREI Ringe sichtbar sind
+// (Wolfram 15.07.). Auf den dunklen Subpages bleiben die moody Farben (LINES).
+const RING_MAGENTA = [
+  { alpha: 1, color: "255,255,255" },
+  { alpha: 0.74, color: "255,255,255" },
+  { alpha: 0.52, color: "255,255,255" },
+];
+
 // RING-GEOMETRIE (Wolfram 14.07.): die Ringe besitzen EXAKT die border-radius-Kurve
 // des Heros (RING_RADIUS = Hero-Radius = 50vw), nur nach unten versetzt → immer
 // derselbe Kurvenradius wie der Hero, dann wachsen sie. 3 Ringe in ENGEM Abstand.
@@ -340,26 +349,32 @@ export function AlgarveHome({
           className="pointer-events-none absolute inset-0"
           style={{
             zIndex: 1,
-            maskImage: "linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%)",
+            // Radiale Maske (Wolfram 15.07.): opak in der unteren Mitte, weich auslaufend
+            // zu den Enden/Ecken hin → die Bogen-ANFÄNGE faden sanft aus statt links/rechts
+            // hart abgeschnitten zu wirken. Gilt für alle Pages.
+            maskImage: "radial-gradient(135% 128% at 50% 132%, #000 64%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(135% 128% at 50% 132%, #000 64%, transparent 100%)",
           }}
         >
-          {LINES.map((r, i) => (
-            <div
-              key={`ring${i}`}
-              data-hero-ring
-              aria-hidden
-              className="absolute left-0 w-full"
-              style={{
-                top: `${ringDepth(i) - RING_H}vw`,
-                height: `${RING_H}vw`,
-                borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
-                border: `1.6px solid rgba(${r.color},${r.alpha})`,
-                boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
-                willChange: "transform, opacity",
-              }}
-            />
-          ))}
+          {LINES.map((line, i) => {
+            const r = dark ? line : RING_MAGENTA[i] ?? line;
+            return (
+              <div
+                key={`ring${i}`}
+                data-hero-ring
+                aria-hidden
+                className="absolute left-0 w-full"
+                style={{
+                  top: `${ringDepth(i) - RING_H}vw`,
+                  height: `${RING_H}vw`,
+                  borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
+                  border: `1.6px solid rgba(${r.color},${r.alpha})`,
+                  boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
+                  willChange: "transform, opacity",
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
