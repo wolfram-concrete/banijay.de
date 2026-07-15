@@ -67,7 +67,8 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
 // „Ein Ökosystem" entfernt (Wolfram 15.07.) → zweizeilige Swap-Headline.
-const SWAP_LINES = ["40+ Companies", "& Labels"] as const;
+// Wolfram 15.07.: „40+" allein oben, „Companies & Labels" als ruhige zweite Zeile.
+const SWAP_LINES = ["40+", "Companies & Labels"] as const;
 const SWAP_LINE_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",
@@ -78,6 +79,23 @@ const SWAP_LINE_STYLE = {
   margin: 0,
   color: PAPER,
 } as const;
+
+// „+" sitzt in Sharp Grotesk hoch im Glyphenkasten → in der 7vw-Headline wirkt es wie
+// zentriert in der 0. Wolfram 15.07.: das + gehört mit der Unterkante auf die Grundlinie
+// der Ziffern (bündig mit 4/0). position:relative senkt das baseline-ausgerichtete +
+// ab. Hier ist das + GLEICH GROSS wie die Ziffern (7vw) → kleinerer Versatz (0.18em)
+// als beim kleineren Suffix-+ in den Facts (0.42em).
+function withBaselinePlus(text: string) {
+  const segs = text.split("+");
+  return segs.map((s, i) => (
+    <span key={i}>
+      {s}
+      {i < segs.length - 1 && (
+        <span style={{ position: "relative", top: "0.18em" }}>+</span>
+      )}
+    </span>
+  ));
+}
 
 function orbitPoint(orbit: number, deg: number) {
   const o = ORBITS[orbit];
@@ -222,7 +240,7 @@ export function AlgarveEcosystem() {
         style={{ zIndex: 5 }}
       >
         <h2 data-eco-swap-first className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {SWAP_LINES[0]}
+          {withBaselinePlus(SWAP_LINES[0])}
         </h2>
         <h2 data-eco-swap-last className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
           {SWAP_LINES[1]}

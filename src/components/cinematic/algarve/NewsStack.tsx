@@ -88,7 +88,10 @@ export function AlgarveNewsStack() {
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",
-                  borderTop: "0.08vw solid rgba(14,13,11,0.32)",
+                  // Schwarze Trennlinie zwischen den News (Wolfram 15.07.): die frühere
+                  // 32%-Linie war auf Magenta praktisch unsichtbar — jetzt klare schwarze
+                  // Hairline. Erstes Item ohne Linie (kein Strich über der ersten News).
+                  borderTop: i === 0 ? "none" : "1px solid #0e0d0b",
                   color: "#0e0d0b",
                   zIndex: ITEMS.length - i,
                 }}

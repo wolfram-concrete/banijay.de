@@ -31,6 +31,12 @@ const FACTS: Fact[] = [
     copy: "Produktionshäuser, Labels, Live-Einheiten, Talent-Managements und Plattformen — eigenständig, aber unter einem Dach.",
   },
   {
+    value: 90,
+    suffix: " %",
+    label: "Primetime-Hitrate",
+    copy: "Anteil unserer Formate, die auf ihrem Sendeplatz die Primetime für sich entscheiden — Monat für Monat unter den Marktführern.",
+  },
+  {
     value: 1300,
     suffix: "+",
     label: "Mitarbeiterinnen und Mitarbeiter",
@@ -180,6 +186,9 @@ export function EditorialStickyScene() {
               {FACTS.map((f, i) => {
                 const isOpen = open === i;
                 const tone = TONE(i);
+                // „+" sitzt in Sharp Grotesk hoch im Glyphenkasten → auf die Grundlinie
+                // der Zahl versetzen + wie die Einheiten (Mrd./hrs.) abrücken (Wolfram 15.07.).
+                const isPlus = f.suffix.trim() === "+";
                 return (
                   <button
                     key={f.label}
@@ -201,11 +210,24 @@ export function EditorialStickyScene() {
                     {/* Kopf: Zahl + Chevron. Große Ziffer; Einheiten-Suffix (+ / Mrd. /
                         hrs.) einheitlich & etwas größer (Wolfram 15.07.). */}
                     <div className="flex w-full items-start justify-between gap-3">
-                      <span style={{ fontFamily: SHARP, lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
+                      {/* WICHTIG: eigene font-size am Wrapper (= Zifferngröße) → der kleine
+                          Suffix richtet sich an EINER konsistenten Grundlinie aus (ohne die
+                          font-size wanderte die Baseline je Viewport, das + saß mal zu hoch,
+                          mal zu tief). Dann sitzen +, %, Mrd., hrs. alle gleich (Wolfram 15.07.). */}
+                      <span style={{ fontFamily: SHARP, fontSize: "clamp(3.3rem, 5.4vw, 87px)", lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
                         <span data-fact-num style={{ fontSize: "clamp(3.3rem, 5.4vw, 87px)" }}>
                           0
                         </span>
-                        <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", whiteSpace: "pre" }}>{f.suffix}</span>
+                        {isPlus ? (
+                          // Das „+" wie eine Einheit (Mrd./hrs.) als NORMALES inline rendern —
+                          // Kasten deckungsgleich zur Ziffern-Grundlinie. Das +-Glyph sitzt in
+                          // Sharp Grotesk minimal höher als %/Buchstaben, daher per position:relative
+                          // um den reinen Glyph-Offset (0.14em) absenken → Unterkante bündig mit der
+                          // Ziffer, genau wie das % an der 90. Führendes Space = Abstand wie vor „Mrd.".
+                          <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", position: "relative", top: "0.14em", whiteSpace: "pre" }}>{" +"}</span>
+                        ) : (
+                          <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", whiteSpace: "pre" }}>{f.suffix}</span>
+                        )}
                       </span>
                       <ChevronDown
                         className="mt-1 h-5 w-5 shrink-0 transition-transform duration-300"

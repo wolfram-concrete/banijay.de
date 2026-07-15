@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### „+"-Grundlinie in allen Facts + neue KPI + Ecosystem-/News-Feinschliff (15.07., Nacht XXV)
+- **„+" grundlinienbündig in allen Fact-Boxen** (`EditorialStickyScene.tsx`, `CountUp.tsx`, `EcosystemSection.tsx`):
+  Das Pluszeichen saß in Sharp Grotesk hochgestellt (fast superscript). Ursache war eine wandernde Suffix-
+  Grundlinie, weil der Kennzahl-Wrapper keine eigene `font-size` trug (viewport-abhängig). Fix: Wrapper bekommt
+  die Ziffern-`font-size` → alle Suffixe (`+`, `%`, `Mrd.`, `hrs.`) fluchten an einer konsistenten Grundlinie;
+  das „+" wird als normales Suffix gerendert und nur um seinen reinen Glyph-Offset abgesenkt
+  (`position:relative; top:0.14em` in den Facts, `0.18em` in der 7vw-Ecosystem-Headline). Jetzt sitzt das „+"
+  an der Ziffer genau wie das „%" an der 90 — Desktop wie Mobile.
+- **Neue KPI „90 % Primetime-Hitrate"** (`EditorialStickyScene.tsx`): zwischen „40+ Companies und Labels" und
+  „1.300+ Mitarbeiterinnen und Mitarbeiter" eingefügt (mit Copytext, zählt beim Scroll-in hoch).
+- **Ecosystem-Swap-Headline** (`EcosystemSection.tsx`): auf zwei ruhige Zeilen umgestellt — „40+" oben,
+  „Companies & Labels" als zweite Zeile (statt „40+ Companies" / „& Labels").
+- **Schwarze Trennlinien in der Home-News-Section** (`NewsStack.tsx`): die frühere 32%-Hairline war auf Magenta
+  praktisch unsichtbar → jetzt klare schwarze Linie (`1px solid #0e0d0b`) zwischen allen News, über die volle
+  Breite (Bild- + Textspalte); über der ersten News bewusst keine Linie.
+
 ### Team-Section auf breiten Screens enger gefasst (15.07., Nacht XXIV)
 - **Team global** (`Founders.tsx`, Home + About): der Desktop-Grid-Container ist jetzt auf `maxWidth: 1680px`
   gedeckelt und zentriert (`mx-auto`) — auf sehr breiten Screens liefen die Bildkacheln vorher bis an die

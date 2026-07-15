@@ -33,6 +33,10 @@ export function CountUp({
   const ref = useRef<HTMLSpanElement>(null);
   const { target, suffix } = parse(value);
   const [n, setN] = useState(0);
+  // Das „+" sitzt in Sharp Grotesk hoch im Glyphenkasten (fast superscript). Wolfram
+  // 15.07.: das Plus soll wie die Einheiten (Mrd./hrs.) auf der GRUNDLINIE der Zahl
+  // stehen, gleich groß wie die Einheit und gleich weit von der Zahl abgerückt.
+  const isPlus = suffix.trim() === "+";
 
   useEffect(() => {
     const el = ref.current;
@@ -74,7 +78,27 @@ export function CountUp({
   return (
     <span ref={ref} className={className}>
       {n.toLocaleString("de-DE")}
-      {suffix && (suffixStyle ? <span style={suffixStyle}>{suffix}</span> : suffix)}
+      {suffix &&
+        (isPlus ? (
+          <span
+            style={{
+              ...(suffixStyle ?? {}),
+              // Wie eine Einheit als NORMALES inline rendern (Kasten deckungsgleich zur
+              // Ziffern-Grundlinie — die Aufrufer setzen eine font-size am Wrapper); das
+              // minimal höher sitzende +-Glyph per position:relative um seinen reinen
+              // Glyph-Offset (0.14em) absenken → Unterkante bündig, wie Mrd./hrs./%.
+              position: "relative",
+              top: "0.14em",
+              whiteSpace: "pre",
+            }}
+          >
+            {" +"}
+          </span>
+        ) : suffixStyle ? (
+          <span style={suffixStyle}>{suffix}</span>
+        ) : (
+          suffix
+        ))}
     </span>
   );
 }

@@ -37,13 +37,17 @@ All3Media-Fusion) und öffnen als Scroll-Flip-Lightbox. Das „Banijay Ökosyste
 gepinnte Atom-Orbit-Grafik.
 
 Die Editorial-Section der Home trägt ein CEO-Porträt im großen Sticky-Bildcontainer, „Die Story"
-auf hellem Paper-Feld und einen **IP-Brands-Doppelslider** (zwei gegenläufige Reihen der
-ikonischen Formate in Original-Proportion, weboptimiert aus `/public/ip-brands`). Team-Headlines
+auf hellem Paper-Feld, eine gepinnte Fakten-Accordion-Spalte (Kennzahlen zählen beim Scroll-in hoch,
+inkl. „90 % Primetime-Hitrate") und einen **IP-Brands-Doppelslider** (zwei gegenläufige Reihen der
+ikonischen Formate in Original-Proportion, weboptimiert aus `/public/ip-brands`). In allen Fact-Boxen
+sitzt das Einheiten-„+" grundlinienbündig an der Ziffer (Wrapper mit eigener `font-size` +
+Glyph-Offset), genau wie `%`/`Mrd.`/`hrs.`. Team-Headlines
 bauen sich global wortweise aus einer Maske auf; das Team-Grid ist auf sehr breiten Screens
 auf `max 1680px` gedeckelt und zentriert, damit die Porträt-Kacheln nicht bis an die Ränder
 laufen und weniger vom Gesicht beschnitten wird. Die About-Facts stehen auf großen Screens
 zweispaltig (Copy links, Fakten-Block rechts), das Ökosystem-Verzeichnis in **4 Spalten**
-(CSS-columns). Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
+(CSS-columns). Die Home-News-Section stapelt ihre Beiträge als Sticky-Cards, getrennt durch schwarze
+Hairlines zwischen den Einträgen. Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
 Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
 Film-Snippets ragen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
