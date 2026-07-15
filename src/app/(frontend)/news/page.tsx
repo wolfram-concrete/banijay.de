@@ -22,6 +22,7 @@ export default async function NewsPage() {
         variant="companies"
         frame3="/hero-v2/frame-3-news.jpg"
         statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore."
+        parallaxExit
       />
 
       {/* Ein gemischter Feed (News + Social, nach Datum) mit Rubrik-Filter

@@ -217,7 +217,9 @@ export function AlgarveWorldNetwork() {
       >
         {/* ── Kopf: Textblock links, Brand-Video rechts (mittig im Grid) ─────── */}
         <div className="mx-auto w-full max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1560px" }}>
-          <div className="grid items-center md:grid-cols-[1fr_1fr] max-[767px]:!grid-cols-1" style={{ columnGap: "4vw", rowGap: "8vw" }}>
+          {/* Bildcontainer oben an der Headline-Oberlänge ausgerichtet (Wolfram
+              15.07.): items-start statt -center → Video-Oberkante bündig zur Headline. */}
+          <div className="grid items-start md:grid-cols-[1fr_1fr] max-[767px]:!grid-cols-1" style={{ columnGap: "4vw", rowGap: "8vw" }}>
             <div className="flex flex-col items-start" style={{ gap: "1.6vw" }}>
               <h2
                 data-wn-reveal
@@ -299,10 +301,11 @@ export function AlgarveWorldNetwork() {
             </div>
           </div>
 
-          {/* Worldwide-Textlinks (Pills) — linksbündig im selben Container */}
+          {/* Worldwide-Textlinks (Wolfram 15.07.): keine Buttons mehr — schlichte
+              unterstrichene Hyperlinks mit Pfeil daneben, linksbündig. */}
           <div
-            className="flex w-full flex-wrap items-center max-[767px]:!gap-[3vw]"
-            style={{ gap: "1vw", marginTop: "2.4vw" }}
+            className="flex w-full flex-wrap items-center max-[767px]:!gap-x-[6vw] max-[767px]:!gap-y-[3vw]"
+            style={{ columnGap: "2.4vw", rowGap: "1vw", marginTop: "2.4vw" }}
           >
             {world.worldwide.map((w) => (
               <a
@@ -310,11 +313,11 @@ export function AlgarveWorldNetwork() {
                 href={w.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-[0.4vw] whitespace-nowrap rounded-[6px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[rgba(14,13,11,0.08)] max-[767px]:!px-[4vw] max-[767px]:!py-[2.5vw] max-[767px]:!text-[3.2vw]"
-                style={{ border: "0.1vw solid rgba(14,13,11,0.3)", padding: "0.6vw 1.2vw", fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 500 }}
+                className="group inline-flex items-center gap-[0.4vw] whitespace-nowrap text-[#0e0d0b] underline decoration-[rgba(14,13,11,0.4)] underline-offset-[0.35vw] transition-colors duration-300 hover:decoration-[#0e0d0b] max-[767px]:!text-[3.6vw] max-[767px]:!underline-offset-4"
+                style={{ fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
               >
                 {w.label}
-                <ArrowUpRight className="h-[0.9vw] w-[0.9vw] opacity-70 max-[767px]:!h-[3vw] max-[767px]:!w-[3vw]" />
+                <ArrowUpRight className="h-[0.95vw] w-[0.95vw] no-underline transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 max-[767px]:!h-[3.4vw] max-[767px]:!w-[3.4vw]" />
               </a>
             ))}
           </div>

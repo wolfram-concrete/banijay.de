@@ -47,10 +47,12 @@ export function AlgarveEcosystemDirectory() {
           </p>
         </div>
 
-        {/* Kategorie-Gruppen */}
-        <div className="flex flex-col" style={{ gap: "clamp(3rem, 5vw, 5.5rem)" }}>
+        {/* Kategorie-Gruppen — in SPALTEN (Wolfram 15.07.): CSS-columns (1 → 2 → 4),
+            jede Rubrik bleibt als Block zusammen (break-inside-avoid) → die Section
+            wird deutlich kürzer. */}
+        <div className="[column-gap:clamp(2rem,3vw,3.5rem)] md:[columns:2] lg:[columns:4]">
           {ECO_CATEGORIES.map((cat) => (
-            <div key={cat.key} data-eco-group>
+            <div key={cat.key} data-eco-group className="mb-[clamp(2.5rem,4vw,4rem)] break-inside-avoid">
               {/* Kategorie-Header als Anker */}
               <div className="flex items-baseline gap-3 border-b pb-3" style={{ borderColor: "rgba(248,247,243,0.16)" }}>
                 <h2 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.5rem, 2.6vw, 2.4rem)", fontWeight: 500, letterSpacing: "-0.01em" }}>

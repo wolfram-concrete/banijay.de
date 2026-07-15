@@ -85,14 +85,15 @@ export function AlgarvePartnerStack() {
         gsap.set("[data-partner-card]", { autoAlpha: 0 });
 
         if (window.matchMedia("(min-width: 768px)").matches) {
-          // Desktop: die Text-Reveal endet bei ~18 % Scroll → Karten kurz danach
-          // (bei ~22 %) einblenden, dann läuft der Sticky-Stack-Scroll normal weiter.
+          // Desktop (Wolfram 15.07.): die Schrift muss ZUERST klar stehen. Text-Reveal
+          // endet ~18 %; die Karten erst deutlich danach (~40 %) einblenden → „erst
+          // Magenta, dann Schrift, dann Cards", nichts überlagert die Headline.
           gsap.to("[data-partner-card]", {
             autoAlpha: 1,
             ease: "power2.out",
             duration: 0.7,
             stagger: 0.1,
-            scrollTrigger: { trigger: sec, start: "top top-=22%", once: true },
+            scrollTrigger: { trigger: sec, start: "top top-=40%", once: true },
           });
         } else {
           // Mobile zusätzlich: Intro-Schrift kurz PINNEN (nicht hinter die Sticky-Nav
@@ -149,7 +150,7 @@ export function AlgarvePartnerStack() {
         {/* ── Intro-Block (schwarz auf Magenta) ────────────────────────────── */}
         <div
           data-partner-headline
-          className="mx-auto flex max-w-[68vw] flex-col items-center text-center max-[767px]:!max-w-full"
+          className="relative z-[30] mx-auto flex max-w-[68vw] flex-col items-center text-center max-[767px]:!max-w-full"
           style={{ gap: "1.2vw", marginBottom: "4.5vw" }}
         >
           <h2 data-partner-reveal className="m-0 max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "3.6vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.11vw", color: INK }}>

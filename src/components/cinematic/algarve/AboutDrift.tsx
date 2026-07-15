@@ -28,7 +28,10 @@ const ITEMS = [
   { cls: "j", clip: "clip-10", speed: 0.34, mouse: 0.075, label: "X" },
 ];
 
-export function AlgarveAboutDrift({ asBackground = false }: { asBackground?: boolean } = {}) {
+export function AlgarveAboutDrift({
+  asBackground = false,
+  opacity,
+}: { asBackground?: boolean; opacity?: number } = {}) {
   const root = useRef<HTMLElement>(null);
 
   // Videos nur abspielen, wenn die Sektion sichtbar ist (spart Decode).
@@ -128,7 +131,12 @@ export function AlgarveAboutDrift({ asBackground = false }: { asBackground?: boo
   }, []);
 
   return (
-    <section ref={root} className={`drift-section${asBackground ? " drift-section--bg" : ""}`} aria-label="Banijay Entertainment im Bewegtbild">
+    <section
+      ref={root}
+      className={`drift-section${asBackground ? " drift-section--bg" : ""}`}
+      style={opacity != null ? { opacity } : undefined}
+      aria-label="Banijay Entertainment im Bewegtbild"
+    >
       <style>{CSS}</style>
       {ITEMS.map((it) => (
         <div key={it.cls} data-drift data-speed={it.speed} data-mouse={it.mouse} className={`float-img float-img--${it.cls}`}>

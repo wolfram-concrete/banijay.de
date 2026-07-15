@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### About/News/Career-Feinschliff II (15.07., Nacht XVI)
+- **About „Local everywhere"** (`WorldNetwork.tsx`, `data/about.ts`): Headline von „Teil einer Welt…" auf
+  **„Local everywhere"** geändert; Bildcontainer oben an der Headline-Oberlänge ausgerichtet (`items-start`);
+  die unteren Worldwide-CTAs sind keine Buttons mehr, sondern **unterstrichene Textlinks mit Pfeil**.
+- **Satellitenringe** (`AlgarveHome.tsx`): horizontaler Fade-Mask an beiden Rändern → die Bögen laufen weich
+  aus statt links/rechts hart abgeschnitten zu wirken (global).
+- **About Partner-Modul** (`PartnerStack.tsx`): die Schrift steht jetzt klar ZUERST — Cards blenden erst
+  deutlich später (~40 %) ein, Headline liegt z-index-sicher vor den Karten. „Magenta → Schrift → Cards".
+- **About Ökosystem-Verzeichnis** (`EcosystemDirectory.tsx`): Rubriken in **4 Spalten** (CSS-columns,
+  break-inside-avoid) → die Section wird deutlich kürzer.
+- **News-Parallax** (`AlgarveHome.tsx`, News-Page): das Statement driftet beim Verlassen als Parallax nach
+  unten und blendet ab → weicher, tiefengestaffelter Übergang in den News-Feed (`parallaxExit`).
+- **Career Code of Conduct** (`CodeOfConductBand.tsx`, `AboutDrift.tsx`): das Statement liegt jetzt auf einer
+  **Magenta-Box** (Ink-Typo, Akzentwort weiß); die driftenden Film-Snippets ragen über die Box-Ränder
+  (Drift-Layer über der Box, Opacity anpassbar).
+
 ### Editorial-Feinschliff, IP-Brands-Doppelslider, Team-Headline, News-Timing, About-Facts (15.07., Nacht XV)
 - **Editorial (Home)** (`EditorialStickyScene.tsx`, `Editorial.tsx`): großer Bildcontainer trägt jetzt das
   Nick-Harwart-Porträt (weboptimiert, Crop auf Gesicht). „Die Story" wieder auf HELLEM Paper-Containerfeld

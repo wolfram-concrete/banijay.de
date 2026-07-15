@@ -35,7 +35,7 @@ export const ABOUT = {
   },
   world: {
     eyebrow: "Local Everywhere",
-    headline: "Teil einer Welt, die lokal denkt und global wirkt.",
+    headline: "Local everywhere",
     text:
       "Banijay Germany ist Teil eines internationalen Netzwerks aus Territory Holdings, Labels, Rights-, Kids-&-Family- und Live-Einheiten. So verbinden wir lokale Marktnähe mit globaler Formatkraft, Austausch und Reichweite.",
     note: "Geschichten entstehen lokal. Ihre Wirkung kann überall beginnen.",

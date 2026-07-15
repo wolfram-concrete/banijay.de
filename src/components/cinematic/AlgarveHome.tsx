@@ -54,6 +54,7 @@ export function AlgarveHome({
   variant = "home",
   statement,
   frame3 = "/hero-v2/frame-3.jpg",
+  parallaxExit = false,
 }: {
   /** "home" = Magenta-Übergangszone; "companies" = dunkler moody Staub + Statement */
   variant?: "home" | "companies";
@@ -61,6 +62,9 @@ export function AlgarveHome({
   statement?: string;
   /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.jpg" */
   frame3?: string;
+  /** News-Page: das Statement driftet beim Verlassen als Parallax nach unten (lag)
+   *  → weicher, tiefengestaffelter Übergang in den darunterliegenden News-Feed. */
+  parallaxExit?: boolean;
 } = {}) {
   const dark = variant === "companies";
   const root = useRef<HTMLDivElement>(null);
@@ -211,6 +215,22 @@ export function AlgarveHome({
             stagger: { amount: 0.8, from: "start" },
             scrollTrigger: { trigger: st, start: "top 90%", end: "top 50%", scrub: 0.8 },
           });
+          // NEWS-PARALLAX (Wolfram 15.07.): das fertige Statement driftet beim
+          // Hochscrollen langsamer als die Seite (yPercent-Lag) und blendet weich ab
+          // → tiefengestaffelter Übergang in den darunterliegenden News-Feed.
+          if (parallaxExit) {
+            const stSection = st.closest("section");
+            gsap.fromTo(
+              st,
+              { yPercent: 0 },
+              {
+                yPercent: 34,
+                autoAlpha: 0.15,
+                ease: "none",
+                scrollTrigger: { trigger: stSection, start: "top top", end: "bottom top", scrub: 0.6 },
+              },
+            );
+          }
         }
       }
     },
@@ -312,23 +332,35 @@ export function AlgarveHome({
         {/* SATELLITENRINGE als Div-Ringe mit EXAKT der Hero-Kurve (border-radius
             0 0 50vw 50vw), nur um `ringDepth` nach unten versetzt → identischer
             Kurvenradius wie der Hero. Nur die untere Wölbung liegt in der Zone, der
-            Rest (gerade Kanten oben) ist per overflow-clip abgeschnitten. */}
-        {LINES.map((r, i) => (
-          <div
-            key={`ring${i}`}
-            data-hero-ring
-            aria-hidden
-            className="absolute left-0 w-full"
-            style={{
-              top: `${ringDepth(i) - RING_H}vw`,
-              height: `${RING_H}vw`,
-              borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
-              border: `1.6px solid rgba(${r.color},${r.alpha})`,
-              boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
-              willChange: "transform, opacity",
-            }}
-          />
-        ))}
+            Rest (gerade Kanten oben) ist per overflow-clip abgeschnitten.
+            Wolfram 15.07.: horizontaler Fade-Mask an beiden Rändern → die Bögen
+            laufen weich aus, statt links/rechts hart abgeschnitten zu wirken. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            zIndex: 1,
+            maskImage: "linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%)",
+          }}
+        >
+          {LINES.map((r, i) => (
+            <div
+              key={`ring${i}`}
+              data-hero-ring
+              aria-hidden
+              className="absolute left-0 w-full"
+              style={{
+                top: `${ringDepth(i) - RING_H}vw`,
+                height: `${RING_H}vw`,
+                borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
+                border: `1.6px solid rgba(${r.color},${r.alpha})`,
+                boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
+                willChange: "transform, opacity",
+              }}
+            />
+          ))}
+        </div>
 
         {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
             Linie und laufen komplett aus dem Bild (GSAP setzt left/top in %). */}
