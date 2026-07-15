@@ -39,7 +39,7 @@ export default function CareerPage() {
 
       {/* 06 Code of Conduct — mit driftender Bewegtbild-Collage im Hintergrund
           (von der About-Seite hierher verlegt, Wolfram 14.07.) */}
-      <AlgarveCodeOfConductBand background={<AlgarveAboutDrift asBackground opacity={0.62} />} />
+      <AlgarveCodeOfConductBand background={<AlgarveAboutDrift asBackground />} />
 
       {/* 06b #workatBanijay — Social-Feed (Juicer-JSON, eigene Cards) */}
       <AlgarveCareerSocialFeed />

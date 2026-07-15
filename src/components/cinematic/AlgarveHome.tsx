@@ -104,16 +104,15 @@ export function AlgarveHome({
       }
       gsap
         .timeline()
-        // ① dunkel → langsam heller (weiche Blende, KEIN Flackern mehr — Wolfram
-        //    14.07.): Frame 1 blendet ruhig aus Schwarz auf, dann kurz halten.
+        // ① dunkel → heller (weiche Blende, kein Flackern). Insgesamt ZÜGIGER, aber
+        //    weiterhin smooth (Wolfram 15.07.: schneller ins letzte Frame kommen).
         .set(f1, { opacity: 0 })
-        .to(f1, { opacity: 1, duration: 1.0, ease: "power2.inOut" })
-        .to({}, { duration: 0.2 }) // kurz halten
+        .to(f1, { opacity: 1, duration: 0.7, ease: "power2.inOut" })
+        .to({}, { duration: 0.1 }) // kurz halten
         // ② wird lebendig (Frame 2 transparent → klar)
-        .to(f2, { opacity: 1, duration: 1.3, ease: "power2.inOut" })
-        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3) — weich,
-        // aber insgesamt zügiger (Wolfram 14.07.: „etwas beschleunigen").
-        .to(f3, { opacity: 1, duration: 2.3, ease: "sine.inOut" }, "-=0.25");
+        .to(f2, { opacity: 1, duration: 0.85, ease: "power2.inOut" })
+        // ③ „We Are Banijay"-Font blendet im Hintergrund ein (Frame 3) — weich & zügig
+        .to(f3, { opacity: 1, duration: 1.5, ease: "sine.inOut" }, "-=0.3");
     };
     // Intro bereits durch → sofort. Sonst: auf das Intro-Event warten. Läuft gar
     // KEIN Intro (Subpages ohne Preloader), startet die Sequenz nach kurzem Beat
@@ -138,34 +137,18 @@ export function AlgarveHome({
       const rings = gsap.utils.toArray<HTMLElement>("[data-hero-ring]");
       const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
 
-      // RING-/DOT-REVEAL AN DIE KURVE GEKOPPELT + SEQUENTIELL (Wolfram 15.07.): die drei
-      // Ringe bauen sich NACHEINANDER (innen → außen) über den Kurven-Fortschritt auf.
-      // Weil die Ringe konzentrisch an den Seiten schon während des Kurven-Aufbaus sichtbar
-      // sind, sieht man den gestaffelten Aufbau — und alle stehen, wenn die Kurve fertig ist
-      // (v→1) → kein Versatz/Luftleerraum. Innerster zuerst, äußerster zuletzt.
-      const revealRings = (v: number) => {
-        rings.forEach((ring, i) => {
-          const start = 0.45 + i * 0.18; // 0.45 · 0.63 · 0.81 — klar nacheinander
-          ring.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / 0.17));
-        });
-        dots.forEach((dot, i) => {
-          const start = 0.5 + i * 0.16; // folgen ihrem Ring, alle voll bei v→1
-          dot.style.opacity = String(gsap.utils.clamp(0, 1, (v - start) / 0.14));
-        });
-      };
-
       const applyCurve = (v: number) => {
         curveP.current = v;
         const r = (v * 50).toFixed(2);
         if (heroSection.current) heroSection.current.style.borderRadius = `0 0 ${r}vw ${r}vw`;
-        revealRings(v);
       };
       if (reduce) {
         applyCurve(1);
+        gsap.set([...rings, ...dots], { autoAlpha: 1 });
       } else {
         applyCurve(0);
-        // PHASE 1: der Hero ist GEPINNT — der erste Scroll baut die radiale Kurve auf; in
-        // der Schlussphase bauen sich die Ringe nacheinander auf (revealRings).
+        gsap.set([...rings, ...dots], { autoAlpha: 0 });
+        // PHASE 1: der Hero ist GEPINNT — der erste Scroll baut NUR die radiale Kurve auf.
         ScrollTrigger.create({
           trigger: heroSection.current,
           start: "top top",
@@ -182,6 +165,20 @@ export function AlgarveHome({
           { scale: 1.06 },
           { scale: 1.14, duration: 26, ease: "sine.inOut", yoyo: true, repeat: -1 },
         );
+
+        // PHASE 2 — SEQUENTIELLER RING-AUFBAU BEIM SCROLL (Wolfram 15.07.): sobald die
+        // Übergangszone unter der fertigen Hero-Kurve ins Bild kommt, bauen sich die drei
+        // Ringe NACHEINANDER (innen → außen) auf — gescrubbt über den Scroll, klar
+        // gestaffelt; die Dots folgen ihrem Ring. Früher Start → kein Versatz.
+        const fan = gsap.timeline({
+          scrollTrigger: { trigger: orbitZone.current, start: "top 110%", end: "top 42%", scrub: 1, invalidateOnRefresh: true },
+        });
+        rings.forEach((ring, i) => {
+          fan.fromTo(ring, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "power2.out" }, i * 0.62);
+        });
+        dots.forEach((dot, i) => {
+          fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: "power2.out" }, i * 0.62 + 0.28);
+        });
       }
 
       // PLANETEN-DOTS: laufen auf der KONZENTRISCHEN Ring-Kreisbahn (Zentrum HERO_R über

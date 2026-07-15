@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Hero-Frames schneller, Ringe sequenziell beim Scroll, Career-CoC-Magenta-Box weg (15.07., Nacht XX)
+- **Hero-Frame-Sequenz zügiger** (`AlgarveHome.tsx`, global): die 3-Frame-Einblendung (dunkel → lebendig →
+  „We Are Banijay") läuft schneller ins letzte Frame — weiterhin smooth (weiche Eases). Dauern 0.7 / 0.85 /
+  1.5s (vorher 1.0 / 1.3 / 2.3s).
+- **Satellitenringe bauen sich beim SCROLL nacheinander auf** (global): eigener scrub-Trigger auf der
+  Übergangszone (früher Start → kein Versatz), die drei Ringe blenden innen → außen gestaffelt ein, die Dots
+  folgen ihrem Ring.
+- **Career Code of Conduct** (`CodeOfConductBand.tsx`): die Magenta-Box hinter dem Statement wieder entfernt —
+  das Statement steht wie zuvor auf dem dunklen Sternenstaub (weiße Typo, Akzentwort magenta), die
+  Drift-Snippets bilden den Hintergrund.
+
 ### Satellitenringe: sequentieller Aufbau, wachsende Abstände, Dots auf dem Radius (15.07., Nacht XIX)
 - **Ringe bauen sich NACHEINANDER auf** (`AlgarveHome.tsx`, global): innen → außen, gestaffelt an den
   Kurven-Fortschritt gekoppelt (revealRings) — alle stehen, wenn die Hero-Kurve fertig ist (kein Versatz).

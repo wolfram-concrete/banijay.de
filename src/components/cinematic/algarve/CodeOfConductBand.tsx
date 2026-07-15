@@ -16,7 +16,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
-const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
 const ACCENT_WORD = "kreative";
 
@@ -66,28 +65,20 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
       className="max-[767px]:!h-[150vh]"
       style={{ background: "transparent", height: "220vh", position: "relative", overflow: "clip" }}
     >
-      <div className="relative flex items-center justify-center overflow-clip" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
-        {/* MAGENTA-BOX als Lese-Fläche (eckig, Heike) — Wolfram 15.07. */}
-        <div
-          aria-hidden
-          className="absolute max-[767px]:!w-[92vw] max-[767px]:!h-[76vh]"
-          style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "min(1180px, 86vw)", height: "min(760px, 74vh)", background: MAGENTA, zIndex: 1 }}
-        />
-        {/* Driftende Bewegtbild-Collage — LIEGT ÜBER der Box (z-2), damit die Snippets
-            an den Rändern über die Box ragen (Wolfram 15.07.). */}
-        <div className="absolute inset-0" style={{ zIndex: 2 }}>
-          {background}
-        </div>
-        <div className="relative z-[3] flex flex-col items-center" style={{ padding: "2vw" }}>
+      <div className="flex items-center justify-center overflow-clip" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
+        {/* Hintergrund-Layer (Career: driftende Bewegtbild-Collage). Wolfram 15.07.:
+            Magenta-Box wieder entfernt — das Statement steht auf dem dunklen Sternenstaub. */}
+        {background}
+        <div className="relative z-10 flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
-            className="m-0 mx-auto flex flex-wrap justify-center text-center max-[991px]:!max-w-[70vw] max-[767px]:!max-w-[82vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
-            style={{ ...H4, color: INK, maxWidth: "48vw", columnGap: "0.6vw", rowGap: 0 }}
+            className="m-0 mx-auto flex flex-wrap justify-center text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
+            style={{ ...H4, maxWidth: "55.28vw", columnGap: "0.6vw", rowGap: 0 }}
           >
             {words.map((word, i) => {
               const clean = word.replace(/[.,]/g, "");
               const isAccent = clean === ACCENT_WORD;
               return (
-                <span key={i} data-coc-word className="inline-block" style={{ color: isAccent ? PAPER : INK }}>
+                <span key={i} data-coc-word className="inline-block" style={{ color: isAccent ? MAGENTA : PAPER }}>
                   {word}
                 </span>
               );
@@ -99,8 +90,8 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
             href={CAREER.codeOfConduct.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-fit items-center gap-2 rounded-[6px] text-[#0e0d0b] no-underline transition-colors duration-300 hover:bg-[#0e0d0b] hover:text-[#ff4370] max-[767px]:!mt-[6vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
-            style={{ marginTop: "2.4vw", border: "1px solid #0e0d0b", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
+            className="inline-flex w-fit items-center gap-2 rounded-[6px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!mt-[6vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
+            style={{ marginTop: "2.4vw", border: "1px solid #f8f7f3", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
           >
             {CAREER.codeOfConduct.cta.text}
             <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />
