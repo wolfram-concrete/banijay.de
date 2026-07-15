@@ -23,7 +23,6 @@ const SECTION_BG = "transparent";
 // yTop = Kantenpunkt (x=0/1600), yBottom = Bezier-Kontrollpunkt bei x=800
 // (Scheitel = (yTop+yBottom)/2). Oberste Linie am stärksten gebogen, nach unten
 // flacher. Die Werte dienen SVG-Pfaden UND der Planeten-Bahn-Berechnung.
-const VB_H = 780;
 // Ringschar SYNCHRON zur Hero-Wölbung (Wolfram 14.07.): SELBE Krümmung wie zuvor
 // (Sags 210/187/169/154 = Hero-Radius), nur die KOMPLETTE Schar um −100 nach oben
 // geschoben → näher an die Hero-Kante (oberste Linie tuckt oben leicht weg).
@@ -37,10 +36,19 @@ const VB_H = 780;
 // schneller durch die Übergangszone zum Magenta/Statement. yTop-Abstände ~135
 // statt ~195. Farbe weiterhin Paper → Pink → Magenta.
 const LINES = [
-  { yTop: 30, yBottom: 430, alpha: 0.9, color: "248,247,243", dur: 26, phase: 0.1 },
-  { yTop: 165, yBottom: 560, alpha: 0.72, color: "255,120,158", dur: 40, phase: 0.55 },
-  { yTop: 300, yBottom: 690, alpha: 0.56, color: "255,67,112", dur: 34, phase: 0.3 },
+  { alpha: 0.9, color: "248,247,243", dur: 26, phase: 0.1 },
+  { alpha: 0.72, color: "255,120,158", dur: 40, phase: 0.55 },
+  { alpha: 0.56, color: "255,67,112", dur: 34, phase: 0.3 },
 ];
+
+// RING-GEOMETRIE (Wolfram 14.07.): die Ringe besitzen EXAKT die border-radius-Kurve
+// des Heros (RING_RADIUS = Hero-Radius = 50vw), nur nach unten versetzt → immer
+// derselbe Kurvenradius wie der Hero, dann wachsen sie. 3 Ringe in ENGEM Abstand.
+const RING_RADIUS = 50; // vw — identisch zum Hero (borderRadius 0 0 50vw 50vw)
+const RING_H = 62; // vw — Div-Höhe (> Radius, damit die Ecken voll ausgebildet sind)
+const RING_BASE = 4; // vw — Tiefe des ersten Rings unter der Hero-Kante
+const RING_GAP = 6; // vw — enger Abstand zwischen den Ringen
+const ringDepth = (i: number) => RING_BASE + i * RING_GAP;
 
 export function AlgarveHome({
   variant = "home",
@@ -151,44 +159,39 @@ export function AlgarveHome({
       const fan = gsap.timeline({
         scrollTrigger: { trigger: orbitZone.current, start: "top 38%", end: "bottom 30%", scrub: 1.2 },
       });
-      const rings = gsap.utils.toArray<SVGGElement>("[data-hero-ring]");
+      const rings = gsap.utils.toArray<HTMLElement>("[data-hero-ring]");
       rings.forEach((ring, i) => {
-        // scaleY aus der Oberkante (transformOrigin oben) → die Ringe „wachsen" aus
-        // der radialen Kante nach unten, statt von oben hereinzurutschen.
-        fan.fromTo(
-          ring,
-          { autoAlpha: 0, scaleY: 0.55, transformOrigin: "50% 0%" },
-          { autoAlpha: 1, scaleY: 1, duration: 0.9, ease: "power2.out" },
-          i * 0.9,
-        );
+        // Grow-Reveal: die Ringe fahren aus der Hero-Kante nach unten heraus (fade +
+        // leichter Aufstieg), klar nacheinander. Kurve = immer Hero-Kurve (border-radius).
+        fan.fromTo(ring, { autoAlpha: 0, y: -18 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" }, i * 0.9);
       });
 
-      // WEISSE PLANETEN als perfekt RUNDE HTML-Dots (Wolfram 14.07.): im SVG
-      // (preserveAspectRatio="none") würden Kreise horizontal verzerrt — deshalb
-      // liegen die Dots als px-runde Divs über der Zone und folgen ihrer Linie in
-      // Prozent-Koordinaten (x=t·100 %, y aus dem Quadratic-Bezier). Sie laufen
-      // ihre Bahn KOMPLETT ab (t leicht über 0/1 hinaus) und wandern aus dem Bild.
+      // PLANETEN-DOTS: laufen EXAKT auf der Ring-Kreisbahn. Der Ring ist eine
+      // border-radius-Kurve = Kreis mit Radius RING_RADIUS, Zentrum mittig, RING_RADIUS
+      // vw ÜBER der jeweiligen Ring-Tiefe. y aus der Kreisgleichung (in vw) → der Dot
+      // sitzt garantiert auf derselben Kurve wie der Ring.
       const dots = gsap.utils.toArray<HTMLElement>("[data-hero-dot]");
       dots.forEach((dot, i) => {
-        const ln = LINES[i];
+        const cy = ringDepth(i) - RING_RADIUS; // Zentrum-y in vw (Orbit-Top-Koordinaten)
         fan.fromTo(dot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, i * 0.9 + 0.45);
+        const place = (fx: number) => {
+          const dx = (fx - 0.5) * 100; // horizontaler Abstand zur Mitte in vw
+          const inside = RING_RADIUS * RING_RADIUS - dx * dx;
+          const yvw = inside > 0 ? cy + Math.sqrt(inside) : -120;
+          dot.style.left = (fx * 100).toFixed(2) + "%";
+          dot.style.top = `${yvw.toFixed(2)}vw`;
+        };
         if (reduce) {
-          dot.style.left = "50%";
-          dot.style.top = ((((ln.yTop + ln.yBottom) / 2) / VB_H) * 100).toFixed(3) + "%";
+          place(0.5);
           return;
         }
-        const proxy = { t: ln.phase };
+        const proxy = { t: LINES[i].phase };
         gsap.to(proxy, {
-          t: ln.phase + 1,
-          duration: ln.dur,
+          t: LINES[i].phase + 1,
+          duration: LINES[i].dur,
           ease: "none",
           repeat: -1,
-          onUpdate: () => {
-            const te = -0.08 + (proxy.t % 1) * 1.16; // etwas über die Ränder → aus dem Bild
-            const y = ln.yTop * (1 - te) * (1 - te) + 2 * te * (1 - te) * ln.yBottom + ln.yTop * te * te;
-            dot.style.left = (te * 100).toFixed(3) + "%";
-            dot.style.top = ((y / VB_H) * 100).toFixed(3) + "%";
-          },
+          onUpdate: () => place(-0.06 + (proxy.t % 1) * 1.12),
         });
       });
 
@@ -306,23 +309,26 @@ export function AlgarveHome({
             <DustLayer boost={0.85} center={{ x: 0.5, y: 0.42 }} radius={0.95} />
           </div>
         )}
-        {/* Konzentrische Schar (LINES): oberste Linie am stärksten gebogen (hugt
-            die Hero-Wölbung), nach unten flacher auffächernd. preserveAspectRatio=
-            "none" + edge-to-edge-Pfade → full-size bis an beide Ränder. */}
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1600 780" preserveAspectRatio="none" fill="none">
-          {LINES.map((r, i) => (
-            <g key={`ring${i}`} data-hero-ring>
-              <path
-                d={`M 0 ${r.yTop} Q 800 ${r.yBottom} 1600 ${r.yTop}`}
-                stroke={`rgba(${r.color},${r.alpha})`}
-                strokeWidth={1.6}
-                vectorEffect="non-scaling-stroke"
-                // Glow in der jeweiligen Ring-Farbe (Fächer-Optik, Wolfram 14.07.)
-                style={{ filter: `drop-shadow(0 0 5px rgba(${r.color},0.85)) drop-shadow(0 0 14px rgba(${r.color},0.45))` }}
-              />
-            </g>
-          ))}
-        </svg>
+        {/* SATELLITENRINGE als Div-Ringe mit EXAKT der Hero-Kurve (border-radius
+            0 0 50vw 50vw), nur um `ringDepth` nach unten versetzt → identischer
+            Kurvenradius wie der Hero. Nur die untere Wölbung liegt in der Zone, der
+            Rest (gerade Kanten oben) ist per overflow-clip abgeschnitten. */}
+        {LINES.map((r, i) => (
+          <div
+            key={`ring${i}`}
+            data-hero-ring
+            aria-hidden
+            className="absolute left-0 w-full"
+            style={{
+              top: `${ringDepth(i) - RING_H}vw`,
+              height: `${RING_H}vw`,
+              borderRadius: `0 0 ${RING_RADIUS}vw ${RING_RADIUS}vw`,
+              border: `1.6px solid rgba(${r.color},${r.alpha})`,
+              boxShadow: `0 0 6px rgba(${r.color},0.55), 0 0 16px rgba(${r.color},0.3)`,
+              willChange: "transform, opacity",
+            }}
+          />
+        ))}
 
         {/* WEISSE PLANETEN — perfekt runde px-Dots (kein SVG-Stretch), folgen ihrer
             Linie und laufen komplett aus dem Bild (GSAP setzt left/top in %). */}

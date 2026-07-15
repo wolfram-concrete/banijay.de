@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-14
 
+### Satellitenringe teilen exakt den Hero-Kurvenradius (14.07., Nacht XIV)
+- **Satellitenringe** (`AlgarveHome.tsx`): Kurve neu aufgebaut — statt frei gezeichneter SVG-Bézier-Bögen
+  sind die Ringe jetzt DOM-Divs mit demselben `border-radius: 0 0 50vw 50vw` wie der Hero. Dadurch besitzen
+  sie **immer denselben Kurvenradius wie die Hero-Kante** und wachsen von dort nach außen (RING_BASE 4vw,
+  RING_GAP 6vw). Die Dots wandern exakt auf dem Kreisbogen (y = cy + √(R²−dx²)). Global auf allen Seiten.
+
 ### Hero→Magenta-Übergang kompakter: 3 Ringe, enger, schneller zum Statement (14.07., Nacht XIII)
 - **Satellitenringe** (`AlgarveHome.tsx`): von 4 auf **3 Ringe** reduziert und in **engeren Abstand** gesetzt
   (yTop-Gaps ~135 statt ~195); Übergangszone von 78vh → 52vh verkürzt und das Statement etwas früher
