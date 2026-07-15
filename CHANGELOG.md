@@ -5,6 +5,12 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
+### Team-Section auf breiten Screens enger gefasst (15.07., Nacht XXIV)
+- **Team global** (`Founders.tsx`, Home + About): der Desktop-Grid-Container ist jetzt auf `maxWidth: 1680px`
+  gedeckelt und zentriert (`mx-auto`) — auf sehr breiten Screens liefen die Bildkacheln vorher bis an die
+  Screenränder und wurden zu breit/landscape, wodurch zu viel vom Porträt wegfiel. Der Cap führt die Kacheln
+  enger zusammen (bei 2560px: Kachel-Aspect ~1,9:1 statt ~2,5:1), sodass mehr vom Gesicht sichtbar bleibt.
+
 ### About-Facts-Regeln vereinheitlicht + „Partner für Entertainment" Scroll-Fit (15.07., Nacht XXIII)
 - **About-Facts** (`ProofVideo.tsx`, `site.ts`, `CountUp.tsx`): die Content-Regeln der Editorial-Fact-Section
   übertragen — Wording („Mitarbeiterinnen und Mitarbeiter", „Companies und Labels", „Views & Zuschauer

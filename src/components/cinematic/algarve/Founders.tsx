@@ -197,7 +197,10 @@ export function AlgarveFounders() {
     <section ref={root} style={{ background: "transparent" }}>
       {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
       <div data-team-stage className="relative max-[767px]:hidden" style={{ height: "100vh", overflow: "hidden" }}>
-        <div className="flex h-full w-full flex-col" style={{ padding: "6vw 2vw 3vw" }}>
+        {/* Breite gedeckelt + zentriert (Wolfram 15.07.): auf sehr breiten Screens lief
+            das Grid full-width → die Kacheln wurden zu breit (landscape) und schnitten zu
+            viel vom Porträt weg. Jetzt enger geführt → schmalere, portrait-nähere Kacheln. */}
+        <div className="mx-auto flex h-full w-full flex-col" style={{ maxWidth: "1680px", padding: "6vw 2vw 3vw" }}>
           {/* TEAM — MITTELACHSIG (13.07.) + mehr Luft zum Portrait-Aufbau */}
           <h2
             data-team-head
