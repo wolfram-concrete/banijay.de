@@ -8,11 +8,10 @@ export default function NotFound() {
       <p className="mt-4 max-w-md text-muted-foreground">
         Vielleicht findest du, was du suchst, in der Banijay-Welt.
       </p>
+      {/* Der frühere zweite CTA zeigte auf /companies — die Seite ist entfernt
+          (Wolfram 16.07.), das Companies-Bento liegt jetzt auf der Home. */}
       <div className="mt-8 flex gap-3">
         <Button href="/">Zur Startseite</Button>
-        <Button href="/companies" variant="outline">
-          Companies entdecken
-        </Button>
       </div>
     </div>
   );

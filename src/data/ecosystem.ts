@@ -23,6 +23,8 @@ export const ECOSYSTEM = {
 export const ECO_BY_COMPANY_CARD: Record<string, string[]> = {
   "banijay-productions-germany": ["entertainment"],
   "endemolshine-germany": ["entertainment"],
+  // Brainpool wieder aufgenommen (Wolfram 16.07., revidiert den Kundenwunsch vom 13.07.)
+  brainpool: ["entertainment", "live"],
   madefor: ["fiction"],
   "dynamic-ally-pictures": ["fiction"],
   "good-humor": ["fiction"],
@@ -36,7 +38,10 @@ export const ECO_BY_COMPANY_CARD: Record<string, string[]> = {
   "mts-management": ["artists"],
   "sr-management": ["artists"],
   en2rage: ["artists"],
-  "only-good-people": ["artists"],
+  // OGPP war ein separater Eintrag unter „Live" — laut Wolfram (16.07.) ist das
+  // dieselbe Company: Only Good People (ogp.rocks). Daher zusammengeführt → lebt
+  // in Artists UND Live, statt zweimal unter verschiedenen Namen aufzutauchen.
+  "only-good-people": ["artists", "live"],
   "elevate-talent-management": ["artists"],
   "bb-endemol-shine": ["entertainment"],
   "endemol-shine-polska": ["entertainment"],
@@ -50,8 +55,9 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Banijay Productions Germany", url: "https://banijayproductions.de/" },
       { name: "Banijay Germany Live", url: "https://www.brainpool-live.de" },
       { name: "Endemol Shine Germany", url: "https://www.endemolshine.de/" },
-      // Brainpool + Brainpool Pictures entfernt (Kundenwunsch 13.07.:
-      // Brainpool-Companies werden nicht mehr aufgeführt)
+      // Brainpool wieder aufgenommen (Wolfram 16.07.) — der Kundenwunsch vom 13.07.
+      // ist revidiert. „Brainpool Pictures" bleibt vorerst raus.
+      { name: "Brainpool", url: "https://brainpool.de/" },
       { name: "B&B Endemol Shine Switzerland", url: "https://bbendemolshine.ch/" },
       { name: "Rainer Laux Productions" },
       { name: "Lucky Pics" },
@@ -68,9 +74,11 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     companies: [
       { name: "Cologne Comedy Festival", url: "https://www.comedy.cologne/" },
       { name: "MyShow", url: "https://myshow.de/" },
+      { name: "Brainpool", url: "https://brainpool.de/" },
       { name: "Banijay Germany Live", url: "https://www.brainpool-live.de" },
       { name: "NightWash Club", url: "https://nightwash-club.de/" },
-      { name: "OGPP" },
+      // war „OGPP" (Abkürzung, ohne Link) → richtiger Company-Name + Website (Wolfram 16.07.)
+      { name: "Only Good People", url: "https://ogp.rocks/" },
     ],
   },
   {
@@ -94,7 +102,7 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "MTS Management", url: "https://www.mts-gmbh.com/" },
       { name: "SR Management", url: "http://www.srmanagement.de/" },
       { name: "En2rage", url: "http://en2rage.de/" },
-      { name: "Only Good People" },
+      { name: "Only Good People", url: "https://ogp.rocks/" },
       { name: "Only Good Party People" },
       { name: "Elevate", url: "https://www.elevate-mgmt.de/" },
     ],

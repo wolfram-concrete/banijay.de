@@ -80,18 +80,17 @@ const SWAP_LINE_STYLE = {
   color: PAPER,
 } as const;
 
-// „+" sitzt in Sharp Grotesk hoch im Glyphenkasten → in der 7vw-Headline wirkt es wie
-// zentriert in der 0. Wolfram 15.07.: das + gehört mit der Unterkante auf die Grundlinie
-// der Ziffern (bündig mit 4/0). position:relative senkt das baseline-ausgerichtete +
-// ab. Hier ist das + GLEICH GROSS wie die Ziffern (7vw) → kleinerer Versatz (0.18em)
-// als beim kleineren Suffix-+ in den Facts (0.42em).
-function withBaselinePlus(text: string) {
+// Headline-„+": Wolfram 16.07. — 25 % kleiner als die Ziffern (0.75em) und leicht ÜBER
+// der Grundlinie der „4" schwebend (nicht mehr bündig aufsitzend). Referenz: top:0.18em
+// würde das + exakt auf die Grundlinie setzen (es sitzt in Sharp Grotesk hoch im
+// Glyphenkasten); der kleinere Wert lässt es genau um diese Differenz schweben.
+function withHeadlinePlus(text: string) {
   const segs = text.split("+");
   return segs.map((s, i) => (
     <span key={i}>
       {s}
       {i < segs.length - 1 && (
-        <span style={{ position: "relative", top: "0.18em" }}>+</span>
+        <span style={{ fontSize: "0.75em", position: "relative", top: "0.08em" }}>+</span>
       )}
     </span>
   ));
@@ -240,7 +239,7 @@ export function AlgarveEcosystem() {
         style={{ zIndex: 5 }}
       >
         <h2 data-eco-swap-first className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {withBaselinePlus(SWAP_LINES[0])}
+          {withHeadlinePlus(SWAP_LINES[0])}
         </h2>
         <h2 data-eco-swap-last className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
           {SWAP_LINES[1]}

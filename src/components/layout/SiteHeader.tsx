@@ -145,7 +145,6 @@ const MAGENTA = "#ff4370";
 const PAGE_LABEL: Record<string, string> = {
   // „/" (Home) absichtlich NICHT gelistet — das eingerastete Label soll nur auf
   // Unterseiten als Orientierung erscheinen, nicht auf der Startseite.
-  "/companies": "Companies",
   "/about": "About",
   "/career": "Career",
   "/news": "News",
@@ -371,17 +370,16 @@ export function SiteHeader() {
               )}
             </button>
 
-            {/* Eingerastetes Seiten-Label — gleiche Wortmarke, regular. Sitzt LINKS
-                OBEN neben dem B-Logo (Wolfram 14.07.), oben mit dem B ausgerichtet.
-                Erscheint beim Scrollen als Orientierung. */}
+            {/* Eingerastetes Seiten-Label (About / Career / News) — gleiche Wortmarke,
+                regular. Sitzt MITTELACHSIG UNTER dem B-Logo (Wolfram 16.07.; vorher
+                links daneben). Erscheint beim Scrollen als Orientierung. */}
             {pageLabel && !open && (
               <span
                 aria-hidden
-                className="pointer-events-none absolute right-full top-1/2 uppercase transition-all duration-[450ms] ease-out"
+                className="pointer-events-none absolute left-1/2 top-full uppercase transition-all duration-[450ms] ease-out"
                 style={{
-                  // Vertikal auf die MITTELACHSE des B-Logos gesetzt (Wolfram 14.07.).
-                  marginRight: "0.7rem",
-                  transformOrigin: "right center",
+                  marginTop: "0.4rem",
+                  transformOrigin: "center top",
                   fontFamily: "var(--font-sharp), sans-serif",
                   fontWeight: 600,
                   fontSize: "0.9rem",
@@ -390,9 +388,10 @@ export function SiteHeader() {
                   color: open || overlayPresent || onMagenta ? INK : MAGENTA,
                   whiteSpace: "nowrap",
                   // Das weiße Hero-Label „übergibt" hierher: es rastet mit
-                  // Shift + Herunterskalieren als kleine rote Wortmarke ein.
+                  // Shift + Herunterskalieren als kleine rote Wortmarke ein. Das
+                  // translateX(-50%) hält es dabei durchgehend auf der Mittelachse.
                   opacity: scrolled ? 1 : 0,
-                  transform: scrolled ? "translateY(-50%) scale(1)" : "translateY(calc(-50% - 0.6rem)) scale(1.6)",
+                  transform: scrolled ? "translateX(-50%) scale(1)" : "translateX(-50%) translateY(-0.6rem) scale(1.6)",
                 }}
               >
                 {pageLabel}

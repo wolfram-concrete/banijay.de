@@ -72,38 +72,52 @@ npm run lint    # ESLint
 
 ```
 src/
-  app/(frontend)/        Seiten: Home, Companies, About, Career, Contact, News
+  app/(frontend)/        Seiten: Home, About, Career, News, Contact
+                         (Companies-Seite entfernt, 16.07. — das Companies-Bento
+                         lebt auf der Home)
   components/
-    cinematic/           AlgarveHome (Hero) & Home-Sektionen (Preloader auf der
-                         Home entfernt — Hero startet direkt)
-    cinematic/algarve/   Nachgebaute Algarve-Module: CompaniesScroller, CompanyCards,
-                         CeoTestimonial (combo-4-Optik: Portrait + Accent/Zitat/CTA),
-                         Founders/Team, LogoReveal, NewsStack, WorksCards, PageHero
-                         (mit Magenta-Wort-Highlights im Statement), AboutIntro,
-                         ProofVideo (About: das Video wächst nach Scroll-In aus einer
-                         grauen Stat-Kachel auf Full-Screen), PartnerGrid (News-Optik),
-                         CareerRoleStack, CareerTomorrowStack (Standorte→Tomorrow,
-                         gepinnte Fächer-Sequenz mit Scale-to-Fit: bunte Streifen
-                         layern nach unten, dann schwarze Karte + Content-Fade),
-                         CareerSocial…
-    layout/              SiteHeader, SiteFooter
-                         WorldNetwork (About „Local Everywhere": magenta Scroll-Stop
-                         mit ziehbarem Logo-Slider), PartnerStack (schiebt sich über die
-                         Team-Section), CareerLocations (Standorte-Box), NewsGrid
-                         (5-Spalten-Querformat-Grid mit „Weitere laden"), ServicesStack
-                         (flache Flipcards in der Video-Palette), AboutDrift (frei
-                         schwebende Video-Snippets mit Scroll-/Maus-Parallax) …
-                         Farbwelt: „Video Color Coding" (Night + Neon: Magenta bleibt
-                         Main, dazu Blau/Cyan/Violett/Aubergine/Coral, kein Gelb/Grün)
-                         — Tokens --bj-video-* in globals.css.
-  data/                  CMS-fähige Datenschicht (companies, home, leadership …);
+    cinematic/           AlgarveHome (Hero, global auf allen Seiten mit eigenem
+                         frame3 + Statement), IntroOverlay (Preloader: läuft bei
+                         JEDEM Home-Aufruf, auch bei Client-Navigation zurück —
+                         16.07.; nur prefers-reduced-motion überspringt)
+    cinematic/algarve/   Home: CompaniesBento, EcosystemSection, Editorial,
+                         EditorialStickyScene (Facts), Founders/Team (Prop
+                         holdForOverlay: Halte-Beat nur, wenn eine Folge-Section
+                         mit -100vh darüberzieht), LogoReveal, NewsStack
+                         About:  ProofVideo (Zahlen mittelachsig, gleich große
+                         Ziffern; das Video blüht aus der MITTLEREN Kachel auf),
+                         Testimonials (Zitat-Fächer der Geschäftsführer:innen,
+                         Daten 1:1 von banijay.de), WorldNetwork („Local
+                         Everywhere", magenta Scroll-Stop + Logo-Ticker),
+                         EcosystemDirectory
+                         Career: CareerRoleScroller (Swipe-Bühne: Wörter
+                         auseinander → Karten aus der Mitte → Swipe, Grund färbt
+                         mit), CareerJobsPreview, CareerLocations,
+                         CareerTomorrowStack, CodeOfConductBand („WE ARE BANIJAY"
+                         → Statement), CareerSocialFeed/-Slider (Caption via
+                         showText: Career an, Home aus)
+                         News:   NewsSections (Rubrik-Blöcke Presse · Podcast ·
+                         Primetime-Hitrate · Marcus Wolter · Social; je Block
+                         Headline + Linie + nativer Slider, rechts im Anschnitt)
+                         Global: LogoTicker (weiße Company-Wortmarken, Endlos-
+                         Banderole — About-World + unter den Career-Standorten),
+                         MoodBackdrop, AboutDrift, ContactForm, PageHero
+                         Farbwelt: „Video Color Coding" (Night + Neon: Magenta
+                         bleibt Main, dazu Blau/Cyan/Violett/Aubergine/Coral,
+                         kein Gelb/Grün) — Tokens --bj-video-* in globals.css.
+    layout/              SiteHeader (Seitentitel mittelachsig unter dem Logo),
+                         SiteFooter (Mail/Tel/Presse)
+  data/                  CMS-fähige Datenschicht (companiesDirectory, companyCards,
+                         about, career, home, leadership, feed …);
                          news.ts = 30 reale banijay.de-Meldungen (aus scraped_content
                          ausgewertet, Listenbilder lokal in public/news/scraped/)
 public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
+  company-logos/         Weiße Company-Wortmarken (speisen den LogoTicker)
   company-media/<slug>/  Hochauflösende, lokal optimierte Company-Poster (poster.jpg,
-                         1400px, siehe banijay-company-media-recherche.md) — ersetzen
-                         die alten 260–270px-Scrapes in public/companies/
+                         1400px, siehe banijay-company-media-recherche.md)
+  people/quotes/         Fotos der Zitat-Geschäftsführer:innen (von banijay.de,
+                         transparente Ränder getrimmt + auf Panel-Farbe gelegt)
   video/  companies/  people/  grid/   Bild- und Videomaterial
 ```
 

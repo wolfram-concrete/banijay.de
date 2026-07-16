@@ -80,6 +80,7 @@ export default function HomePage() {
           hier als abschließender „live aus der Banijay-Welt"-Block vor dem Footer. */}
       <AlgarveCareerSocialFeed
         dark
+        showText={false}
         headline="#BanijayGermany"
         subline="Neuigkeiten, Menschen und Momente — direkt aus unseren Kanälen."
       />

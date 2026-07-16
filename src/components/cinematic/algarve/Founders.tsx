@@ -65,7 +65,16 @@ function TeamHeadWords({ text }: { text: string }) {
   );
 }
 
-export function AlgarveFounders() {
+export function AlgarveFounders({
+  holdForOverlay = true,
+}: {
+  /** Halte-Beat am Ende des Team-Pins: das komplette Team steht still, damit die
+   *  FOLGE-Section mit ihrem -100vh-Overlap darüberziehen kann (Home: LogoReveal).
+   *  Auf About gibt es seit dem Wegfall der Partner-Section keinen solchen Nachfolger
+   *  mehr (Wolfram 16.07.) — dort false, sonst stünde das Team ~1 Screen lang
+   *  unbedeckt still und es läse sich als Hänger. */
+  holdForOverlay?: boolean;
+} = {}) {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
   const mTeam = useRef<HTMLDivElement>(null); // Mobile-Team-Container (für End-Pin)
@@ -112,11 +121,14 @@ export function AlgarveFounders() {
       // Danach ein kurzer Halte-Beat: das komplette Team steht, BEVOR der Pin löst
       // (auf der Home steigt danach im LogoReveal das Video darüber). Schlichter
       // Scroll-Eingang aus dem Editorial (kein Warp/Blende mehr — Wolfram 14.07.).
+      // Pin-Strecke folgt dem Halte-Beat: MIT Overlay-Hold 210 % (Aufbau + 1 Screen
+      // Stillstand, den die Folge-Section überdeckt), OHNE nur 120 % — sonst bliebe
+      // die Hold-Strecke als Leerlauf stehen (About seit Wegfall der Partner-Section).
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: "+=210%",
+          end: holdForOverlay ? "+=210%" : "+=120%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
@@ -127,7 +139,7 @@ export function AlgarveFounders() {
       tl.to(metas, { opacity: 1, y: 0, ease: "power2.out", stagger: 0.02, duration: 0.26 }, 0.48);
       // Langer Halte-Beat: komplettes Team steht still, BEVOR im LogoReveal der
       // Videocontainer (-100vh) von unten darüberzieht.
-      tl.to({}, { duration: 0.9 }, 0.9);
+      if (holdForOverlay) tl.to({}, { duration: 0.9 }, 0.9);
     },
     { scope: root },
   );
@@ -150,7 +162,7 @@ export function AlgarveFounders() {
 
       // END-PIN: sobald der letzte Team-Screen erreicht ist (Container-Unterkante an
       // Viewport-Unterkante), rastet das Team ein und HÄLT STILL — über diese Strecke
-      // schiebt sich die nächste Section (PartnerStack/LogoReveal, marginTop -100vh)
+      // schiebt sich die nächste Section (Home: LogoReveal, marginTop -100vh)
       // von unten voll darüber. Analog zum Desktop-Team-Pin. pinSpacing ergänzt den
       // Scrollweg; die -100vh der Folgesection überlagern die letzten 100vh des Pins.
       if (mTeam.current) {
@@ -197,23 +209,36 @@ export function AlgarveFounders() {
     <section ref={root} style={{ background: "transparent" }}>
       {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
       <div data-team-stage className="relative max-[767px]:hidden" style={{ height: "100vh", overflow: "hidden" }}>
-        {/* Breite gedeckelt + zentriert (Wolfram 15.07.): auf sehr breiten Screens lief
-            das Grid full-width → die Kacheln wurden zu breit (landscape) und schnitten zu
-            viel vom Porträt weg. Jetzt enger geführt → schmalere, portrait-nähere Kacheln. */}
-        <div className="mx-auto flex h-full w-full flex-col" style={{ maxWidth: "1680px", padding: "6vw 2vw 3vw" }}>
+        {/* BREITE AN DIE HÖHE GEKOPPELT (Wolfram 16.07.): Die Bühne ist 100vh hoch, die
+            Kachelbreite kam aber allein aus der Screenbreite → auf breiten/flachen Screens
+            (z. B. 2560×1080) wurden die Porträts extrem flach (3,7:1). Jetzt deckelt
+            zusätzlich ein vh-Term die Breite: je flacher der Screen, desto schmaler das
+            Grid → die Kachel bleibt nah an 4:3, ohne Breakpoint-Raten. Weiterhin zentriert.
+            WICHTIG: Die vertikalen Abstände + die Headline sind geclampt — als reine
+            vw-Werte wuchsen sie mit der BREITE und fraßen bei 2560×1080 fast die halbe
+            Bühne (496px), sodass fürs Grid nur 584px blieben. */}
+        <div
+          className="mx-auto flex h-full w-full flex-col"
+          style={{
+            maxWidth: "min(1680px, 105vh)",
+            padding: "clamp(1.6rem, 4vw, 4rem) 2vw clamp(1rem, 3vw, 2.5rem)",
+          }}
+        >
           {/* TEAM — MITTELACHSIG (13.07.) + mehr Luft zum Portrait-Aufbau */}
           <h2
             data-team-head
             className="m-0 text-center uppercase text-[#f8f7f3]"
             style={{
               fontFamily: "var(--font-sharp), sans-serif",
-              fontSize: "7.22vw",
+              // geclampt (Wolfram 16.07.): 7.22vw wuchs mit der Breite und kostete auf
+              // breiten Screens Bühnenhöhe, die den Porträts fehlte.
+              fontSize: "clamp(2.6rem, 7.22vw, 6.6rem)",
               fontWeight: 500,
               letterSpacing: "-0.139vw",
               lineHeight: 0.95,
               position: "relative",
               zIndex: 3,
-              marginBottom: "3.5vw",
+              marginBottom: "clamp(0.9rem, 3.5vw, 2.4rem)",
             }}
           >
             <TeamHeadWords text="Unser Team" />
@@ -243,7 +268,12 @@ export function AlgarveFounders() {
                   <div className="text-[#f8f7f3]" style={NAME}>
                     {p.name}
                   </div>
-                  <div style={ROLE}>{p.role}</div>
+                  {/* Rolle auf EINE Zeile Höhe fixiert, Überhang sichtbar (Wolfram 16.07.):
+                      sonst macht ein zweizeiliger Titel (Matthaeus Jaworek) die Meta höher,
+                      das flex-1-Bild schrumpft und sein Name rutscht gegenüber den Nachbarn
+                      hoch. So bleiben alle Bilder gleich hoch, alle NAMEN fluchten — und die
+                      zweite Titelzeile hängt einfach eine Zeile tiefer. */}
+                  <div style={{ ...ROLE, height: "1.22em", overflow: "visible" }}>{p.role}</div>
                 </div>
               </div>
             ))}

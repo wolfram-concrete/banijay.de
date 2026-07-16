@@ -29,13 +29,20 @@ export function AlgarveCareerTomorrowStack() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Parallax: das Bild ist höher als sein Container und wandert gegenläufig zum
-      // Scroll → Tiefeneffekt, ohne Kanten freizulegen.
+      // Parallax: GEDÄMPFT auf ±4 % (vorher ±10 % bei einem 136 % hohen Bild).
+      // Grund (Wolfram 16.07.): Das Keyvisual hat Typo („All lights on you") und die
+      // B-Marke einkomponiert — ein Bild, das größer als sein Container ist, würde sie
+      // anschneiden. Der Container hat jetzt die native Ratio des Visuals, das Bild
+      // liegt mit scale 1.12 darin → 6 % Spielraum je Kante. ±4 % bleiben sicher
+      // darunter, es entsteht Tiefe ohne Beschnitt.
+      // scale gehört in den Tween, nicht ins style-Attribut: GSAP verwaltet die
+      // transform-Kette selbst und würde ein Inline-transform überschreiben.
       gsap.fromTo(
         img.current,
-        { yPercent: -10 },
+        { yPercent: -4, scale: 1.12 },
         {
-          yPercent: 10,
+          yPercent: 4,
+          scale: 1.12,
           ease: "none",
           scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true },
         },
@@ -83,10 +90,13 @@ export function AlgarveCareerTomorrowStack() {
             >
               {tomorrow.headline}
             </h2>
-            {/* Mobil: Bild oberhalb der Copy (Desktop nutzt das Bild in der rechten Spalte). */}
+            {/* Mobil: Bild oberhalb der Copy (Desktop nutzt das Bild in der rechten
+                Spalte). Ratio = native Visual-Ratio statt der früheren 4:3 — sonst
+                würde das Keyvisual seitlich beschnitten. */}
             <div
               data-tm-item
-              className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block max-[767px]:!aspect-[4/3]"
+              className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block"
+              style={{ aspectRatio: String(tomorrow.imageAspect) }}
             >
               <img src={tomorrow.image} alt={tomorrow.headline} className="h-full w-full object-cover" />
             </div>
@@ -110,15 +120,18 @@ export function AlgarveCareerTomorrowStack() {
             </a>
           </div>
 
-          {/* ── Bild rechts (mit Parallax; höher als der Container) — nur Desktop.
-              Mobil sitzt das Bild oberhalb der Copy (siehe Textspalte). ─────── */}
-          <div className="relative overflow-clip max-[767px]:!hidden" style={{ aspectRatio: "5 / 6" }}>
+          {/* ── Bild rechts (mit gedämpftem Parallax) — nur Desktop. Mobil sitzt das
+              Bild oberhalb der Copy (siehe Textspalte).
+              Container-Ratio = native Ratio des Keyvisuals (1,951:1) statt der früheren
+              5:6-Hochkant-Box: Das Visual ist quer und trägt Typo + B-Marke, in 5:6
+              hätte object-cover beides zerschnitten. ─────────────────────────── */}
+          <div className="relative overflow-clip max-[767px]:!hidden" style={{ aspectRatio: String(tomorrow.imageAspect) }}>
             <img
               ref={img}
               src={tomorrow.image}
               alt={tomorrow.headline}
-              className="absolute inset-x-0 w-full object-cover"
-              style={{ top: "-18%", height: "136%", willChange: "transform" }}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ transform: "scale(1.12)", willChange: "transform" }}
             />
           </div>
         </div>

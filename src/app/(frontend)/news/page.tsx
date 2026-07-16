@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
-import { NewsFilter } from "@/components/cinematic/algarve/NewsFilter";
+import { NewsSections } from "@/components/cinematic/algarve/NewsSections";
 import { fetchSocialPosts } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { mergeFeed } from "@/data/feed";
 import { NEWS } from "@/data/news";
@@ -25,12 +25,14 @@ export default async function NewsPage() {
         parallaxExit
       />
 
-      {/* Ein gemischter Feed (News + Social, nach Datum) mit Rubrik-Filter
-          (Alle · News · Primetime · Podcast · Social) — dichtes Masonry mit nativen
-          Thumbnail-Proportionen, Desktop fast volle Breite. */}
+      {/* Rubrik-BLÖCKE statt einer gemischten Gesamtliste mit Chip-Filter (Wolfram
+          16.07.): Presse · Podcast · Primetime-Hitrate · Marcus Wolter · Social —
+          je Block eine linksbündige Headline, eine Trennlinie und die Posts als
+          Slider. mergeFeed sortiert weiterhin nach Datum, das gilt jetzt innerhalb
+          jedes Blocks. */}
       <section className="py-20 lg:py-28" style={{ background: "transparent" }}>
         <div className="mx-auto w-full px-6 max-[767px]:!px-6 lg:px-[2.5vw]" style={{ maxWidth: "1840px" }}>
-          <NewsFilter items={feed} />
+          <NewsSections items={feed} />
         </div>
       </section>
     </>

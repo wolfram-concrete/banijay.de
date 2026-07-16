@@ -1,12 +1,12 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ABOUT } from "@/data/about";
+import { AlgarveLogoTicker } from "./LogoTicker";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -25,87 +25,20 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
-const TILE = "#f8f7f3";
 
 export function AlgarveWorldNetwork() {
   const { world } = ABOUT;
   const root = useRef<HTMLElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const trackWrap = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-  // Zeitstempel der letzten manuellen Bedienung (Drag/Wheel/Touch). Solange die
-  // kürzlich war, pausiert der scroll-getriebene Slide (unten), damit die manuelle
-  // Position hält und nicht vom Lenis-getriebenen onUpdate zurückgeschnappt wird.
-  const lastManual = useRef(0);
 
-  // Logo-Bahn zusätzlich manuell bedienbar: Klick-Ziehen pant die Leiste (Trackpad-
-  // Swipe funktioniert über overflow-x-auto ohnehin nativ). Ein Move-Schwellwert
-  // verhindert, dass ein Drag versehentlich den Logo-Link öffnet.
-  useEffect(() => {
-    const wrap = trackWrap.current;
-    if (!wrap) return;
-    let down = false;
-    let moved = false;
-    let startX = 0;
-    let startLeft = 0;
-    const mark = () => (lastManual.current = performance.now());
-    const onDown = (e: PointerEvent) => {
-      down = true;
-      moved = false;
-      startX = e.clientX;
-      startLeft = wrap.scrollLeft;
-      wrap.style.cursor = "grabbing";
-      mark();
-    };
-    const onMove = (e: PointerEvent) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) {
-        moved = true;
-        dragging.current = true;
-      }
-      if (moved) {
-        wrap.scrollLeft = startLeft - dx;
-        mark();
-      }
-    };
-    const onUp = () => {
-      down = false;
-      wrap.style.cursor = "grab";
-      mark();
-      requestAnimationFrame(() => (dragging.current = false));
-    };
-    const onClick = (e: MouseEvent) => {
-      if (moved) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-    wrap.style.cursor = "grab";
-    wrap.addEventListener("pointerdown", onDown);
-    wrap.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    wrap.addEventListener("click", onClick, true);
-    // Trackpad-Horizontal-Wheel & Touch zählen ebenfalls als manuelle Bedienung.
-    wrap.addEventListener("wheel", mark, { passive: true });
-    wrap.addEventListener("touchstart", mark, { passive: true });
-    wrap.addEventListener("touchmove", mark, { passive: true });
-    return () => {
-      wrap.removeEventListener("pointerdown", onDown);
-      wrap.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      wrap.removeEventListener("click", onClick, true);
-      wrap.removeEventListener("wheel", mark);
-      wrap.removeEventListener("touchstart", mark);
-      wrap.removeEventListener("touchmove", mark);
-    };
-  }, []);
+  // Die Drag-/Pan-Mechanik der Logo-Kachelbahn (Pointer-Handler, „lastManual"-Sperre
+  // gegen den scroll-getriebenen Slide) ist mit der Bahn entfallen (Wolfram 16.07.) —
+  // der Ticker läuft von allein und ist nicht bedienbar.
 
   useGSAP(
     () => {
       const sec = root.current;
-      const wrap = trackWrap.current;
-      if (!sec || !wrap || !panel.current) return;
+      if (!sec || !panel.current) return;
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce) return; // Content sichtbar, Logo-Bahn nativ scroll-/ziehbar.
@@ -121,9 +54,6 @@ export function AlgarveWorldNetwork() {
         ease: "none",
         scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: 1, invalidateOnRefresh: true },
       });
-
-      // maxScroll = horizontale Slide-Distanz der Logo-Bahn.
-      const maxScroll = () => Math.max(0, wrap.scrollWidth - wrap.clientWidth);
 
       // 2) Content-Parallax: der leere Magenta-Grund steht ZUERST (Aufstieg über das
       //    Statement). Erst beim WEITERSCROLLEN (nach dem Andocken) zieht der Content
@@ -146,23 +76,15 @@ export function AlgarveWorldNetwork() {
         },
       });
 
-      // 3) Scroll-Stop: Panel gepinnt; Setz-Phase (Content zieht ein) → dann slidet die
-      //    Logo-Bahn über die native scrollLeft-Position (0 → max) — zugleich MANUELL
-      //    zieh-/swipebar. Pin-Länge = Setz-Phase + Slide-Distanz → danach löst der Pin.
-      // Pinned Scroll-Stop-Slider NUR Desktop. Mobile: Rise + Unfold + Content-Reveal
-      // (oben) laufen, die Logo-Bahn bleibt nativer Swipe (kein Pin).
+      // 3) Scroll-Stop: Panel gepinnt, Setz-Phase (Content zieht ein), dann löst der Pin.
+      //    Der frühere Logo-Slide (Pin-Strecke = Setz-Phase + Slide-Überhang der
+      //    Kachelbahn, gesteuert über wrap.scrollLeft) ist mit der Bahn entfallen
+      //    (Wolfram 16.07.) — die Pin-Strecke ist jetzt reine Setz-Phase.
       if (desktop) {
-        // FESTE Setz-/Aufbau-Distanz (~1.5 Screens) + optionaler Logo-Slide-Überhang.
-        // Wichtig: auf breiten Screens passen alle Logos in eine Reihe → maxScroll = 0.
-        // Ohne die feste Distanz wäre die Pin-Strecke 0 und man würde über die Section
-        // hinwegscrollen. So rastet sie IMMER full-size ein, der Content baut sich auf
-        // und hält; erst danach sliden die Logos (falls Überhang). Snap → „einrasten".
-        const settlePx = () => Math.round(window.innerHeight * 1.5);
-        const pinDist = () => settlePx() + maxScroll();
         ScrollTrigger.create({
           trigger: sec,
           start: "top top",
-          end: () => "+=" + pinDist(),
+          end: () => "+=" + Math.round(window.innerHeight * 1.5),
           pin: panel.current,
           pinSpacing: true,
           anticipatePin: 1,
@@ -170,20 +92,11 @@ export function AlgarveWorldNetwork() {
           invalidateOnRefresh: true,
           // Snap-Scroll: die Section rastet full-size ein (0) bzw. gibt am Ende frei (1).
           snap: { snapTo: [0, 1], duration: { min: 0.2, max: 0.5 }, ease: "power1.inOut", delay: 0.1 },
-          onUpdate: (self) => {
-            if (dragging.current || performance.now() - lastManual.current < 900) return;
-            const ms = maxScroll();
-            if (ms <= 0) return;
-            const settleFrac = settlePx() / pinDist();
-            const slideP = Math.min(1, Math.max(0, (self.progress - settleFrac) / (1 - settleFrac)));
-            wrap.scrollLeft = slideP * ms;
-          },
         });
       } else {
-        // Mobile: KEIN gepinnter Logo-Slider (nativer Swipe). ABER kurzer Pin ab
-        // „top top", damit der Panel-Content (Headline/Copy/CTA) beim Einziehen NICHT
-        // sofort hinter die Sticky-Nav wegscrollt. Pin-Länge = Reveal-Strecke + kleiner
-        // Hold; danach löst der Pin, Logo-Bahn + Pills scrollen normal nach.
+        // Mobile: kurzer Pin ab „top top", damit der Panel-Content (Headline/Copy/CTA)
+        // beim Einziehen NICHT sofort hinter die Sticky-Nav wegscrollt. Pin-Länge =
+        // Reveal-Strecke + kleiner Hold; danach löst der Pin.
         const revealLen = Math.round(window.innerHeight * 0.7);
         ScrollTrigger.create({
           trigger: sec,
@@ -271,38 +184,15 @@ export function AlgarveWorldNetwork() {
           </div>
         </div>
 
-        {/* ── Logo-Bahn — startet LINKSBÜNDIG zur Schrift (gleicher max-w-Container),
-            blutet nach rechts über den Viewport-Rand (macht klar: geht weiter). ── */}
-        <div data-wn-reveal className="mx-auto w-full max-[767px]:!px-[5vw]" style={{ maxWidth: "1560px", paddingLeft: "2vw", paddingRight: "2vw" }}>
-          <div
-            ref={trackWrap}
-            className="touch-pan-x select-none overflow-x-auto snap-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ marginRight: "calc(50% - 50vw)" }}
-          >
-            <div className="flex" style={{ gap: "1.4vw", paddingRight: "6vw" }}>
-              {world.holdings.map((h) => (
-                <a
-                  key={h.name}
-                  href={h.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  draggable={false}
-                  aria-label={`${h.name} öffnen`}
-                  className="group shrink-0 snap-start overflow-clip max-[767px]:!h-[27vw] max-[767px]:!w-[27vw]"
-                  style={{ height: "clamp(118px, 16vh, 178px)", aspectRatio: "1 / 1", background: TILE }}
-                >
-                  <img
-                    src={h.image}
-                    alt={h.name}
-                    draggable={false}
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03] max-[767px]:!p-[4%]"
-                    style={{ padding: "17%" }}
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
+        {/* ── Logo-Banderole statt der internationalen Logo-Kacheln (Wolfram 16.07.):
+            Die zieh-/slidebare Kachel-Bahn (Banijay Asia/Benelux/Italy …) ist raus, an
+            ihrer Stelle läuft der durchgehende Logo-Ticker. Er bleedet von sich aus
+            über die volle Viewport-Breite, braucht also keinen Container. ── */}
+        <div data-wn-reveal>
+          <AlgarveLogoTicker />
+        </div>
 
+        <div className="mx-auto w-full max-[767px]:!px-[5vw]" style={{ maxWidth: "1560px", paddingLeft: "2vw", paddingRight: "2vw" }}>
           {/* Worldwide-Textlinks (Wolfram 15.07.): keine Buttons mehr — schlichte
               unterstrichene Hyperlinks mit Pfeil daneben, linksbündig. */}
           <div

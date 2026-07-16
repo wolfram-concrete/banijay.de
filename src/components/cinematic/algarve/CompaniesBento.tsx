@@ -44,7 +44,25 @@ const SPAN: Record<number, string> = {
 // Span (uniformer „Schwanz") → unten steht nichts über, das Grid wirkt ruhig; die
 // row-span/hochformat-Cards leben nur im oberen/mittleren Teil.
 const TAIL_UNIFORM = 8;
-const spanFor = (i: number, total: number) => (i >= total - TAIL_UNIFORM ? "" : SPAN[i % 12] ?? "");
+// IMMER KLEINES MODUL (Wolfram 16.07.): diese Companies bekommen NIE einen Span —
+// weder breit noch hochformatig, auch nicht als letzte Kachel. Ihr Motiv trägt kein
+// großes Format.
+const SMALL_ONLY = new Set<string>(["lucky-pics"]);
+// FESTES FORMAT (Wolfram 16.07.): diese Companies bekommen IMMER denselben Span,
+// unabhängig von ihrer Position — ihr Motiv verträgt kein anderes Format.
+// Pausenclown: Hochformat-Porträt (Sebastian Lege) → nie breit, sondern eine
+// einspaltige Box über zwei Zeilen.
+const FORCE_SPAN: Record<string, string> = {
+  "pausenclown-media": "md:row-span-2",
+};
+const spanFor = (i: number, total: number, id?: string) =>
+  id && SMALL_ONLY.has(id)
+    ? ""
+    : id && FORCE_SPAN[id]
+      ? FORCE_SPAN[id]
+      : i >= total - TAIL_UNIFORM
+        ? ""
+        : SPAN[i % 12] ?? "";
 // Fläche einer Kachel (colspan × rowspan) — für die bündige Rest-Füllung der letzten Zeile.
 const areaOf = (s: string) => (s.includes("col-span-2") ? 2 : 1) * (s.includes("row-span-2") ? 2 : 1);
 
@@ -54,6 +72,20 @@ const REEL: Record<string, string> = Object.fromEntries(
 );
 // Echte Trailer je Company (Wolfram 14.07.) — überschreiben das generische Reel.
 REEL["good-humor"] = "/company-media/madefor-good-humor.mp4";
+
+// FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
+// Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
+// (siehe useGSAP unten) — Bewegung auch ohne Video.
+// objectPosition ist bewusst kopflastig gesetzt: die Bento-Kacheln sind mal quadratisch,
+// mal breit (col-span-2), mal hoch (row-span-2) — so bleibt das Gesicht in JEDEM Zuschnitt
+// im Bild (bei zentriertem Crop würde der Kopf im breiten Format wegfallen).
+const STILL: Record<string, { src: string; alt: string; objectPosition: string }> = {
+  "pausenclown-media": {
+    src: "/company-media/pausenclown-sebastian-lege.jpg",
+    alt: "Sebastian Lege, Food-Experte, Koch & Entertainer",
+    objectPosition: "50% 22%",
+  },
+};
 
 
 export function AlgarveCompaniesBento() {
@@ -76,6 +108,18 @@ export function AlgarveCompaniesBento() {
         once: true,
         onEnter: (batch) =>
           gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.06 }),
+      });
+
+      // FOTO-KACHELN (kein Video): leichter, langsamer Ken-Burns-Zoom, damit auch die
+      // Still-Companies leben. Läuft auf dem IMG (die Einblend-Animation oben liegt auf
+      // der Karte) → keine zwei Writer auf derselben transform. Versetzter Delay, damit
+      // mehrere Foto-Kacheln nicht synchron „atmen".
+      gsap.utils.toArray<HTMLElement>("[data-bento-still]").forEach((img, k) => {
+        gsap.fromTo(
+          img,
+          { scale: 1 },
+          { scale: 1.08, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: k * 0.8 },
+        );
       });
     },
     { scope: root, dependencies: [rubrik], revertOnUpdate: true },
@@ -135,22 +179,37 @@ export function AlgarveCompaniesBento() {
             14.07.): mehr Companies auf weniger Scrollhöhe. Die GANZE Karte ist der
             Klick → externe Company-Website (nur wenn eine URL vorliegt), sonst eine
             neutrale, nicht klickbare Kachel. Keine Flip-/Detailkarten mehr. */}
-        <div key={rubrik} className="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:11.5vw]">
+        {/* Zeilenhöhe (Wolfram 16.07.): war 11.5vw → bei 4 Spalten (Kachel ≈ 23vw breit)
+            ergab das flache 2:1-Kacheln, breite (col-span-2) sogar 4:1 — die Videos wurden
+            zu niedrig. 17vw bringt die Normalkachel auf ≈ 4:3. */}
+        <div key={rubrik} className="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:17vw]">
           {cards.map((card, i) => {
+            const still = STILL[card.id];
             const inner = (
               <>
-                {/* Exemplarisches Bewegtbild (Loop aus dem Banijay-Trailer) */}
-                <video
-                  data-bento-video
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster={card.image}
-                  className="absolute inset-0 h-full w-full object-cover"
-                >
-                  <source src={REEL[card.id]} type="video/mp4" />
-                </video>
+                {/* Foto-Company: Still mit leichtem Ken-Burns-Zoom. Sonst: exemplarisches
+                    Bewegtbild (Loop aus dem Banijay-Trailer). */}
+                {still ? (
+                  <img
+                    data-bento-still
+                    src={still.src}
+                    alt={still.alt}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    style={{ objectPosition: still.objectPosition, willChange: "transform" }}
+                  />
+                ) : (
+                  <video
+                    data-bento-video
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster={card.image}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  >
+                    <source src={REEL[card.id]} type="video/mp4" />
+                  </video>
+                )}
                 {/* Scrim für Lesbarkeit */}
                 <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
 
@@ -160,7 +219,9 @@ export function AlgarveCompaniesBento() {
                     src={card.logo}
                     alt=""
                     aria-hidden
-                    className="absolute right-[4%] top-[6%] h-[1.4rem] w-auto max-w-[34%] object-contain opacity-95 md:h-[1.6rem]"
+                    className={`absolute right-[4%] top-[6%] w-auto max-w-[34%] object-contain opacity-95 ${
+                      card.logoClass ?? "h-[1.4rem] md:h-[1.6rem]"
+                    }`}
                   />
                 )}
 
@@ -186,15 +247,19 @@ export function AlgarveCompaniesBento() {
             // Spalten ziehen (Bildcontainer wird zu groß). Lieber einen kleinen Rest
             // offen lassen als eine Riesenkarte — der Boden bleibt „einigermaßen grade".
             const LAST_FILL: Record<number, string> = { 1: "", 2: "md:col-span-2", 3: "md:col-span-2", 4: "" };
-            const span =
-              i === cards.length - 1
-                ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, _c, k) => n + areaOf(spanFor(k, cards.length)), 0) % 4)] ?? ""
-                : spanFor(i, cards.length);
+            const span = SMALL_ONLY.has(card.id)
+              ? "" // nie spannen — auch nicht als letzte Kachel (Rest bleibt lieber offen)
+              : FORCE_SPAN[card.id]
+                ? FORCE_SPAN[card.id] // festes Format — auch als letzte Kachel
+                : i === cards.length - 1
+                ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, c, k) => n + areaOf(spanFor(k, cards.length, c.id)), 0) % 4)] ?? ""
+                : spanFor(i, cards.length, card.id);
             const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${span}`;
             return card.url ? (
               <a
                 key={card.id}
                 data-bento-card
+                data-company-id={card.id}
                 href={card.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -204,7 +269,7 @@ export function AlgarveCompaniesBento() {
                 {inner}
               </a>
             ) : (
-              <div key={card.id} data-bento-card className={cls} style={{ background: "#14100f" }}>
+              <div key={card.id} data-bento-card data-company-id={card.id} className={cls} style={{ background: "#14100f" }}>
                 {inner}
               </div>
             );

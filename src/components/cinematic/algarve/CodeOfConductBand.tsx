@@ -13,6 +13,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // 100vh-Sticky-Panel, zentriertes Statement (H4-Proportion), das sich beim Scrollen
 // Wort für Wort enthüllt (opacity 0→1 + Anheben, scrub). Akzentwort magenta. Darunter
 // der Banijay-CTA (Outline-Pill), der nach dem Statement einfadet.
+//
+// DAVOR (Wolfram 16.07.): „WE ARE BANIJAY" als großformatige Headline. Sie steht beim
+// Reinscrollen, blendet dann aus — erst danach baut sich das Statement auf.
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
@@ -27,6 +30,12 @@ const H4 = {
   letterSpacing: "-0.104vw",
 } as const;
 
+// Größtes Format im Projekt: 22vw (bisher nur das Footer-Marquee „BANIJAY"; die
+// größte HEADLINE war die Team-Zeile mit 11vw). „WE ARE BANIJAY" passt bei dieser
+// Größe nicht auf eine Zeile — daher zweizeilig, „BANIJAY" läuft dabei fast von
+// Kante zu Kante. Mobil greift das Marquee-Pendant mit 33vw ebenfalls zweizeilig.
+const CLAIM_LINES = ["We are", "Banijay"] as const;
+
 export function AlgarveCodeOfConductBand({ background }: { background?: React.ReactNode } = {}) {
   const root = useRef<HTMLDivElement>(null);
   const words = CAREER.codeOfConduct.text.split(" ");
@@ -36,25 +45,29 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const wordEls = gsap.utils.toArray<HTMLElement>("[data-coc-word]");
       gsap.set(wordEls, { willChange: "transform, opacity", backfaceVisibility: "hidden" });
-      // Wort-für-Wort-Reveal in der ERSTEN Hälfte der Sektion (wie Home-AboutIntro).
-      gsap.from(wordEls, {
-        opacity: 0,
-        yPercent: 30,
-        ease: "none",
-        stagger: { amount: 1, from: "start" },
-        scrollTrigger: { trigger: root.current, start: "top top", end: "+=60%", scrub: 1 },
+
+      // EINE Timeline statt drei separater ScrollTrigger (Wolfram 16.07.): Mit der
+      // Headline davor müssen Claim-Ausblendung und Statement-Aufbau sauber
+      // nacheinander laufen. Die frühere Lösung koordinierte das über drei Trigger mit
+      // „+=60%" / „top top-=52%" — mit einem vierten Beat wäre das kaum noch
+      // nachvollziehbar. In einer Timeline liegt die Reihenfolge explizit fest.
+      // Die from()/fromTo()-Tweens rendern ihren Startzustand sofort (immediateRender),
+      // Statement und CTA sind also von Beginn an unsichtbar.
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1 },
       });
-      // CTA fadet ein, nachdem das Statement steht.
-      gsap.fromTo(
-        "[data-coc-cta]",
-        { opacity: 0, y: 22 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power2.out",
-          scrollTrigger: { trigger: root.current, start: "top top-=52%", end: "top top-=66%", scrub: 1 },
-        },
-      );
+
+      // 1) „WE ARE BANIJAY" steht (Beat 0–1.2) und blendet dann aus.
+      tl.to("[data-coc-claim]", { opacity: 0, scale: 0.94, ease: "power2.in", duration: 1 }, 1.2);
+
+      // 2) Erst danach enthüllt sich das Statement Wort für Wort.
+      tl.from(wordEls, { opacity: 0, yPercent: 30, ease: "none", stagger: { amount: 1, from: "start" }, duration: 1.4 }, 2.5);
+
+      // 3) CTA fadet ein, nachdem das Statement steht.
+      tl.fromTo("[data-coc-cta]", { opacity: 0, y: 22 }, { opacity: 1, y: 0, ease: "power2.out", duration: 0.7 }, 4.3);
+
+      // 4) Endbeat: das fertige Statement steht noch still, bevor die Section abgibt.
+      tl.to({}, { duration: 0.8 }, 5.0);
     },
     { scope: root },
   );
@@ -62,13 +75,51 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
   return (
     <section
       ref={root}
-      className="max-[767px]:!h-[150vh]"
-      style={{ background: "transparent", height: "220vh", position: "relative", overflow: "clip" }}
+      className="max-[767px]:!h-[240vh]"
+      style={{ background: "transparent", height: "340vh", position: "relative", overflow: "clip" }}
     >
+      {/* Höher als zuvor (220vh → 340vh, mobil 150 → 240vh): Die Section trägt jetzt
+          einen Beat mehr — erst der Claim, dann das Statement. Mit der alten Höhe
+          hätten sich beide Phasen gegenseitig die Strecke weggenommen. */}
       <div className="flex items-center justify-center overflow-clip" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
-        {/* Hintergrund-Layer (Career: driftende Bewegtbild-Collage). Wolfram 15.07.:
-            Magenta-Box wieder entfernt — das Statement steht auf dem dunklen Sternenstaub. */}
+        {/* „WE ARE BANIJAY" — liegt ABSOLUT über der Bühne, nicht im Fluss: Claim und
+            Statement wechseln so an derselben Stelle, statt sich gegenseitig zu
+            verschieben.
+            REIHENFOLGE (Wolfram 16.07.): Der Claim steht bewusst VOR {background} im
+            DOM und trägt z-index 0 — genau wie die Drift-Collage. Bei gleichem z-index
+            entscheidet die DOM-Reihenfolge, die später stehende Collage gewinnt und
+            ihre Videocontainer laufen über die Headline. Das Statement (z-10) und der
+            CTA bleiben davon unberührt, liegen also weiterhin ÜBER der Collage — sonst
+            würde sie den Code-of-Conduct-Text überlagern.
+            Kein negativer z-index: Die Bühne ist position:sticky und bildet damit einen
+            eigenen Stacking-Context — z-index -1 würde zwar auch funktionieren, wäre
+            aber an dieses Detail gekoppelt und beim nächsten Umbau eine Falle. */}
+        <h2
+          data-coc-claim
+          className="absolute m-0 w-full text-center uppercase"
+          style={{
+            fontFamily: SHARP,
+            fontSize: "22vw",
+            lineHeight: 0.86,
+            fontWeight: 500,
+            letterSpacing: "-0.6vw",
+            color: PAPER,
+            zIndex: 0,
+            willChange: "transform, opacity",
+          }}
+        >
+          {CLAIM_LINES.map((line) => (
+            <span key={line} className="block max-[767px]:!text-[33vw]">
+              {line}
+            </span>
+          ))}
+        </h2>
+
+        {/* Hintergrund-Layer (Career: driftende Bewegtbild-Collage, z-index 0). Wolfram
+            15.07.: Magenta-Box wieder entfernt — das Statement steht auf dem dunklen
+            Sternenstaub. Steht NACH dem Claim (siehe oben) und läuft dadurch darüber. */}
         {background}
+
         <div className="relative z-10 flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
             className="m-0 mx-auto flex flex-wrap justify-center text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"

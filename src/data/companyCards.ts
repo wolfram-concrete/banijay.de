@@ -170,7 +170,9 @@ export const COMPANY_CARDS: CompanyCard[] = [
     index: "09",
     cluster: "Live & Services",
     kind: "service",
-    name: "Cape Cross",
+    // Offizieller Name lt. Ökosystem-Auflistung (Wolfram 16.07.) — Schwester-Company
+    // ist „Cape Cross Postproduction".
+    name: "Cape Cross Entertainment",
     profile: "Production Services für TV, Entertainment, Events und Technik.",
     body: "Cape Cross liefert technische und operative Produktionskraft – von Licht, Ton und Rigging bis Bühnenbau, Grip und Postproduktion.",
     tags: ["Services", "Eventtechnik", "Postproduktion"],

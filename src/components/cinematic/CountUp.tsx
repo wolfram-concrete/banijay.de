@@ -83,16 +83,17 @@ export function CountUp({
           <span
             style={{
               ...(suffixStyle ?? {}),
-              // Wie eine Einheit als NORMALES inline rendern (Kasten deckungsgleich zur
-              // Ziffern-Grundlinie — die Aufrufer setzen eine font-size am Wrapper); das
-              // minimal höher sitzende +-Glyph per position:relative um seinen reinen
-              // Glyph-Offset (0.14em) absenken → Unterkante bündig, wie Mrd./hrs./%.
+              // Symbol-Einheit: eng an die Ziffer (marginLeft statt Leerzeichen) — soll als
+              // EINE Einheit lesen (Wolfram 16.07.). Das +-Glyph sitzt minimal höher als
+              // %/Buchstaben → per position:relative um seinen Glyph-Offset (0.14em)
+              // absenken, damit die Unterkante auf der Ziffern-Grundlinie steht.
               position: "relative",
               top: "0.14em",
-              whiteSpace: "pre",
+              // noch enger an die Ziffer (Wolfram 16.07.): 0.1em → 0.04em
+              marginLeft: "0.04em",
             }}
           >
-            {" +"}
+            +
           </span>
         ) : suffixStyle ? (
           <span style={suffixStyle}>{suffix}</span>

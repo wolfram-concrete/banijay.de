@@ -4,8 +4,10 @@
 //    (30 eindeutige — podcast_bande liegt doppelt im Ordner)
 //  • plus PLATZHALTER für Companies, die nur in der offiziellen
 //    Coopetition-Grafik stehen (kein Logo, kein Text — Name + Kategorie)
-//  • BRAINPOOL-Companies (Brainpool, Brainpool Pictures) sind auf
-//    Kundenwunsch RAUS und werden nicht mehr aufgeführt
+//  • BRAINPOOL ist wieder drin (Wolfram 16.07.): der Kundenwunsch vom 13.07.
+//    („Brainpool-Companies nicht mehr aufführen") ist revidiert — Brainpool ist
+//    eine der wichtigsten Marken (u. a. TV total) und steht auch auf banijay.de.
+//    „Brainpool Pictures" bleibt vorerst raus.
 //  • Texte/Bilder kommen aus companyCards.ts, wo vorhanden — NICHTS erfunden
 //  • URLs nur mit Beleg (Scrape der bisherigen banijay.de)
 //  • ecoKeys = Kategorien aus der Coopetition-Grafik; die vier
@@ -22,6 +24,9 @@ export type DirectoryCompany = {
   ecoKeys: string[];
   /** Weiß-Logo in public/company-logos (fehlt bei Grafik-Platzhaltern) */
   logo?: string;
+  /** Optionale Größen-Override für das Kachel-Logo — nötig bei Hochformat-/Farb-Logos,
+   *  die im höhenbegrenzten Standard-Slot zu klein würden (z. B. NightWash Club). */
+  logoClass?: string;
   /** NUR belegte URLs */
   url?: string;
   tags: string[];
@@ -56,12 +61,21 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // ── mit Logo + redaktionellem Content (companyCards.ts) ────────────────
   fromCard("banijay-productions-germany", ["entertainment"], L("banijay-productions-germany.png")),
   fromCard("endemolshine-germany", ["entertainment"], L("endemolshine-germany.png")),
+  // Brainpool (Wolfram 16.07.): Comedy-/Show-Marken (TV total, Schlag den Star) plus
+  // Live-Geschäft → Entertainment UND Live.
+  fromCard("brainpool", ["entertainment", "live"], L("brainpool.png")),
   fromCard("bb-endemol-shine", ["entertainment"], L("bb-endemol-shine.png")),
   fromCard("endemol-shine-polska", ["entertainment"], L("endemol-shine-polska.png")),
   fromCard("potatohead-pictures", ["entertainment"], L("potatohead-pictures.png")),
   fromCard("banijay-germany-live", ["entertainment", "live"], L("banijay-germany-live.svg")),
   fromCard("madefor", ["fiction"], L("madefor.png")),
   fromCard("good-humor", ["fiction"], L("good-humor.png")),
+  // All3Media-Companies (Übernahme) — bewusst WEIT OBEN einsortiert (Wolfram 16.07.,
+  // ~3. Zeile) statt hinten bei den übrigen All3Media-Einträgen.
+  { id: "filmpool-entertainment", name: "filmpool entertainment", ecoKeys: ["entertainment"], logo: L("filmpool-entertainment.png"), tags: ["Entertainment"] },
+  { id: "filmpool-fiction", name: "filmpool fiction", ecoKeys: ["fiction"], logo: L("filmpool-fiction.png"), tags: ["Fiction"] },
+  { id: "magic-connection", name: "Magic Connection", ecoKeys: [], logo: L("magic-connection.png"), tags: [] },
+  { id: "south-and-browse", name: "South & Browse", ecoKeys: [], logo: L("south-and-browse.png"), tags: [] },
   fromCard("dynamic-ally-pictures", ["fiction"], L("dynamic-ally-pictures.png")),
   fromCard("myshow", ["live"], L("myshow.png")),
   fromCard("cologne-comedy-festival", ["live"], L("cologne-comedy-festival.png")),
@@ -70,7 +84,10 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   fromCard("mts-management", ["artists"], L("mts-management.png")),
   fromCard("sr-management", ["artists"], L("sr-management.png")),
   fromCard("en2rage", ["artists"], L("en2rage.png")),
-  fromCard("only-good-people", ["artists"], L("only-good-people.png")),
+  // Only Good People (ogp.rocks) — der frühere Extra-Eintrag „OGPP" unter „Live" war
+  // dieselbe Company (Wolfram 16.07.) und ist hier zusammengeführt: EINE Kachel mit
+  // Logo + Link, sichtbar unter Artists UND Live.
+  fromCard("only-good-people", ["artists", "live"], L("only-good-people.png")),
   fromCard("elevate-talent-management", ["artists"], L("elevate-talent-management.png")),
   fromCard("cape-cross", ["tech"], L("cape-cross.png")),
 
@@ -86,21 +103,18 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   { id: "rainer-laux-productions", name: "Rainer Laux Productions", ecoKeys: ["entertainment"], logo: L("rainer-laux-productions.png"), tags: ["Entertainment"] },
   { id: "myspass", name: "MySpass", ecoKeys: ["audio", "distribution"], logo: L("myspass.png"), tags: ["Audio", "Distribution & Brand"] },
   { id: "podcast-bande", name: "Podcast Bande", ecoKeys: ["audio"], logo: L("podcast-bande.png"), tags: ["Audio"] },
-  // All3Media-Companies (Übernahme; nicht in der Coopetition-Grafik)
-  { id: "filmpool-entertainment", name: "filmpool entertainment", ecoKeys: ["entertainment"], logo: L("filmpool-entertainment.png"), tags: ["Entertainment"] },
-  { id: "filmpool-fiction", name: "filmpool fiction", ecoKeys: ["fiction"], logo: L("filmpool-fiction.png"), tags: ["Fiction"] },
-  { id: "magic-connection", name: "Magic Connection", ecoKeys: [], logo: L("magic-connection.png"), tags: [] },
-  { id: "south-and-browse", name: "South & Browse", ecoKeys: [], logo: L("south-and-browse.png"), tags: [] },
+  // All3Media-Companies (Übernahme; nicht in der Coopetition-Grafik) stehen jetzt alle
+  // weiter oben (Wolfram 16.07.) — filmpool ×2, Magic Connection, South & Browse.
 
   // ── Platzhalter aus der Coopetition-Grafik (kein Logo im Ordner) ───────
   { id: "lucky-pics", name: "Lucky Pics", ecoKeys: ["entertainment"], tags: ["Entertainment"], placeholder: true },
-  { id: "nightwash-club", name: "NightWash Club", ecoKeys: ["live"], url: "https://nightwash-club.de/", tags: ["Live"], placeholder: true },
-  { id: "ogpp", name: "OGPP", ecoKeys: ["live"], tags: ["Live"], placeholder: true },
+  // Logo (Wolfram 16.07.): das NightWash-Club-Logo ist ein FARBIGES Hochformat-Logo
+  // (Bubble + Neon-Schild) — anders als die sonst breiten Weiß-Logos. Es bekommt daher
+  // per logoClass mehr Höhe, sonst wäre es im höhenbegrenzten Slot nur ~20px breit.
+  { id: "nightwash-club", name: "NightWash Club", ecoKeys: ["live"], logo: L("nightwash-club.png"), logoClass: "h-[3.4rem] md:h-[4rem]", url: "https://nightwash-club.de/", tags: ["Live"], placeholder: true },
   { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], tags: ["Artists"], placeholder: true },
-  { id: "myspass-audio", name: "MySpass Audio", ecoKeys: ["audio"], tags: ["Audio"], placeholder: true },
-  { id: "srm-music", name: "SRM Music", ecoKeys: ["audio"], tags: ["Audio"], placeholder: true },
-  { id: "madefor-music", name: "MadeFor Music", ecoKeys: ["audio"], url: "https://madefor.film/", tags: ["Audio"], placeholder: true },
-  { id: "major-minor", name: "Major Minor", ecoKeys: ["audio"], tags: ["Audio"], placeholder: true },
-  { id: "bp-music-publishing", name: "BP Music Publishing", ecoKeys: ["audio"], tags: ["Audio"], placeholder: true },
-  { id: "banijay-infrastructure", name: "Banijay Infrastructure", ecoKeys: ["tech"], tags: ["Tech"], placeholder: true },
+  // NUR AUS DER VIDEO-LISTEN-SECTION (Bento) ENTFERNT (Wolfram 16.07.): SRM Music,
+  // MySpass Audio, Major Minor, MadeFor Music, BP Music Publishing und Banijay
+  // Infrastructure. Im Ökosystem (ecosystem.ts) und im Ökosystem-Verzeichnis bleiben
+  // sie gelistet — das sind bewusst getrennte Datenquellen.
 ];

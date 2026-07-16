@@ -117,16 +117,26 @@ export function SiteFooter() {
                     <br />
                     {CONTACT.city}
                   </div>
-                  <a href={`mailto:${CONTACT.email}`} className="hover:opacity-70" style={{ fontSize: "1.05rem" }}>
-                    {CONTACT.email}
-                  </a>
-                  <a
-                    href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`}
-                    className="hover:opacity-70"
-                    style={{ fontSize: "1.05rem" }}
+                  {/* Beschriftete Kontaktzeilen (Wolfram 16.07.): Mail / Tel / Presse.
+                      Die Labels stehen in einer eigenen Spalte fester Breite, damit die
+                      Werte darunter bündig untereinander starten. */}
+                  <div
+                    className="grid gap-x-2 gap-y-1"
+                    style={{ gridTemplateColumns: "max-content 1fr", fontSize: "1.05rem", lineHeight: "1.6" }}
                   >
-                    {CONTACT.phone}
-                  </a>
+                    <span style={{ opacity: 0.5 }}>Mail:</span>
+                    <a href={`mailto:${CONTACT.email}`} className="hover:opacity-70">
+                      {CONTACT.email}
+                    </a>
+                    <span style={{ opacity: 0.5 }}>Tel:</span>
+                    <a href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`} className="hover:opacity-70">
+                      {CONTACT.phone}
+                    </a>
+                    <span style={{ opacity: 0.5 }}>Presse:</span>
+                    <a href={`mailto:${CONTACT.pressEmail}`} className="hover:opacity-70">
+                      {CONTACT.pressEmail}
+                    </a>
+                  </div>
                 </div>
               </div>
 

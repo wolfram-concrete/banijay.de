@@ -5,68 +5,79 @@ import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { CountUp } from "@/components/cinematic/CountUp";
-import { HOME } from "@/data/home";
-import { homeStats } from "@/data/site";
-import { LEADERSHIP } from "@/data/leadership";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// section_testimonials (Algarve 1:1, nach Briefing): dunkles Rounded-Panel mit
-// fünf GEFÄCHERTEN Bildkarten (Grid-Entrance aus gespreizten x-Positionen in ihre
-// finalen Rotationen) + separatem, absolut geschichtetem Textbereich. Hover:
-// Karte richtet sich gerade auf (scale 1.1 / rotate 0), Overlay verschwindet, die
-// Nachbarn weichen aus, das passende Zitat blendet ein. Werte = Webflow-Timelines
-// t-1651a2be (Entrance) und t-7bb5f444 (Hover).
-
-const CARDS = LEADERSHIP.slice(0, 5).map((p) => ({ url: p.img, name: p.name }));
-
-// Finale Ruhelage je Karte (is-left … is-right): x/y in vw, rotation in deg.
-const REST = [
-  { x: 5, y: 2.5, rot: -8 },
-  { x: 2, y: 1.2, rot: 2 },
-  { x: 0, y: 0, rot: -2 },
-  { x: -5, y: 1.2, rot: 3 },
-  { x: -6, y: 2.5, rot: -6 },
-];
-// Start-x der Entrance (Karte fliegt von weit außen herein). Mitte via scale.
-const ENTER_X = [30, 17, 0, -13, -34];
-
-// Fünf echte Statements — 1:1 aus dem Testimonial-Slider auf banijay.de
-// (Nanni Erben, Arno Schneppenheim, Fabian Tobias, Florian Bösenkopf) plus das
-// CEO-Statement von Marcus Wolter.
-const STATEMENTS = [
-  {
-    quote: HOME.ceo.quote,
-    name: "Marcus Wolter",
-    role: "CEO & Co-Founder, Banijay Germany",
-  },
+// ZITAT-SECTION (section_testimonials) — dunkles Panel mit gefächerten Bildkarten +
+// absolut geschichtetem Textbereich. Hover: Karte richtet sich gerade auf (scale 1.1 /
+// rotate 0), Overlay verschwindet, die Nachbarn weichen aus, das passende Zitat
+// blendet ein. Werte = Webflow-Timelines t-1651a2be (Entrance) / t-7bb5f444 (Hover).
+//
+// Wolfram 16.07.: Die Section lag ungenutzt im Code (auf der Home in d63929e1 raus)
+// und lebt jetzt auf der About-Seite über dem Team.
+//
+// ZWEI FEHLER, die dabei aufgefallen sind und mitbehoben wurden:
+//  1) Die Karten zogen ihre Bilder aus LEADERSHIP.slice(0,5) — also Marcus Wolter,
+//     Knut Kremling, Michael Laegel, Simone Lenzen, Michael Gaul. Die Zitate stammen
+//     aber von Nanni Erben, Arno Schneppenheim, Fabian Tobias und Florian Bösenkopf.
+//     Zu jedem Zitat stand also das FALSCHE Gesicht. Person, Foto und Zitat sind
+//     deshalb jetzt EIN Datensatz und können nicht mehr auseinanderlaufen.
+//  2) Marcus Wolter war als 5. Karte drin — auf banijay.de steht er in dieser Section
+//     nicht (dort sind es genau diese vier Geschäftsführer:innen). Er ist raus; sein
+//     Zitat trägt weiterhin die Editorial-Section.
+//
+// Zitate + Fotos 1:1 von banijay.de (Zitat-Slider im unteren Seitenbereich, Bilder aus
+// assets/template/Medien/Bilder/zitat/Personen/). Die Quell-PNGs sind freigestellt und
+// uneinheitlich (mal Person vor b-Form, mal quadratisches Foto, alle mit transparentem
+// Rand) — sie sind für den weißen banijay.de-Grund gebaut. Für die randlosen Fotokarten
+// hier wurden die transparenten Ränder getrimmt und die Bilder auf die Panel-Farbe
+// gelegt; die einkomponierte b-Form bleibt und liest sich auf dem b-Glow-Panel als
+// Marke. Der Fokuspunkt je Motiv sitzt in FOCUS (unten), damit im Hochkant-Crop kein
+// Gesicht abgeschnitten wird.
+const PEOPLE = [
   {
     quote:
       "Mein Ziel ist es, durch relevante Serien und Filme oder die Förderung junger Filmemacher aufzufallen und natürlich durch die Frauenquote, bei der ich mich als Produzentin weiter engagieren möchte.",
     name: "Nanni Erben",
     role: "Geschäftsführerin MadeFor",
+    img: "/people/quotes/nanni-erben.jpg",
+    focus: "50% 22%",
   },
   {
     quote: "Mit Spaß und Leidenschaft kannst du Berge versetzen oder zumindest einen vernünftigen Tunnel bauen.",
     name: "Arno Schneppenheim",
     role: "Geschäftsführer & Co-Founder Banijay Productions Germany",
+    img: "/people/quotes/arno-schneppenheim.jpg",
+    focus: "50% 30%",
   },
   {
     quote:
       "Diversität, Chancengerechtigkeit und Toleranz sind in der Banijay Gruppe gelebte Werte, die als fester Bestandteil in einer jeden Unternehmenskultur angestrebt werden sollten.",
     name: "Fabian Tobias",
     role: "Geschäftsführer EndemolShine Germany",
+    img: "/people/quotes/fabian-tobias.jpg",
+    focus: "50% 26%",
   },
   {
     quote:
       "Was uns von anderen unterscheidet ist, dass wir Creator nicht als reine Reichweite sehen, sondern als digitale Storyteller. Mit unserer Plattform gestalten wir die Content Creator Economy der Zukunft.",
     name: "Florian Bösenkopf",
     role: "Geschäftsführer & Co-Founder influence.vision",
+    img: "/people/quotes/florian-boesenkopf.jpg",
+    focus: "50% 18%",
   },
 ];
 
-const STATS = homeStats().slice(0, 4);
+// Finale Ruhelage je Karte (x/y in vw, rotation in deg) und Start-x der Entrance.
+// Auf VIER Karten gerechnet (vorher fünf): symmetrisch um die Mitte gefächert, die
+// beiden inneren flacher gedreht als die äußeren.
+const REST = [
+  { x: 4, y: 2.2, rot: -7 },
+  { x: 1.5, y: 0, rot: 2 },
+  { x: -1.5, y: 0, rot: -2 },
+  { x: -4, y: 2.2, rot: 6 },
+];
+const ENTER_X = [26, 12, -12, -26];
 
 export function AlgarveTestimonials() {
   const root = useRef<HTMLElement>(null);
@@ -89,13 +100,16 @@ export function AlgarveTestimonials() {
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Grid-Entrance: aus gespreizten x-Positionen + rotation 0 in die Ruhelage.
+      // Grid-Entrance: alle Karten fliegen aus gespreizten x-Positionen + rotation 0 in
+      // die Ruhelage. Die frühere Sonderbehandlung der MITTELKARTE (i === 2 kam per
+      // scale statt per x, weil sie bei fünf Karten exakt mittig lag und sich nicht
+      // bewegt hätte) ist entfallen — bei vier Karten gibt es keine Mitte, alle vier
+      // haben einen echten x-Weg.
       const tl = gsap.timeline({
         scrollTrigger: { trigger: grid.current, start: "top center", toggleActions: "play none none none" },
       });
       cards.forEach((card, i) => {
-        if (i === 2) tl.from(card, { scale: 0.7, rotate: 0, duration: 0.75, ease: "power3.out" }, 0);
-        else tl.from(card, { x: `${ENTER_X[i]}vw`, rotate: 0, duration: 0.75, ease: "power3.out" }, 0);
+        tl.from(card, { x: `${ENTER_X[i]}vw`, rotate: 0, duration: 0.75, ease: "power3.out" }, 0);
       });
     },
     { scope: root },
@@ -107,7 +121,7 @@ export function AlgarveTestimonials() {
     () => {
       if (window.matchMedia("(min-width: 992px)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const items = gsap.utils.toArray<HTMLElement>("[data-tmob], [data-tstat]");
+      const items = gsap.utils.toArray<HTMLElement>("[data-tmob]");
       if (!items.length) return;
       gsap.set(items, { autoAlpha: 0, y: 44 });
       ScrollTrigger.batch(items, {
@@ -166,14 +180,15 @@ export function AlgarveTestimonials() {
             color: "#f8f7f3",
           }}
         >
-          {/* Gefächerter 5-Karten-Fächer (Desktop) */}
+          {/* Gefächerte Karten (Desktop) — Fokuspunkt je Motiv, damit im Crop kein
+              Gesicht abgeschnitten wird. */}
           <div
             ref={grid}
             onMouseLeave={clearHover}
             className="mx-auto flex items-center gap-[1vw] max-[991px]:hidden"
-            style={{ width: "90%", maxWidth: "1830px", marginBottom: "5.56vw" }}
+            style={{ width: "78%", maxWidth: "1520px", marginBottom: "5.56vw" }}
           >
-            {CARDS.map((c, i) => (
+            {PEOPLE.map((c, i) => (
               <div
                 key={c.name}
                 data-tcard
@@ -181,15 +196,20 @@ export function AlgarveTestimonials() {
                 className="relative flex-1 cursor-pointer overflow-hidden"
                 style={{ height: "40vh", willChange: "transform" }}
               >
-                <img src={c.url} alt={c.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)" }} />
+                <img
+                  src={c.img}
+                  alt={c.name}
+                  className="h-full w-full object-cover"
+                  style={{ filter: "grayscale(1)", objectPosition: c.focus }}
+                />
                 <div data-ov className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.64)" }} />
               </div>
             ))}
           </div>
 
-          {/* Separater, absolut geschichteter Textbereich (is-first sichtbar) */}
+          {/* Separater, absolut geschichteter Textbereich (erstes Zitat sichtbar) */}
           <div className="relative mx-auto max-[991px]:hidden" style={{ minHeight: "12vw", maxWidth: "55vw" }}>
-            {STATEMENTS.map((s, i) => (
+            {PEOPLE.map((s, i) => (
               <figure
                 key={i}
                 className="absolute inset-0 m-0 flex flex-col items-center gap-[1.4vw] text-center transition-opacity duration-500"
@@ -220,14 +240,14 @@ export function AlgarveTestimonials() {
           {/* Mobile: Liste im Original-Layout (Bild links / Text rechts, 4fr/8fr).
               Bild als Portrait mit Fokuspunkt auf das Gesicht (nicht abgeschnitten). */}
           <div className="hidden flex-col gap-[8vw] max-[991px]:flex" style={{ paddingLeft: "5vw", paddingRight: "5vw" }}>
-            {STATEMENTS.map((s, i) => (
+            {PEOPLE.map((s, i) => (
               <figure key={i} data-tmob className="m-0 grid items-start gap-[4vw]" style={{ gridTemplateColumns: "4fr 8fr" }}>
                 <div className="overflow-hidden" style={{ aspectRatio: "4 / 5" }}>
                   <img
-                    src={CARDS[i].url}
-                    alt={CARDS[i].name}
+                    src={s.img}
+                    alt={s.name}
                     className="h-full w-full object-cover"
-                    style={{ objectPosition: "center 14%", filter: "grayscale(1)" }}
+                    style={{ objectPosition: s.focus, filter: "grayscale(1)" }}
                   />
                 </div>
                 <div className="flex flex-col gap-[3vw]">
@@ -244,42 +264,9 @@ export function AlgarveTestimonials() {
           </div>
         </div>
 
-        {/* Zähler-Grid (echte Zahlen) — Mobile einspaltig, deutlich größere Facts. */}
-        <div className="grid grid-cols-1 md:grid-cols-4 max-[767px]:!gap-[3vw] max-[767px]:!mt-[6vw]" style={{ marginTop: "1vw", gap: "1vw" }}>
-          {STATS.map((s) => (
-            <div
-              key={s.label}
-              data-tstat
-              className="glass-panel flex flex-col items-center justify-center text-center max-[767px]:!flex-row max-[767px]:!justify-between max-[767px]:!gap-[4vw] max-[767px]:!p-[6vw]"
-              style={{ padding: "3.33vw 1.39vw", gap: "1.67vw", color: "#f8f7f3" }}
-            >
-              <span
-                className="max-[767px]:!text-[13vw]"
-                style={{
-                  fontFamily: "var(--font-sharp), sans-serif",
-                  fontSize: "4.44vw",
-                  lineHeight: "110%",
-                  fontWeight: 500,
-                  letterSpacing: "-0.139vw",
-                }}
-              >
-                <CountUp value={s.value} />
-              </span>
-              <span
-                className="max-[767px]:!text-[3.2vw] max-[767px]:!text-right"
-                style={{
-                  fontFamily: "var(--font-sharp), sans-serif",
-                  fontSize: "0.9vw",
-                  fontWeight: 700,
-                  letterSpacing: "0.052vw",
-                  textTransform: "uppercase",
-                }}
-              >
-                {s.label}
-              </span>
-            </div>
-          ))}
-        </div>
+        {/* Das Zähler-Grid (1.300+/40+/4 Mrd./3.000 hrs. als CountUp-Kacheln) ist raus
+            (Wolfram 16.07.): Auf der About-Seite trägt die Fakten-Section weiter oben
+            exakt dieselben Zahlen — hier wären sie eine Dopplung. */}
       </div>
     </section>
   );

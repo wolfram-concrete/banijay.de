@@ -48,26 +48,17 @@ export function IntroOverlay() {
         requestAnimationFrame(() => ScrollTrigger.refresh());
       };
 
-      // PRELOADER NUR BEIM ALLERERSTEN LADEN (Wolfram 14.07.): einmal pro Browser-
-      // Session. Kommt man später per Client-Navigation (z. B. von Career) wieder auf
-      // die Home, wird der Preloader übersprungen — der Hero startet direkt.
-      const INTRO_KEY = "banijay:intro-shown";
-      let alreadyShown = false;
-      try {
-        alreadyShown = sessionStorage.getItem(INTRO_KEY) === "1";
-      } catch {
-        /* sessionStorage evtl. blockiert → dann zeigen wir das Intro */
-      }
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || alreadyShown) {
+      // PRELOADER LÄUFT BEI JEDEM AUFRUF DER HOME (Wolfram 16.07.) — auch, wenn man per
+      // Client-Navigation (z. B. von Career) zurücklinkt. Das dreht die Regel vom
+      // 14.07. um, die ihn per sessionStorage („banijay:intro-shown") auf EINMAL PRO
+      // BROWSER-SESSION begrenzte: Danach kam er selbst bei einem harten Reload nicht
+      // mehr (sessionStorage überlebt Reloads), sondern erst in einem neuen Tab.
+      // Der Key wird nicht mehr gelesen und nicht mehr gesetzt.
+      // Einzige Ausnahme bleibt prefers-reduced-motion.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         // Kein Intro → sofort aufräumen (cleanup ruft finish/„introdone" selbst).
         cleanup();
         return;
-      }
-      try {
-        sessionStorage.setItem(INTRO_KEY, "1");
-      } catch {
-        /* ignore */
       }
 
       document.documentElement.dataset.intro = "1";

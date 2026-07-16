@@ -64,10 +64,13 @@ const FACTS: Fact[] = [
 
 // Abwechselnd Magenta / Schwarz — Typo IMMER WEISS (Wolfram 15.07.: keine schwarze
 // Typo auf Magenta mehr).
+// Wolfram 16.07.: die SCHWARZEN Kacheln funktionierten nicht — stattdessen die
+// TRANSPARENTEN Zahlencontainer aus der About-Facts-Section (ProofVideo.tsx:
+// rgba(255,255,255,0.06) auf dem Moody-Hintergrund). Magenta bleibt als Akzent.
 const TONE = (i: number) =>
   i % 2 === 0
     ? { bg: "#ff4370", fg: "#f8f7f3", label: "rgba(248,247,243,0.82)", copy: "rgba(248,247,243,0.86)" }
-    : { bg: "#0e0d0b", fg: "#f8f7f3", label: "rgba(248,247,243,0.6)", copy: "rgba(248,247,243,0.74)" };
+    : { bg: "rgba(255,255,255,0.06)", fg: "#f8f7f3", label: "rgba(248,247,243,0.6)", copy: "rgba(248,247,243,0.74)" };
 
 const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
@@ -150,7 +153,7 @@ export function EditorialStickyScene() {
             >
               <img
                 src="/editorial/marcus-wolter.jpg"
-                alt="Marcus Wolter, CEO Banijay Germany"
+                alt="Marcus Wolter, Founder & CEO Banijay Germany"
                 className="h-full w-full object-cover"
                 style={{ objectPosition: "50% 32%" }}
               />
@@ -166,10 +169,10 @@ export function EditorialStickyScene() {
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(46rem, 64%)", color: "#f8f7f3" }}
               >
                 <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
-                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht."
+                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht.&ldquo;
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[3.2vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
-                  — Marcus Wolter, CEO Banijay Germany
+                  Marcus Wolter, Founder &amp; CEO Banijay Germany
                 </span>
               </blockquote>
             </div>
@@ -188,7 +191,13 @@ export function EditorialStickyScene() {
                 const tone = TONE(i);
                 // „+" sitzt in Sharp Grotesk hoch im Glyphenkasten → auf die Grundlinie
                 // der Zahl versetzen + wie die Einheiten (Mrd./hrs.) abrücken (Wolfram 15.07.).
-                const isPlus = f.suffix.trim() === "+";
+                // „+" und „%" sind SYMBOLE und gehören eng an die Ziffer (Wolfram 16.07.:
+                // „mehr nach einer Einheit aussehen") → knapper Abstand statt des vollen
+                // Leerzeichens. Wort-Einheiten (Mrd., hrs.) behalten ihr Leerzeichen,
+                // die brauchen die Luft.
+                const sym = f.suffix.trim();
+                const isPlus = sym === "+";
+                const isSymbol = isPlus || sym === "%";
                 return (
                   <button
                     key={f.label}
@@ -218,13 +227,21 @@ export function EditorialStickyScene() {
                         <span data-fact-num style={{ fontSize: "clamp(3.3rem, 5.4vw, 87px)" }}>
                           0
                         </span>
-                        {isPlus ? (
-                          // Das „+" wie eine Einheit (Mrd./hrs.) als NORMALES inline rendern —
-                          // Kasten deckungsgleich zur Ziffern-Grundlinie. Das +-Glyph sitzt in
-                          // Sharp Grotesk minimal höher als %/Buchstaben, daher per position:relative
-                          // um den reinen Glyph-Offset (0.14em) absenken → Unterkante bündig mit der
-                          // Ziffer, genau wie das % an der 90. Führendes Space = Abstand wie vor „Mrd.".
-                          <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", position: "relative", top: "0.14em", whiteSpace: "pre" }}>{" +"}</span>
+                        {isSymbol ? (
+                          // Symbol-Einheit: eng an die Ziffer (marginLeft statt Leerzeichen).
+                          // Das „+" sitzt in Sharp Grotesk minimal höher als %/Buchstaben →
+                          // per position:relative um den Glyph-Offset (0.14em) absenken, damit
+                          // seine Unterkante wie beim % auf der Ziffern-Grundlinie steht.
+                          <span
+                            style={{
+                              fontSize: "clamp(1.8rem, 3vw, 46px)",
+                              // noch enger an die Ziffer (Wolfram 16.07.): 0.1em → 0.04em
+                              marginLeft: "0.04em",
+                              ...(isPlus ? { position: "relative" as const, top: "0.14em" } : null),
+                            }}
+                          >
+                            {sym}
+                          </span>
                         ) : (
                           <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", whiteSpace: "pre" }}>{f.suffix}</span>
                         )}

@@ -72,8 +72,15 @@ export const CAREER = {
   tomorrow: {
     eyebrow: "Banijay Tomorrow",
     headline: "Für Talente, die mehr wollen als einen Job.",
-    text: "BANIJAY TOMORROW verbindet Academy, Workshops und Entwicklungsangebote für neue Talente, Professionals und Führungskräfte. So wird Karriere nicht als starre Laufbahn erzählt, sondern als Entwicklung innerhalb einer kreativen Entertainment-Welt.",
-    image: "/career/tomorrow.jpg",
+    // Copy 1:1 von der aktuellen banijay.de-Karriereseite, Section BANIJAY TOMORROW
+    // (Wolfram 16.07. — ersetzt den zuvor frei formulierten Text). Nicht umschreiben.
+    text: "Die Banijay Germany und ihre Companies stehen für ein kreatives und innovatives Arbeitsumfeld. Mit dem gemeinsamen Personalentwicklungsprogramm BANIJAY TOMORROW finden und fördern wir Talente. Die Academy als Marke richtet sich gezielt an Talents als Neuzugänge für einen perfekten Start ins Berufsleben. Auch Professionals als Mitarbeitende und Leader mit Personalverantwortung profitieren in der Academy von Workshops mit internen und externen Dozentinnen und Dozenten.",
+    // Banijay-Keyvisual „All lights on you" (Wolfram 16.07., aus assets/Logo Companies/
+    // Header2560x1311(2).png; 1920px/JPEG-86 → 54 KB). Natives Seitenverhältnis 1,951:1.
+    // ACHTUNG: Das Visual hat Typo + B-Marke einkomponiert — es darf NICHT beschnitten
+    // werden. Container-Ratio + Parallax in CareerTomorrowStack sind darauf abgestimmt.
+    image: "/career/tomorrow-keyvisual.jpg",
+    imageAspect: 2560 / 1312,
     cta: { text: "BANIJAY TOMORROW Login", href: "https://banijaytomorrow.de/" },
   },
 

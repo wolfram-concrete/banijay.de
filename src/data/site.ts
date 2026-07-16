@@ -8,9 +8,9 @@ export interface NavItem {
 
 /** Empfohlene Hauptnavigation (Konzept „Navigation"). Team gehört auf About. */
 export const NAV_ITEMS: NavItem[] = [
+  // Companies-Seite entfernt (Wolfram 16.07.) — das Companies-Bento lebt auf der Home.
   { label: "Banijay", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Companies", href: "/companies" },
   { label: "News", href: "/news" },
   { label: "Career", href: "/career" },
 ];
@@ -52,6 +52,9 @@ export interface ContactDetails {
   city: string;
   email: string;
   phone: string;
+  /** ⚠️ UNBESTÄTIGT (Wolfram 16.07.): vorerst gesetzt, noch nicht belegt — vor
+   *  Livegang beim Kunden verifizieren (siehe Aufgabe #70). */
+  pressEmail: string;
   pressContact: string;
 }
 
@@ -60,6 +63,7 @@ export const CONTACT: ContactDetails = {
   city: "51063 Köln",
   email: "hello@banijay.de",
   phone: "+49 (0) 221 6509 5000",
+  pressEmail: "presse@banijay.de",
   pressContact: "Simone Lenzen",
 };
 

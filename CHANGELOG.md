@@ -3,6 +3,65 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [redesign-v2] — Branch (Preview) — 2026-07-16
+
+### Career-Swipe-Bühne, About-Neuaufbau, News-Blöcke, Logo-Ticker zurück (16.07., Nacht XXVI)
+
+**Career**
+- **Rollenwelt als Swipe-Bühne** (`CareerRoleScroller.tsx`, neu; löst `CareerRoleStack.tsx` ab): übernimmt die
+  Choreografie der früheren Home-Companies-Section (`CompaniesScroller`, seit dem Home-Umbau ungenutzt) —
+  Wörter „Deine/Rollen" fahren auseinander, drei Karten wachsen aus der Mitte, fächern auf, dann 3-Slot-Swipe;
+  der Grund färbt sich in die Farbe der fokussierten Karte (Palette der alten Rollenkarten). Ohne Bilder.
+  - *Timing neu gerechnet:* Die Original-Beats waren auf ~40 Companies getunt (Swipe über 36 Steps → Intro ~16 %).
+    Bei 4 Rollen gibt es EINEN Step; dieselben Werte ergaben 57 % Intro und ~100vh Leerlauf am Ende (vermessen).
+    Beats + Section-Höhe leiten sich jetzt aus derselben Konstante ab.
+  - *Bugfix Mobile-Slider:* `distance()` maß `trackEl.scrollWidth`. Die Karten stehen beim Erzeugen des
+    ScrollTriggers auf `scale: 0`, und transformierte Elemente zählen mit ihren TRANSFORMIERTEN Maßen in die
+    Scroll-Overflow-Fläche → `scrollWidth` kollabierte auf die Containerbreite, `distance()` fiel auf den
+    Minimalwert 1, die Pin-Strecke schrumpfte von ~2770px auf ~1000px (alle 4 Karten in einem Screen).
+    Jetzt aus `offsetWidth` gerechnet (Layout, transform-unabhängig) → 2875px. Derselbe Bug steckt noch im
+    ungenutzten `CompaniesScroller`.
+- **Intro-Section entfallen**, ihr Copytext steht im Hero-Statement (`career.ts` bleibt einzige Fundstelle).
+- **BANIJAY TOMORROW**: Copy 1:1 von banijay.de; Keyvisual „All lights on you" (1920px/JPEG → 54 KB statt 358 KB).
+  Container-Ratio = native Visual-Ratio (1,951:1) statt 5:6-Hochkant — das Visual trägt Typo + B-Marke
+  einkomponiert, `object-cover` hätte beides zerschnitten. Parallax gedämpft (±4 % bei `scale(1.12)`).
+- **Code of Conduct**: „WE ARE BANIJAY" in 22vw (größtes Format im Projekt) davor; Claim steht, blendet aus,
+  DANACH baut sich das Statement auf (eine Timeline statt vier Trigger). Die Video-Collage läuft über die
+  Headline (DOM-Reihenfolge bei gleichem z-index), das Statement bleibt darüber lesbar.
+- **Logo-Ticker** unter den Standorten.
+
+**About**
+- **Fakten-Section neu** (`ProofVideo.tsx`): Copytext → Hero-Statement (Lorem raus), Zahlen mittelachsig als
+  Reihe gleich großer Kacheln. **Alle Ziffern gleich groß** (vorher 4,4vw vs. 3,2vw → „1.300+" dominierte);
+  die Mitte wird über die Magenta-Fläche betont. Aufbau von der Mitte nach außen, CountUp beim Reinscrollen,
+  Video blüht symmetrisch aus der MITTLEREN Kachel auf (vorher aus einer Eck-Kachel).
+  - *Bugfix:* Der Aufbau-Stagger setzt die Kacheln auf `y:46`; `getBoundingClientRect()` liefert die
+    transformierte Box → der Versatz wanderte in den Clip-Start (top 586 statt 540). Jetzt via `offsetTop`.
+- **Marcus-Wolter-Zitat über dem Video entfernt**; **Partner-Section (Magenta, Flip-Karten) entfernt**.
+  Deren `-100vh`-Overlap deckte den Halte-Beat des Team-Pins → neuer Prop `holdForOverlay` (About 120 %,
+  Home unverändert 210 %), sonst stünde das Team ~1 Screen unbedeckt still.
+- **Zitat-Section zurück** (`Testimonials.tsx`, lag ungenutzt) über dem Team. Personen/Fotos/Zitate 1:1 vom
+  banijay.de-Zitat-Slider (Nanni Erben, Arno Schneppenheim, Fabian Tobias, Florian Bösenkopf).
+  - *Zwei Fehler mitbehoben:* Die Karten zogen `LEADERSHIP.slice(0,5)` (Kremling, Laegel, Lenzen, Gaul) —
+    zu jedem Zitat stand das FALSCHE Gesicht. Person/Foto/Zitat sind jetzt ein Datensatz. Marcus Wolter war
+    als 5. Karte drin, steht auf banijay.de aber nicht in dieser Section → raus. Zahlen-Grid entfernt (Dopplung).
+- **Internationale Logo-Kacheln → Logo-Ticker** (`WorldNetwork.tsx`); Drag-/Slide-Mechanik der Kachelbahn entfallen.
+
+**News**
+- **Rubrik-Blöcke statt Gesamtliste + Chip-Filter** (`NewsSections.tsx`, neu; `NewsFilter`/`NewsGrid` entfernt):
+  Presse · Podcast · Primetime-Hitrate · Marcus Wolter · Social — je Block linksbündige Headline, Trennlinie,
+  Posts als Slider. Nativer Scroll statt gepinntem GSAP-Slider: fünf Pins hätten den Seitenscroll fünfmal
+  gekapert. Karten laufen rechts in den Anschnitt; Beitragszahlen raus.
+
+**Global**
+- **Logo-Ticker wiederhergestellt** (`LogoTicker.tsx`): die ERSTE Fassung des `LoveBrandsTicker` (13.07., weiße
+  Company-Wortmarken), nicht die Format-Stills-Variante von 91ee7271. Logos live aus `COMPANIES_DIRECTORY`.
+- **Preloader läuft wieder bei jedem Home-Aufruf** (`IntroOverlay.tsx`) — auch bei Client-Navigation zurück.
+  Dreht die Regel vom 14.07. um (`sessionStorage`-Key, einmal pro Browser-Session; kam selbst bei hartem
+  Reload nicht wieder, da sessionStorage Reloads überlebt).
+- **Social-Feed-Caption**: auf Career an, auf der Home aus (`showText`-Prop statt globaler Entfernung).
+- **Seiten-Titel** mittelachsig unter dem Logo; **Footer** mit Mail/Tel/Presse; **Companies-Seite** entfernt.
+
 ## [redesign-v2] — Branch (Preview) — 2026-07-15
 
 ### „+"-Grundlinie in allen Facts + neue KPI + Ecosystem-/News-Feinschliff (15.07., Nacht XXV)

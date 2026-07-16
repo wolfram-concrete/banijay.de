@@ -4,8 +4,8 @@ import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
 import { AlgarveEcosystemDirectory } from "@/components/cinematic/algarve/EcosystemDirectory";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
+import { AlgarveTestimonials } from "@/components/cinematic/algarve/Testimonials";
 import { AlgarveWorldNetwork } from "@/components/cinematic/algarve/WorldNetwork";
-import { AlgarvePartnerStack } from "@/components/cinematic/algarve/PartnerStack";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
 import { ABOUT } from "@/data/about";
 import { STATS } from "@/data/site";
@@ -21,23 +21,17 @@ export default function AboutPage() {
     <>
       {/* 01 Hero — Home-Hero (We-Are-Banijay-Sequenz + Satellitenringe), dann das
           seiten­eigene Statement mittelachsig auf dunklem Sternenstaub. */}
-      <AlgarveHome
-        variant="companies"
-        frame3="/hero-v2/frame-3-about.jpg"
-        statement="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-      />
+      {/* Statement = der frühere Proof-Copytext (Wolfram 16.07.): Er stand bis dahin
+          links neben den Zahlen in der Fakten-Section und ist hierher gewandert; das
+          Lorem-ipsum ist damit weg. Kommt weiter aus about.ts → nur EINE Fundstelle. */}
+      <AlgarveHome variant="companies" frame3="/hero-v2/frame-3-about.jpg" statement={ABOUT.proof.text} />
 
-      {/* 02+03 Proof/Zahlen MIT integriertem Statement-Video: gepinnte Fakten-
-          Section; das all3media-Video (wie auf der Home) skaliert IN dieser Section
-          auf Full-Screen (clip-path), danach das Marcus-Wolter-Zitat Wort für Wort.
-          Die Zahlen-Kacheln tragen jeweils ihren Copytext. (CEO-Testimonial-Section
-          entfällt — das Zitat lebt jetzt im Video-Statement, Wolfram 14.07.) */}
-      <AlgarveProofVideo
-        proofText={ABOUT.proof.text}
-        stats={STATS}
-        video="/video/team-all3media.mp4"
-        statement={`„${ABOUT.ceo.quote}“`}
-      />
+      {/* 02+03 Zahlen MIT integriertem Statement-Video: gepinnte Fakten-Section; das
+          all3media-Video skaliert IN dieser Section aus einer Zahlen-Kachel heraus auf
+          Full-Screen (clip-path). Wolfram 16.07.: Copytext ist ins Hero-Statement
+          gewandert, das Marcus-Wolter-Zitat über dem Video ist ersatzlos entfallen —
+          die Zahlen stehen jetzt mittelachsig, das Video blüht aus ihrer Mitte auf. */}
+      <AlgarveProofVideo stats={STATS} video="/video/team-all3media.mp4" />
 
       {/* 05 Internationalität — Text-Statement mit Standraum (tall): das Statement
           steht gepinnt, dann schiebt sich die WorldNetwork-Section (unten, -100vh-
@@ -48,12 +42,17 @@ export default function AboutPage() {
       {/* 06 Banijay World — Territory-Holdings/Netzwerk (dunkler Farb-Break) */}
       <AlgarveWorldNetwork />
 
-      {/* 07 Leadership — Algarve Founder-Grid */}
-      <AlgarveFounders />
+      {/* 06b Zitate der Geschäftsführer:innen (Wolfram 16.07.) — die verworfene
+          Home-Section, jetzt hier über dem Team: gefächerte Bildkarten, Hover zeigt
+          das passende Zitat. Personen/Fotos/Zitate 1:1 vom Zitat-Slider auf banijay.de. */}
+      <AlgarveTestimonials />
 
-      {/* 08 Partnerverständnis — BYQ-Stacking-Cards auf Magenta (Farb-Break;
-          der Team-Magenta-Exit übergibt nahtlos hierher) */}
-      <AlgarvePartnerStack />
+      {/* 07 Leadership — Algarve Founder-Grid.
+          holdForOverlay={false} (Wolfram 16.07.): Die Partner-Section ist entfallen.
+          Ihr -100vh-Overlap hatte den Halte-Beat am Ende des Team-Pins gedeckt — ohne
+          Nachfolger wäre daraus ~1 Screen Leerlauf geworden, in dem das Team nur steht.
+          Auf der Home bleibt der Beat (dort zieht der LogoReveal darüber). */}
+      <AlgarveFounders holdForOverlay={false} />
 
       {/* 09 Ökosystem-Verzeichnis (Wolfram 14.07.: Ecosystem-Seite entfällt, ihre
           Inhalte wandern ans Ende von About) — komplettes Companies-/Label-Verzeichnis

@@ -26,11 +26,15 @@ const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 const INK = "#0e0d0b";
 
-// IP-BRANDS DOPPELSLIDER (Wolfram 15.07.): die ikonischen Banijay-IPs laufen als
-// zwei gegenläufige Reihen. Jeder Container behält die Original-Proportion des
-// Visuals (nichts beschnitten). „Wer wird Millionär" und „TV total" führen die
-// obere Reihe an → im ersten Screen garantiert sichtbar. Assets: /public/ip-brands
-// (weboptimiert aus assets/Bilder, Höhe 560).
+// IP-BRANDS SLIDER (Wolfram 15.07., dritte Reihe 16.07.): die ikonischen Banijay-IPs
+// laufen als DREI Reihen — links / rechts / links. Jeder Container behält die
+// Original-Proportion des Visuals (nichts beschnitten). „Wer wird Millionär" und
+// „TV total" führen die obere Reihe an → im ersten Screen garantiert sichtbar.
+// Assets: /public/ip-brands (weboptimiert aus assets/Bilder, Höhe 560).
+//
+// Die 28 vorhandenen Motive sind auf 10/9/9 verteilt (statt 14/14) — für die dritte
+// Reihe gab es kein zusätzliches Material, also füllen die oberen Reihen weniger.
+// Kommen neue IP-Visuals dazu, einfach hier verteilen.
 type Brand = { slug: string; name: string };
 const b = (slug: string, name: string): Brand => ({ slug, name });
 const BRANDS_TOP: Brand[] = [
@@ -44,17 +48,19 @@ const BRANDS_TOP: Brand[] = [
   b("temptation-island", "Temptation Island"),
   b("kampf-der-realitystars", "Kampf der Realitystars"),
   b("stromberg", "Stromberg"),
+];
+const BRANDS_MID: Brand[] = [
   b("nightwash", "NightWash"),
   b("barbara-salesch", "Barbara Salesch"),
   b("der-lehrer", "Der Lehrer"),
   b("tatort-munster", "Tatort Münster"),
-];
-const BRANDS_BOTTOM: Brand[] = [
   b("the-50", "The 50"),
   b("die-verrater", "Die Verräter"),
   b("villa-der-versuchung", "Villa der Versuchung"),
   b("richter-alexander-hold", "Richter Alexander Hold"),
   b("kommissar-dupin", "Kommissar Dupin"),
+];
+const BRANDS_BOTTOM: Brand[] = [
   b("die-landarztpraxis", "Die Landarztpraxis"),
   b("berlin-tag-und-nacht", "Berlin – Tag und Nacht"),
   b("bitte-melde-dich", "Bitte melde dich"),
@@ -117,6 +123,31 @@ export function AlgarveEditorial() {
         once: true,
         onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.14, ease: "power3.out" }),
       });
+
+      // „DIE STORY" — PARALLAX-AUSZUG (Wolfram 16.07.): die weiße Box ist an den
+      // Marcus/Facts-Körper angedockt und steckt anfangs komplett hinter dessen
+      // Unterkante (yPercent -100, von der Maske geclippt). Erst wenn die Zahlen-
+      // Section steht und man weiterscrollt, zieht sie sich gescrubbt darunter hervor.
+      // Die Box läuft dabei langsamer als der Scroll → Parallax.
+      const storyMask = root.current?.querySelector<HTMLElement>("[data-ed-story-mask]");
+      const story = root.current?.querySelector<HTMLElement>("[data-ed-story]");
+      if (storyMask && story) {
+        gsap.fromTo(
+          story,
+          { yPercent: -100 },
+          {
+            yPercent: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: storyMask,
+              start: "top bottom",
+              end: "top 42%",
+              scrub: 0.9,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      }
     },
     { scope: root },
   );
@@ -183,18 +214,35 @@ export function AlgarveEditorial() {
             Zitat-Block mehr. */}
         <EditorialStickyScene />
 
-        {/* „Die Story" — wieder auf HELLEM Containerfeld (Wolfram 15.07.): Paper-
-            Box mit Ink-Typo, eckig (Heike), KEINE Trennlinie. Bündig im [1fr_3fr]-
-            Raster wie der Bottom-Text. */}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_3fr]" style={{ marginTop: "clamp(2.5rem, 5vw, 6rem)" }}>
-          <div className="max-md:hidden" />
+        {/* „Die Story" — DOCKT an den Marcus/Facts-Körper (Wolfram 16.07.): identischer
+            Container wie die Sticky-Scene (mx-auto, maxWidth 1920, 16px Innenabstand) →
+            läuft links wie rechts exakt bündig mit dem Modul darüber. Kein [1fr_3fr]-
+            Einzug und kein marginTop mehr — die Box sitzt direkt darunter.
+            Die Maske clippt sie; beim Weiterscrollen (nachdem die Zahlen-Section steht)
+            schiebt sich die weiße Box als Parallax darunter hervor. */}
+        <div
+          data-ed-story-mask
+          className="mx-auto w-full overflow-hidden"
+          style={{
+            maxWidth: "1920px",
+            paddingLeft: "16px",
+            paddingRight: "16px",
+            // ECHTES ANDOCKEN (Wolfram 16.07.): Die Bühne der Sticky-Scene ist 100vh hoch
+            // und zentriert ihren Körper (clamp(680px, 82vh, 1000px)) → darunter blieben
+            // (100vh − Körperhöhe)/2 Leerraum stehen, zuletzt 132px. Genau diesen Betrag
+            // holen wir zurück, mit DERSELBEN clamp-Formel wie die Körperhöhe → die Maske
+            // sitzt exakt auf der Unterkante des oberen Moduls, und die weiße Box fährt
+            // beim Scrollen direkt daraus hervor.
+            marginTop: "calc((clamp(680px, 82vh, 1000px) - 100vh) / 2)",
+          }}
+        >
           <div
-            data-ed-reveal
+            data-ed-story
             className="flex flex-col"
             style={{ gap: "1.6rem", background: PAPER, color: INK, padding: "clamp(1.8rem, 3vw, 3rem)" }}
           >
             <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: INK }}>
-              Die Story
+              Die Banijay Story
             </h3>
             <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)" }}>
               {/* Platzhalter (Wolfram 15.07.: Story-Text auf Lorem ipsum, bis finales Wording). */}
@@ -225,17 +273,23 @@ export function AlgarveEditorial() {
         </h2>
       </div>
 
-      {/* IP-BRANDS DOPPELSLIDER full-width — zwei gegenläufige Reihen, kompaktes
-          Raster, jeder Container in Original-Proportion (nichts beschnitten). */}
+      {/* IP-BRANDS SLIDER full-width — DREI Reihen (links / rechts / links), kompaktes
+          Raster, jeder Container in Original-Proportion (nichts beschnitten). Die dritte
+          Reihe läuft wie die erste von rechts nach links (Wolfram 16.07.). */}
       <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "2vw", marginBottom: "6vw" }}>
         <div className="flex flex-col" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
           {[
             { rows: BRANDS_TOP, dir: "is-left" },
-            { rows: BRANDS_BOTTOM, dir: "is-right" },
+            { rows: BRANDS_MID, dir: "is-right" },
+            { rows: BRANDS_BOTTOM, dir: "is-left" },
           ].map((row, ri) => (
             <div key={ri} className={`ip-brands-track flex ${row.dir}`} style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
-              {[0, 1].map((dup) => (
-                <div key={dup} aria-hidden={dup === 1} className="flex shrink-0" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+              {/* DREI Kopien (Wolfram 16.07.): seit die Reihen nur noch 9–10 Motive
+                  tragen, ist EINE Kopie schmaler als ein breiter Screen — mit nur zwei
+                  Kopien risse am Loop-Punkt eine Lücke auf. Passend dazu läuft das
+                  Keyframe auf -33,33 % (= exakt eine Kopie) statt -50 %. */}
+              {[0, 1, 2].map((dup) => (
+                <div key={dup} aria-hidden={dup !== 0} className="flex shrink-0" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
                   {row.rows.map((brand) => (
                     <div
                       key={`${dup}-${brand.slug}`}

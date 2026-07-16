@@ -489,12 +489,15 @@ html.lenis body { height: auto; }
    GEGENLÄUFIGE Reihen → kompaktes Raster, mehr Brands pro Screen. Jeder
    Bildcontainer behält die ORIGINAL-Proportion seines Brand-Visuals (feste
    Höhe, Breite = auto) → nichts wird beschnitten. Bilder bleiben farbig. */
+/* Die Tracks tragen DREI Kopien der Reihe (seit den 3 Reihen à 9–10 Motiven, 16.07.):
+   -33,333% = exakt eine Kopie → nahtloser Loop, ohne dass auf breiten Screens am
+   Umschlagpunkt eine Lücke aufreißt. */
 @keyframes ipBrandsLeft {
   from { transform: translateX(0); }
-  to   { transform: translateX(calc(-50% - 0.3vw)); }
+  to   { transform: translateX(calc(-33.3333% - 0.2vw)); }
 }
 @keyframes ipBrandsRight {
-  from { transform: translateX(calc(-50% - 0.3vw)); }
+  from { transform: translateX(calc(-33.3333% - 0.2vw)); }
   to   { transform: translateX(0); }
 }
 .ip-brands-track { width: max-content; will-change: transform; }
