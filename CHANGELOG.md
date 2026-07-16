@@ -5,6 +5,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Code-of-Conduct: „WE ARE BANIJAY" kleiner + über der Collage (16.07., Nacht XXIX)
+- **Claim in Headline-Formatierung statt Display-Größe** (`CodeOfConductBand.tsx`): 22vw
+  (Footer-Marquee-Klasse) → **7vw / 132 %**, also exakt das `SWAP_LINE_STYLE` der
+  Ökosystem-Zeilen „40+ / Companies & Labels" auf der Home; mobil 33vw → 13vw.
+- **Claim liegt wieder ÜBER der Drift-Collage** (z-index 10 wie das Statement, DOM-Reihenfolge
+  zurückgedreht). Bei 22vw konnten die Videocontainer über die Headline laufen, weil die
+  Buchstaben so groß waren, dass sie nur als Textur darüberzogen — in Headline-Größe hätten
+  sie den Claim schlicht zugedeckt.
+- Die Abfolge dahinter bleibt unverändert: Claim steht → blendet aus → Statement baut sich
+  Wort für Wort auf → CTA (nachgemessen: 1/0/0 → 0/1/1, sauber nacheinander).
+
 ### Pressekontakt + echte Company-Videos (16.07., Nacht XXVIII)
 - **Pressekontakt im Footer** (`SiteFooter.tsx`, `site.ts`): eigener Block „Pressekontakt /
   Simone Lenzen / simone.lenzen@banijay.de" statt der Label-Zeile „Presse: presse@banijay.de".

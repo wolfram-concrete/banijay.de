@@ -30,11 +30,20 @@ const H4 = {
   letterSpacing: "-0.104vw",
 } as const;
 
-// Größtes Format im Projekt: 22vw (bisher nur das Footer-Marquee „BANIJAY"; die
-// größte HEADLINE war die Team-Zeile mit 11vw). „WE ARE BANIJAY" passt bei dieser
-// Größe nicht auf eine Zeile — daher zweizeilig, „BANIJAY" läuft dabei fast von
-// Kante zu Kante. Mobil greift das Marquee-Pendant mit 33vw ebenfalls zweizeilig.
+// „WE ARE BANIJAY" in der HEADLINE-Formatierung der Ökosystem-Swap-Zeilen auf der
+// Home („40+ / Companies & Labels", SWAP_LINE_STYLE in EcosystemSection.tsx):
+// 7vw / 132 % / zentriert / uppercase, mobil 13vw. Wolfram 16.07. — vorher stand der
+// Claim in 22vw (Footer-Marquee-Klasse) und war damit zu dominant.
+// Bleibt zweizeilig: in einer Zeile stünde er auch bei 7vw randlos gedrängt.
 const CLAIM_LINES = ["We are", "Banijay"] as const;
+const CLAIM_STYLE = {
+  fontFamily: SHARP,
+  fontSize: "7vw",
+  lineHeight: "132%",
+  fontWeight: 500,
+  letterSpacing: "-0.02em",
+  color: PAPER,
+} as const;
 
 export function AlgarveCodeOfConductBand({ background }: { background?: React.ReactNode } = {}) {
   const root = useRef<HTMLDivElement>(null);
@@ -82,43 +91,30 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
           einen Beat mehr — erst der Claim, dann das Statement. Mit der alten Höhe
           hätten sich beide Phasen gegenseitig die Strecke weggenommen. */}
       <div className="flex items-center justify-center overflow-clip" style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}>
+        {/* Hintergrund-Layer (Career: driftende Bewegtbild-Collage, z-index 0). Wolfram
+            15.07.: Magenta-Box wieder entfernt — das Statement steht auf dem dunklen
+            Sternenstaub. */}
+        {background}
+
         {/* „WE ARE BANIJAY" — liegt ABSOLUT über der Bühne, nicht im Fluss: Claim und
             Statement wechseln so an derselben Stelle, statt sich gegenseitig zu
             verschieben.
-            REIHENFOLGE (Wolfram 16.07.): Der Claim steht bewusst VOR {background} im
-            DOM und trägt z-index 0 — genau wie die Drift-Collage. Bei gleichem z-index
-            entscheidet die DOM-Reihenfolge, die später stehende Collage gewinnt und
-            ihre Videocontainer laufen über die Headline. Das Statement (z-10) und der
-            CTA bleiben davon unberührt, liegen also weiterhin ÜBER der Collage — sonst
-            würde sie den Code-of-Conduct-Text überlagern.
-            Kein negativer z-index: Die Bühne ist position:sticky und bildet damit einen
-            eigenen Stacking-Context — z-index -1 würde zwar auch funktionieren, wäre
-            aber an dieses Detail gekoppelt und beim nächsten Umbau eine Falle. */}
+            REIHENFOLGE (Wolfram 16.07., zweite Runde): Der Claim liegt wieder ÜBER der
+            Collage (z-index 10, wie das Statement). Zwischenzeitlich lief die Collage
+            über ihn — bei 22vw funktionierte das, weil die Buchstaben so groß waren,
+            dass die Container nur als Textur darüberzogen. In der jetzigen
+            Headline-Größe (7vw) würden sie den Claim schlicht zudecken. */}
         <h2
           data-coc-claim
-          className="absolute m-0 w-full text-center uppercase"
-          style={{
-            fontFamily: SHARP,
-            fontSize: "22vw",
-            lineHeight: 0.86,
-            fontWeight: 500,
-            letterSpacing: "-0.6vw",
-            color: PAPER,
-            zIndex: 0,
-            willChange: "transform, opacity",
-          }}
+          className="absolute z-10 m-0 w-full text-center uppercase"
+          style={{ ...CLAIM_STYLE, willChange: "transform, opacity" }}
         >
           {CLAIM_LINES.map((line) => (
-            <span key={line} className="block max-[767px]:!text-[33vw]">
+            <span key={line} className="block max-[767px]:!text-[13vw]">
               {line}
             </span>
           ))}
         </h2>
-
-        {/* Hintergrund-Layer (Career: driftende Bewegtbild-Collage, z-index 0). Wolfram
-            15.07.: Magenta-Box wieder entfernt — das Statement steht auf dem dunklen
-            Sternenstaub. Steht NACH dem Claim (siehe oben) und läuft dadurch darüber. */}
-        {background}
 
         <div className="relative z-10 flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
