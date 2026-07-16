@@ -133,6 +133,48 @@ Der frühere separate Coral-Ton (`#fb4b68`) wurde auf das einheitliche Magenta
 `#ff4370` zusammengeführt. Die Career-Fächer-Kaskade nutzt zusätzlich Orange
 `#ff7a3d`, Gelb `#ffd23f` und Grün `#8fd94e` als Zwischen-Layer.
 
+## ⚠️ Vor dem Livegang (Quality-Upgrade)
+
+Der aktuelle Stand ist auf **Abstimmung/Freigabe** ausgelegt, nicht auf Produktion.
+Vor dem Livegang abzuarbeiten:
+
+| Thema | Stand | Zu tun |
+|---|---|---|
+| **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
+| **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
+| **Leadership-/People-Bilder** | Platzhalter (9 Dateien, 11 Personen) | Echte Portraits |
+| **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
+| **Wording** | Entwurf | Freigabe Heike/Redaktion |
+
+### Warum die Company-Videos zu groß sind
+
+`public/company-media/{filmpool-fiction,south-and-browse,good-humor,madefor}.mp4`
+liegen bei 3,8–6 MB für 8 s — die älteren `reel-*.mp4` bei ~1 MB. Grund ist die
+Toolchain, nicht das Material:
+
+- **ffmpeg ist auf der Maschine nicht installiert.** Das einzige auffindbare Binary
+  steckt in einer Fremd-App (CEWE) und ist mit `--enable-libopenh264 --disable-yasm`
+  gebaut. Es **dekodiert die Quellen fehlerhaft** und kodiert rosa/grünen Datenmüll
+  in die Ausgabe — bei plausibel aussehenden Bitraten. Nicht verwendbar.
+- Deshalb läuft die Konvertierung über **`avconvert`** (Apples AVFoundation-Pipeline,
+  Systembestandteil, dekodiert sauber). Das kennt aber nur feste Qualitäts-Presets und
+  **keine Bitratensteuerung** → die Dateien geraten 3–4× zu groß.
+
+**Fix vor Livegang:** echtes ffmpeg mit `libx264` installieren (`brew install ffmpeg`),
+dann je Clip:
+
+```bash
+ffmpeg -ss <start> -i <quelle> -t 8 -vf scale=960:-2 -r 25 \
+       -c:v libx264 -crf 26 -preset slow -an -movflags +faststart <ziel>.mp4
+```
+
+Die Schnittpunkte (`-ss`) stehen kommentiert in `CompaniesBento.tsx` bei der
+`REEL`-Zuordnung — sie sind an einem Frame-Kontaktbogen abgelesen (textfreier
+Mittelteil, keine Vorspann-/Insert-Szenen) und können 1:1 übernommen werden.
+
+**Gegenprüfen:** Nach dem Enkodieren die Kacheln im Browser ansehen — ein defektes
+Video fällt an der Bitrate NICHT auf, nur am Bild.
+
 ## Assets & Git
 
 Große Videos und Marken-Rohmaterial sowie `design-source/`, `assets/` und

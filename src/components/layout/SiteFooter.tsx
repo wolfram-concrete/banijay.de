@@ -117,9 +117,9 @@ export function SiteFooter() {
                     <br />
                     {CONTACT.city}
                   </div>
-                  {/* Beschriftete Kontaktzeilen (Wolfram 16.07.): Mail / Tel / Presse.
-                      Die Labels stehen in einer eigenen Spalte fester Breite, damit die
-                      Werte darunter bündig untereinander starten. */}
+                  {/* Beschriftete Kontaktzeilen: Mail / Tel. Die Labels stehen in einer
+                      eigenen Spalte fester Breite, damit die Werte bündig untereinander
+                      starten. */}
                   <div
                     className="grid gap-x-2 gap-y-1"
                     style={{ gridTemplateColumns: "max-content 1fr", fontSize: "1.05rem", lineHeight: "1.6" }}
@@ -132,8 +132,16 @@ export function SiteFooter() {
                     <a href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`} className="hover:opacity-70">
                       {CONTACT.phone}
                     </a>
-                    <span style={{ opacity: 0.5 }}>Presse:</span>
-                    <a href={`mailto:${CONTACT.pressEmail}`} className="hover:opacity-70">
+                  </div>
+
+                  {/* Pressekontakt als eigener Block (Wolfram 16.07.): nicht mehr die
+                      Zeile „Presse: presse@banijay.de" in der Label-Spalte, sondern
+                      Überschrift → Name → Adresse untereinander. Die Person trägt den
+                      Kontakt, nicht eine Sammeladresse. */}
+                  <div style={{ fontSize: "1.05rem", lineHeight: "1.6", marginTop: "0.9rem" }}>
+                    <div>Pressekontakt</div>
+                    <div>{CONTACT.pressContact}</div>
+                    <a href={`mailto:${CONTACT.pressEmail}`} className="underline underline-offset-2 hover:opacity-70">
                       {CONTACT.pressEmail}
                     </a>
                   </div>

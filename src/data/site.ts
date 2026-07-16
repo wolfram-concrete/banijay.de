@@ -52,8 +52,8 @@ export interface ContactDetails {
   city: string;
   email: string;
   phone: string;
-  /** ⚠️ UNBESTÄTIGT (Wolfram 16.07.): vorerst gesetzt, noch nicht belegt — vor
-   *  Livegang beim Kunden verifizieren (siehe Aufgabe #70). */
+  /** Persönlicher Pressekontakt (Wolfram 16.07.) — ersetzt die zuvor geratene
+   *  Sammeladresse presse@banijay.de, die unbelegt war. */
   pressEmail: string;
   pressContact: string;
 }
@@ -63,7 +63,7 @@ export const CONTACT: ContactDetails = {
   city: "51063 Köln",
   email: "hello@banijay.de",
   phone: "+49 (0) 221 6509 5000",
-  pressEmail: "presse@banijay.de",
+  pressEmail: "simone.lenzen@banijay.de",
   pressContact: "Simone Lenzen",
 };
 

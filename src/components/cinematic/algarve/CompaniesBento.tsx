@@ -70,8 +70,25 @@ const areaOf = (s: string) => (s.includes("col-span-2") ? 2 : 1) * (s.includes("
 const REEL: Record<string, string> = Object.fromEntries(
   COMPANIES_DIRECTORY.map((c, i) => [c.id, `/company-media/reel-${(i % 6) + 1}.mp4`]),
 );
-// Echte Trailer je Company (Wolfram 14.07.) — überschreiben das generische Reel.
-REEL["good-humor"] = "/company-media/madefor-good-humor.mp4";
+// ECHTE COMPANY-VIDEOS (Wolfram 16.07.) — überschreiben das generische Reel.
+// Quellen: assets/Videos Companies/<Company>/ (gitignored). Aufbereitung je Clip:
+// 960px breit, 25 fps, ohne Tonspur (die Kacheln laufen stumm), ~1,6 Mbit/s — das ist
+// der Schnitt der bestehenden Reels; die Rohdateien liegen bei 19–351 MB.
+// GESCHNITTEN AUF EINEN TEXTFREIEN MITTELTEIL (Wolfram: keine Vorspann-/Insert-Szenen).
+// Die Startzeiten sind an einem Frame-Kontaktbogen abgelesen, nicht geschätzt:
+//   • filmpool fiction (Dupin Clip2)      ab 2 s, 10 s — Clip ist durchgehend textfrei
+//   • South & Browse (Deepfake Clip2)     ab 1,5 s, 10 s — textfrei
+//   • Good Humor (Plötzlich Schwester)    ab 10 s, 12 s — Titelkarte liegt erst bei ~62 s
+//   • MadeFor (Trailer)                   ab 112 s, 12 s — Titelkarten bei 6/42/66/78/90/102 s,
+//     ab ~112 s läuft der Trailer ohne Inserts durch
+// NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
+// Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
+// es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
+// generische Reel.
+REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
+REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
+REEL["good-humor"] = "/company-media/good-humor.mp4";
+REEL["madefor"] = "/company-media/madefor.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom

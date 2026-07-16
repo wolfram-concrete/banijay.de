@@ -5,6 +5,26 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Pressekontakt + echte Company-Videos (16.07., Nacht XXVIII)
+- **Pressekontakt im Footer** (`SiteFooter.tsx`, `site.ts`): eigener Block „Pressekontakt /
+  Simone Lenzen / simone.lenzen@banijay.de" statt der Label-Zeile „Presse: presse@banijay.de".
+  Die Sammeladresse war geraten und unbelegt (Aufgabe #71) — jetzt ein echter Kontakt.
+- **Echte Company-Videos im Home-Bento** (`CompaniesBento.tsx`) für vier Companies. Auf einen
+  TEXTFREIEN Mittelteil geschnitten; die Startzeiten sind an einem Frame-Kontaktbogen (12
+  Stichproben je Video) abgelesen, nicht geschätzt:
+  - filmpool fiction (Dupin Clip2) ab 2 s · South & Browse (Deepfake Clip2) ab 1,5 s ·
+    Good Humor (Plötzlich Schwester) ab 10 s (Titelkarte erst bei ~62 s) ·
+    MadeFor (Trailer) ab 112 s (Titelkarten bei 6/42/66/78/90/102 s)
+  - **Banijay Germany Live NICHT übernommen:** Das Luminiscence-Video trägt durchgehend
+    eingebrannte Untertitel — im 0,5-s-Raster abgetastet, es gibt keinen textfreien
+    Abschnitt. Kachel behält das generische Reel.
+- **Toolchain-Befund:** Das einzige auffindbare ffmpeg (in einer Fremd-App, gebaut mit
+  `--enable-libopenh264 --disable-yasm`) **dekodiert die Quellen fehlerhaft** und kodiert
+  rosa/grünen Datenmüll bei plausibel aussehenden Bitraten — fiel erst im Browser auf.
+  Konvertierung läuft daher über `avconvert` (Apple-Pipeline, dekodiert sauber), das aber
+  keine Bitratensteuerung kennt → 3,8–6 MB je Clip statt ~1 MB. Als Pre-Launch-Punkt mit
+  libx264-Rezept im README festgehalten (Aufgabe #77). Jeder Clip im Browser gegengeprüft.
+
 ### Facts-Feinschliff + Team-Headline linksbündig (16.07., Nacht XXVII)
 - **About-Facts** (`ProofVideo.tsx`): Ziffern deutlich größer (`clamp(28px, 2.5vw, 52px)` →
   `clamp(32px, 3.2vw, 68px)`; Deckel an „3.000 hrs." vermessen), Kacheln höher (13vw → 18vw),
