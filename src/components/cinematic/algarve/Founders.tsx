@@ -198,7 +198,12 @@ export function AlgarveFounders({
           ease: "power3.out",
           duration: 0.9,
           stagger: 0.12,
-          scrollTrigger: { trigger: head, start: "top 88%", once: true },
+          // TRIGGER = die SECTION, nicht die Headline selbst (Wolfram 16.07.): Die
+          // Desktop-Headline sitzt in der gepinnten Bühne. Ein gepinntes Element wird
+          // position:fixed — es wandert ab dem Pin-Start nicht mehr mit dem Scroll, seine
+          // eigene „top 88%"-Marke kann es danach nie mehr erreichen. Die Section
+          // dagegen behält ihre Layout-Position über die ganze Pin-Strecke.
+          scrollTrigger: { trigger: root.current, start: "top 88%", once: true },
         });
       });
     },
@@ -224,21 +229,24 @@ export function AlgarveFounders({
             padding: "clamp(1.6rem, 4vw, 4rem) 2vw clamp(1rem, 3vw, 2.5rem)",
           }}
         >
-          {/* TEAM — MITTELACHSIG (13.07.) + mehr Luft zum Portrait-Aufbau */}
+          {/* TEAM-HEADLINE — LINKSBÜNDIG in Statement-Formatierung (Wolfram 16.07.).
+              Vorher mittelachsig in der großen Display-Größe (7.22vw, gedeckelt auf
+              6.6rem = die „Iconic IP"-Klasse). Jetzt dieselbe Größe/Gewichtung wie die
+              Statement-Typo (clamp(1.9rem, 3.6vw, 4.2rem) / 500) und linksbündig — die
+              Headline konkurriert damit nicht mehr mit den Porträts und gibt der Bühne
+              zusätzlich Höhe zurück, die den Bildern zugutekommt. */}
           <h2
             data-team-head
-            className="m-0 text-center uppercase text-[#f8f7f3]"
+            className="m-0 text-left uppercase text-[#f8f7f3]"
             style={{
               fontFamily: "var(--font-sharp), sans-serif",
-              // geclampt (Wolfram 16.07.): 7.22vw wuchs mit der Breite und kostete auf
-              // breiten Screens Bühnenhöhe, die den Porträts fehlte.
-              fontSize: "clamp(2.6rem, 7.22vw, 6.6rem)",
+              fontSize: "clamp(1.9rem, 3.6vw, 4.2rem)",
               fontWeight: 500,
-              letterSpacing: "-0.139vw",
-              lineHeight: 0.95,
+              letterSpacing: "-0.03em",
+              lineHeight: "122%",
               position: "relative",
               zIndex: 3,
-              marginBottom: "clamp(0.9rem, 3.5vw, 2.4rem)",
+              marginBottom: "clamp(0.8rem, 2vw, 1.6rem)",
             }}
           >
             <TeamHeadWords text="Unser Team" />
@@ -287,7 +295,9 @@ export function AlgarveFounders({
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        <h2 data-team-head className="m-0 mb-8 uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "11vw", fontWeight: 500, letterSpacing: "-0.4vw", lineHeight: 1 }}>
+        {/* Mobil ebenfalls kleiner + linksbündig (Wolfram 16.07.): 11vw → 7.4vw, das ist
+            die Größe der mobilen Statement-Typo. */}
+        <h2 data-team-head className="m-0 mb-8 text-left uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.4vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "122%" }}>
           <TeamHeadWords text="Unser Team" />
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>

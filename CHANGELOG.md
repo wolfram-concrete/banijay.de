@@ -5,6 +5,26 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Facts-Feinschliff + Team-Headline linksbündig (16.07., Nacht XXVII)
+- **About-Facts** (`ProofVideo.tsx`): Ziffern deutlich größer (`clamp(28px, 2.5vw, 52px)` →
+  `clamp(32px, 3.2vw, 68px)`; Deckel an „3.000 hrs." vermessen), Kacheln höher (13vw → 18vw),
+  Section näher ans Statement (`marginTop: -26vh`). Zwischen Statement-Text und erster Kachel
+  standen **63vh Luft** (gemessen) — Summe aus der unteren Hälfte der 82vh-Statement-Section und
+  der oberen Hälfte der 100vh-Bühne. Beides ist für sich richtig (das Video muss aus der BILDMITTE
+  aufblühen, die Kacheln bleiben also zentriert), deshalb wurde die Section als Ganzes hochgezogen
+  statt die Zentrierung anzutasten → jetzt ~35vh.
+- **Team-Headline linksbündig in Statement-Formatierung** (`Founders.tsx`): vorher mittelachsig in
+  der Display-Klasse (7.22vw / max 6.6rem, „Iconic IP"-Größe), jetzt `clamp(1.9rem, 3.6vw, 4.2rem)`
+  / 500 wie die Statement-Typo, linksbündig (mobil 11vw → 7.4vw). Gibt der Bühne Höhe zurück, die
+  den Porträts zugutekommt.
+  - *Bugfix Headline-Reveal:* Trigger war die Headline SELBST (`start: "top 88%"`). Sie sitzt in der
+    gepinnten Bühne; ein gepinntes Element wird `position: fixed` und erreicht seine eigene Marke ab
+    Pin-Start nie mehr → die Wörter blieben auf `yPercent: 118` unter ihrer Maske stehen (auf breiten
+    Viewports reproduzierbar). Trigger ist jetzt die Section, die ihre Layout-Position behält.
+- **Breitensprung Zitat→Team behoben** (`Testimonials.tsx`): Der Zitat-Fächer stand auf 78 % / 1520px,
+  das Team-Grid auf `min(1680px, 105vh)` — an der Kante sichtbar (gemessen 831 vs. 771px). Beide
+  teilen sich jetzt EIN Maß (`TEAM_MEASURE`), die Kanten fluchten (170–940 = 170–940).
+
 ### Career-Swipe-Bühne, About-Neuaufbau, News-Blöcke, Logo-Ticker zurück (16.07., Nacht XXVI)
 
 **Career**

@@ -79,6 +79,14 @@ const REST = [
 ];
 const ENTER_X = [26, 12, -12, -26];
 
+// GLEICHES MASS WIE DAS TEAM-GRID darunter (Wolfram 16.07.): Das Team ist auf
+// min(1680px, 105vh) gedeckelt — die Breite ist an die Höhe gekoppelt, damit die
+// Portraits auf breiten Screens nicht flach laufen. Der Zitat-Fächer stand auf
+// 78 % / 1520px; an der Kante zwischen beiden Sections war der Sprung sichtbar
+// (gemessen 831 vs. 771px). Beide teilen sich jetzt EIN Maß → der Übergang fluchtet.
+// Ändert sich der Team-Deckel, muss dieser Wert mitgehen (Founders.tsx).
+const TEAM_MEASURE = "min(1680px, 105vh)";
+
 export function AlgarveTestimonials() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
@@ -186,7 +194,7 @@ export function AlgarveTestimonials() {
             ref={grid}
             onMouseLeave={clearHover}
             className="mx-auto flex items-center gap-[1vw] max-[991px]:hidden"
-            style={{ width: "78%", maxWidth: "1520px", marginBottom: "5.56vw" }}
+            style={{ width: "100%", maxWidth: TEAM_MEASURE, marginBottom: "5.56vw" }}
           >
             {PEOPLE.map((c, i) => (
               <div

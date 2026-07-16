@@ -174,16 +174,18 @@ export function AlgarveProofVideo({
             className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!p-[5vw] md:flex-1 md:basis-0 ${
               isCenter ? "col-span-2" : ""
             }`}
-            style={{ background: bg, color: PAPER, padding: "1.4vw", minHeight: "13vw", willChange: "transform, opacity" }}
+            style={{ background: bg, color: PAPER, padding: "1.6vw", minHeight: "18vw", willChange: "transform, opacity" }}
           >
             {/* EINHEITLICHE Zifferngröße für alle Kacheln. clamp statt festem vw:
                 „3.000 hrs." ist die längste Zahl und muss in derselben Kachelbreite
-                stehen wie „40+" — ohne Deckel würde sie auf breiten Screens umbrechen. */}
+                stehen wie „40+" — ohne Deckel würde sie auf breiten Screens umbrechen.
+                Deutlich größer (Wolfram 16.07.: 2.5vw/52px → 3.2vw/68px); der Deckel ist
+                an „3.000 hrs." vermessen, das bei 68px noch in die Kachel passt. */}
             <span
               className="max-[767px]:!text-[10.5vw]"
               style={{
                 fontFamily: SHARP,
-                fontSize: "clamp(28px, 2.5vw, 52px)",
+                fontSize: "clamp(32px, 3.2vw, 68px)",
                 lineHeight: "100%",
                 fontWeight: 500,
                 letterSpacing: "-0.09vw",
@@ -218,7 +220,14 @@ export function AlgarveProofVideo({
   return (
     <>
       {/* ── Gepinnte Bühne mit clip-path-Aufskalierung (Desktop + Mobile) ── */}
-      <section ref={root} className="relative" style={{ height: "300vh", background: "transparent" }}>
+      {/* marginTop negativ (Wolfram 16.07.): Zwischen Statement-Text und erster Kachel
+          standen ~63vh Luft (gemessen) — die Summe aus der unteren Hälfte der 82vh hohen
+          Statement-Section und der oberen Hälfte der 100vh-Bühne, in der die Kacheln
+          mittig sitzen. Beides ist für sich richtig (das Video muss aus der BILDMITTE
+          aufblühen, die Kacheln müssen also zentriert bleiben), deshalb wird nicht die
+          Zentrierung angetastet, sondern die Section als Ganzes hochgezogen. Beide
+          Flächen sind transparent, die Überlappung ist unsichtbar. */}
+      <section ref={root} className="relative max-[767px]:!mt-0" style={{ height: "300vh", background: "transparent", marginTop: "-26vh" }}>
         <div ref={stage} data-pv-stage className="sticky top-0 h-screen w-screen overflow-clip">
           {/* MITTELACHSIG (Wolfram 16.07.): Der Copytext, der hier links stand, ist ins
               Hero-Statement gewandert — die Zahlen stehen jetzt allein und zentriert
