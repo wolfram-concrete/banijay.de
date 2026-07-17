@@ -5,6 +5,36 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team: echte Portraits für Michael Gaul, Matthaeus Jaworek, Sebastian Menge (17.07.)
+- Drei weitere echte Portraits lösen Platzhalter ab: `lead-5` → `michael-gaul.jpg`,
+  `lead-9` → `matthaeus-jaworek.jpg`, `lead-7` → `sebastian-menge.jpg`.
+- **Alle nach DERSELBEN Regel beschnitten wie Aylin** (Wolfram: „an die anderen Kollegen
+  anpassen"): Kopf = 32 % der Ausschnitthöhe, 12 % Luft darüber, Seitenverhältnis 0.75,
+  Gesicht horizontal zentriert. Nicht nach Augenmaß — je Foto die Gesichtskoordinaten
+  abgelesen und die Werte gerechnet. Damit stimmen die Proportionen in der Reihe
+  nachweislich, nicht ungefähr:
+
+  | Person | Quelle | Ausschnitt | Endformat |
+  |---|---|---|---|
+  | Michael Gaul | 3869×5815 | 2489×3319 @ 0,1072 | 900×1200, 48 KB |
+  | Matthaeus Jaworek | 4912×7360 | 3150×4200 @ 1056,802 | 900×1200, 91 KB |
+  | Sebastian Menge | 4912×7360 | 2759×3678 @ 1639,737 | 900×1200, 82 KB |
+
+- Alle drei Quellen sind wieder **Ganzkörper-Aufnahmen** — ohne Beschnitt wären die Köpfe
+  in der 142×138-Kachel winzig gewesen (siehe Aylin-Eintrag unten).
+- Bei Michael Gaul war der rechnerische linke Rand negativ → auf 0 geklemmt, Gesicht sitzt
+  dadurch bei 48,5 % statt exakt mittig (optisch unauffällig).
+- `FOCUS`-Einträge `"50% 18%"` für alle drei — identisch, weil identisch beschnitten.
+- ❓ **Sebastian: Namensdiskrepanz, ungeprüft.** Die Quelldatei heißt
+  `assets/People/Sebastian lege.jpg`, das Team hat aber **Sebastian MENGE**. „Sebastian
+  Lege" ist der Food-Experte, mit dem Banijay das Label **Pausenclown Media** gegründet hat
+  (`companyCards.ts`) — also eine andere, reale Person. Zugeordnet nach Wolframs Ansage
+  („auch für Sebastian") und dem Ablageort (People = Team-Portraits), **nicht nach einem
+  Beleg**. Wenn das Foto Herrn Lege zeigt, steht ein falscher Name unter einem echten
+  Gesicht. Hinweis steht auch im Code.
+- Stand jetzt: **6 von 11** Portraits echt (Knut, Simone, Aylin, Michael Gaul, Matthaeus,
+  Sebastian). Fünf Platzhalter bleiben, `lead-1.jpg` weiterhin doppelt (Marcus + Janine).
+
 ### Team: echtes Portrait für Aylin Firat (17.07.)
 - `/people/aylin-firat.jpg` löst den Platzhalter `lead-2.jpg` ab. Quelle
   `assets/People/aylin.jpg` (Nick Harwart im ursprünglichen Dateinamen ist der **Fotograf**,

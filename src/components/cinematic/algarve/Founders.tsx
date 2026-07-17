@@ -38,6 +38,13 @@ const FOCUS: Record<string, string> = {
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
   "/people/aylin-firat.jpg": "50% 18%",
+  // Michael Gaul (Wolfram 17.07.) — echtes Portrait, ersetzt lead-5.jpg. Nach derselben
+  // Regel wie Aylin beschnitten (siehe leadership.ts), daher derselbe Top-Bias.
+  "/people/michael-gaul.jpg": "50% 18%",
+  // Alle vier Portraits aus der 2026er-Session sind nach derselben Regel beschnitten
+  // (Kopf = 32 % der Ausschnitthöhe, siehe leadership.ts) → identischer Top-Bias.
+  "/people/matthaeus-jaworek.jpg": "50% 18%",
+  "/people/sebastian-menge.jpg": "50% 18%",
   "/people/knut-kremling.jpg": "50% 8%",
   "/people/simone-lenzen.jpg": "50% 12%",
   "/people/lead-3.jpg": "50% 12%",

@@ -42,11 +42,32 @@ export const LEADERSHIP: Leader[] = [
   { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
 
   // ── Untere Reihe (Index 8–10) ─────────────────────────────────────────────
-  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/lead-5.jpg" },
-  { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/lead-7.jpg" },
+  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.
+  // Quelle assets/People/Michael Gaul.jpg, 3869×5815, wieder eine Ganzkörper-Aufnahme.
+  // Beschnitten nach DERSELBEN Regel wie Aylin, damit die Proportionen in der Reihe
+  // stimmen: Kopf = 32 % der Ausschnitthöhe, 12 % Luft darüber, Seitenverhältnis 0.75.
+  // Ausschnitt 2489×3319 ab 0,1072 (aus Kopf oben 1470, Kinn 2532, Gesichtsmitte x 1208).
+  // left auf 0 geklemmt, weil der rechnerische Wert negativ war — das Gesicht sitzt
+  // dadurch bei 48,5 % statt exakt mittig, was optisch nicht auffällt.
+  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.jpg" },
+  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-7.jpg ab.
+  // Beschnitten nach derselben Regel wie Aylin/Michael Gaul: Kopf = 32 % der
+  // Ausschnitthöhe. Ausschnitt 2759×3678 ab 1639,737 (Kopf oben 1178, Kinn 2355,
+  // Gesichtsmitte x 3018).
+  // ❓ ZU PRÜFEN: Die Quelldatei heißt "assets/People/Sebastian lege.jpg" — das Team hat
+  //    aber Sebastian MENGE. „Sebastian Lege" ist der Food-Experte, mit dem Banijay das
+  //    Label Pausenclown Media gegründet hat (siehe companyCards.ts), also eine ANDERE,
+  //    reale Person. Zugeordnet wurde nach Wolframs Ansage („auch für Sebastian") und dem
+  //    Ablageort (People = Team-Portraits) — nicht nach einem Beleg. Wenn das Foto Herrn
+  //    Lege zeigt, steht hier ein falscher Name unter einem echten Gesicht.
+  { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/sebastian-menge.jpg" },
   {
+    // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-9.jpg ab.
+    // Beschnitten nach derselben Regel wie Aylin/Michael Gaul: Kopf = 32 % der
+    // Ausschnitthöhe. Ausschnitt 3150×4200 ab 1056,802 (Kopf oben 1306, Kinn 2650,
+    // Gesichtsmitte x 2631).
     name: "Matthaeus Jaworek",
     role: "Director Financial Planning, Reporting & Controlling",
-    img: "/people/lead-9.jpg",
+    img: "/people/matthaeus-jaworek.jpg",
   },
 ];
