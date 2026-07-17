@@ -144,7 +144,40 @@ Vor dem Livegang abzuarbeiten:
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | Platzhalter (9 Dateien, 11 Personen) | Echte Portraits |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
+| **Company-URLs im Ökosystem** | 20 von 40 Einträgen unverlinkt | Fehlende Websites nachliefern (siehe unten) |
 | **Wording** | Entwurf | Freigabe Heike/Redaktion |
+
+### Unverlinkte Companies im Ökosystem
+
+`src/data/ecosystem.ts` folgt der Regel: **Companies ohne belegten Link bleiben unverlinkt.**
+Die URLs stammen ausschließlich aus dem Scrape der bisherigen banijay.de (`scraped_content/`) —
+es wird keine Adresse geraten. Im Verzeichnis erkennt man die Betroffenen am fehlenden
+Pfeil-Icon.
+
+Betroffen ist die **Hälfte des Verzeichnisses: 20 von 40 Einträgen** (Stand 17.07.):
+
+| Rubrik | Ohne Link |
+|---|---|
+| Entertainment | filmpool entertainment · South & Browse · Rainer Laux Productions · Lucky Pics · Minestrone TV · Ladykracher · Doc.Banijay · Potatohead Pictures · EndemolShine Poland |
+| Audio | Banijay Media Germany · MySpass Audio · SRM Music · Major Minor · BP Music Publishing · Podcast Bande · MySpass |
+| Artists | Only Good Party People |
+| Distribution & Brand | MySpass · Banijay Media Germany · Magic Connection |
+| Tech | Banijay Infrastructure |
+| Fiction | filmpool fiction |
+
+(MySpass und Banijay Media Germany stehen in zwei Rubriken — beim Nachtragen der URL
+beide Vorkommen ergänzen.)
+
+Aktuelle Liste jederzeit erzeugbar:
+
+```bash
+npx tsx -e "import {ECO_CATEGORIES} from './src/data/ecosystem'; \
+for (const c of ECO_CATEGORIES) for (const co of c.companies) if (!co.url) console.log(c.label, '—', co.name)"
+```
+
+Nachtragen: in `ECO_CATEGORIES` beim jeweiligen Eintrag `url` ergänzen. Wo eine Company
+zusätzlich eine Bento-Kachel hat, gehört die URL auch nach `companyCards.ts`
+(`externalUrl`) bzw. in den Directory-Eintrag.
 
 ### Warum die Company-Videos zu groß sind
 

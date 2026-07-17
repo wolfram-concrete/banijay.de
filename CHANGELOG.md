@@ -17,6 +17,10 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - `companiesDirectory.ts` — **`ecoKeys` von Magic Connection und South & Browse nachgetragen**
   (waren leer). Nebenbefund: Beide fielen dadurch aus JEDEM Bento-Rubrikfilter heraus und waren
   nur unter „Alle" sichtbar. filmpool ×2 hatten ihre Keys bereits.
+- **README**: neuer Abschnitt „Unverlinkte Companies im Ökosystem" + Zeile in der
+  Pre-Launch-Tabelle. Beim Nachzählen aufgefallen: **20 von 40 Einträgen sind unverlinkt**
+  — die Hälfte des Verzeichnisses, nicht nur die vier neuen. Liste je Rubrik + Befehl zum
+  Neuerzeugen stehen dort.
 
 ### Cape-Cross-Video in der Bento-Kachel (17.07.)
 - **Cape Cross Entertainment** bekommt sein Imagefilm-Video (`CompaniesBento.tsx`, `REEL["cape-cross"]`).
