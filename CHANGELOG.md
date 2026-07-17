@@ -5,6 +5,23 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team: echtes Portrait für Michael Laegel — mit anderer Beschnitt-Zahl (17.07.)
+- `lead-3` → `michael-laegel.jpg`. Quelle 4912×7360, Ausschnitt **4200×5600 ab 218,0**,
+  Endformat 900×1200, 61 KB. `FOCUS` `"50% 14%"`.
+- ⚠️ **Nicht die 32 % der anderen — hier 24 %.** Michael Laegel steht in der
+  **Leader-Reihe**, deren Kacheln **248×182 (1.36)** messen statt 142×138 (1.03). Von einem
+  0.75-Hochformat bleiben dort nur **55 % der Bildhöhe** stehen (statt 73 %). Ein 32 %-Kopf
+  wäre auf **58 % der Kachelhöhe** aufgeblasen worden — sichtbar größer als seine
+  Leader-Nachbarn.
+- Zahl aus dem Nachbarn abgeleitet, nicht geschätzt: Knuts Kopf füllt ~43 % seiner Kachel.
+  24 % / 0.55 = **43,6 %** → passt. Die Varianten mit 28 % und 32 % lagen bei 51 % und 58 %
+  und wurden im direkten Vergleich (2× vergrößert gerendert) verworfen.
+- `top` auf 0 geklemmt, weil der Kopf nah am oberen Bildrand sitzt.
+- **Merke für künftige Portraits:** Die Beschnitt-Zahl hängt an der REIHE, nicht am Team —
+  Leader 24 %, Reihen 2/3 32 %. Steht so in `leadership.ts` und im README.
+- Stand jetzt: **7 von 11** Portraits echt. Übrig: Marcus Wolter, Natali Naso, Heike Lutzer,
+  Janine Berns — `lead-1.jpg` läuft weiterhin doppelt (Marcus + Janine).
+
 ### Team: echte Portraits für Michael Gaul, Matthaeus Jaworek, Sebastian Menge (17.07.)
 - Drei weitere echte Portraits lösen Platzhalter ab: `lead-5` → `michael-gaul.jpg`,
   `lead-9` → `matthaeus-jaworek.jpg`, `lead-7` → `sebastian-menge.jpg`.
@@ -25,13 +42,11 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - Bei Michael Gaul war der rechnerische linke Rand negativ → auf 0 geklemmt, Gesicht sitzt
   dadurch bei 48,5 % statt exakt mittig (optisch unauffällig).
 - `FOCUS`-Einträge `"50% 18%"` für alle drei — identisch, weil identisch beschnitten.
-- ❓ **Sebastian: Namensdiskrepanz, ungeprüft.** Die Quelldatei heißt
-  `assets/People/Sebastian lege.jpg`, das Team hat aber **Sebastian MENGE**. „Sebastian
-  Lege" ist der Food-Experte, mit dem Banijay das Label **Pausenclown Media** gegründet hat
-  (`companyCards.ts`) — also eine andere, reale Person. Zugeordnet nach Wolframs Ansage
-  („auch für Sebastian") und dem Ablageort (People = Team-Portraits), **nicht nach einem
-  Beleg**. Wenn das Foto Herrn Lege zeigt, steht ein falscher Name unter einem echten
-  Gesicht. Hinweis steht auch im Code.
+- *Sebastian: Namensdiskrepanz — geklärt.* Die Quelldatei heißt `Sebastian lege.jpg`, das
+  Team hat aber Sebastian **Menge**. Da „Sebastian Lege" der Food-Experte hinter Pausenclown
+  Media ist (`companyCards.ts`), also eine andere reale Person, war die Zuordnung
+  rückfragewürdig — **Wolfram hat bestätigt: Benennungsfehler, es ist Sebastian Menge.**
+  Notiz im Code belassen, damit die Frage nicht wiederkehrt.
 - Stand jetzt: **6 von 11** Portraits echt (Knut, Simone, Aylin, Michael Gaul, Matthaeus,
   Sebastian). Fünf Platzhalter bleiben, `lead-1.jpg` weiterhin doppelt (Marcus + Janine).
 

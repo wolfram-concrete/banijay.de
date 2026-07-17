@@ -23,7 +23,15 @@ export const LEADERSHIP: Leader[] = [
   // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
   { name: "Marcus Wolter", role: "CEO", img: "/people/lead-1.jpg" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.jpg" },
-  { name: "Michael Laegel", role: "CFO", img: "/people/lead-3.jpg" },
+  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-3.jpg ab.
+  // ACHTUNG, ANDERE ZAHL ALS UNTEN: Michael Laegel steht in der LEADER-Reihe, deren
+  // Kacheln 248×182 (1.36) messen — nicht 142×138 (1.03) wie die Reihen darunter. Von
+  // einem 0.75-Hochformat bleiben dort nur 55 % der Bildhöhe stehen (statt 73 %). Ein
+  // 32 %-Kopf wie bei den anderen wäre hier auf 58 % der Kachelhöhe aufgeblasen worden.
+  // Daher Kopf = 24 % der Ausschnitthöhe → 24/0.55 = 43,6 % der Kachel, das entspricht
+  // Knut (~43 %). Ausschnitt 4200×5600 ab 218,0 (Kopf oben 570, Kinn 1914,
+  // Gesichtsmitte x 2318). top auf 0 geklemmt, weil der Kopf nah am oberen Rand sitzt.
+  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.jpg" },
 
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
   { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
@@ -54,12 +62,9 @@ export const LEADERSHIP: Leader[] = [
   // Beschnitten nach derselben Regel wie Aylin/Michael Gaul: Kopf = 32 % der
   // Ausschnitthöhe. Ausschnitt 2759×3678 ab 1639,737 (Kopf oben 1178, Kinn 2355,
   // Gesichtsmitte x 3018).
-  // ❓ ZU PRÜFEN: Die Quelldatei heißt "assets/People/Sebastian lege.jpg" — das Team hat
-  //    aber Sebastian MENGE. „Sebastian Lege" ist der Food-Experte, mit dem Banijay das
-  //    Label Pausenclown Media gegründet hat (siehe companyCards.ts), also eine ANDERE,
-  //    reale Person. Zugeordnet wurde nach Wolframs Ansage („auch für Sebastian") und dem
-  //    Ablageort (People = Team-Portraits) — nicht nach einem Beleg. Wenn das Foto Herrn
-  //    Lege zeigt, steht hier ein falscher Name unter einem echten Gesicht.
+  // Die Quelldatei heißt „Sebastian lege.jpg" — das ist ein Benennungsfehler, von Wolfram
+  // am 17.07. bestätigt: Es IST Sebastian Menge. (Nicht zu verwechseln mit Sebastian Lege,
+  // dem Food-Experten hinter Pausenclown Media, siehe companyCards.ts.)
   { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/sebastian-menge.jpg" },
   {
     // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-9.jpg ab.

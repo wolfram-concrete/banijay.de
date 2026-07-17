@@ -143,7 +143,6 @@ Vor dem Livegang abzuarbeiten:
 | **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | 6 von 11 echt — Rest Platzhalter, `lead-1.jpg` sogar doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
-| **Sebastian-Portrait: Namensdiskrepanz** | Quelldatei heißt „Sebastian lege.jpg", eingesetzt als Sebastian Menge | Gegenprüfen (siehe unten) |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
@@ -225,28 +224,34 @@ braucht dafür nur ein anderes `img`.
 
 ### Team-Portraits: Beschnitt-Regel und eine offene Frage
 
-**6 von 11 echt** (Knut, Simone, Aylin, Michael Gaul, Matthaeus, Sebastian), fünf noch
-Platzhalter — `lead-1.jpg` läuft doppelt (Marcus Wolter + Janine Berns), was in der
-Team-Section auffällt, sobald man hinsieht.
+**7 von 11 echt** (Knut, Michael Laegel, Simone, Aylin, Michael Gaul, Sebastian,
+Matthaeus), vier noch Platzhalter — `lead-1.jpg` läuft doppelt (Marcus Wolter + Janine
+Berns), was in der Team-Section auffällt, sobald man hinsieht.
 
 **Beschnitt-Regel für neue Portraits.** Die Zulieferungen aus der 2026er-Session sind
 GANZKÖRPER-Aufnahmen (~3800–4900 px breit, Seitenverhältnis 0,665). Die Team-Kacheln sind
-aber **142×138** (nahezu quadratisch) — bei `object-cover` bleiben nur ~65 % der Bildhöhe,
-der Kopf wäre winzig. Alle echten Portraits sind daher nach derselben Formel beschnitten:
+viel kompakter — ohne Beschnitt wäre der Kopf winzig. Vorgehen:
 
-- **Kopf = 32 % der Ausschnitthöhe**, 12 % Luft darüber, Seitenverhältnis **0,75**,
-  Gesicht horizontal zentriert, Endformat **900×1200**.
-- Je Foto die Gesichtskoordinaten ablesen (Kopf oben, Kinn, Gesichtsmitte x) und die Werte
-  rechnen — nicht nach Augenmaß. Die konkreten Zahlen stehen je Person als Kommentar in
-  `src/data/leadership.ts`.
-- Dazu ein `FOCUS`-Eintrag `"50% 18%"` in `Founders.tsx` (bei gleichem Beschnitt identisch).
+- Je Foto die **Gesichtskoordinaten ablesen** (Kopf oben, Kinn, Gesichtsmitte x) und den
+  Ausschnitt rechnen — nicht nach Augenmaß. Die konkreten Zahlen stehen je Person als
+  Kommentar in `src/data/leadership.ts`.
+- Konstant: 12 % Luft über dem Kopf, Seitenverhältnis **0,75**, Gesicht horizontal
+  zentriert, Endformat **900×1200**.
+- ⚠️ **Die Kopfgröße hängt an der REIHE, nicht am Team** — die Kacheln sind unterschiedlich:
 
-⚠️ **Offene Frage: das Sebastian-Portrait.** Die Quelldatei heißt
-`assets/People/Sebastian lege.jpg`, eingesetzt ist sie als **Sebastian Menge** (Director
-Information Technology). „Sebastian Lege" ist aber der Food-Experte, mit dem Banijay das
-Label **Pausenclown Media** gegründet hat (`companyCards.ts`) — eine andere, reale Person.
-Zugeordnet wurde nach Ansage und Ablageort, **nicht nach einem Beleg**. Zeigt das Foto Herrn
-Lege, steht ein falscher Name unter einem echten Gesicht. Vor Livegang klären.
+  | Reihe | Kachel | sichtbar von 0,75 | Kopf im Ausschnitt | `FOCUS` |
+  |---|---|---|---|---|
+  | Leader (Index 0–2) | 248×182 (1.36) | 55 % der Höhe | **24 %** | `"50% 14%"` |
+  | Reihe 2 + 3 | 142×138 (1.03) | 73 % der Höhe | **32 %** | `"50% 18%"` |
+
+  Beide ergeben ~43 % Kopfhöhe in der Kachel — das ist der Zielwert, abgeleitet aus Knut.
+  Wer in der Leader-Reihe mit 32 % schneidet, bekommt einen 58 %-Kopf und fällt aus der
+  Reihe.
+
+*Randnotiz:* Die Quelldatei des Sebastian-Portraits heißt `Sebastian lege.jpg` — ein
+Benennungsfehler, Wolfram hat am 17.07. bestätigt, dass es **Sebastian Menge** ist. Nicht zu
+verwechseln mit Sebastian Lege, dem Food-Experten hinter Pausenclown Media
+(`companyCards.ts`).
 
 ### Team-Reihenfolge: mittlere Reihe
 

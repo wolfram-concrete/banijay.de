@@ -45,6 +45,10 @@ const FOCUS: Record<string, string> = {
   // (Kopf = 32 % der Ausschnitthöhe, siehe leadership.ts) → identischer Top-Bias.
   "/people/matthaeus-jaworek.jpg": "50% 18%",
   "/people/sebastian-menge.jpg": "50% 18%",
+  // Michael Laegel steht in der LEADER-Reihe (Kachel 1.36 statt 1.03) und ist daher
+  // anders beschnitten — siehe leadership.ts. Dort zeigt die Kachel nur 55 % der
+  // Bildhöhe, deshalb ein knapperer Top-Bias als bei den 32%-Portraits.
+  "/people/michael-laegel.jpg": "50% 14%",
   "/people/knut-kremling.jpg": "50% 8%",
   "/people/simone-lenzen.jpg": "50% 12%",
   "/people/lead-3.jpg": "50% 12%",
