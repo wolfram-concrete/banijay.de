@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -59,6 +58,15 @@ const HERO_R = 50; // vw — Hero-Kurvenradius
 // Ring2→Ring3 = 3G  →  kumulierter Radius-Zuwachs = G, 3G, 6G (mit G = 3vw).
 const RING_GAP = 3; // vw — Basis-Abstand
 const RING_EXTRA = [RING_GAP, RING_GAP * 3, RING_GAP * 6]; // = [3, 9, 18] vw
+
+// Mobile-Hero-Motive (Wolfram 17.07.). 767px = dieselbe Grenze, an der im ganzen Projekt
+// auf Mobile umgeschaltet wird (max-[767px]) — hier als Media-Attribut statt als
+// Tailwind-Klasse, weil <source> eine echte Media-Query braucht.
+const MOBILE_MQ = "(max-width: 767px)";
+/** „/hero-v2/frame-3-career.jpg" → „/hero-v2/frame-3-career-mobile.jpg".
+ *  Konvention statt Konfiguration: Zu JEDEM Hero-Motiv liegt die Hochformat-Fassung
+ *  unter demselben Namen mit Suffix „-mobile". Gilt auch für den Default frame-3.jpg. */
+const mobileVariante = (pfad: string) => pfad.replace(/\.jpg$/, "-mobile.jpg");
 
 export function AlgarveHome({
   variant = "home",
@@ -280,33 +288,52 @@ export function AlgarveHome({
 
         {/* 3-FRAME-VISUAL (Wolfram 14.07.): Frame 1 dunkel (Base, blendet weich auf),
             Frame 2 „wird lebendig", Frame 3 mit der Font „We Are Banijay" — blenden
-            per Sequenz (useEffect) transparent → klar übereinander. */}
-        <img
-          ref={heroImg}
-          src="/hero-v2/frame-1.jpg"
-          alt=""
-          draggable={false}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          // Startet UNSICHTBAR (Wolfram 15.07.): der Hero baut sich erst auf, wenn der
-          // Preloader komplett weg ist — vorher keine sichtbare Veränderung, kein Flackern.
-          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
-        />
-        <img
-          ref={heroImgB}
-          src="/hero-v2/frame-2.jpg"
-          alt=""
-          draggable={false}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
-        />
-        <img
-          ref={heroImg3}
-          src={frame3}
-          alt=""
-          draggable={false}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
-        />
+            per Sequenz (useEffect) transparent → klar übereinander.
+
+            MOBILE-MOTIVE (Wolfram 17.07.): Auf schmalen Viewports laufen eigene, im
+            HOCHFORMAT gesetzte Fassungen (0.75 statt 1.35) — das sind neu gesetzte
+            Ausschnitte, keine verkleinerten Kopien; im Querformat-Bild wäre auf dem
+            Telefon von der Komposition kaum etwas übrig.
+            Umgesetzt per <picture>: Der Browser wählt die Datei selbst, das <img> bleibt
+            dasselbe Element — die GSAP-Refs (heroImg/heroImgB/heroImg3) und die gesamte
+            Blend-Sequenz sind damit unberührt. `contents` am <picture>, damit der Wrapper
+            keine eigene Box erzeugt und die absolute Positionierung der <img> exakt so
+            aufgeht wie vorher. */}
+        <picture className="contents">
+          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-1-mobile.jpg" />
+          <img
+            ref={heroImg}
+            src="/hero-v2/frame-1.jpg"
+            alt=""
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            // Startet UNSICHTBAR (Wolfram 15.07.): der Hero baut sich erst auf, wenn der
+            // Preloader komplett weg ist — vorher keine sichtbare Veränderung, kein Flackern.
+            style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+          />
+        </picture>
+        <picture className="contents">
+          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-2-mobile.jpg" />
+          <img
+            ref={heroImgB}
+            src="/hero-v2/frame-2.jpg"
+            alt=""
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+          />
+        </picture>
+        <picture className="contents">
+          <source media={MOBILE_MQ} srcSet={mobileVariante(frame3)} />
+          <img
+            ref={heroImg3}
+            src={frame3}
+            alt=""
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+          />
+        </picture>
 
         {/* Fokus: das Bild softet nach unten dunkel ab (Übergang in die Kurve) */}
         <div

@@ -5,6 +5,31 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Hero: eigene Mobile-Motive auf allen Seiten (17.07.)
+- Sieben neue Hochformat-Fassungen in `public/hero-v2/` (`*-mobile.jpg`), aus
+  `assets/Visuals/Hero/` weboptimiert und auf das dortige Namensschema gebracht
+  (`Career-frame-3-mobile.jpg` → `frame-3-career-mobile.jpg`).
+- **Das sind neu gesetzte Ausschnitte, keine verkleinerten Kopien**: Quelle 3009×4000
+  (Seitenverhältnis 0,75) gegen 5411×4000 (1,35) beim Desktop-Motiv. Im Querformat wäre auf
+  dem Telefon von der Komposition kaum etwas übrig geblieben.
+- Umgesetzt per **`<picture>`** mit `(max-width: 767px)` (dieselbe Grenze wie überall sonst
+  im Projekt). Der Browser wählt die Datei selbst, das `<img>` bleibt dasselbe Element —
+  die GSAP-Refs (`heroImg`/`heroImgB`/`heroImg3`) und die komplette Blend-Sequenz sind
+  unberührt. `contents` am `<picture>`, damit der Wrapper keine eigene Box erzeugt und die
+  absolute Positionierung exakt so aufgeht wie vorher.
+- Frame 3 kommt je Seite per Prop; der Mobile-Pfad wird daraus abgeleitet
+  (`mobileVariante()`). **Konvention statt Konfiguration**: Ein künftiges Hero-Motiv braucht
+  nur die gleichnamige `-mobile.jpg` daneben, kein Code.
+- Nachgemessen (`currentSrc`, nicht `src`): Mobile lädt auf allen fünf Hero-Seiten die
+  `-mobile`-Datei (0,75), Desktop unverändert die Querformat-Datei (1,35), Bildbox
+  1526×954 wie zuvor. Alle referenzierten Dateien antworten mit 200.
+- Nebeneffekt: **57–103 KB statt 416–722 KB** je Frame — der Hero legt drei davon
+  übereinander, das zählt auf dem Telefon.
+- `eslint-disable @next/next/no-img-element` entfernt: Die Next-Regel greift bei `<img>`
+  innerhalb von `<picture>` nicht mehr, die Direktive war tot.
+- `frame-3-companies-mobile.jpg` mitgezogen, obwohl die Companies-Seite entfallen ist —
+  das Desktop-Pendant liegt ebenfalls noch da, so bleiben die Paare vollständig.
+
 ### Banijay Media Germany: Video in der Bento-Kachel (17.07.)
 - `CompaniesBento.tsx`, `REEL["banijay-media-germany"]` — Quelle 90 MB / **201 s**
   (BMG_Brandtrailer) → 960×540, **Ausschnitt 16,7–29,2 s (12,5 s), 6,7 MB**. Löst das
