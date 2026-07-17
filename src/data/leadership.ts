@@ -30,7 +30,16 @@ export const LEADERSHIP: Leader[] = [
   { name: "Natali Naso", role: "Director Human Resources", img: "/people/lead-6.jpg" },
   { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/lead-8.jpg" },
   { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/lead-1.jpg" },
-  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/lead-2.jpg" },
+  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-2.jpg ab.
+  // Quelle: assets/People/aylin.jpg (vormals „2026_07 Banijay _ Nick Harwart-9572-2.jpg";
+  // Nick Harwart ist der Fotograf, nicht die abgebildete Person).
+  // Original 3750×5636 ist eine GANZKÖRPER-Aufnahme; in der 142×138-Kachel wäre der Kopf
+  // winzig gewesen, während alle Nachbarn Kopf-Schulter-Porträts sind. Daher beschnitten.
+  // AUSSCHNITT „mittel" (Wolfram 17.07.): 1983×2644 ab 193,1037 — der Kopf füllt damit
+  // ~32 % der Ausschnitthöhe. Aus den Gesichtskoordinaten gerechnet (Kopf oben 1354,
+  // Kinn 2200, Gesichtsmitte x 1184), nicht geschätzt. Es gab auch eine engere Variante
+  // (~38 %, Ausschnitt 1670×2226 ab 349,1087) — Wolfram wählte die mittlere.
+  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
 
   // ── Untere Reihe (Index 8–10) ─────────────────────────────────────────────
   { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/lead-5.jpg" },

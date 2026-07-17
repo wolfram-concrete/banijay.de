@@ -117,6 +117,45 @@ const REEL: Record<string, string> = Object.fromEntries(
 //     16,7–29,2 s ist das bildreichste Fenster: vier echte Szenen (Figur mit Publikum,
 //     Bühne mit Moderator, Spielshow, jubelnde Menge). Davor und danach nur
 //     Screen-Wall-Montagen aus vielen Mini-Screens, die in der Kachel zu Brei werden.
+//   • Endemol Shine Polska (Showreel 2018, 327 s) ab 204 s, 12 s — klassischer
+//     Showreel-Aufbau: Logokarte bei ~2 s, Format-Titelkarten dazwischen („FEAR FACTOR"
+//     ~34 s, „THE DANCE" ~50 s), Grafik-/Textstrecke gegen Ende („THE HIGHEST QUALITY"
+//     ~306 s), Logo-Endkarte bei ~322 s. Das Fenster liegt in der zusammenhängenden
+//     Spielshow-Sequenz (~200–240 s): blaue LED-Arena, Kandidatinnen, Moderator.
+//     Die Zahlen auf den LED-Wänden („1 2 3 4 5", „100K") sind BÜHNENBILD, keine
+//     eingeblendeten Titel — die Regel meint Text-Overlays, nicht das Set.
+//   • Minestrone TV (Pastewka_0802_Recap, 92,6 s) ab 10 s, 12 s — Küchenszene, Dialoge,
+//     Luftaufnahme, Partyszene. Der Recap ist ein Glücksfall: KEINE Titelkarte, kein Logo,
+//     kein Schwarzbild über die ganze Länge; das Fenster war frei wählbar. (Im Ordner liegt
+//     noch Pastewka_0810_Recap.mxf — nicht verwendet, Wolfram wählte 0802.)
+//   • Ladykracher (LK_08_11_Intro_und_Kino, 137,4 s) ab 80 s, 12 s — Kino-Sketch mit Anke
+//     Engelke. Der Vorspann (1–25 s) ist Animation MIT Titelkarte („Anke Engelke" bei
+//     ~17 s), ab ~29 s läuft der Sketch textfrei. 80–92 s ist die lebendigste Passage.
+//
+//   • NightWash Club (Club-Film, 53,3 s) ab 7 s, 12 s — Publikum, Kameracrew, Bühnenlicht,
+//     Regieraum. Der Film ist eine Promo mit Format-Titelkarten: „LASS LABERN" ~20,5 s,
+//     „DIE MACHT DER 1000 WITZE" ~27 s, „…SLAM" ~39 s, dazu Logokarten am Anfang und
+//     Ende. 7–19 s ist der erste durchgehend textfreie Block. Der „night wash"-Schriftzug
+//     auf der LED-Rückwand ist BÜHNENBILD, keine eingeblendete Karte.
+//     FORMATWAHL: Die Quelle lag als 16x9 UND 9x16 vor. Genommen: 16x9. Die Kachel misst
+//     nachgemessen 308×222 (1.39) — bei object-cover bleiben vom 16:9 rund 78 % der
+//     Bildbreite stehen, vom 9:16 nur 40 % der Höhe. (Das Bento hat zwar auch
+//     Hochformat-Kacheln (0.68) — NightWash ist aber keine davon.)
+//
+// ⚠️ MXF (Minestrone, Ladykracher): avconvert kann das NICHT lesen („unable to read"),
+// AVFoundation unterstützt das Format nicht, macOS liest nicht mal die Metadaten
+// (kMDItemCodecs = null). ffmpeg ist weiterhin nicht installiert. Konvertiert mit VLC,
+// das eigene MXF-Decoder mitbringt:
+//   /Applications/VLC.app/Contents/MacOS/VLC -I dummy -q "<quelle>.mxf" \
+//     --start-time=10 --stop-time=22 \
+//     --sout "#transcode{vcodec=h264,vb=2200,width=960,acodec=none}:standard{access=file,mux=mp4,dst=<ziel>.mp4}" \
+//     vlc://quit
+// Da der Browser MXF ebenfalls nicht abspielt, braucht der Kontaktbogen einen Umweg:
+// erst einen Proxy der GANZEN Datei (width=480, vb=500) ziehen, den abtasten, dann den
+// finalen Ausschnitt aus dem ORIGINAL schneiden. Nebenbei: `timeout` gibt es auf macOS
+// nicht (exit 127) — nicht davorsetzen, sonst läuft der Befehl gar nicht.
+// Ergebnis wie immer im Browser gegengeprüft (11 Frames, Farbdrift-Check gegen die
+// CEWE-Falle): 0 korrupt, natürliche Farben.
 // NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
 // Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
 // es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
@@ -129,6 +168,10 @@ REEL["cape-cross"] = "/company-media/cape-cross.mp4";
 REEL["filmpool-entertainment"] = "/company-media/filmpool-entertainment.mp4";
 REEL["rainer-laux-productions"] = "/company-media/rainer-laux-productions.mp4";
 REEL["banijay-media-germany"] = "/company-media/banijay-media-germany.mp4";
+REEL["endemol-shine-polska"] = "/company-media/endemol-shine-polska.mp4";
+REEL["minestrone-tv"] = "/company-media/minestrone-tv.mp4";
+REEL["ladykracher"] = "/company-media/ladykracher.mp4";
+REEL["nightwash-club"] = "/company-media/nightwash-club.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom

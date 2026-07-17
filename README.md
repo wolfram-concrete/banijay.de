@@ -142,7 +142,7 @@ Vor dem Livegang abzuarbeiten:
 |---|---|---|
 | **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
-| **Leadership-/People-Bilder** | Platzhalter (9 Dateien, 11 Personen) | Echte Portraits |
+| **Leadership-/People-Bilder** | 3 von 11 echt (Knut, Simone, Aylin) — Rest Platzhalter, `lead-1.jpg` sogar doppelt (Marcus + Janine) | Echte Portraits nachliefern |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
@@ -245,9 +245,37 @@ Toolchain, nicht das Material:
   steckt in einer Fremd-App (CEWE) und ist mit `--enable-libopenh264 --disable-yasm`
   gebaut. Es **dekodiert die Quellen fehlerhaft** und kodiert rosa/grünen Datenmüll
   in die Ausgabe — bei plausibel aussehenden Bitraten. Nicht verwendbar.
-- Deshalb läuft die Konvertierung über **`avconvert`** (Apples AVFoundation-Pipeline,
+- Deshalb lief die Konvertierung über **`avconvert`** (Apples AVFoundation-Pipeline,
   Systembestandteil, dekodiert sauber). Das kennt aber nur feste Qualitäts-Presets und
-  **keine Bitratensteuerung** → die Dateien geraten 3–4× zu groß.
+  **keine Bitratensteuerung** → die Dateien geraten 3–4× zu groß. Zusätzlich schreibt es
+  die **AAC-Tonspur mit**, obwohl die Kacheln stumm laufen — totes Gewicht.
+- **Seit 17.07.: VLC ist das bessere Werkzeug.** `/Applications/VLC.app` (3.0.16) kann
+  Bitraten steuern und Ton weglassen — bei gleicher Länge und Auflösung **4,0 statt
+  6–6,7 MB**. Die vier neuesten Clips (Endemol Shine Polska, Minestrone, Ladykracher,
+  NightWash) sind damit gebaut:
+
+  ```bash
+  /Applications/VLC.app/Contents/MacOS/VLC -I dummy -q "<quelle>" \
+    --start-time=<start> --stop-time=<ende> \
+    --sout "#transcode{vcodec=h264,vb=2200,width=960,acodec=none}:standard{access=file,mux=mp4,dst=<ziel>.mp4}" \
+    vlc://quit
+  ```
+
+  Damit ist VLC auch der naheliegende Kandidat für den Sammel-Reencode unten — womöglich
+  ohne dass ffmpeg überhaupt installiert werden muss.
+
+#### MXF-Quellen (Minestrone, Ladykracher)
+
+Manche Zulieferungen kommen als **MXF** (Profi-Format). Dann gilt:
+
+- **`avconvert` scheitert hart**: „unable to read". AVFoundation unterstützt MXF nicht,
+  macOS liest nicht einmal die Metadaten (`kMDItemCodecs`, Dauer, Auflösung = `null`).
+- **VLC kann es** — siehe Befehl oben.
+- **Der Browser kann es nicht.** Der übliche Frame-Kontaktbogen fällt damit aus. Umweg:
+  erst einen Proxy der GANZEN Datei ziehen (`width=480,vb=500`), den im Browser abtasten,
+  dann den finalen Ausschnitt aus dem **Original** schneiden.
+- ⚠️ **`timeout` gibt es auf macOS nicht** (exit 127). Nicht vor VLC setzen — der Befehl
+  läuft sonst gar nicht und man hält das Ergebnis für einen Erfolg.
 
 **Fix vor Livegang:** echtes ffmpeg mit `libx264` installieren (`brew install ffmpeg`),
 dann je Clip:

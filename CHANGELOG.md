@@ -5,6 +5,67 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team: echtes Portrait für Aylin Firat (17.07.)
+- `/people/aylin-firat.jpg` löst den Platzhalter `lead-2.jpg` ab. Quelle
+  `assets/People/aylin.jpg` (Nick Harwart im ursprünglichen Dateinamen ist der **Fotograf**,
+  nicht die abgebildete Person).
+- **Beschnitten, und das war nötig**: Das Original 3750×5636 ist eine GANZKÖRPER-Aufnahme.
+  Die Team-Kacheln sind nachgemessen **142×138** (nahezu quadratisch, 1.03) — bei
+  `object-cover` bleiben davon nur 65 % der Bildhöhe. Sie wäre als winzige Figur in voller
+  Länge erschienen, während alle Nachbarn Kopf-Schulter-Porträts sind. Mit `objectPosition`
+  allein nicht zu retten (fünf Varianten durchgespielt).
+- Ausschnitt aus den **Gesichtskoordinaten gerechnet**, nicht geschätzt (Kopf oben 1354,
+  Kinn 2200, Gesichtsmitte x 1184). Drei Enge-Grade gebaut und gegen die echten Nachbarn
+  (Simone, lead-3, lead-6) verglichen → **„mittel" gewählt** (Wolfram): 1983×2644 ab
+  193,1037, Kopf füllt ~32 % der Ausschnitthöhe. Endformat 900×1200, 88 KB — dieselbe
+  Größenordnung wie die übrigen echten Porträts. Werte stehen als Kommentar in
+  `leadership.ts`, die engere Alternative (~38 %) ebenfalls.
+- `FOCUS`-Eintrag `"50% 18%"` in `Founders.tsx`.
+- **Die Team-Section gibt es zweimal** (Home + About) — beide rendern dieselbe Komponente
+  aus `LEADERSHIP`, ein Eintrag genügt. Gegengeprüft: `/` und `/about` liefern beide das
+  neue Bild, `lead-2.jpg` kommt nirgends mehr vor.
+- Offen: In `assets/People/` liegen drei weitere Aufnahmen (-9694-2, -9733, -9930) plus ein
+  Bild von Simone Lenzen — Zuordnung unklar.
+
+### Bento-Videos: Endemol Shine Polska, Minestrone TV, Ladykracher, NightWash Club (17.07.)
+- **Endemol Shine Polska** (Showreel 2018, 327 s) → ab 204 s, 12 s, 6,4 MB. Klassischer
+  Showreel-Aufbau: Logokarte ~2 s, Format-Titelkarten („FEAR FACTOR" ~34 s, „THE DANCE"
+  ~50 s), Textstrecke gegen Ende („THE HIGHEST QUALITY" ~306 s), Logo-Endkarte ~322 s. Das
+  Fenster liegt in der Spielshow-Sequenz (~200–240 s). Die LED-Zahlen („1 2 3 4 5", „100K")
+  sind Bühnenbild, keine Overlays.
+- **Minestrone TV** (Pastewka_0802_Recap, 92,6 s) → ab 10 s, 12 s, 4,0 MB. Glücksfall:
+  keine Titelkarte über die ganze Länge, Fenster frei wählbar. (Im Ordner liegt noch
+  Pastewka_0810_Recap.mxf — Wolfram wählte 0802.)
+- **Ladykracher** (LK_08_11_Intro_und_Kino, 137,4 s) → ab 80 s, 12 s, 4,0 MB. Vorspann
+  1–25 s ist Animation MIT Titelkarte („Anke Engelke" ~17 s); ab ~29 s läuft der Kino-Sketch
+  textfrei.
+- **NightWash Club** (Club-Film, 53,3 s) → ab 7 s, 12 s, 4,0 MB. Promo voller
+  Format-Titelkarten („LASS LABERN" ~20,5 s, „DIE MACHT DER 1000 WITZE" ~27 s, „…SLAM"
+  ~39 s). 7–19 s ist der erste textfreie Block.
+
+#### MXF: avconvert scheitert, VLC löst es
+- Minestrone und Ladykracher liegen als **MXF** vor. **avconvert kann das nicht lesen**
+  („unable to read") — AVFoundation unterstützt das Format nicht, macOS liest nicht einmal
+  die Metadaten (`kMDItemCodecs = null`). ffmpeg ist weiterhin nicht installiert.
+- Gelöst mit **VLC 3.0.16**, das eigene MXF-Decoder mitbringt. Befehl steht im Kommentar in
+  `CompaniesBento.tsx`.
+- Da der Browser MXF ebenfalls nicht abspielt, braucht der Kontaktbogen einen Umweg: erst
+  einen Proxy der GANZEN Datei (width=480, vb=500), den abtasten, dann den finalen
+  Ausschnitt aus dem ORIGINAL schneiden.
+- *Stolperfalle:* `timeout` gibt es auf macOS nicht (exit 127) — mein erster VLC-Test lief
+  dadurch gar nicht, ich hielt ihn fälschlich für erfolgreich. Nicht davorsetzen.
+- **VLC liefert kleinere Dateien als avconvert** (4,0 statt 6–6,7 MB bei gleicher Länge und
+  Auflösung), weil avconvert die AAC-Tonspur mitschreibt. Kandidat für den Sammel-Reencode
+  (Pre-Launch #77).
+- Alle vier Dateien im Browser gegengeprüft (11 Frames, plus Farbdrift-Check gegen die
+  CEWE-Fehldekodierung): 0 korrupt, natürliche Farben.
+
+#### NightWash: Formatwahl nachgerechnet
+- Die Quelle lag als **16x9 UND 9x16** vor. Nachgemessen: Das Bento hat drei Kachelformate,
+  darunter sechs echte Hochformat-Kacheln (0.68) — **NightWash ist keine davon**, seine
+  Kachel misst 308×222 (1.39). Bei `object-cover` bleiben vom 16:9 rund **78 % der
+  Bildbreite** stehen, vom 9:16 nur **40 % der Höhe**. → 16x9.
+
 ### Fakten-Accordion: Copytexte von Heike + Zahlen-Korrekturen (17.07.)
 - **Heikes Texte eingesetzt** (4 von 7 Karten), wörtlich übernommen; nur die
   Anführungszeichen auf die deutsche Form „…" vereinheitlicht (Vorlage gemischt:

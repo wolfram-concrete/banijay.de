@@ -35,6 +35,9 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
   "/people/lead-2.jpg": "50% 14%",
+  // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
+  // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
+  "/people/aylin-firat.jpg": "50% 18%",
   "/people/knut-kremling.jpg": "50% 8%",
   "/people/simone-lenzen.jpg": "50% 12%",
   "/people/lead-3.jpg": "50% 12%",
