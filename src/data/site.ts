@@ -36,7 +36,10 @@ export const STATS: Stat[] = [
   { value: "40+", label: "Companies und Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
   { value: "4 Mrd.", label: "Views & Zuschauer jährlich", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
   { value: "3.000 hrs.", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
-  { value: "130+", label: "Companies weltweit", note: "Lokale Marktnähe mit internationaler Banijay-Perspektive." },
+  // 130+ → 170+ korrigiert (Wolfram 17.07.) — muss mit der Editorial-Fact-Section auf
+  // der Home übereinstimmen (EditorialStickyScene.tsx), sonst nennen Home und About
+  // unterschiedliche Zahlen.
+  { value: "170+", label: "Companies weltweit", note: "Lokale Marktnähe mit internationaler Banijay-Perspektive." },
   {
     value: "250 Mio. €",
     label: "Umsatz",

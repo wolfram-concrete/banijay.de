@@ -143,6 +143,7 @@ Vor dem Livegang abzuarbeiten:
 | **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | Platzhalter (9 Dateien, 11 Personen) | Echte Portraits |
+| **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
 | **Company-URLs im Ökosystem** | 20 von 40 Einträgen unverlinkt | Fehlende Websites nachliefern (siehe unten) |
 | **Wording** | Entwurf | Freigabe Heike/Redaktion |
@@ -178,6 +179,19 @@ for (const c of ECO_CATEGORIES) for (const co of c.companies) if (!co.url) conso
 Nachtragen: in `ECO_CATEGORIES` beim jeweiligen Eintrag `url` ergänzen. Wo eine Company
 zusätzlich eine Bento-Kachel hat, gehört die URL auch nach `companyCards.ts`
 (`externalUrl`) bzw. in den Directory-Eintrag.
+
+### Team-Reihenfolge: mittlere Reihe
+
+Die Reihenfolge in `src/data/leadership.ts` **ist** das Layout — `Founders.tsx` rendert
+stur nach Index (0–2 Leader-Reihe, 3–7 Mitte, ab 8 unten). Wolframs Regel: in der
+mittleren Reihe stehen die Frauen des Teams.
+
+**Diese Zuordnung ist nicht belegt.** Es gibt kein Geschlechtsfeld in den Daten, und die
+Fotos taugen nicht als Beleg — sie sind Platzhalter und passen nicht zu den Namen (unter
+„Marcus Wolter" liegt derzeit das Bild einer Frau, unter „Natali Naso" das eines Mannes).
+Einsortiert wurde nach Vornamen; es geht mit genau fünf Personen rechnerisch auf die
+Fünferreihe auf. Vor dem Livegang mit Banijay gegenprüfen und in `leadership.ts`
+korrigieren — das Layout folgt der Reihenfolge automatisch.
 
 ### Warum die Company-Videos zu groß sind
 

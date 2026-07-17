@@ -19,45 +19,78 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 
+// ZIFFERNGRÖSSE FOLGT DER SPALTENHÖHE, NICHT DER BREITE (Wolfram 17.07.).
+// Die Spalte muss bündig mit dem Foto abschließen UND die Kacheln sollen nicht mehr
+// Platz haben als nötig. Beides zugleich geht nur, wenn der INHALT die Spalte füllt —
+// sonst bleibt Rest, der als Polster sichtbar wird. Eine vw-Größe kann das nicht: die
+// Spaltenhöhe hängt an vh, also entkoppeln sich beide (1920×900 wäre halb so hoch wie
+// 1920×1080, die Ziffer aber gleich groß).
+// Herleitung — Spalte H = clamp(680px, 82vh, 1000px), 7 Kacheln, je Ziffer + 28.8px
+// Polster, dazu einmalig ~66px für die aufgeklappte Copy:
+//   H = 7 · (D + 28.8) + 66   →   D = H/7 − 38.2
+// H/7 als clamp geschrieben: 680/7 = 97.14px, 82vh/7 = 11.714vh, 1000/7 = 142.86px.
+// Statt −38.2 rechnen wir −44: ~6px Sicherheit je Kachel, damit der Block NIE über die
+// Fotokante hinausschießt. Der Rest wird von flex-grow als Polster verteilt — die
+// Formel muss also nur ungefähr stimmen, das Layout korrigiert sich selbst.
+// min(87px, 5.4vw, …): 87px war die ursprüngliche Maximalgröße; 5.4vw deckelt schmale,
+// hohe Fenster. max(2.1rem, …) ist der Boden für Mobile, wo 5.4vw winzig würde.
+const DIGIT = "max(2.1rem, min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 44px)))";
+// Einheit relativ zur Ziffer (0.54em ≈ das bisherige Verhältnis 30/56) — so skaliert
+// sie automatisch mit und die Grundlinie bleibt stabil.
+const UNIT = "0.54em";
+
 // Alle Zahlen/Daten/Fakten von banijay.de. Farbe kommt NICHT mehr je Fakt, sondern
 // abwechselnd Magenta/Schwarz (Wolfram 14.07.) → siehe TONE unten.
-type Fact = { value: number; suffix: string; label: string; copy: string };
+// label ist ein FESTES ZWEIZEILEN-PAAR (Wolfram 17.07.: „die Titel immer als
+// Zweizeiler"). Der Umbruch steht bewusst in den Daten statt im Textfluss: so ist
+// die Trennstelle bestimmt und wandert nicht mit Viewport/Schriftbreite.
+type Fact = { value: number; suffix: string; label: readonly [string, string]; copy: string };
 // Wording exakt wie auf der Originalseite (Wolfram 15.07.); Unit-Suffixe je Fakt.
 const FACTS: Fact[] = [
   {
     value: 40,
     suffix: "+",
-    label: "Companies und Labels",
+    label: ["Companies und", "Labels"],
     copy: "Produktionshäuser, Labels, Live-Einheiten, Talent-Managements und Plattformen — eigenständig, aber unter einem Dach.",
   },
   {
     value: 90,
     suffix: " %",
-    label: "Primetime-Hitrate",
+    label: ["Primetime-", "Hitrate"],
     copy: "Anteil unserer Formate, die auf ihrem Sendeplatz die Primetime für sich entscheiden — Monat für Monat unter den Marktführern.",
   },
   {
     value: 1300,
     suffix: "+",
-    label: "Mitarbeiterinnen und Mitarbeiter",
+    label: ["Mitarbeiterinnen und", "Mitarbeiter"],
     copy: "Kreative, Produzent:innen, Redaktionen und Spezialist:innen an mehreren Standorten in Deutschland.",
   },
   {
     value: 4,
     suffix: " Mrd.",
-    label: "Views & Zuschauer jährlich",
+    label: ["Views & Zuschauer", "jährlich"],
     copy: "Reichweite über lineare, digitale und Social-Ausspielwege hinweg — Monat für Monat.",
   },
   {
     value: 3000,
     suffix: " hrs.",
-    label: "Stunden Entertainment",
+    label: ["Stunden", "Entertainment"],
     copy: "Bühnenshows, Live-Sendungen, Serien, Online-Plattformen und Podcasts — Jahr für Jahr aus dem Verbund.",
   },
+  // Neu (Wolfram 17.07.) — steht bei „Stunden Entertainment", weil beide die
+  // Ausbringung im Jahr beschreiben.
   {
-    value: 130,
+    value: 1500,
     suffix: "+",
-    label: "Companies weltweit",
+    label: ["Live-Veranstaltungen", "jährlich"],
+    copy: "Shows, Touren, Festivals und Corporate-Events — von der Clubbühne bis zur Arena.",
+  },
+  {
+    // 130+ → 170+ korrigiert (Wolfram 17.07.). Dieselbe Zahl steht in site.ts (STATS)
+    // für die About-Fakten — dort mitgezogen, sonst widersprächen sich die Seiten.
+    value: 170,
+    suffix: "+",
+    label: ["Companies", "weltweit"],
     copy: "Lokale Marktnähe mit internationaler Banijay-Perspektive — Formate, die rund um den Globus laufen.",
   },
 ];
@@ -178,9 +211,10 @@ export function EditorialStickyScene() {
             </div>
 
             {/* Fakten-Accordion rechts — EINE geschlossene Fläche: keine Trenner/Gaps,
-                Kacheln stoßen aneinander, abwechselnd Magenta/Schwarz. Die geöffnete
-                Kachel bekommt mehr Höhe (flex-grow), damit die Copy nicht an der Kante
-                klemmt (Wolfram 14.07.). */}
+                Kacheln stoßen aneinander, abwechselnd Magenta/Schwarz.
+                Die Spalte schließt UNTEN BÜNDIG MIT DEM FOTO ab (Wolfram 17.07.) — daher
+                h-full und Kacheln mit flex-grow. Wie der Restplatz verteilt wird, ohne
+                dass er als Loch unter der Zahl landet: siehe Kachel-Kommentar. */}
             <div
               ref={aside}
               className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-4 max-md:!h-auto max-md:!w-full"
@@ -200,31 +234,51 @@ export function EditorialStickyScene() {
                 const isSymbol = isPlus || sym === "%";
                 return (
                   <button
-                    key={f.label}
+                    key={f.label.join(" ")}
                     type="button"
                     data-fact-card
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="flex flex-col justify-between overflow-hidden text-left transition-[flex-grow] duration-500 ease-out max-md:!flex-none max-md:!min-h-[8.5rem]"
+                    // KEIN overflow-hidden auf der Kachel (Wolfram 17.07.): das machte sie zum
+                    // Scroll-Container, wodurch die Flex-Schutzregel min-height:auto (= nie
+                    // kleiner als der Inhalt) auf 0 fiel — zusammen mit flexBasis:0% war das
+                    // die Schere, die den Text kappte. Ohne beides kann eine Kachel den Inhalt
+                    // strukturell nicht mehr abschneiden. Die Copy hat ihren eigenen
+                    // overflow-hidden-Wrapper für die Aufklapp-Animation.
+                    // justify-center: der Restplatz aus flex-grow verteilt sich über UND unter
+                    // den Inhalt, wirkt also als Polster statt als Loch unter der Zahl.
+                    className="flex flex-col justify-center text-left max-md:!min-h-[8.5rem]"
                     style={{
-                      flexGrow: isOpen ? 2.1 : 1,
-                      flexShrink: 1,
-                      flexBasis: "0%",
+                      // flexBasis:auto = Inhaltshöhe als Sockel, flexGrow:1 = Restplatz der
+                      // Spalte gleichmäßig obendrauf → Block endet exakt an der Fotokante.
+                      flexGrow: 1,
+                      flexShrink: 0,
+                      flexBasis: "auto",
                       background: tone.bg,
                       color: tone.fg,
-                      padding: "1.35rem 1.9rem",
+                      padding: "0.9rem 1.5rem",
                       cursor: "pointer",
                     }}
                   >
-                    {/* Kopf: Zahl + Chevron. Große Ziffer; Einheiten-Suffix (+ / Mrd. /
-                        hrs.) einheitlich & etwas größer (Wolfram 15.07.). */}
-                    <div className="flex w-full items-start justify-between gap-3">
+                    {/* KOPFZEILE: Zahl · Label · Chevron NEBENEINANDER (Wolfram 17.07.).
+                        Vorher stand das Label UNTER der Zahl — dabei wurde es auf jeder Karte
+                        unten abgeschnitten (1440×900, 6 Karten: Karte 111 px, Inhalt 139 px →
+                        28 px Überlauf auf JEDER Karte). Nebeneinander zählt nur noch
+                        max(Ziffer, Label) statt ihrer Summe.
+
+                        GRUNDLINIE (Wolfram 17.07.): `last baseline` statt `center` — die
+                        Grundlinie der LETZTEN Label-Zeile fluchtet mit der Grundlinie von
+                        Ziffer und Einheit. Mit `baseline` (= first) läge stattdessen die ERSTE
+                        Zeile auf der Ziffer und die zweite hinge darunter heraus. Der Chevron
+                        hat keine Textgrundlinie und würde am Kastenrand ausgerichtet — er
+                        bleibt deshalb per self-center mittig. */}
+                    <div className="flex w-full justify-between gap-4" style={{ alignItems: "last baseline" }}>
                       {/* WICHTIG: eigene font-size am Wrapper (= Zifferngröße) → der kleine
                           Suffix richtet sich an EINER konsistenten Grundlinie aus (ohne die
                           font-size wanderte die Baseline je Viewport, das + saß mal zu hoch,
                           mal zu tief). Dann sitzen +, %, Mrd., hrs. alle gleich (Wolfram 15.07.). */}
-                      <span style={{ fontFamily: SHARP, fontSize: "clamp(3.3rem, 5.4vw, 87px)", lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
-                        <span data-fact-num style={{ fontSize: "clamp(3.3rem, 5.4vw, 87px)" }}>
+                      <span className="shrink-0" style={{ fontFamily: SHARP, fontSize: DIGIT, lineHeight: 1, letterSpacing: "-0.04em", fontWeight: 500, whiteSpace: "nowrap" }}>
+                        <span data-fact-num style={{ fontSize: "1em" }}>
                           0
                         </span>
                         {isSymbol ? (
@@ -234,7 +288,7 @@ export function EditorialStickyScene() {
                           // seine Unterkante wie beim % auf der Ziffern-Grundlinie steht.
                           <span
                             style={{
-                              fontSize: "clamp(1.8rem, 3vw, 46px)",
+                              fontSize: UNIT,
                               // noch enger an die Ziffer (Wolfram 16.07.): 0.1em → 0.04em
                               marginLeft: "0.04em",
                               ...(isPlus ? { position: "relative" as const, top: "0.14em" } : null),
@@ -243,25 +297,38 @@ export function EditorialStickyScene() {
                             {sym}
                           </span>
                         ) : (
-                          <span style={{ fontSize: "clamp(1.8rem, 3vw, 46px)", whiteSpace: "pre" }}>{f.suffix}</span>
+                          <span style={{ fontSize: UNIT, whiteSpace: "pre" }}>{f.suffix}</span>
                         )}
                       </span>
+                      {/* Label rechts neben der Einheit — IMMER zwei Zeilen, Umbruch fest aus
+                          den Daten (kein Umbruch nach Breite). whiteSpace:nowrap je Zeile, damit
+                          keine dritte Zeile entstehen kann. */}
+                      <span
+                        className="min-w-0 flex-1"
+                        style={{ fontSize: "clamp(0.85rem, 0.95vw, 1.05rem)", lineHeight: "124%", color: tone.label, fontWeight: 500 }}
+                      >
+                        <span className="block" style={{ whiteSpace: "nowrap" }}>
+                          {f.label[0]}
+                        </span>
+                        <span className="block" style={{ whiteSpace: "nowrap" }}>
+                          {f.label[1]}
+                        </span>
+                      </span>
                       <ChevronDown
-                        className="mt-1 h-5 w-5 shrink-0 transition-transform duration-300"
+                        className="h-5 w-5 shrink-0 self-center transition-transform duration-300"
                         style={{ opacity: 0.55, transform: isOpen ? "rotate(180deg)" : "none" }}
                       />
                     </div>
-                    {/* Label + aufklappende Copy */}
+                    {/* Aufklappende Copy. Die Kachelhöhe wird allein von dieser
+                        0fr→1fr-Animation getrieben (vorher zusätzlich von flex-grow).
+                        Abstand zur Kopfzeile 0.8 → 0.55rem (Wolfram 17.07.). */}
                     <div>
-                      <span className="block" style={{ fontSize: "clamp(0.9rem, 1vw, 1.1rem)", lineHeight: "128%", color: tone.label, maxWidth: "28ch", fontWeight: 500 }}>
-                        {f.label}
-                      </span>
                       <div
                         className="grid transition-[grid-template-rows] duration-500 ease-out"
                         style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                       >
                         <div className="overflow-hidden">
-                          <p style={{ margin: "0.8rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "146%", color: tone.copy, maxWidth: "40ch" }}>
+                          <p style={{ margin: "0.55rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "146%", color: tone.copy, maxWidth: "40ch" }}>
                             {f.copy}
                           </p>
                         </div>

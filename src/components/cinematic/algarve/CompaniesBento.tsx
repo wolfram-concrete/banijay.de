@@ -81,6 +81,11 @@ const REEL: Record<string, string> = Object.fromEntries(
 //   • Good Humor (Plötzlich Schwester)    ab 10 s, 12 s — Titelkarte liegt erst bei ~62 s
 //   • MadeFor (Trailer)                   ab 112 s, 12 s — Titelkarten bei 6/42/66/78/90/102 s,
 //     ab ~112 s läuft der Trailer ohne Inserts durch
+//   • filmpool entertainment (Reel, 72 s) ab 4 s, 12 s — Format-Showreel mit Titelkarten
+//     ZWISCHEN den Segmenten („DIE VERRÄTER" bis ~3,5 s, „BAD BOYFRIENDS" ab ~18 s,
+//     weitere bei ~40 s/~43 s). 4–16 s ist der erste durchgehend textfreie Block.
+//     Quelle ist bereits eine Web-Fassung (640×360) — NICHT hochskaliert, deshalb mit
+//     1,7 MB / 1188 kb/s der kleinste Clip.
 //   • Cape Cross (Imagefilm, 83 s)        ab 29,6 s, 5,6 s — Titelkarte bei ~2 s, End-Karte
 //     („cape×cross"-X) bei ~82 s. Das Fenster liegt auf durchgehenden Arena-/Stadion-
 //     bildern. Es endet bei 35,2 s, weil dort der nächste Schnitt auf einen Interview-Take
@@ -96,6 +101,7 @@ REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
 REEL["madefor"] = "/company-media/madefor.mp4";
 REEL["cape-cross"] = "/company-media/cape-cross.mp4";
+REEL["filmpool-entertainment"] = "/company-media/filmpool-entertainment.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom

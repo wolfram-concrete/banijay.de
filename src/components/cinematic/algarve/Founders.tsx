@@ -15,7 +15,10 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // überlappend) und entfalten sich beim Scrollen per gepinnter, gescrubter
 // GSAP-Timeline in ihr sauberes 5-Spalten-Grid. Mobile: einfaches 2-Spalten-Grid.
 
-const TEAM = LEADERSHIP.slice(0, 11); // 11 (komplett, wie banijay.de) → 6er-Grid (6+5)
+// Komplettes Team, Reihenfolge = Layout (siehe leadership.ts): 3 Leader oben,
+// darunter Fünferreihen. Kein slice mehr — kommt eine Person dazu, rutscht sie von
+// selbst in die untere Reihe.
+const TEAM = LEADERSHIP;
 
 const NAME = {
   fontFamily: "var(--font-sharp), sans-serif",
@@ -252,22 +255,32 @@ export function AlgarveFounders({
             <TeamHeadWords text="Unser Team" />
           </h2>
 
-          {/* Raster (Wolfram 15.07.): 12-Spalten-Grid, DREI Reihen — oben die drei
-              Leader (Marcus, Knut, Michael Laegel) je col-span-4 (größer), darunter die
-              restlichen acht Member in ZWEI Reihen à 4 (col-span-3) → symmetrisch, alle
-              Personen innerhalb einer Bühne (100vh) sichtbar. Die Leader-Reihe ist etwas
-              höher (1.25fr). */}
+          {/* Raster: DREI Reihen — oben die drei Leader (Marcus, Knut, Michael Laegel)
+              in größeren Kacheln, AB DER ZWEITEN REIHE EIN FÜNFERGRID (Wolfram 17.07.,
+              vorher Vierer). Alle Personen bleiben innerhalb einer Bühne (100vh)
+              sichtbar; die Leader-Reihe ist etwas höher (1.25fr).
+              15 SPALTEN statt 12: 12 ist nicht durch 5 teilbar. 15 geht durch beides
+              auf — Leader je span 5 (3 × 5), die übrigen je span 3 (5 × 3).
+              Welche Person in welcher Reihe landet, steht in leadership.ts — hier zählt
+              nur der Index. Die untere Reihe füllt sich von links auf, wenn Personen
+              dazukommen. */}
           <div
             ref={grid}
-            className="grid w-full min-h-0 flex-1 grid-cols-12"
-            style={{ columnGap: "1.2vw", rowGap: "1.4vw", gridTemplateRows: "1.25fr 1fr 1fr", zIndex: 1 }}
+            className="grid w-full min-h-0 flex-1"
+            style={{
+              gridTemplateColumns: "repeat(15, minmax(0, 1fr))",
+              columnGap: "1.2vw",
+              rowGap: "1.4vw",
+              gridTemplateRows: "1.25fr 1fr 1fr",
+              zIndex: 1,
+            }}
           >
             {TEAM.map((p, i) => (
               <div
                 key={p.name}
                 data-team-tile
-                className={`flex min-h-0 flex-col ${i < 3 ? "col-span-4" : "col-span-3"}`}
-                style={{ gap: "0.6vw", willChange: "transform" }}
+                className="flex min-h-0 flex-col"
+                style={{ gridColumn: i < 3 ? "span 5" : "span 3", gap: "0.6vw", willChange: "transform" }}
               >
                 <div className="min-h-0 flex-1 overflow-clip" style={{ background: "rgba(255,255,255,0.08)" }}>
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }} />

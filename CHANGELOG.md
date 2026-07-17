@@ -5,6 +5,54 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team-Section: Fünfergrid ab der zweiten Reihe (17.07.)
+- **15 Spalten statt 12** (`Founders.tsx`): 12 ist nicht durch 5 teilbar, 15 geht durch
+  beides auf → Leader-Reihe 3 × `span 5`, darunter 5 × `span 3`. Reihen jetzt **3 / 5 / 3**
+  (vorher 3 / 4 / 4). Marcus Wolter, Knut Kremling und Michael Laegel bleiben oben.
+- **`slice(0, 11)` raus, Reihenfolge = Layout** (`leadership.ts`): Index 0–2 oben, 3–7 Mitte,
+  ab 8 unten. Die angekündigte zwölfte Person rutscht dadurch ohne Codeänderung in die untere
+  Reihe; die Entfaltungs-Animation misst ihre Zielpositionen live aus dem Grid und ist von der
+  Kachelzahl unabhängig.
+- **Frauen in die mittlere Reihe** (Wolfram-Feedback, zum zweiten Mal gegeben): Simone Lenzen,
+  Natali Naso, Heike Lutzer, Janine Berns, Aylin Firat.
+- ⚠️ **Die Zuordnung ist ungeprüft.** Es gibt kein Geschlechtsfeld in den Daten, und die Fotos
+  taugen nicht als Beleg — sie sind Platzhalter und passen nicht zu den Namen (unter „Marcus
+  Wolter" liegt das Bild einer Frau). Einsortiert nach Vornamen, gestützt auf Wolframs Ansage,
+  dass Heike Lutzer aufrückt; es geht mit genau fünf Personen rechnerisch auf. Hinweis steht im
+  Dateikopf von `leadership.ts` — bei Gegenprüfung dort korrigieren, das Layout folgt.
+
+### Fakten-Accordion (Home): neue Zahl, Korrektur, Reparatur (17.07.)
+- **1.500+ Live-Veranstaltungen jährlich** neu; **Companies weltweit 130+ → 170+** (auch in
+  `site.ts`, sonst nennen Home und About verschiedene Zahlen).
+- **Titel rechts neben die Zahl, immer als Zweizeiler** (`EditorialStickyScene.tsx`). Vorher
+  standen sie unter der Zahl und wurden auf **jeder** Karte unten abgeschnitten — nachgemessen
+  1440×900 mit 6 Karten: Karte 111 px, Inhalt 139 px, also 28 px Überlauf; mit der 7. Zahl wäre
+  es schlimmer geworden. Nebeneinander zählt nur noch `max(Ziffer, Label)` statt der Summe.
+  Der Umbruch steht in den Daten (`label: [string, string]`), nicht im Textfluss — so wandert
+  die Trennstelle nicht mit Viewport/Schriftbreite.
+- **Grundlinie**: `align-items: last baseline` — die letzte Label-Zeile fluchtet mit Ziffer und
+  Einheit (mit `baseline` läge die *erste* Zeile auf der Ziffer). Gemessen: 0,00 px Abweichung
+  auf allen 7 Karten. Chevron bleibt `self-center` (ein SVG hat keine Textgrundlinie).
+- **Abschneiden ist jetzt strukturell ausgeschlossen**, nicht mehr zufällig vermieden: Die
+  Kacheln hatten `flexBasis: 0%` (Inhaltshöhe wird ignoriert) **und** `overflow-hidden` (macht
+  die Kachel zum Scroll-Container, wodurch die Flex-Schutzregel `min-height: auto` auf 0 fällt).
+  Beides zusammen war die Schere. Jetzt `flexBasis: auto` + kein `overflow-hidden` auf der Kachel.
+- **Zifferngröße folgt der Spaltenhöhe statt der Fensterbreite**: Die Spalte hängt an `82vh`,
+  eine `vw`-Ziffer entkoppelt sich davon — 1920×1080 und 1920×900 hätten dieselbe Ziffer bei
+  halber Höhe. Neu `min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 44px))`,
+  hergeleitet aus `H = 7 · (D + 28.8) + 66`; ~6 px Sicherheit je Kachel, den Rest verteilt
+  `flex-grow`. Ergebnis: Block schließt **bündig mit dem Foto** ab (0,0 px) bei nur noch
+  **4–6 px** Restplatz je Kachel (vorher 28–31).
+- Gemessen bei 1280×700, 1440×900, 1600×900, 1920×900, 1920×1080 und 390×844: überall 0 Überlauf,
+  0,00 px Grundlinien-Abweichung, bündig. Ausnahme: sehr schmale, hohe Fenster (1100×1400)
+  behalten 45 px Polster — dort deckelt `5.4vw` die Ziffer, sonst drückt „1.300+" das Label aus
+  der 540-px-Spalte.
+
+### filmpool entertainment: Video in der Bento-Kachel (17.07.)
+- `CompaniesBento.tsx`, `REEL["filmpool-entertainment"]` — Ausschnitt **ab 4 s, 12 s**, 1,7 MB.
+  Schnittpunkt wie gehabt über eine Browser-Kontaktbogen-Vorschau bestimmt, Konvertierung per
+  `avconvert`, Datei im Browser gegengeprüft.
+
 ### Ökosystem: vier Companies ergänzt (17.07., Kundenfeedback)
 - `ecosystem.ts` — **filmpool entertainment** + **South & Browse** → Entertainment,
   **filmpool fiction** → Fiction, **Magic Connection** → Distribution & Brand.
