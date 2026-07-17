@@ -144,6 +144,7 @@ Vor dem Livegang abzuarbeiten:
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | Platzhalter (9 Dateien, 11 Personen) | Echte Portraits |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
+| **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
 | **Company-URLs im Ökosystem** | 20 von 40 Einträgen unverlinkt | Fehlende Websites nachliefern (siehe unten) |
 | **Wording** | Entwurf | Freigabe Heike/Redaktion |
@@ -179,6 +180,19 @@ for (const c of ECO_CATEGORIES) for (const co of c.companies) if (!co.url) conso
 Nachtragen: in `ECO_CATEGORIES` beim jeweiligen Eintrag `url` ergänzen. Wo eine Company
 zusätzlich eine Bento-Kachel hat, gehört die URL auch nach `companyCards.ts`
 (`externalUrl`) bzw. in den Directory-Eintrag.
+
+### Externe Presse: Bilder Dritter
+
+`EXTERNAL_PRESS` in `src/data/feed.ts` listet Berichterstattung über Banijay in fremden
+Medien. Die Artikel werden **verlinkt, nicht nachgedruckt** (`external: true`, kein
+Detail-Text, kein Body) — das ist urheberrechtlich der saubere Weg.
+
+**Die Aufmacherbilder sind es nicht automatisch.** Zu jedem Eintrag liegt das `og:image`
+der Quelle weboptimiert in `public/news/` (`mw-*.jpg`, `dwdl-*.jpg`) und wird von
+banijay.de ausgeliefert. Das sind Fotos bzw. Bildmontagen der jeweiligen Redaktion
+(Handelsblatt, DWDL, brand eins, Deadline, Hamburger Abendblatt). Vor dem Livegang klären,
+ob eine Nutzungserlaubnis vorliegt — sonst auf eigene Motive umstellen; das Datenmodell
+braucht dafür nur ein anderes `img`.
 
 ### Team-Reihenfolge: mittlere Reihe
 

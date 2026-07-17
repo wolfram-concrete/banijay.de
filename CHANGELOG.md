@@ -5,6 +5,75 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Banijay Media Germany: Video in der Bento-Kachel (17.07.)
+- `CompaniesBento.tsx`, `REEL["banijay-media-germany"]` — Quelle 90 MB / **201 s**
+  (BMG_Brandtrailer) → 960×540, **Ausschnitt 0–3,8 s, 1,3 MB**. Löst das generische
+  `reel-5.mp4` auf dieser Kachel ab.
+- ⚠️ **3,8 s ist der kürzeste Clip der Bibliothek — der Quelle geschuldet, nicht dem
+  Geschmack.** Aufbau des Trailers: 0–3,8 s Hand mit TV-Fernbedienung + Magenta-Warp
+  (echtes, textfreies Footage), 3,9–4,2 s formt sich das „B"-Logo, bis ~8 s Logokarten,
+  ~9–10 s Textkarte „WELCOME TO OUR UNIVERSE" — und **ab 11 s bis zum Ende** Case-Montagen
+  mit fest eingebranntem Rahmen: Label oben links („SOCIAL FIRST FORMATS"), Bauchbinde unten
+  („BIG BROTHER SPEZIAL EDITION | LIDL", „MISSION UNKNOWN | FORD"), Reichweiten-Zähler
+  rechts („120,9 M", „102 M+"). Das ist kein Abschnitt, sondern das Gestaltungsprinzip des
+  Films. Die 3,8 s Vorspann sind das EINZIGE textfreie Fenster in 201 s.
+- Logo-Grenze nicht geschätzt, sondern gemessen: Zwischen 3,9 s und 4,2 s ziehen sich die
+  hellen Pixel von 45 % auf 98 % in die Bildmitte zusammen — das ist das „B".
+- Passt farblich (Magenta) ohnehin am besten zur Seite. Fertige Datei über 9 Frames
+  gegengeprüft: 0 korrupt, kein Text.
+- ❓ Offen: Ob 3,8 s als Loop reichen, oder ob die Kachel besser das generische Reel behält
+  (wie Banijay Germany Live, das aus demselben Grund keins bekam) — oder ob wir bei einer
+  Vermarktungs-Company die Case-Montage MIT Bauchbinden bewusst zulassen. Entscheidung
+  Wolfram.
+
+### Rainer Laux Productions: Video in der Bento-Kachel (17.07.)
+- `CompaniesBento.tsx`, `REEL["rainer-laux-productions"]` — Quelle 263 MB / 45 s
+  („Promi Big Brother"-Trailer für Joyn) → 960×540, **Ausschnitt 19,5–30,0 s (10,5 s)**.
+- Aufbau des Trailers: dunkle Set-Bilder bis 18 s, Schwarzbild bei 18,5 s, dann die helle
+  Gartensequenz; ab ~35,5 s wächst das Big-Brother-Auge zur **Logo-Endkarte**, die die
+  letzten ~8 s füllt. Das Fenster liegt komplett in der Gartensequenz — nach dem
+  Schwarzbild, vor dem Abblenden (Helligkeit ab 30,5 s: 58 → 26 → 0 bei 31,5 s) und weit
+  vor der Endkarte. Loop läuft hell auf hell, kein Schwarzblitz.
+- *Messfehler abgefangen:* Der Kontaktbogen zeigte scheinbar ein **zweites Schwarzbild bei
+  28 s**. Zwei unabhängige Helligkeitsscans belegen dort 102,9 — die schwarze Kachel war ein
+  Zeichenfehler meiner Montage, kein Frame. Ohne Nachmessen hätte ich um ein Phantom
+  herumgeschnitten. Im Bereich 18–38 s ist nur 31,5 s wirklich schwarz.
+- Fertige Datei über 11 Frames im Browser gegengeprüft: 0 korrupt, kein Text, keine
+  Titelkarte, kein Logo.
+- ⚠️ **5,9 MB** — avconvert schreibt die AAC-Tonspur mit und trifft die Zielrate nicht
+  (bekanntes Problem, Pre-Launch #77; good-humor liegt bei 6,0 MB). `Preset640x480` käme
+  auf 3,2 MB, liefert aber nur 640×360 — die Kachel misst 326×235, auf Retina also 652×470.
+  Deshalb 960×540 wie der Rest der Bibliothek.
+- ❓ Inhaltlich gegenprüfen: Der Trailer bewirbt **Promi Big Brother** (Joyn). Zugeordnet
+  wurde er nach Wolframs Ansage und dem Ablageort (`assets/Videos Companies/RainerLaux
+  Productions/`) — nicht nach einer belegten Produktionsangabe.
+
+### Home-Statement: finales Wording (17.07.)
+- `page.tsx` — Lorem-ipsum-Platzhalter ersetzt („Unser Antrieb ist Entertainment. …").
+  297 statt 204 Zeichen, 39 statt 31 Wörter.
+- Geprüft, weil der Text ~50 % länger ist: passt auf allen Formaten (1440×900 acht Zeilen
+  / 398 px, 1280×700 acht Zeilen / 353 px, mobil 13 Zeilen / 454 px von 844), und der
+  Halbgeviertstrich strandet nirgends allein auf einer Zeile. Die Choreografie bleibt
+  unberührt — `stagger: { amount: 0.6 }` verteilt die Gesamtdauer auf alle Wörter, mehr
+  Wörter heißt dichtere Staffelung statt längerer Timeline.
+- Noch Lorem: News-Hero (`news/page.tsx`) und Story-Text (`Editorial.tsx`).
+
+### Presse-Seite: DWDL-Bericht zum Livegeschäft (17.07.)
+- **„Zwischen Kirche und Kampfsport: Banijay legt im Live-Geschäft zu"** (DWDL,
+  26.08.2025, Torsten Zarges) im Block **Presse**, verlinkt auf dwdl.de.
+- Rubrik bewusst **„Presse", nicht „Marcus Wolter"**: Der Artikel ist eine Branchenanalyse
+  über das Live-Geschäft, kein Interview mit dem CEO — auch wenn das DWDL-Aufmacherbild
+  ihn zeigt.
+- `MARCUS_PRESS` → **`EXTERNAL_PRESS`** umbenannt (`feed.ts`): Die Liste enthielt bisher
+  nur Wolter-Auftritte, der Name trug den ersten Nicht-Wolter-Artikel nicht mehr. Die
+  Rubrik entscheidet jetzt jeder Eintrag selbst.
+- Artikel wird **verlinkt, nicht nachgedruckt** (`external: true`, keine Detailseite) —
+  urheberrechtlich der saubere Weg.
+- ⚠️ **Bildrechte**: Das Aufmacherbild ist eine DWDL-Bildmontage, lokal als
+  `public/news/dwdl-live-geschaeft.jpg` (1200×510, 103 KB). Wie bei den fünf bestehenden
+  `mw-*.jpg` liefert banijay.de damit Bildmaterial fremder Redaktionen aus. Neuer
+  README-Abschnitt + Zeile in der Pre-Launch-Tabelle: Nutzungsrecht klären.
+
 ### Team-Section: Fünfergrid ab der zweiten Reihe (17.07.)
 - **15 Spalten statt 12** (`Founders.tsx`): 12 ist nicht durch 5 teilbar, 15 geht durch
   beides auf → Leader-Reihe 3 × `span 5`, darunter 5 × `span 3`. Reihen jetzt **3 / 5 / 3**

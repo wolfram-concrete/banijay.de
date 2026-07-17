@@ -40,9 +40,9 @@ export default function HomePage() {
         <div className="relative z-[2]">
           <AlgarveAboutIntro
             fadeExit
-            // Platzhalter (Wolfram 14.07.): Lorem ipsum in ~identischer Länge, bis
-            // finales Wording folgt.
-            text="Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi aliquip ex."
+            // Finales Wording (Wolfram 17.07.) — löst den Lorem-ipsum-Platzhalter ab.
+            // Der Halbgeviertstrich ist bewusst ein echtes „–" (U+2013), kein Bindestrich.
+            text="Unser Antrieb ist Entertainment. Jeden Tag erreichen, begeistern und bewegen wir Millionen Menschen – und prägen den Zeitgeist mit. Vielfalt, unternehmerische Freiheit und die Kraft unseres Ökosystems machen uns stark: als Netzwerk aus Entertainment, Vermarktung, Künstlern, Live und Technologie."
           />
         </div>
 

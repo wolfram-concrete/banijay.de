@@ -92,6 +92,26 @@ const REEL: Record<string, string> = Object.fromEntries(
 //     liegt (am Kontaktbogen abgelesen: bei 35,9 s steht er im Bild): Ein Talking Head ohne
 //     Ton liest sich in der kleinen Kachel nicht — und im 5,6-s-Loop hätte er pro Runde
 //     kurz aufgeblitzt.
+//   • Rainer Laux Productions (Trailer, 45 s) ab 19,5 s, 10,5 s — „Promi Big Brother"-Spot
+//     für Joyn. Aufbau: dunkle Set-Bilder bis 18 s, Schwarzbild bei 18,5 s, danach die
+//     helle Gartensequenz, ab ~35,5 s wächst das Big-Brother-Auge zur LOGO-ENDKARTE, die
+//     die letzten ~8 s füllt. Das Fenster liegt komplett in der Gartensequenz: startet nach
+//     dem Schwarzbild, endet vor dem Abblenden (Helligkeit fällt ab 30,5 s: 58 → 26 → 0 bei
+//     31,5 s) und damit weit vor der Endkarte. Loop läuft hell auf hell, kein Schwarzblitz.
+//     ACHTUNG bei künftigen Schnitten: Der Kontaktbogen zeigte scheinbar ein zweites
+//     Schwarzbild bei 28 s — ein Zeichenfehler der Montage. Zwei Helligkeitsscans belegen
+//     dort 102,9. Im Bereich 18–38 s ist NUR 31,5 s wirklich schwarz.
+//   • Banijay Media Germany (Brandtrailer, 201 s) ab 0 s, NUR 3,8 s — der kürzeste Clip,
+//     und das ist der Quelle geschuldet, nicht dem Geschmack. Aufbau: 0–3,8 s Hand mit
+//     TV-Fernbedienung + Magenta-Warp (echtes, textfreies Footage), 3,9–4,2 s formt sich
+//     das „B"-Logo (an der Pixelverteilung abgelesen: die hellen Pixel ziehen sich von
+//     45 % auf 98 % in die Bildmitte), bis ~8 s Logokarten, ~9–10 s Textkarte „WELCOME TO
+//     OUR UNIVERSE", und AB 11 s BIS ZUM ENDE laufen Case-Montagen mit fest eingebranntem
+//     Rahmen: Label oben links („SOCIAL FIRST FORMATS"), Bauchbinde unten
+//     („BIG BROTHER SPEZIAL EDITION | LIDL", „MISSION UNKNOWN | FORD") und
+//     Reichweiten-Zähler rechts („120,9 M", „102 M+"). Das ist kein Abschnitt, sondern das
+//     Gestaltungsprinzip des Films — die 3,8 s Vorspann sind das EINZIGE textfreie Fenster
+//     in 201 s. Passt farblich (Magenta) ohnehin am besten zur Seite.
 // NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
 // Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
 // es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
@@ -102,6 +122,8 @@ REEL["good-humor"] = "/company-media/good-humor.mp4";
 REEL["madefor"] = "/company-media/madefor.mp4";
 REEL["cape-cross"] = "/company-media/cape-cross.mp4";
 REEL["filmpool-entertainment"] = "/company-media/filmpool-entertainment.mp4";
+REEL["rainer-laux-productions"] = "/company-media/rainer-laux-productions.mp4";
+REEL["banijay-media-germany"] = "/company-media/banijay-media-germany.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
