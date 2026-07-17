@@ -32,10 +32,14 @@ export interface Stat {
 /** Zahlenmodule. Auf Home max. 5 (Konzept Section 4). */
 export const STATS: Stat[] = [
   // Wording + Einheiten-Suffixe wie in der Editorial-Fact-Section (Wolfram 15.07.).
-  { value: "1.300+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
+  // 1.300+ → 1.400+ (Heike 17.07.) — muss mit der Editorial-Fact-Section auf der Home
+  // übereinstimmen (EditorialStickyScene.tsx).
+  { value: "1.400+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
   { value: "40+", label: "Companies und Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
   { value: "4 Mrd.", label: "Views & Zuschauer jährlich", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
-  { value: "3.000 hrs.", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
+  // 3.000 → 4.500 (Wolfram 17.07.) — muss mit der Editorial-Fact-Section auf der Home
+  // übereinstimmen (EditorialStickyScene.tsx).
+  { value: "4.500 hrs.", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
   // 130+ → 170+ korrigiert (Wolfram 17.07.) — muss mit der Editorial-Fact-Section auf
   // der Home übereinstimmen (EditorialStickyScene.tsx), sonst nennen Home und About
   // unterschiedliche Zahlen.

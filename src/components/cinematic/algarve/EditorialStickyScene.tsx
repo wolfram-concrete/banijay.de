@@ -26,15 +26,21 @@ const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 // Spaltenhöhe hängt an vh, also entkoppeln sich beide (1920×900 wäre halb so hoch wie
 // 1920×1080, die Ziffer aber gleich groß).
 // Herleitung — Spalte H = clamp(680px, 82vh, 1000px), 7 Kacheln, je Ziffer + 28.8px
-// Polster, dazu einmalig ~66px für die aufgeklappte Copy:
-//   H = 7 · (D + 28.8) + 66   →   D = H/7 − 38.2
+// Polster, dazu einmalig die aufgeklappte Copy (+ 8.8px Abstand zum Kopf):
+//   H = 7 · (D + 28.8) + Copy + 8.8   →   D = H/7 − 28.8 − (Copy + 8.8)/7
 // H/7 als clamp geschrieben: 680/7 = 97.14px, 82vh/7 = 11.714vh, 1000/7 = 142.86px.
-// Statt −38.2 rechnen wir −44: ~6px Sicherheit je Kachel, damit der Block NIE über die
-// Fotokante hinausschießt. Der Rest wird von flex-grow als Polster verteilt — die
-// Formel muss also nur ungefähr stimmen, das Layout korrigiert sich selbst.
+// Die Konstante bündelt Polster + Copy-Anteil. Massgeblich ist die LÄNGSTE Copy (die
+// „1.400+"-Karte, 527 Zeichen) — sie bestimmt den Worst Case, egal welche Karte offen ist.
+// NACHGEMESSEN statt geschätzt (Wolfram 17.07., Heikes Texte): längste Copy 172px bei
+// 1280×700/1440×900, 229px bei 1920×1080 (dort ist die Copy-Schrift größer). Nötige
+// Konstante daraus: 54.6 / 54.6 / 62.8 → wir nehmen 64, knapp über dem Maximum, damit
+// der Block NIE unter die Fotokante schießt. Den Rest verteilt flex-grow als Polster —
+// die Formel muss also nur ungefähr stimmen, das Layout korrigiert sich selbst.
+// (Vorher stand hier 44 für die alten ~66px-Kurztexte. Mit Heikes Copy hing die letzte
+// Kachel 94–131px unter dem Foto.)
 // min(87px, 5.4vw, …): 87px war die ursprüngliche Maximalgröße; 5.4vw deckelt schmale,
 // hohe Fenster. max(2.1rem, …) ist der Boden für Mobile, wo 5.4vw winzig würde.
-const DIGIT = "max(2.1rem, min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 44px)))";
+const DIGIT = "max(2.1rem, min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 64px)))";
 // Einheit relativ zur Ziffer (0.54em ≈ das bisherige Verhältnis 30/56) — so skaliert
 // sie automatisch mit und die Grundlinie bleibt stabil.
 const UNIT = "0.54em";
@@ -45,45 +51,62 @@ const UNIT = "0.54em";
 // Zweizeiler"). Der Umbruch steht bewusst in den Daten statt im Textfluss: so ist
 // die Trennstelle bestimmt und wandert nicht mit Viewport/Schriftbreite.
 type Fact = { value: number; suffix: string; label: readonly [string, string]; copy: string };
-// Wording exakt wie auf der Originalseite (Wolfram 15.07.); Unit-Suffixe je Fakt.
+// COPY VON HEIKE (Wolfram 17.07.) — wörtlich übernommen, nur die Anführungszeichen auf
+// die deutsche Form „…" vereinheitlicht (in der Vorlage gemischt: "TV total",
+// “Schlag den Star“). Wo noch kein Text vorliegt, steht „Text folgt." als Platzhalter.
+// Die LABEL bleiben Wolframs freigegebene Zweizeiler — Heikes Überschriften („Companies
+// & Label", „4500+ hrs") sind Fakt-Bezeichner in ihrer Liste, keine Kachel-Titel.
+//
+// ▸ REGEL FÜR KÜNFTIGE TEXTLIEFERUNGEN (Wolfram 17.07.):
+//   DIE ZIFFER IST MASSGEBLICH. Die Copytexte sind ein älterer Stand — wenn darin
+//   dieselbe Zahl vorkommt wie in `value`, wird DER TEXT angeglichen, nicht die Ziffer.
+//   Bereits so angewandt: „rund 3000 Stunden" → „rund 4500". Beim nächsten Mal alle
+//   Copytexte gegen die Ziffern prüfen (Zahlen im Text vs. `value` je Karte).
+//   Zahlen im Text, die KEINE Kachel-Ziffer sind (z. B. „451 Prime-Time
+//   Erstausstrahlungen"), bleiben unberührt.
 const FACTS: Fact[] = [
   {
     value: 40,
     suffix: "+",
     label: ["Companies und", "Labels"],
-    copy: "Produktionshäuser, Labels, Live-Einheiten, Talent-Managements und Plattformen — eigenständig, aber unter einem Dach.",
+    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor und Brainpool samt Tochterfirmen wie Cape Cross und Brainpool Live. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
   },
   {
     value: 90,
     suffix: " %",
     label: ["Primetime-", "Hitrate"],
-    copy: "Anteil unserer Formate, die auf ihrem Sendeplatz die Primetime für sich entscheiden — Monat für Monat unter den Marktführern.",
+    copy: "Text folgt.",
   },
   {
-    value: 1300,
+    // 1.300+ → 1.400+ (Heike 17.07.): Ihre Überschrift UND ihr Fließtext nennen beide
+    // 1400 — die alte 1.300 hätte der eigenen Copy widersprochen. site.ts mitgezogen.
+    value: 1400,
     suffix: "+",
     label: ["Mitarbeiterinnen und", "Mitarbeiter"],
-    copy: "Kreative, Produzent:innen, Redaktionen und Spezialist:innen an mehreren Standorten in Deutschland.",
+    copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten deutschen Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Promi Big Brother“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
   },
   {
     value: 4,
     suffix: " Mrd.",
     label: ["Views & Zuschauer", "jährlich"],
-    copy: "Reichweite über lineare, digitale und Social-Ausspielwege hinweg — Monat für Monat.",
+    copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
   },
   {
-    value: 3000,
+    // 3.000 → 4.500 (Wolfram 17.07.). Heikes Überschrift sagte „4500+ hrs", ihr Fließtext
+    // „rund 3000 Stunden" — Wolframs Regel: DIE ZIFFER IST MASSGEBLICH, die Copy ist der
+    // ältere Stand und wird angeglichen. Daher hier BEIDES auf 4.500.
+    value: 4500,
     suffix: " hrs.",
     label: ["Stunden", "Entertainment"],
-    copy: "Bühnenshows, Live-Sendungen, Serien, Online-Plattformen und Podcasts — Jahr für Jahr aus dem Verbund.",
+    copy: "Banijay Germany profitiert von der unternehmerischen Diversität und Qualität innerhalb des Verbundes und vereint eine große Breite von Entertainment-Expertise unter einem Dach. Künstler und Kreative entwickeln und produzieren jedes Jahr gemeinsam rund 4500 Stunden Programm, darunter Bühnenshows, Live-Sendungen und Serien. Auch Online-Plattformen und Podcasts gehören zum Banijay-Kosmos.",
   },
   // Neu (Wolfram 17.07.) — steht bei „Stunden Entertainment", weil beide die
-  // Ausbringung im Jahr beschreiben.
+  // Ausbringung im Jahr beschreiben. In Heikes Textlieferung nicht enthalten.
   {
     value: 1500,
     suffix: "+",
     label: ["Live-Veranstaltungen", "jährlich"],
-    copy: "Shows, Touren, Festivals und Corporate-Events — von der Clubbühne bis zur Arena.",
+    copy: "Text folgt.",
   },
   {
     // 130+ → 170+ korrigiert (Wolfram 17.07.). Dieselbe Zahl steht in site.ts (STATS)
@@ -91,7 +114,7 @@ const FACTS: Fact[] = [
     value: 170,
     suffix: "+",
     label: ["Companies", "weltweit"],
-    copy: "Lokale Marktnähe mit internationaler Banijay-Perspektive — Formate, die rund um den Globus laufen.",
+    copy: "Text folgt.",
   },
 ];
 
@@ -328,7 +351,13 @@ export function EditorialStickyScene() {
                         style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                       >
                         <div className="overflow-hidden">
-                          <p style={{ margin: "0.55rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "146%", color: tone.copy, maxWidth: "40ch" }}>
+                          {/* maxWidth 40ch ENTFERNT (Wolfram 17.07.): Die Copy nutzte damit
+                              nur 262 von 492 px Kartenbreite. Bei den alten Kurztexten egal,
+                              bei Heikes ~500-Zeichen-Texten verdoppelte es die Texthöhe grundlos
+                              — und Höhe ist in dieser Spalte die knappe Ressource (sie treibt
+                              über DIGIT die Zifferngröße). Volle Kartenbreite bleibt mit ~70
+                              Zeichen je Zeile im lesbaren Rahmen (Faustregel 45–75). */}
+                          <p style={{ margin: "0.55rem 0 0", fontSize: "clamp(0.82rem, 0.9vw, 0.98rem)", lineHeight: "146%", color: tone.copy }}>
                             {f.copy}
                           </p>
                         </div>

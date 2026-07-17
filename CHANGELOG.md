@@ -5,6 +5,51 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Fakten-Accordion: Copytexte von Heike + Zahlen-Korrekturen (17.07.)
+- **Heikes Texte eingesetzt** (4 von 7 Karten), wörtlich übernommen; nur die
+  Anführungszeichen auf die deutsche Form „…" vereinheitlicht (Vorlage gemischt:
+  `"TV total"`, `“Schlag den Star“`). Die drei ohne Text stehen auf **„Text folgt."**:
+  90 % Primetime-Hitrate, 170+ Companies weltweit, 1.500+ Live-Veranstaltungen (letztere
+  fehlt in Heikes Lieferung ganz).
+- **Labels unverändert** — Wolframs freigegebene Zweizeiler bleiben; Heikes Überschriften
+  („Companies & Label", „4500+ hrs") sind Fakt-Bezeichner ihrer Liste, keine Kachel-Titel.
+
+#### Zahlen: „Die Ziffer ist maßgeblich" (Regel Wolfram 17.07.)
+- Heikes Copy ist ein **älterer Stand als die Fakten**. Wo im Text dieselbe Zahl vorkommt
+  wie in `value`, wird **der Text angeglichen, nicht die Ziffer**. Regel steht jetzt im
+  Dateikopf von `EditorialStickyScene.tsx`, damit sie die nächste Lieferung überlebt.
+- **1.300+ → 1.400+** (Mitarbeitende): Heikes Überschrift *und* Fließtext nennen 1400.
+- **3.000 → 4.500 hrs.**: Ihre Überschrift sagte „4500+ hrs", ihr Fließtext „rund 3000
+  Stunden" — Konflikt nach der Regel zugunsten der Ziffer aufgelöst, Copy auf „rund 4500"
+  angeglichen.
+- **Alle Copytexte gegen die Ziffern geprüft**, nicht nur die auffällige: 40 ↔ „über 40+",
+  1.400 ↔ „rund 1400", 4 Mrd. ↔ „vier Milliarden" passten bereits. „451 Prime-Time
+  Erstausstrahlungen" bleibt — keine Kachel-Ziffer, sondern ein eigener Fakt im Text.
+- `site.ts` (About-Fakten) mitgezogen: **1.400+** und **4.500 hrs.** Gegengeprüft, dass
+  Home und About dieselben fünf Zahlen führen.
+
+#### Layout: Heikes Copy sprengte die Spalte
+- Die neuen Texte sind 4–5× so lang (bis 527 Zeichen). Folge: die letzte Kachel hing
+  **94–131 px unter der Fotokante** — die Bündigkeit von heute Morgen war hin. Die
+  DIGIT-Formel rechnete mit ~66 px Copy, tatsächlich waren es 230.
+- **Erster Hebel war nicht die Ziffer**: Die Copy hatte `maxWidth: 40ch` und nutzte damit
+  nur **262 von 492 px** Kartenbreite. Bei Kurztexten unauffällig, bei 500 Zeichen
+  verdoppelte es die Höhe grundlos. Cap entfernt → 59 Zeichen/Zeile (Faustregel 45–75),
+  Copy von 230 auf **172 px**.
+- **DIGIT-Konstante 44 → 64**, gemessen statt geschätzt: nötige Konstante 54.6 (1280×700 /
+  1440×900) und 62.8 (1920×1080, größere Copy-Schrift) → 64 mit Sicherheitsabstand.
+- Geprüft mit **jeder der 7 Karten einzeln geöffnet** (die längste Copy bestimmt den Worst
+  Case): 1280×700, 1440×900, 1920×1080 → überall bündig 0,0 px, 0 Überlauf.
+- ⚠️ **Preis**: Ziffern ~20 px kleiner als vorher — 33,6 / 41,4 / 62,5 px (vorher
+  53,1 / 61,4 / 82,5). Lange Copy, feste Spaltenhöhe und große Ziffern gehen nicht
+  zusammen. Offen (Wolfram): so lassen · Spalte höher (82vh → ~92vh) · Copy kürzen.
+- *Messfehler abgefangen:* Die Probe meldete nach einem Reload plötzlich 24 px Überstand
+  auf ALLEN Karten gleichmäßig. Das war GSAPs Startversatz `y: 24`, der im eingeklappten
+  Preview-Pane nie zurückanimiert wird (rAF friert ein) — `getBoundingClientRect()` liefert
+  die transformierte Box. Transformfrei gemessen: 0. Dieselbe Falle wie bei der
+  Team-Section.
+- ❓ Offen: Heike schreibt „4500**+** hrs", die Kachel zeigt „4.500 hrs." ohne Plus.
+
 ### Hero: eigene Mobile-Motive auf allen Seiten (17.07.)
 - Sieben neue Hochformat-Fassungen in `public/hero-v2/` (`*-mobile.jpg`), aus
   `assets/Visuals/Hero/` weboptimiert und auf das dortige Namensschema gebracht

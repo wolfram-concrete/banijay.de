@@ -146,6 +146,8 @@ Vor dem Livegang abzuarbeiten:
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
+| **Story-Text auf der Home** | `Lorem ipsum` | Echten Text (siehe `Editorial.tsx`) |
+| **Fakten-Copy (3 von 7)** | `Text folgt.` steht sichtbar auf der Seite | Texte für 90 %, 170+ und 1.500+ nachliefern (siehe unten) |
 | **Company-URLs im Ökosystem** | 20 von 40 Einträgen unverlinkt | Fehlende Websites nachliefern (siehe unten) |
 | **Wording** | Entwurf | Freigabe Heike/Redaktion |
 
@@ -180,6 +182,32 @@ for (const c of ECO_CATEGORIES) for (const co of c.companies) if (!co.url) conso
 Nachtragen: in `ECO_CATEGORIES` beim jeweiligen Eintrag `url` ergänzen. Wo eine Company
 zusätzlich eine Bento-Kachel hat, gehört die URL auch nach `companyCards.ts`
 (`externalUrl`) bzw. in den Directory-Eintrag.
+
+### Fakten-Accordion: fehlende Copy + die Zahlen-Regel
+
+Die Fakten-Section auf der Home (`EditorialStickyScene.tsx`) hat 7 Karten. Für **drei**
+liegt noch kein Text vor — dort steht sichtbar **„Text folgt."**:
+
+| Karte | Stand |
+|---|---|
+| 90 % Primetime-Hitrate | Text fehlt |
+| 170+ Companies weltweit | Text fehlt |
+| 1.500+ Live-Veranstaltungen jährlich | Text fehlt (in Heikes Lieferung nicht enthalten) |
+
+**Regel für neue Textlieferungen: die Ziffer ist maßgeblich.** Die Copytexte sind ein
+älterer Stand als die Fakten. Kommt im Text dieselbe Zahl vor wie in `value`, wird **der
+Text angeglichen, nicht die Ziffer** (so geschehen: „rund 3000 Stunden" → „rund 4500").
+Bei jeder Lieferung alle Copytexte gegen die Ziffern prüfen. Zahlen im Text, die keine
+Kachel-Ziffer sind (z. B. „451 Prime-Time Erstausstrahlungen"), bleiben unberührt.
+
+**Zahlen doppelt gepflegt:** Dieselben Werte stehen in `src/data/site.ts` (`STATS`) für die
+About-Fakten. Ändert sich eine Zahl auf der Home, muss sie dort mit — sonst nennen die
+Seiten unterschiedliche Zahlen. Betrifft aktuell: 40+, 1.400+, 4 Mrd., 4.500 hrs., 170+.
+
+**Höhe ist die knappe Ressource:** Die Spalte ist so hoch wie das Foto, und die
+Zifferngröße wird daraus berechnet (`DIGIT` in `EditorialStickyScene.tsx`). Längere Copy
+heißt automatisch kleinere Ziffern. Heikes ~500-Zeichen-Texte haben sie von 61 auf 41 px
+gedrückt (bei 1440×900). Wer Copy verlängert, sollte das im Blick behalten.
 
 ### Externe Presse: Bilder Dritter
 

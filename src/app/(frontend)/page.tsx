@@ -40,9 +40,9 @@ export default function HomePage() {
         <div className="relative z-[2]">
           <AlgarveAboutIntro
             fadeExit
-            // Finales Wording (Wolfram 17.07.) — löst den Lorem-ipsum-Platzhalter ab.
-            // Der Halbgeviertstrich ist bewusst ein echtes „–" (U+2013), kein Bindestrich.
-            text="Unser Antrieb ist Entertainment. Jeden Tag erreichen, begeistern und bewegen wir Millionen Menschen – und prägen den Zeitgeist mit. Vielfalt, unternehmerische Freiheit und die Kraft unseres Ökosystems machen uns stark: als Netzwerk aus Entertainment, Vermarktung, Künstlern, Live und Technologie."
+            // Wording (Wolfram 17.07., zweite Fassung) — ersetzt „Unser Antrieb ist
+            // Entertainment …", das wiederum den Lorem-ipsum-Platzhalter abgelöst hatte.
+            text="Das weltweit führende Zuhause für Kreative: ein Medien- und Entertainment-Powerhouse von globaler Größe, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um einige der bekanntesten Entertainment Brands und Live-Erlebnisse der Welt zu schaffen."
           />
         </div>
 
