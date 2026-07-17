@@ -81,6 +81,12 @@ const REEL: Record<string, string> = Object.fromEntries(
 //   • Good Humor (Plötzlich Schwester)    ab 10 s, 12 s — Titelkarte liegt erst bei ~62 s
 //   • MadeFor (Trailer)                   ab 112 s, 12 s — Titelkarten bei 6/42/66/78/90/102 s,
 //     ab ~112 s läuft der Trailer ohne Inserts durch
+//   • Cape Cross (Imagefilm, 83 s)        ab 29,6 s, 5,6 s — Titelkarte bei ~2 s, End-Karte
+//     („cape×cross"-X) bei ~82 s. Das Fenster liegt auf durchgehenden Arena-/Stadion-
+//     bildern. Es endet bei 35,2 s, weil dort der nächste Schnitt auf einen Interview-Take
+//     liegt (am Kontaktbogen abgelesen: bei 35,9 s steht er im Bild): Ein Talking Head ohne
+//     Ton liest sich in der kleinen Kachel nicht — und im 5,6-s-Loop hätte er pro Runde
+//     kurz aufgeblitzt.
 // NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
 // Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
 // es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
@@ -89,6 +95,7 @@ REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
 REEL["madefor"] = "/company-media/madefor.mp4";
+REEL["cape-cross"] = "/company-media/cape-cross.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom

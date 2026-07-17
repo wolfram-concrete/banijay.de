@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Cape-Cross-Video in der Bento-Kachel (17.07.)
+- **Cape Cross Entertainment** bekommt sein Imagefilm-Video (`CompaniesBento.tsx`, `REEL["cape-cross"]`).
+  Quelle 587 MB / 83 s → 960×540, ohne Ton, **3,1 MB**.
+- Ausschnitt **29,6–35,2 s** (5,6 s): Titelkarte liegt bei ~2 s, die cape×cross-Endkarte bei ~82 s;
+  dazwischen wechseln Eventbilder und Interview-Takes. Das Fenster liegt auf durchgehenden
+  Arena-/Stadionbildern — ohne Text und ohne Talking Head (der liest sich in der 326×235-Kachel
+  ohne Ton nicht).
+- *Schnittpunkt korrigiert:* Erster Versuch lief bis 36 s. Der Sichtcheck der fertigen Datei zeigte
+  bei 5,9 s bereits den Interviewpartner — der Cut liegt bei ~35,5 s, im Loop wäre pro Runde kurz
+  ein Gesicht aufgeblitzt. Daher 5,6 s statt 6 s.
+- Konvertierung weiterhin über `avconvert` (das auffindbare ffmpeg dekodiert fehlerhaft, siehe
+  16.07.); Datei über 8 Frames im Browser gegengeprüft: 0 korrupt.
+
 ### Code-of-Conduct: „WE ARE BANIJAY" kleiner + über der Collage (16.07., Nacht XXIX)
 - **Claim in Headline-Formatierung statt Display-Größe** (`CodeOfConductBand.tsx`): 22vw
   (Footer-Marquee-Klasse) → **7vw / 132 %**, also exakt das `SWAP_LINE_STYLE` der
