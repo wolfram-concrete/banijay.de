@@ -7,24 +7,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ### Banijay Media Germany: Video in der Bento-Kachel (17.07.)
 - `CompaniesBento.tsx`, `REEL["banijay-media-germany"]` — Quelle 90 MB / **201 s**
-  (BMG_Brandtrailer) → 960×540, **Ausschnitt 0–3,8 s, 1,3 MB**. Löst das generische
-  `reel-5.mp4` auf dieser Kachel ab.
-- ⚠️ **3,8 s ist der kürzeste Clip der Bibliothek — der Quelle geschuldet, nicht dem
-  Geschmack.** Aufbau des Trailers: 0–3,8 s Hand mit TV-Fernbedienung + Magenta-Warp
-  (echtes, textfreies Footage), 3,9–4,2 s formt sich das „B"-Logo, bis ~8 s Logokarten,
-  ~9–10 s Textkarte „WELCOME TO OUR UNIVERSE" — und **ab 11 s bis zum Ende** Case-Montagen
-  mit fest eingebranntem Rahmen: Label oben links („SOCIAL FIRST FORMATS"), Bauchbinde unten
-  („BIG BROTHER SPEZIAL EDITION | LIDL", „MISSION UNKNOWN | FORD"), Reichweiten-Zähler
-  rechts („120,9 M", „102 M+"). Das ist kein Abschnitt, sondern das Gestaltungsprinzip des
-  Films. Die 3,8 s Vorspann sind das EINZIGE textfreie Fenster in 201 s.
-- Logo-Grenze nicht geschätzt, sondern gemessen: Zwischen 3,9 s und 4,2 s ziehen sich die
-  hellen Pixel von 45 % auf 98 % in die Bildmitte zusammen — das ist das „B".
-- Passt farblich (Magenta) ohnehin am besten zur Seite. Fertige Datei über 9 Frames
-  gegengeprüft: 0 korrupt, kein Text.
-- ❓ Offen: Ob 3,8 s als Loop reichen, oder ob die Kachel besser das generische Reel behält
-  (wie Banijay Germany Live, das aus demselben Grund keins bekam) — oder ob wir bei einer
-  Vermarktungs-Company die Case-Montage MIT Bauchbinden bewusst zulassen. Entscheidung
-  Wolfram.
+  (BMG_Brandtrailer) → 960×540, **Ausschnitt 16,7–29,2 s (12,5 s), 6,7 MB**. Löst das
+  generische `reel-5.mp4` auf dieser Kachel ab.
+- ⚠️ **Bewusste AUSNAHME von der Textfrei-Regel** (Wolfram 17.07.: „mehr Bilder als diese
+  komische Fernbedienung"). Der Clip trägt den eingebrannten Rahmen des Trailers: Label
+  oben links („BIG SCREEN FORMATS"), Bauchbinde unten mit Case + Marke („TV TOTAL |
+  MC DONALD", „SCHLAG DEN STAR | HAGEBAU", „NIGHTWASH | KLARNA"), Reichweiten-Zähler rechts
+  (759 K, 2.87 M, 14,6 %). Vertretbar, weil bei einer Vermarktungs-Company Marken und
+  Reichweiten der Inhalt sind.
+- **Warum es keine textfreie Alternative gibt:** 0–3,8 s Hand mit TV-Fernbedienung
+  (einziges textfreies Footage in 201 s), 3,9–4,2 s formt sich das „B"-Logo, bis ~8 s
+  Logokarten, ~9–10 s Textkarte „WELCOME TO OUR UNIVERSE", ab 11 s bis zum Ende die
+  Case-Montagen. Der Rahmen ist kein Abschnitt, sondern das Gestaltungsprinzip des Films.
+- *Erste Fassung waren die 3,8 s Vorspann* — als Kachelinhalt zu wenig („wirklich nur die
+  Anfangssequenz"). Wichtig fürs Protokoll: **0–10 s wäre schlechter gewesen, nicht besser**
+  — dort liegen Logokarten und die Textkarte, also *weniger* Bilder. Die Bilder beginnen
+  erst bei 11 s.
+- 16,7–29,2 s ist das bildreichste Fenster: vier echte Szenen (Figur mit Publikum, Bühne mit
+  Moderator, Spielshow, jubelnde Menge). Davor und danach nur Screen-Wall-Montagen aus
+  vielen Mini-Screens, die in der 326×235-Kachel zu Brei werden.
+- Logo-Grenze der alten Fassung nicht geschätzt, sondern gemessen: Zwischen 3,9 s und 4,2 s
+  ziehen sich die hellen Pixel von 45 % auf 98 % in die Bildmitte — das ist das „B".
+- Fertige Datei über 11 Frames gegengeprüft: 0 korrupt. 6,7 MB → Pre-Launch #77.
 
 ### Rainer Laux Productions: Video in der Bento-Kachel (17.07.)
 - `CompaniesBento.tsx`, `REEL["rainer-laux-productions"]` — Quelle 263 MB / 45 s

@@ -101,17 +101,22 @@ const REEL: Record<string, string> = Object.fromEntries(
 //     ACHTUNG bei künftigen Schnitten: Der Kontaktbogen zeigte scheinbar ein zweites
 //     Schwarzbild bei 28 s — ein Zeichenfehler der Montage. Zwei Helligkeitsscans belegen
 //     dort 102,9. Im Bereich 18–38 s ist NUR 31,5 s wirklich schwarz.
-//   • Banijay Media Germany (Brandtrailer, 201 s) ab 0 s, NUR 3,8 s — der kürzeste Clip,
-//     und das ist der Quelle geschuldet, nicht dem Geschmack. Aufbau: 0–3,8 s Hand mit
-//     TV-Fernbedienung + Magenta-Warp (echtes, textfreies Footage), 3,9–4,2 s formt sich
-//     das „B"-Logo (an der Pixelverteilung abgelesen: die hellen Pixel ziehen sich von
-//     45 % auf 98 % in die Bildmitte), bis ~8 s Logokarten, ~9–10 s Textkarte „WELCOME TO
-//     OUR UNIVERSE", und AB 11 s BIS ZUM ENDE laufen Case-Montagen mit fest eingebranntem
-//     Rahmen: Label oben links („SOCIAL FIRST FORMATS"), Bauchbinde unten
-//     („BIG BROTHER SPEZIAL EDITION | LIDL", „MISSION UNKNOWN | FORD") und
-//     Reichweiten-Zähler rechts („120,9 M", „102 M+"). Das ist kein Abschnitt, sondern das
-//     Gestaltungsprinzip des Films — die 3,8 s Vorspann sind das EINZIGE textfreie Fenster
-//     in 201 s. Passt farblich (Magenta) ohnehin am besten zur Seite.
+//   • Banijay Media Germany (Brandtrailer, 201 s) ab 16,7 s, 12,5 s — AUSNAHME VON DER
+//     TEXTFREI-REGEL, ausdrücklich so entschieden (Wolfram 17.07.: „mehr Bilder als diese
+//     komische Fernbedienung"). Der Clip trägt den eingebrannten Rahmen des Trailers:
+//     Label oben links („BIG SCREEN FORMATS"), Bauchbinde unten mit Case + Marke
+//     („TV TOTAL | MC DONALD", „SCHLAG DEN STAR | HAGEBAU", „NIGHTWASH | KLARNA") und
+//     Reichweiten-Zähler rechts (759 K, 2.87 M, 14,6 %).
+//     Warum es keine textfreie Alternative gibt: 0–3,8 s Hand mit TV-Fernbedienung
+//     (einziges textfreies Footage im ganzen Film), 3,9–4,2 s formt sich das „B"-Logo
+//     (an der Pixelverteilung abgelesen: die hellen Pixel ziehen sich von 45 % auf 98 % in
+//     die Bildmitte), bis ~8 s Logokarten, ~9–10 s Textkarte „WELCOME TO OUR UNIVERSE",
+//     ab 11 s bis zum Ende die Case-Montagen. Der Rahmen ist kein Abschnitt, sondern das
+//     Gestaltungsprinzip — bei einer Vermarktungs-Company sind Marken und Reichweiten der
+//     Inhalt. Erste Fassung waren die 3,8 s Vorspann; als Kachelinhalt zu wenig.
+//     16,7–29,2 s ist das bildreichste Fenster: vier echte Szenen (Figur mit Publikum,
+//     Bühne mit Moderator, Spielshow, jubelnde Menge). Davor und danach nur
+//     Screen-Wall-Montagen aus vielen Mini-Screens, die in der Kachel zu Brei werden.
 // NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
 // Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
 // es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
