@@ -5,6 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team: Elena Kats als 12. Person eingesetzt (17.07.)
+- Neu in `leadership.ts`, **als Letzte der Frauen** eingefügt (Index 8, direkt nach Aylin);
+  die drei Männer rücken einen Index nach hinten. Grid dadurch **3 / 5 / 4**: mittlere Reihe
+  bleibt mit den fünf bisherigen Frauen voll, Elena eröffnet die untere Reihe. Als reine
+  Grid-Arithmetik verifiziert (15 Spalten, 3× span-5 + 9× span-3 → 3/5/4) und im
+  Foto-Vergleich bestätigt.
+- **Name + Rolle bewusst leer** (Wolfram: „schreib erst mal keinen Namen dazu … die Position
+  kenne ich nicht"). Nachname „Kats" ist bekannt, wird aber vorerst nicht angezeigt.
+  ⚠️ **Vor Livegang nachtragen** — sonst steht dort eine gesichtslose Kachel ohne Beschriftung.
+- Beschnitt nach der 32-%-Regel der unteren/mittleren Reihe: Ausschnitt 2675×3566 ab
+  1430,1283, 900×1200, 91 KB. `FOCUS` `"50% 18%"`.
+- **Zwei Folgefehler abgefangen, die der leere Name/Cap ausgelöst hätten:**
+  - Das Mobile-Grid hatte ein hartes `slice(0, 11)` — mit 12 Personen wäre Elena mobil
+    verschluckt worden. Entfernt (rendert jetzt wie Desktop das komplette `LEADERSHIP`).
+  - `key={p.name}` → `key={p.img}` (Desktop + Mobile): ein leerer React-key ist unzuverlässig.
+  - Die leere Meta-Zeile machte Elenas Bild **130 statt 115 px** hoch (die fehlende
+    Namenszeile verkürzt die Meta, die fixe Kachelhöhe schiebt die Differenz ins flex-1-Bild).
+    Fix: `minHeight: "1.18em"` auf die Namenszeile — für die einzeiligen Namen der anderen
+    ist das die natürliche Höhe, keine Änderung. Danach alle Bilder 115 px, Unterkanten fluchten.
+- Stand jetzt: **8 von 12** Portraits echt (Elena kommt als echtes Foto dazu). Übrig:
+  Marcus Wolter, Natali Naso, Heike Lutzer, Janine Berns — `lead-1.jpg` weiterhin doppelt.
+
 ### Team: echtes Portrait für Michael Laegel — mit anderer Beschnitt-Zahl (17.07.)
 - `lead-3` → `michael-laegel.jpg`. Quelle 4912×7360, Ausschnitt **4200×5600 ab 218,0**,
   Endformat 900×1200, 61 KB. `FOCUS` `"50% 14%"`.

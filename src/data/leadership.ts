@@ -5,8 +5,8 @@
 // DIE REIHENFOLGE IST DAS LAYOUT (Wolfram 17.07.) — Founders.tsx rendert stur nach
 // Index, es gibt kein Zeilen-Feld:
 //   Index 0–2   → Leader-Reihe oben, größere Kacheln (Marcus, Knut, Michael Laegel)
-//   Index 3–7   → mittlere Reihe, fünf Kacheln
-//   Index 8–10  → untere Reihe (füllt sich auf, wenn Personen dazukommen)
+//   Index 3–7   → mittlere Reihe, fünf Kacheln (die Frauen)
+//   Index 8–11  → untere Reihe (Elena eröffnet sie, dahinter die drei Männer)
 // Wolframs Regel für die mittlere Reihe: dort stehen die Frauen des Teams. Die
 // Zuordnung ist NICHT aus den Daten belegbar — es gibt kein Geschlechtsfeld, und die
 // Fotos sind Platzhalter (Marcus Wolter trägt aktuell das Bild einer Frau). Sie beruht
@@ -48,8 +48,18 @@ export const LEADERSHIP: Leader[] = [
   // Kinn 2200, Gesichtsmitte x 1184), nicht geschätzt. Es gab auch eine engere Variante
   // (~38 %, Ausschnitt 1670×2226 ab 349,1087) — Wolfram wählte die mittlere.
   { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
+  // Elena Kats (Wolfram 17.07.) — neue, zwölfte Person, „als Letzte von den Frauen"
+  // eingefügt; die Männer rücken dadurch einen Index nach hinten. Dadurch ist die
+  // mittlere Reihe weiter mit den 5 bisherigen Frauen voll, Elena eröffnet die untere
+  // Reihe (Grid jetzt 3 / 5 / 4).
+  // NAME + ROLLE BEWUSST OFFEN (Wolfram: „schreib erst mal keinen Namen dazu … die
+  // Position kenne ich nicht"). Nachname „Kats" ist bekannt, wird aber vorerst NICHT
+  // angezeigt — leere Strings lassen die Meta-Zeile leer. VOR LIVEGANG nachtragen.
+  // Beschnitt nach der 32-%-Regel der unteren/mittleren Reihe (Kachel 142×138):
+  // Ausschnitt 2675×3566 ab 1430,1283 (Kopf oben 1711, Kinn 2852, Gesichtsmitte x 2767).
+  { name: "", role: "", img: "/people/elena-kats.jpg" },
 
-  // ── Untere Reihe (Index 8–10) ─────────────────────────────────────────────
+  // ── Untere Reihe (Index 9–11) ─────────────────────────────────────────────
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.
   // Quelle assets/People/Michael Gaul.jpg, 3869×5815, wieder eine Ganzkörper-Aufnahme.
   // Beschnitten nach DERSELBEN Regel wie Aylin, damit die Proportionen in der Reihe

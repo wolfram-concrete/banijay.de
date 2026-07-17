@@ -38,6 +38,7 @@ const FOCUS: Record<string, string> = {
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
   "/people/aylin-firat.jpg": "50% 18%",
+  "/people/elena-kats.jpg": "50% 18%",
   // Michael Gaul (Wolfram 17.07.) — echtes Portrait, ersetzt lead-5.jpg. Nach derselben
   // Regel wie Aylin beschnitten (siehe leadership.ts), daher derselbe Top-Bias.
   "/people/michael-gaul.jpg": "50% 18%",
@@ -291,7 +292,9 @@ export function AlgarveFounders({
           >
             {TEAM.map((p, i) => (
               <div
-                key={p.name}
+                // key über das Bild, nicht den Namen: Elena Kats hat vorerst einen leeren
+                // Namen (Wolfram 17.07.), und ein leerer React-key ist unzuverlässig.
+                key={p.img}
                 data-team-tile
                 className="flex min-h-0 flex-col"
                 style={{ gridColumn: i < 3 ? "span 5" : "span 3", gap: "0.6vw", willChange: "transform" }}
@@ -300,7 +303,12 @@ export function AlgarveFounders({
                   <img src={p.img} alt={p.name} className="h-full w-full object-cover" style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }} />
                 </div>
                 <div data-team-meta className="flex flex-col" style={{ gap: "0.1vw", willChange: "transform, opacity" }}>
-                  <div className="text-[#f8f7f3]" style={NAME}>
+                  {/* minHeight = eine Namenszeile (Wolfram 17.07.): Elena Kats hat vorerst
+                      keinen Namen. Ohne feste Höhe kollabiert die leere Zeile → ihre Meta
+                      wird kürzer, und weil die Kachelhöhe fix ist, wächst ihr flex-1-Bild
+                      gegenüber den Nachbarn (gemessen 130 statt 115 px). Für die anderen,
+                      einzeiligen Namen ist 1.18em die natürliche Höhe → keine Änderung. */}
+                  <div className="text-[#f8f7f3]" style={{ ...NAME, minHeight: "1.18em" }}>
                     {p.name}
                   </div>
                   {/* Rolle auf EINE Zeile Höhe fixiert, Überhang sichtbar (Wolfram 16.07.):
@@ -328,13 +336,17 @@ export function AlgarveFounders({
           <TeamHeadWords text="Unser Team" />
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
-          {LEADERSHIP.slice(0, 11).map((p, i) => {
+          {LEADERSHIP.map((p, i) => {
+            // slice(0,11) entfernt (Wolfram 17.07.): mit Elena sind es 12 Personen — der
+            // harte Cap hätte die Letzte mobil verschluckt. Wie im Desktop-Grid ist die
+            // Reihenfolge das Layout, LEADERSHIP wird komplett gerendert.
             // Erste Kachel (CEO) als Feature über volle Breite; jede 5. Kachel als
             // Querformat-Feature → die Bildcontainer werden mal größer, mal kleiner.
             const feature = i === 0 || i === 5;
             return (
               <div
-                key={p.name}
+                // key über das Bild (leerer Name bei Elena, siehe Desktop-Grid oben).
+                key={p.img}
                 data-team-mtile
                 className={`flex flex-col gap-3 ${feature ? "col-span-2" : ""}`}
               >
