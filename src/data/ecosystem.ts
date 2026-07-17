@@ -59,6 +59,10 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // ist revidiert. „Brainpool Pictures" bleibt vorerst raus.
       { name: "Brainpool", url: "https://brainpool.de/" },
       { name: "B&B Endemol Shine Switzerland", url: "https://bbendemolshine.ch/" },
+      // Kundenfeedback 17.07.: All3Media-Companies ins Ökosystem ergänzt. Kein Link —
+      // im Scrape der bisherigen banijay.de ist für sie keiner belegt (Regel oben).
+      { name: "filmpool entertainment" },
+      { name: "South & Browse" },
       { name: "Rainer Laux Productions" },
       { name: "Lucky Pics" },
       { name: "Minestrone TV" },
@@ -114,6 +118,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Influence Vision", url: "http://www.influencevision.com" },
       { name: "MySpass" },
       { name: "Banijay Media Germany" },
+      // Kundenfeedback 17.07. — kein belegter Link (Regel oben).
+      { name: "Magic Connection" },
     ],
   },
   {
@@ -134,6 +140,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "MadeFor", url: "https://madefor.film/" },
       { name: "Good Humor", url: "https://goodhumor.de/" },
       { name: "Dynamic Ally Pictures", url: "https://dynamic-ally-pictures.com/" },
+      // Kundenfeedback 17.07. — kein belegter Link (Regel oben).
+      { name: "filmpool fiction" },
     ],
   },
 ];

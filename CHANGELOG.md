@@ -5,6 +5,19 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Ökosystem: vier Companies ergänzt (17.07., Kundenfeedback)
+- `ecosystem.ts` — **filmpool entertainment** + **South & Browse** → Entertainment,
+  **filmpool fiction** → Fiction, **Magic Connection** → Distribution & Brand.
+  Alle drei Ökosystem-Darstellungen (Home `EcosystemSection`, About `EcosystemDirectory`,
+  Looktest `EcosystemBurst`) lesen aus derselben `ECO_CATEGORIES` → EINE Änderung deckt
+  „die verschiedenen Stellen" ab.
+- Alle vier **ohne Link**: Im Scrape der bisherigen banijay.de ist für keine eine URL belegt.
+  Das folgt der Regel im Dateikopf („Companies ohne belegten Link bleiben unverlinkt") —
+  im Verzeichnis stehen sie dadurch ohne Pfeil-Icon. Links bitte nachliefern.
+- `companiesDirectory.ts` — **`ecoKeys` von Magic Connection und South & Browse nachgetragen**
+  (waren leer). Nebenbefund: Beide fielen dadurch aus JEDEM Bento-Rubrikfilter heraus und waren
+  nur unter „Alle" sichtbar. filmpool ×2 hatten ihre Keys bereits.
+
 ### Cape-Cross-Video in der Bento-Kachel (17.07.)
 - **Cape Cross Entertainment** bekommt sein Imagefilm-Video (`CompaniesBento.tsx`, `REEL["cape-cross"]`).
   Quelle 587 MB / 83 s → 960×540, ohne Ton, **3,1 MB**.

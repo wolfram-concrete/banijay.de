@@ -74,8 +74,11 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // ~3. Zeile) statt hinten bei den übrigen All3Media-Einträgen.
   { id: "filmpool-entertainment", name: "filmpool entertainment", ecoKeys: ["entertainment"], logo: L("filmpool-entertainment.png"), tags: ["Entertainment"] },
   { id: "filmpool-fiction", name: "filmpool fiction", ecoKeys: ["fiction"], logo: L("filmpool-fiction.png"), tags: ["Fiction"] },
-  { id: "magic-connection", name: "Magic Connection", ecoKeys: [], logo: L("magic-connection.png"), tags: [] },
-  { id: "south-and-browse", name: "South & Browse", ecoKeys: [], logo: L("south-and-browse.png"), tags: [] },
+  // ecoKeys/tags nachgetragen (Kundenfeedback 17.07.): Beide standen ohne Rubrik da und
+  // fielen dadurch aus JEDEM Bento-Rubrikfilter heraus — sichtbar waren sie nur unter
+  // „Alle". filmpool ×2 hatten ihre Keys bereits.
+  { id: "magic-connection", name: "Magic Connection", ecoKeys: ["distribution"], logo: L("magic-connection.png"), tags: ["Distribution & Brand"] },
+  { id: "south-and-browse", name: "South & Browse", ecoKeys: ["entertainment"], logo: L("south-and-browse.png"), tags: ["Entertainment"] },
   fromCard("dynamic-ally-pictures", ["fiction"], L("dynamic-ally-pictures.png")),
   fromCard("myshow", ["live"], L("myshow.png")),
   fromCard("cologne-comedy-festival", ["live"], L("cologne-comedy-festival.png")),
