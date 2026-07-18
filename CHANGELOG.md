@@ -5,6 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Ökosystem-URLs: fehlende Company-Links nachgetragen (17.07.)
+- Abgleich aller drei Quellen, in denen Company-Links leben: `companyCards.ts`
+  (belegte `externalUrl`), Bento (`companiesDirectory.ts`), Ökosystem-Grafik
+  (`ecosystem.ts`, Home + About). Skript-basiert über alle Companies.
+- **Nachgetragen** (belegte, lebende URL vorhanden, im Ökosystem aber fehlend):
+  **Banijay Media Germany** → `banijaymedia.de` (Audio **und** Distribution & Brand),
+  **EndemolShine Poland** → `endemolshine.pl` (Entertainment). Vorher per curl (200)
+  geprüft, danach als klickbare `<a>`-Links auf Home und About verifiziert.
+- **Bewusst NICHT eingetragen:** Potatohead Pictures — die einzige belegte „URL" ist
+  `endemolshine.de/ueber-uns/team/`, eine EndemolShine-Team-Seite, kein Company-Auftritt.
+- **Offen (Wolfram vorgelegt), zwei Quellen zeigen auf verschiedene Ziele:**
+  - Banijay Germany Live: Ökosystem `brainpool-live.de` vs. Card `banijaygermanylive.de` —
+    beide leben, welche gilt?
+  - Good Humor: Ökosystem `goodhumor.de` (echte Seite) vs. Card banijay.de-Presseartikel.
+- Nicht angetastet: ~9 Companies mit nur kosmetisch abweichender Schreibweise derselben
+  Domain (`www`/`https`/Slash). Übrige unverlinkte Ökosystem-Einträge haben keine belegte
+  URL → bleiben nach Projektregel unverlinkt.
+
 ### Team: Elena Kats als 12. Person eingesetzt (17.07.)
 - Neu in `leadership.ts`, **als Letzte der Frauen** eingefügt (Index 8, direkt nach Aylin);
   die drei Männer rücken einen Index nach hinten. Grid dadurch **3 / 5 / 4**: mittlere Reihe

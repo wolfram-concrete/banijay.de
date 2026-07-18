@@ -69,7 +69,9 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Ladykracher" },
       { name: "Doc.Banijay" },
       { name: "Potatohead Pictures" },
-      { name: "EndemolShine Poland" },
+      // URL nachgetragen (Wolfram 17.07.): war unverlinkt, obwohl in companyCards.ts als
+      // „Endemol Shine Polska" belegt. endemolshine.pl gibt 200.
+      { name: "EndemolShine Poland", url: "https://www.endemolshine.pl/" },
     ],
   },
   {
@@ -89,7 +91,9 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     key: "audio",
     label: "Audio",
     companies: [
-      { name: "Banijay Media Germany" },
+      // URL nachgetragen (Wolfram 17.07.): war unverlinkt, obwohl in companyCards.ts belegt
+      // (externalUrl). banijaymedia.de gibt 200. Steht auch unter „Distribution & Brand".
+      { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
       { name: "MySpass Audio" },
       { name: "SRM Music" },
       { name: "MadeFor Music", url: "https://madefor.film/" },
@@ -117,7 +121,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     companies: [
       { name: "Influence Vision", url: "http://www.influencevision.com" },
       { name: "MySpass" },
-      { name: "Banijay Media Germany" },
+      // URL nachgetragen (Wolfram 17.07.) — zweites Vorkommen, siehe „Audio".
+      { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
       // Kundenfeedback 17.07. — kein belegter Link (Regel oben).
       { name: "Magic Connection" },
     ],
