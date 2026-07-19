@@ -271,12 +271,14 @@ export function EditorialStickyScene() {
                 h-full und Kacheln mit flex-grow. Wie der Restplatz verteilt wird, ohne
                 dass er als Loch unter der Zahl landet: siehe Kachel-Kommentar. */}
             {/* Fakten-Akkordeon. Desktop: rechte Spalte. Mobile (Wolfram 19.07.): unter dem
-                sticky Bild ein SCROLLBARES Panel fester Höhe (~52vh, overflow-y) → die
-                Rubriken lassen sich durchscrollen, die Section wird nicht endlos lang.
+                sticky Bild als natürlich fließende Liste (kompakte 63px-Karten). KEINE fixe
+                Panelhöhe/overflow mehr — die hatte die unterste Karte abgeschnitten und wuchs
+                beim Aufklappen nicht mit. Jetzt wächst das Modul mit dem offenen Container,
+                das sticky Bild hält dadurch länger (höherer Container = mehr Sticky-Strecke).
                 Farbkodierung (abwechselnd Magenta/transparent, TONE) bleibt wie Desktop. */}
             <div
               ref={aside}
-              className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-0 max-md:!h-[52vh] max-md:!w-full max-md:!overflow-y-auto max-md:!overscroll-contain"
+              className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-0 max-md:!h-auto max-md:!w-full"
               style={{ width: `${ASIDE_W}px` }}
             >
               {FACTS.map((f, i) => {

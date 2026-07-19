@@ -57,7 +57,10 @@ const FOCUS: Record<string, string> = {
   "/people/lead-3.jpg": "50% 12%",
   "/people/lead-4.jpg": "50% 22%",
   "/people/lead-5.jpg": "50% 20%",
-  "/people/lead-6.jpg": "50% 26%",
+  // Natali Naso (Wolfram 19.07.): lead-6.jpg war 1200×1500 (exakt 4/5) → im 4/5-Container
+  // ungecroppt = ganze weite Sitz-Komposition mit viel Weißraum. Jetzt eng auf Kopf/
+  // Oberkörper beschnitten (3/4, Kopf ~29 %) wie die übrigen Portraits → gleicher Top-Bias.
+  "/people/lead-6.jpg": "50% 12%",
   "/people/lead-7.jpg": "50% 26%",
   "/people/lead-8.jpg": "50% 22%",
   "/people/lead-9.jpg": "50% 22%",
@@ -341,9 +344,10 @@ export function AlgarveFounders({
             // slice(0,11) entfernt (Wolfram 17.07.): mit Elena sind es 12 Personen — der
             // harte Cap hätte die Letzte mobil verschluckt. Wie im Desktop-Grid ist die
             // Reihenfolge das Layout, LEADERSHIP wird komplett gerendert.
-            // Erste Kachel (CEO) als Feature über volle Breite; jede 5. Kachel als
-            // Querformat-Feature → die Bildcontainer werden mal größer, mal kleiner.
-            const feature = i === 0 || i === 5;
+            // Die DREI Leader (Marcus, Knut, Michael Laegel = i 0–2) jeweils über die
+            // volle Breite gestapelt (Wolfram 19.07.), danach durchgehend zweispaltig.
+            // Kein 5.-Kachel-Feature mehr → alle Kacheln darunter gleich groß (4/5).
+            const feature = i < 3;
             return (
               <div
                 // key über das Bild (leerer Name bei Elena, siehe Desktop-Grid oben).

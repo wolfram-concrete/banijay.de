@@ -129,9 +129,14 @@ export function AlgarveEditorial() {
       // Unterkante (yPercent -100, von der Maske geclippt). Erst wenn die Zahlen-
       // Section steht und man weiterscrollt, zieht sie sich gescrubbt darunter hervor.
       // Die Box läuft dabei langsamer als der Scroll → Parallax.
+      // NUR DESKTOP (Wolfram 19.07.): Auf Mobile war der Parallax so getimt, dass die
+      // weiße Box erst voll erschien, wenn das (natürlich fließende) Akkordeon schon aus
+      // dem Screen war → man sah den Text nie ganz. Mobil daher KEIN yPercent-Auszug: die
+      // Story steht als normaler Block direkt im Fluss und ist beim Hinscrollen sofort
+      // vollständig sichtbar.
       const storyMask = root.current?.querySelector<HTMLElement>("[data-ed-story-mask]");
       const story = root.current?.querySelector<HTMLElement>("[data-ed-story]");
-      if (storyMask && story) {
+      if (storyMask && story && window.matchMedia("(min-width: 768px)").matches) {
         gsap.fromTo(
           story,
           { yPercent: -100 },
