@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -64,6 +64,69 @@ const CHIP_POS: Record<string, { orbit: number; deg: number }> = {
   tech: { orbit: 3, deg: 138 },
 };
 
+// ── MOBILE-GEOMETRIE (Wolfram 17.07.) ─────────────────────────────────────────
+// Die Desktop-Bühne ist QUER (rx>ry, viewBox 1300×640) — auf einem 9:16-Telefon flach
+// und die Chips überlagern sich. Für Mobile eine um 90° gekippte, HOCHFORMATIGE Variante:
+// Orbits mit ry>rx (die langen Achsen laufen vertikal), höheres viewBox, und die Chips
+// vertikal gestaffelt statt rund verteilt → kein Überlappen. Desktop bleibt unberührt;
+// die Komponente schaltet per Breakpoint zwischen beiden Geometrien um.
+// Mobile = SYMMETRISCHES Atom (Wolfram 17.07., 4. Runde): das um 90° gedrehte Desktop-
+// Atom wirkte als schmaler hochkanter Streifen. Stattdessen ein ausgewogenes, aufrechtes
+// Cluster — gleich lange Bahnen (elongierte Ellipsen wie Desktop), aber gleichmäßig rundum
+// verteilte Tilts (~alle 30°) → kein dominanter Quer-/Hochkant-Achse, quadratisch-symmetrisch
+// zentriert. Liniendicke bleibt (STROKE_W=3). Flacher als der Streifen → Akkordeon rückt hoch.
+const STAGE_M = { cx: 400, cy: 400 };
+const ORBITS_M: Orbit[] = [
+  { rx: 368, ry: 150, rot: 4, alpha: 0.34 },
+  { rx: 350, ry: 165, rot: 34, alpha: 0.3 },
+  { rx: 370, ry: 148, rot: 63, alpha: 0.28 },
+  { rx: 352, ry: 160, rot: 92, alpha: 0.26 },
+  { rx: 365, ry: 152, rot: 121, alpha: 0.24 },
+  { rx: 356, ry: 158, rot: 150, alpha: 0.22 },
+];
+// Auf Mobile trägt die Grafik KEINE Chips mehr (die Rubriken sind unten die Liste) —
+// CHIP_POS_M platziert nur noch die 7 statischen Magenta-Ankerpunkte als „ruhende
+// Satelliten" auf den Bahnen. Deko, keine Überlapp-Anforderung.
+const CHIP_POS_M: Record<string, { orbit: number; deg: number }> = {
+  entertainment: { orbit: 0, deg: -90 },
+  live: { orbit: 2, deg: -73 },
+  distribution: { orbit: 1, deg: -148 },
+  tech: { orbit: 3, deg: 12 },
+  artists: { orbit: 5, deg: 77 },
+  fiction: { orbit: 1, deg: 47 },
+  audio: { orbit: 0, deg: 90 },
+};
+const VIEWBOX_M = "0 0 800 800";
+const ASPECT_M = "800 / 800";
+
+// Bahntreuer Punkt in GLOBALEN viewBox-Koordinaten — parametrisiert auf eine
+// beliebige Geometrie (Desktop oder Mobile), damit dieselbe Render-/Anker-Logik
+// für beide gilt.
+function pointOn(stage: { cx: number; cy: number }, orbits: Orbit[], orbit: number, deg: number) {
+  const o = orbits[orbit];
+  const a = (deg * Math.PI) / 180;
+  const lx = o.rx * Math.cos(a);
+  const ly = o.ry * Math.sin(a);
+  const rot = (o.rot * Math.PI) / 180;
+  return {
+    x: stage.cx + lx * Math.cos(rot) - ly * Math.sin(rot),
+    y: stage.cy + lx * Math.sin(rot) + ly * Math.cos(rot),
+  };
+}
+
+// Media-Query-Hook (SSR-sicher: startet false = Desktop, korrigiert nach Mount).
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const on = () => setMobile(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return mobile;
+}
+
 // Swap-Headline (Phase 3): gleiche Optik wie das AnimatedHeading-Modul
 // (7vw uppercase, konvergierende Zeilen) — lebt hier IN der gepinnten Section.
 // „Ein Ökosystem" entfernt (Wolfram 15.07.) → zweizeilige Swap-Headline.
@@ -96,18 +159,6 @@ function withHeadlinePlus(text: string) {
   ));
 }
 
-function orbitPoint(orbit: number, deg: number) {
-  const o = ORBITS[orbit];
-  const a = (deg * Math.PI) / 180;
-  const lx = o.rx * Math.cos(a);
-  const ly = o.ry * Math.sin(a);
-  const rot = (o.rot * Math.PI) / 180;
-  return {
-    x: STAGE.cx + lx * Math.cos(rot) - ly * Math.sin(rot),
-    y: STAGE.cy + lx * Math.sin(rot) + ly * Math.cos(rot),
-  };
-}
-
 export function AlgarveEcosystem() {
   const root = useRef<HTMLElement>(null);
   // Keine geöffnete Card beim Eintritt (Wolfram 13.07.): Cards erst auf Klick.
@@ -115,12 +166,26 @@ export function AlgarveEcosystem() {
   // Hover-Highlight (Wolfram 15.07.): beim Überfahren färbt sich die Card magenta.
   const [hovered, setHovered] = useState<string | null>(null);
 
+  // Aktive Geometrie: Desktop quer, Mobile hochformatig (Wolfram 17.07.). EIN Satz
+  // Ableitungen, den Rendering UND Choreografie gemeinsam nutzen.
+  const isMobile = useIsMobile();
+  const ST = isMobile ? STAGE_M : STAGE;
+  const ORB = isMobile ? ORBITS_M : ORBITS;
+  const CP = isMobile ? CHIP_POS_M : CHIP_POS;
+  const VIEWBOX = isMobile ? VIEWBOX_M : "-50 0 1300 640";
+  const ASPECT = isMobile ? ASPECT_M : "1300 / 640";
+  const STROKE_W = isMobile ? 3 : 1; // Ringe dicker auf Mobile (Wolfram 17.07.)
+  const VBX = isMobile ? 0 : -50; // viewBox x-Offset
+  const VBW = isMobile ? 800 : 1300; // viewBox Breite
+  const VBH = isMobile ? 800 : 640; // viewBox Höhe
+  const pt = (orbit: number, deg: number) => pointOn(ST, ORB, orbit, deg);
+
   useGSAP(
     () => {
       // bahntreue Punkte: lokal parametrisch, die Orbit-Rotation liefert die
       // umschließende SVG-Gruppe — der Punkt kann die Kontur nie verlassen.
       gsap.utils.toArray<SVGCircleElement>("[data-eco-dot]").forEach((dot) => {
-        const o = ORBITS[Number(dot.dataset.orbit)];
+        const o = ORB[Number(dot.dataset.orbit)]; // aktive Geometrie (Desktop/Mobile)
         const dur = Number(dot.dataset.dur);
         const phase = Number(dot.dataset.phase) * Math.PI * 2;
         const proxy = { t: phase };
@@ -138,6 +203,28 @@ export function AlgarveEcosystem() {
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         gsap.set("[data-eco-swap]", { autoAlpha: 0 });
+        return;
+      }
+
+      // MOBILE (Wolfram 17.07., 2. Runde): KEIN Pin, KEIN Swap. Die Satellitengrafik
+      // steht für sich (oben), darunter erscheint die Rubriken-Akkordeonliste
+      // sukzessive. Einfaches Reveal beim Ins-Bild-Scrollen statt gepinntem Scrub —
+      // das umgeht auch die Pin/rAF-Fallen im Mobile-Viewport.
+      if (isMobile) {
+        gsap.set("[data-eco-swap]", { autoAlpha: 0 });
+        gsap.set("[data-eco-reveal]", { autoAlpha: 0, y: 22 });
+        gsap.set("[data-eco-orbit]", { autoAlpha: 0, scale: 0.62, transformOrigin: "50% 50%" });
+        gsap.set("[data-eco-dot], [data-eco-anchor], [data-eco-b]", { autoAlpha: 0 });
+        gsap.set("[data-eco-acc-row]", { autoAlpha: 0, y: 14 });
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: root.current, start: "top 72%", toggleActions: "play none none reverse" },
+        });
+        tl.to("[data-eco-reveal]", { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0)
+          .to("[data-eco-orbit]", { autoAlpha: 1, scale: 1, duration: 0.6, stagger: 0.06, ease: "power2.out" }, 0.05)
+          .to("[data-eco-b]", { autoAlpha: 1, duration: 0.3 }, 0.36)
+          .to("[data-eco-dot], [data-eco-anchor]", { autoAlpha: 1, duration: 0.35 }, 0.42)
+          // die Rubriken kommen einzeln nach (sukzessive „zum Vorschein")
+          .to("[data-eco-acc-row]", { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.1, ease: "power2.out" }, 0.55);
         return;
       }
 
@@ -197,7 +284,13 @@ export function AlgarveEcosystem() {
         // Ruhe-Beat mit stehender Headline, bevor der Pin löst
         .to({}, { duration: 0.3 });
     },
-    { scope: root },
+    // Bei Breakpoint-Wechsel neu aufsetzen: Desktop- und Mobile-Zweig bauen völlig
+    // andere Choreografien (Desktop pinnt+scrubbt, Mobile nicht). WICHTIG: revertOnUpdate
+    // — useGSAP revertet bei Dependency-Wechsel sonst NICHT, dann bliebe der beim ersten
+    // (SSR-)Render als Desktop erzeugte PIN auf Mobile aktiv (Section fixed, Pin-Spacer),
+    // was das Mobile-Layout zerstört. SSR startet immer isMobile=false → dieser Fall tritt
+    // auch auf echten Handys auf. dependencies statt key-Remount, damit React-State bleibt.
+    { scope: root, dependencies: [isMobile], revertOnUpdate: true },
   );
 
   return (
@@ -258,14 +351,16 @@ export function AlgarveEcosystem() {
           den Raum), höheres max-width auf großen Screens. */}
       <div
         data-eco-reveal
-        className="relative mx-auto mt-8"
+        className="relative mx-auto mt-8 max-[767px]:!mt-4"
         style={{
-          aspectRatio: "1300 / 640",
+          aspectRatio: ASPECT,
           // Zusätzlich über die HÖHE begrenzt (Wolfram 15.07.): auf niedrigeren Viewports
           // (Laptop) wurde die Grafik sonst höher als der gepinnte 100vh-Screen → unten
           // abgeschnitten (Orbits + aufgeklappte Entertainment-Karte). Die Breite wird so
           // gedeckelt, dass die Höhe max. ~60vh bleibt → alles passt in den Viewport.
-          width: "min(100%, 2000px, calc(60vh * 1300 / 640))",
+          // Mobile (symmetrisches, quadratisches Atom, steht für sich oben): über die
+          // BREITE (~74vw) deckeln, auf niedrigen Screens zusätzlich über die Höhe (40vh).
+          width: isMobile ? "min(74vw, 40vh)" : "min(100%, 2000px, calc(60vh * 1300 / 640))",
         }}
       >
         {/* VERDICHTETER STERNENSTAUB im Zentrum (Wolfram 14.07.): eigene, eng um
@@ -274,12 +369,12 @@ export function AlgarveEcosystem() {
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ zIndex: 0 }}>
           <DustLayer boost={1.2} center={{ x: 0.5, y: 0.5 }} radius={0.42} />
         </div>
-        <svg className="absolute inset-0 h-full w-full" viewBox="-50 0 1300 640" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden>
+        <svg className="absolute inset-0 h-full w-full" viewBox={VIEWBOX} preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden>
           {/* Gekippte Orbits: jede Gruppe trägt ihre eigene Rotation — Punkte
               darin bewegen sich im lokalen (ungekippten) System bahntreu. */}
-          {ORBITS.map((o, i) => (
-            <g key={`orb${i}`} transform={`translate(${STAGE.cx} ${STAGE.cy}) rotate(${o.rot})`}>
-              <ellipse data-eco-orbit rx={o.rx} ry={o.ry} stroke={`rgba(248,247,243,${o.alpha})`} />
+          {ORB.map((o, i) => (
+            <g key={`orb${i}`} transform={`translate(${ST.cx} ${ST.cy}) rotate(${o.rot})`}>
+              <ellipse data-eco-orbit rx={o.rx} ry={o.ry} stroke={`rgba(248,247,243,${o.alpha})`} strokeWidth={STROKE_W} />
               {DOTS.filter((d) => d.orbit === i).map((d, j) => (
                 <circle
                   key={j}
@@ -298,10 +393,10 @@ export function AlgarveEcosystem() {
           ))}
           {/* Anker-Satelliten der Kategorie-Karten (globale Koordinaten) */}
           {ECO_CATEGORIES.map((cat) => {
-            const pos = CHIP_POS[cat.key];
-            const p = orbitPoint(pos.orbit, pos.deg);
+            const pos = CP[cat.key];
+            const p = pt(pos.orbit, pos.deg);
             return (
-              <circle key={`anchor-${cat.key}`} data-eco-anchor cx={+p.x.toFixed(2)} cy={+p.y.toFixed(2)} r={3.4} fill={MAGENTA} style={{ filter: `drop-shadow(0 0 7px ${MAGENTA})` }} />
+              <circle key={`anchor-${cat.key}`} data-eco-anchor cx={+p.x.toFixed(2)} cy={+p.y.toFixed(2)} r={isMobile ? 4.6 : 3.4} fill={MAGENTA} style={{ filter: `drop-shadow(0 0 7px ${MAGENTA})` }} />
             );
           })}
         </svg>
@@ -312,29 +407,35 @@ export function AlgarveEcosystem() {
           src="/brand/banijay-sign-white.svg"
           alt=""
           draggable={false}
-          className="pointer-events-none absolute h-auto w-[5%] min-w-[42px]"
+          className="pointer-events-none absolute h-auto w-[5%] min-w-[42px] max-[767px]:!w-[14%]"
           style={{
             // toFixed: Browser normalisieren Style-Attribute auf wenige
             // Nachkommastellen → volle Float-Präzision = Hydration-Mismatch
-            left: `${(((STAGE.cx + 50) / 1300) * 100).toFixed(3)}%`,
-            top: `${((STAGE.cy / 640) * 100).toFixed(3)}%`,
+            left: `${(((ST.cx - VBX) / VBW) * 100).toFixed(3)}%`,
+            top: `${((ST.cy / VBH) * 100).toFixed(3)}%`,
             transform: "translate(-50%, -50%)",
           }}
         />
 
-        {/* Kategorien als Akkordeon-Cards (weißes Milchglas → aktiv Magenta) */}
-        {ECO_CATEGORIES.map((cat) => {
-          const pos = CHIP_POS[cat.key];
-          const p = orbitPoint(pos.orbit, pos.deg);
+        {/* DESKTOP: Kategorien als Chips auf den Orbits (weißes Milchglas → aktiv
+            Magenta). Auf Mobile stehen sie stattdessen als Akkordeonliste UNTER der
+            Grafik (siehe unten) — hier daher nur Desktop. */}
+        {!isMobile && ECO_CATEGORIES.map((cat) => {
+          const pos = CP[cat.key];
+          const p = pt(pos.orbit, pos.deg);
           const isActive = cat.key === active;
           const isHover = cat.key === hovered && !isActive;
           const lit = isActive || isHover; // magenta bei Klick ODER Hover
           // Responsive Anker: Randnähe → Card klappt nach innen auf (kein Clipping)
-          const fx = (p.x + 50) / 1300;
-          const fy = p.y / 640;
+          const fx = (p.x - VBX) / VBW;
+          const fy = p.y / VBH;
           // Untere Bahn (Wolfram 14.07.): die Card würde nach unten aus der Section
           // laufen → sie klappt stattdessen nach OBEN auf und bleibt immer lesbar.
-          const low = fy > 0.62;
+          // Mobile (Wolfram 17.07.): der Chip-Stack ist rein VERTIKAL — ein Auf-/Ab-
+          // Flip mitten im Stapel ließe zwei benachbarte Karten gegeneinander öffnen und
+          // sich in den Ecken berühren. Darum klappen auf Mobile ALLE einheitlich nach
+          // unten auf → die fy-Staffelung (≥0.12 Abstand) hält sie sauber getrennt.
+          const low = !isMobile && fy > 0.62;
           const anchorX = fx > 0.76 ? "-92%" : fx < 0.24 ? "-8%" : "-50%";
           const anchorY = low ? "calc(-100% - 10px)" : "12px";
           const originX = fx > 0.76 ? "92%" : fx < 0.24 ? "8%" : "50%";
@@ -348,7 +449,7 @@ export function AlgarveEcosystem() {
               onMouseLeave={() => setHovered((h) => (h === cat.key ? null : h))}
               style={{
                 left: `${(fx * 100).toFixed(3)}%`,
-                top: `${((p.y / 640) * 100).toFixed(3)}%`,
+                top: `${(fy * 100).toFixed(3)}%`,
                 // Karte hängt an ihrem Anker-Satelliten (oben oder unten je Bahnlage)
                 transform: `translate(${anchorX}, ${anchorY}) scale(${isActive ? 1.04 : 1})`,
                 transformOrigin: `${originX} ${originY}`,
@@ -445,6 +546,80 @@ export function AlgarveEcosystem() {
           );
         })}
       </div>
+
+      {/* MOBILE-AKKORDEON (Wolfram 17.07., 2. Runde): unter der Satellitengrafik
+          erscheinen die Rubriken als Liste, jede Zeile per Tap aufklappbar. Zeilen
+          kommen beim Scrollen sukzessive herein (data-eco-acc-row · Stagger im
+          Mobile-Timeline). Heike: keine runden Ecken. Trennlinien zwischen den Zeilen
+          bleiben (Wolfram 17.07.: helfen beim Unterscheiden der Rubriken). */}
+      {isMobile && (
+        <div className="mx-auto mt-7 w-full max-w-[560px] px-[6vw]">
+          {ECO_CATEGORIES.map((cat) => {
+            const isActive = cat.key === active;
+            return (
+              <div
+                key={cat.key}
+                data-eco-acc-row
+                className="border-t last:border-b"
+                style={{ borderColor: "rgba(248,247,243,0.16)" }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActive(isActive ? null : cat.key)}
+                  aria-expanded={isActive}
+                  className="flex w-full items-center gap-3 py-3.5 text-left text-[1.15rem] font-semibold uppercase tracking-[0.12em]"
+                  style={{ fontFamily: SHARP, color: isActive ? MAGENTA : "rgba(248,247,243,0.92)", cursor: "pointer", background: "transparent" }}
+                >
+                  {cat.label}
+                  <span
+                    aria-hidden
+                    className="ml-auto text-[1.2em]"
+                    style={{ opacity: 0.6, color: isActive ? MAGENTA : PAPER, transform: isActive ? "rotate(45deg)" : "none", transition: "transform .3s, color .3s" }}
+                  >
+                    +
+                  </span>
+                </button>
+                {/* Companies als CTAs (echte Website-Links, sonst Text) */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: isActive ? "1fr" : "0fr",
+                    transition: "grid-template-rows .42s cubic-bezier(.2,.8,.2,1)",
+                  }}
+                >
+                  <ul className="m-0 min-h-0 list-none overflow-hidden p-0">
+                    <div className="flex flex-col gap-0.5 pb-4 pt-0.5">
+                      {cat.companies.map((c) => (
+                        <li key={c.name} className="leading-tight">
+                          {c.url ? (
+                            <a
+                              href={c.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-1 py-[3px] text-[1rem] no-underline"
+                              style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500 }}
+                            >
+                              <span className="relative">
+                                {c.name}
+                                <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" style={{ background: PAPER }} />
+                              </span>
+                              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+                            </a>
+                          ) : (
+                            <span className="inline-block py-[3px] text-[1rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
+                              {c.name}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </div>
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

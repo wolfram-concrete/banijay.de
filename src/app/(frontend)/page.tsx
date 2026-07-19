@@ -49,7 +49,11 @@ export default function HomePage() {
         {/* DAS ÖKOSYSTEM (Task #54) — die offizielle Coopetition-Orbit-Grafik als
             lebendes Modul: Statement sagt „Netzwerk", diese Section ZEIGT es,
             das Bento darunter liefert die Companies im Detail. */}
-        <div className="relative z-[1]" style={{ marginTop: "-100vh" }}>
+        {/* Desktop: Ökosystem liegt via -100vh-Overlap HINTER dem Statement (Exchange
+            in place, gepinnt). Mobile (Wolfram 17.07.): KEIN Overlap — das Ökosystem
+            pinnt dort nicht, der -100vh würde Grafik+Akkordeon sonst unter das Statement
+            ziehen (Text schimmert durch). Darum fließt es auf Mobile normal darunter. */}
+        <div className="relative z-[1] md:-mt-[100vh]">
           <AlgarveEcosystem />
         </div>
       </div>
