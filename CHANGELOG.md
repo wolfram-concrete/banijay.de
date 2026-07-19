@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile: horizontaler Overlauf behoben (17.07.)
+- Auf schmalen Viewports entstand rechts ein ~70 px breiter neutraler Streifen; Logo/Navi
+  (fixed) richteten sich am Scrollbereich (460) statt am Viewport (390) aus.
+- Ursache: mehrere Module sind ABSICHTLICH breiter als 100vw — v. a. die Hero-Kurvenringe
+  (bis 136vw, damit die Bögen an beiden Rändern off-screen laufen) — lagen aber in einer
+  Vorfahrenkette ohne horizontales Clipping.
+- Fix: `overflow-x-clip` auf `main` im `FrontendLayout` (gilt für alle Seiten). Bewusst
+  `clip`, nicht `hidden`: clip erzeugt keinen Scroll-Container und bricht daher die vielen
+  `position:sticky`-/GSAP-Pin-Module NICHT. Horizontal-Slider (Career/Marquee) haben eigene
+  overflow-Container und bleiben unberührt.
+- Verifiziert: Überlauf 0 auf Home/About/News/Career/Contact (mobil) und Desktop; Navi
+  bündig bei 390; alle 5 GSAP-pin-spacer intakt (einer aktiv `fixed`).
+- (Hinweis fürs Team: Das Vorschau-Pane rendert schmale Viewports nicht randlos — der
+  schwarze Streifen im Screenshot ist Werkzeug-Hintergrund, kein Layout-Overlauf. Immer per
+  DOM gegenprüfen.)
+
 ### Ökosystem-URLs: fehlende Company-Links nachgetragen (17.07.)
 - Abgleich aller drei Quellen, in denen Company-Links leben: `companyCards.ts`
   (belegte `externalUrl`), Bento (`companiesDirectory.ts`), Ökosystem-Grafik
