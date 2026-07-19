@@ -222,18 +222,15 @@ export function AlgarveEditorial() {
             schiebt sich die weiße Box als Parallax darunter hervor. */}
         <div
           data-ed-story-mask
-          className="mx-auto w-full overflow-hidden"
+          // Andock-marginTop (Andocken an die 100vh-Bühne) NUR Desktop (md:) — auf Mobile
+          // ist die Sticky-Scene content-hoch, dort würde die Formel die Box hochziehen und
+          // ins Akkordeon schieben. Mobil daher normaler Abstand (mt-10). Am Ende fährt die
+          // Box gescrubbt von unten heraus (yPercent -100 → 0, siehe useGSAP).
+          className="mx-auto mt-10 w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
           style={{
             maxWidth: "1920px",
             paddingLeft: "16px",
             paddingRight: "16px",
-            // ECHTES ANDOCKEN (Wolfram 16.07.): Die Bühne der Sticky-Scene ist 100vh hoch
-            // und zentriert ihren Körper (clamp(680px, 82vh, 1000px)) → darunter blieben
-            // (100vh − Körperhöhe)/2 Leerraum stehen, zuletzt 132px. Genau diesen Betrag
-            // holen wir zurück, mit DERSELBEN clamp-Formel wie die Körperhöhe → die Maske
-            // sitzt exakt auf der Unterkante des oberen Moduls, und die weiße Box fährt
-            // beim Scrollen direkt daraus hervor.
-            marginTop: "calc((clamp(680px, 82vh, 1000px) - 100vh) / 2)",
           }}
         >
           <div

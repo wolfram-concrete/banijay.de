@@ -38,10 +38,9 @@ const FOCUS: Record<string, string> = {
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
   "/people/aylin-firat.jpg": "50% 18%",
-  // Elena Kats (Wolfram 19.07.) — neues Ganzkörper-Sitzfoto (Kopf ~24–29 % der Bildhöhe),
-  // weiter unten als die engen Headshots → Fokus tiefer, damit der Kopf oben sitzt und
-  // weniger Weißraum darüber bleibt. Ggf. am Gerät nachziehen.
-  "/people/elena-kats.jpg": "50% 27%",
+  // Elena Kats (Wolfram 19.07.) — Ganzkörper-Sitzfoto jetzt ENG auf Kopf/Oberkörper
+  // beschnitten (Kopf ~28 % der Bildhöhe, wie die übrigen Portraits) → gleicher Top-Bias.
+  "/people/elena-kats.jpg": "50% 18%",
   // Michael Gaul (Wolfram 17.07.) — echtes Portrait, ersetzt lead-5.jpg. Nach derselben
   // Regel wie Aylin beschnitten (siehe leadership.ts), daher derselbe Top-Bias.
   "/people/michael-gaul.jpg": "50% 18%",
@@ -333,9 +332,8 @@ export function AlgarveFounders({
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        {/* Mobil ebenfalls kleiner + linksbündig (Wolfram 16.07.): 11vw → 7.4vw, das ist
-            die Größe der mobilen Statement-Typo. */}
-        <h2 data-team-head className="m-0 mb-8 text-left uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.4vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "122%" }}>
+        {/* Mobil MITTELACHSIG (Wolfram 19.07.): war linksbündig, jetzt zentriert. 7.4vw. */}
+        <h2 data-team-head className="m-0 mb-8 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.4vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "122%" }}>
           <TeamHeadWords text="Unser Team" />
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>

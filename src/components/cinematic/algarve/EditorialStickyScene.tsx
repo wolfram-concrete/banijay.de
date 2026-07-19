@@ -148,8 +148,32 @@ export function EditorialStickyScene() {
       const nums = gsap.utils.toArray<HTMLElement>("[data-fact-num]");
 
       if (!desktop || reduce) {
-        gsap.set([wrapEl, asideEl, cards], { clearProps: "all" });
+        // NUR die GSAP-gesetzten Layout-/Sichtbarkeits-Props zurücksetzen — NICHT "all",
+        // das wischte den von React gesetzten Karten-`background` (Magenta/transparent) weg
+        // und die Farbkodierung fehlte auf Mobile komplett (Wolfram 19.07.: „Farbkodierung
+        // wie Desktop berücksichtigen").
+        gsap.set([wrapEl, asideEl, cards], { clearProps: "opacity,visibility,transform,width,x,xPercent,y" });
         nums.forEach((el, i) => (el.textContent = fmt(FACTS[i].value)));
+        // MOBILE (Wolfram 19.07.): das sticky Bild „zoomt zusammen" — seine Höhe schrumpft
+        // gescrubbt beim Scrollen (104vw → 62vw), sobald es unter der Nav klebt. Dadurch
+        // rücken die Akkordeons darunter ins Bild. Kein Pin (auf Mobile heikel), nur Sticky+Scrub.
+        if (!reduce && !desktop && section.current) {
+          gsap.fromTo(
+            wrapEl,
+            { height: "104vw" },
+            {
+              height: "62vw",
+              ease: "none",
+              scrollTrigger: {
+                trigger: section.current,
+                start: "top 72px",
+                end: "+=32%",
+                scrub: 0.5,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        }
         return;
       }
 
@@ -202,10 +226,16 @@ export function EditorialStickyScene() {
       >
         <div className="mx-auto w-full" style={{ maxWidth: "1920px", paddingLeft: "16px", paddingRight: "16px" }}>
           <div className="relative w-full overflow-visible max-md:!h-auto" style={{ height: "clamp(680px, 82vh, 1000px)" }}>
-            {/* Bild-Wrapper (Desktop absolut, Mobile normaler Block) */}
+            {/* Bild-Wrapper. Desktop: absolut (schrumpft nach links). Mobile (Wolfram 19.07.):
+                STICKY unter der Nav (top 72px = knapp unterm B-Logo), höher (104vw, damit die
+                Quote unten drauf passt); beim Scrollen „zoomt" es zusammen (Höhe schrumpft
+                gescrubbt, siehe useGSAP) und gibt die Akkordeons darunter frei. */}
             <div
               ref={imgWrap}
-              className="absolute left-0 top-0 h-full w-full overflow-hidden max-md:!static max-md:!h-[62vw] max-md:!w-full"
+              // Höhe OHNE !important (h-[104vw] mobil, md:h-full Desktop), damit der
+              // Mobile-Zoom-Scrub sie per Inline-Style animieren kann (!important ließe sich
+              // von GSAP nicht überschreiben). Position/Top/z bleiben mobil per !override.
+              className="absolute left-0 top-0 h-[104vw] w-full overflow-hidden md:h-full max-md:!sticky max-md:!top-[72px] max-md:!z-[3] max-md:!w-full"
             >
               <img
                 src="/editorial/marcus-wolter.jpg"
@@ -221,7 +251,9 @@ export function EditorialStickyScene() {
               />
               {/* Marcus-Quote unten links auf dem Bild (weiß) — Wolfram 15.07. */}
               <blockquote
-                className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw]"
+                // Mobile (Wolfram 19.07.): breitere Laufweite (90 % statt 64 %) → der
+                // Quote-Text bricht auf weniger Zeilen um und ragt nicht mehr so hoch ins Bild.
+                className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw] max-[767px]:!max-w-[90%]"
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(46rem, 64%)", color: "#f8f7f3" }}
               >
                 <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
@@ -238,9 +270,13 @@ export function EditorialStickyScene() {
                 Die Spalte schließt UNTEN BÜNDIG MIT DEM FOTO ab (Wolfram 17.07.) — daher
                 h-full und Kacheln mit flex-grow. Wie der Restplatz verteilt wird, ohne
                 dass er als Loch unter der Zahl landet: siehe Kachel-Kommentar. */}
+            {/* Fakten-Akkordeon. Desktop: rechte Spalte. Mobile (Wolfram 19.07.): unter dem
+                sticky Bild ein SCROLLBARES Panel fester Höhe (~52vh, overflow-y) → die
+                Rubriken lassen sich durchscrollen, die Section wird nicht endlos lang.
+                Farbkodierung (abwechselnd Magenta/transparent, TONE) bleibt wie Desktop. */}
             <div
               ref={aside}
-              className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-4 max-md:!h-auto max-md:!w-full"
+              className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-0 max-md:!h-[52vh] max-md:!w-full max-md:!overflow-y-auto max-md:!overscroll-contain"
               style={{ width: `${ASIDE_W}px` }}
             >
               {FACTS.map((f, i) => {
@@ -270,7 +306,10 @@ export function EditorialStickyScene() {
                     // overflow-hidden-Wrapper für die Aufklapp-Animation.
                     // justify-center: der Restplatz aus flex-grow verteilt sich über UND unter
                     // den Inhalt, wirkt also als Polster statt als Loch unter der Zahl.
-                    className="flex flex-col justify-center text-left max-md:!min-h-[8.5rem]"
+                    // Mobile (Wolfram 19.07.): Karten kompakt — kein flex-grow (füllte im
+                    // Scroll-Panel die Höhe auf) und kein min-height → geschlossen nur so hoch
+                    // wie Ziffer + Label. Desktop behält flex-grow (bündig mit dem Foto).
+                    className="flex flex-col justify-center text-left max-md:!min-h-0 max-md:!flex-none"
                     style={{
                       // flexBasis:auto = Inhaltshöhe als Sockel, flexGrow:1 = Restplatz der
                       // Spalte gleichmäßig obendrauf → Block endet exakt an der Fotokante.
