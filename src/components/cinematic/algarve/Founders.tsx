@@ -38,7 +38,10 @@ const FOCUS: Record<string, string> = {
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
   "/people/aylin-firat.jpg": "50% 18%",
-  "/people/elena-kats.jpg": "50% 18%",
+  // Elena Kats (Wolfram 19.07.) — neues Ganzkörper-Sitzfoto (Kopf ~24–29 % der Bildhöhe),
+  // weiter unten als die engen Headshots → Fokus tiefer, damit der Kopf oben sitzt und
+  // weniger Weißraum darüber bleibt. Ggf. am Gerät nachziehen.
+  "/people/elena-kats.jpg": "50% 27%",
   // Michael Gaul (Wolfram 17.07.) — echtes Portrait, ersetzt lead-5.jpg. Nach derselben
   // Regel wie Aylin beschnitten (siehe leadership.ts), daher derselbe Top-Bias.
   "/people/michael-gaul.jpg": "50% 18%",

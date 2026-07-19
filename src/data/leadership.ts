@@ -51,13 +51,9 @@ export const LEADERSHIP: Leader[] = [
   // Elena Kats (Wolfram 17.07.) — neue, zwölfte Person, „als Letzte von den Frauen"
   // eingefügt; die Männer rücken dadurch einen Index nach hinten. Dadurch ist die
   // mittlere Reihe weiter mit den 5 bisherigen Frauen voll, Elena eröffnet die untere
-  // Reihe (Grid jetzt 3 / 5 / 4).
-  // NAME + ROLLE BEWUSST OFFEN (Wolfram: „schreib erst mal keinen Namen dazu … die
-  // Position kenne ich nicht"). Nachname „Kats" ist bekannt, wird aber vorerst NICHT
-  // angezeigt — leere Strings lassen die Meta-Zeile leer. VOR LIVEGANG nachtragen.
-  // Beschnitt nach der 32-%-Regel der unteren/mittleren Reihe (Kachel 142×138):
-  // Ausschnitt 2675×3566 ab 1430,1283 (Kopf oben 1711, Kinn 2852, Gesichtsmitte x 2767).
-  { name: "", role: "", img: "/people/elena-kats.jpg" },
+  // Reihe (Grid jetzt 3 / 5 / 4). Name + Rolle nachgetragen (Wolfram 19.07.), neues
+  // Portrait (Elena.jpg → 900×1200) ausgetauscht.
+  { name: "Elena Kats", role: "Director Finance Projects & Business Systems", img: "/people/elena-kats.jpg" },
 
   // ── Untere Reihe (Index 9–11) ─────────────────────────────────────────────
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.

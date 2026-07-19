@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { COMPANIES_DIRECTORY } from "@/data/companiesDirectory";
 import { ECO_CATEGORIES } from "@/data/ecosystem";
+import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -225,6 +226,38 @@ export function AlgarveCompaniesBento() {
     { scope: root, dependencies: [rubrik], revertOnUpdate: true },
   );
 
+  // Mobile-Zwischenheadline „40+ / Companies & Labels" (Wolfram 19.07.): GENAU die
+  // Headline-Gestaltung von „About Banijay" (Editorial.animHead) — gescrubbte Konvergenz
+  // (obere Zeile von -15vh, untere von +15vh, scrub 0.8) + einblendender Staub. Das gibt
+  // der Section den fehlenden Parallax-Effekt zurück. Eigener Hook OHNE rubrik-Dependency,
+  // damit die Headline nicht bei jedem Filterwechsel neu aufsetzt.
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!window.matchMedia("(max-width: 767px)").matches) return; // nur Mobile-Headline
+      const first = root.current?.querySelector<HTMLElement>("[data-bento-40-first]");
+      const last = root.current?.querySelector<HTMLElement>("[data-bento-40-last]");
+      const dust = root.current?.querySelector<HTMLElement>("[data-bento-40-dust]");
+      if (!first || !last) return;
+      const vh = window.innerHeight;
+      const htl = gsap.timeline({
+        scrollTrigger: { trigger: "[data-bento-40-head]", start: "top bottom", end: "bottom 90%", scrub: 0.8 },
+      });
+      htl
+        .from(first, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
+        .from(last, { y: 0.15 * vh, ease: "none", duration: 1 }, 0);
+      if (dust) {
+        htl.fromTo(
+          dust,
+          { autoAlpha: 0, scale: 0.55, transformOrigin: "50% 50%" },
+          { autoAlpha: 0.7, scale: 1, ease: "power2.out", duration: 0.8 },
+          0.1,
+        );
+      }
+    },
+    { scope: root },
+  );
+
   // Kachel-Videos: nur sichtbare spielen (40 parallele Decodes vermeiden).
   useEffect(() => {
     const vids = Array.from(root.current?.querySelectorAll<HTMLVideoElement>("[data-bento-video]") ?? []);
@@ -247,13 +280,56 @@ export function AlgarveCompaniesBento() {
       {/* FULL SIZE (Wolfram 13.07.): kein maxWidth-Container mehr — die Liste
           läuft full-bleed mit dem 2vw-Randmaß der übrigen Module. Oben knapp:
           die AnimatedHeading davor bringt ihren eigenen Raum mit. */}
-      <div className="w-full pb-24 pt-4 lg:pb-32 lg:pt-6" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+      <div className="w-full pb-24 pt-4 lg:pb-32 lg:pt-6 max-[767px]:!pt-14" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
         {/* Kein eigener Header mehr (Wolfram 13.07.): die Headline kommt als
             großes AnimatedHeading-Panel direkt VOR dieser Section (page.tsx). */}
 
-        {/* Rubrik-Filter (Ökosystem-Kategorien) — Chip-Optik wie News-Filter,
-            mittelachsig überm Grid */}
-        <div className="mb-8 flex flex-wrap justify-center gap-2.5 md:gap-3">
+        {/* Mobile-Zwischenheadline (Wolfram 19.07.): „40+ Companies & Labels" — auf
+            Desktop liefert die Ökosystem-Swap-Phase diese Headline; auf Mobile ist der
+            Swap aus, darum hier als eigene Headline über der Company-Video-Section.
+            Nur Mobile (md:hidden). */}
+        <div
+          data-bento-40-head
+          className="relative mb-4 mt-10 flex flex-col items-center justify-center overflow-clip text-center md:hidden"
+          style={{ minHeight: "min(34vh, 320px)" }}
+        >
+          {/* Staub-Ebene wie hinter „About Banijay" (data-ed-head-dust) — blendet
+              gescrubbt ein, maskiert an den Kanten. */}
+          <div
+            data-bento-40-dust
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0"
+            style={{
+              maskImage: "linear-gradient(transparent 0%, black 14%, black 86%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(transparent 0%, black 14%, black 86%, transparent 100%)",
+            }}
+          >
+            <div className="absolute inset-0">
+              <DustLayer boost={0.85} center={{ x: 0.5, y: 0.5 }} radius={0.6} />
+            </div>
+          </div>
+          {/* Typo 1:1 wie „About Banijay": uppercase, letterSpacing -0.02em, lh 112% */}
+          <h2
+            className="relative m-0"
+            style={{ fontFamily: SHARP, fontWeight: 500, color: PAPER, textTransform: "uppercase", letterSpacing: "-0.02em", lineHeight: 1.05 }}
+          >
+            {/* lineHeight UNITLESS (1.05): skaliert mit der jeweiligen Span-Schriftgröße.
+                „112%" auf dem h2 (ohne eigene font-size) hätte 18px-Zeilenboxen ergeben →
+                die 56px-„40+"-Glyphen wären übergelaufen und hätten die Caption überlagert. */}
+            <span data-bento-40-first className="block" style={{ fontSize: "15vw" }}>40+</span>
+            {/* Mobile-Dreizeiler (Wolfram 19.07.): „Companies &" und „Labels" auf zwei
+                Zeilen umbrechen → 40+ / COMPANIES & / LABELS. */}
+            <span data-bento-40-last className="block" style={{ fontSize: "7vw", marginTop: "0.15em" }}>
+              Companies &amp;<br />Labels
+            </span>
+          </h2>
+        </div>
+
+        {/* Rubrik-Filter (Ökosystem-Kategorien). Desktop: Chip-Buttons (Optik wie
+            News-Filter). Mobile (Wolfram 19.07.): platzsparend — KEINE Buttons, sondern
+            unterstrichene Text-Hyperlinks sauber nebeneinander (aktiv magenta+unterstrichen),
+            damit die 8 Rubriken in ~2 Zeilen passen. */}
+        <div className="mb-8 flex flex-wrap justify-center gap-2.5 md:gap-3 max-[767px]:!mb-6 max-[767px]:!gap-x-4 max-[767px]:!gap-y-1">
           {[{ key: "alle", label: "Alle" }, ...ECO_CATEGORIES.map((c) => ({ key: c.key, label: c.label }))].map((r) => {
             const isActive = r.key === rubrik;
             return (
@@ -262,10 +338,10 @@ export function AlgarveCompaniesBento() {
                 type="button"
                 onClick={() => setRubrik(r.key)}
                 aria-pressed={isActive}
-                className={`inline-flex items-center gap-2 rounded-[6px] border px-5 py-2.5 text-sm font-medium transition-colors duration-200 max-[767px]:!px-4 max-[767px]:!py-2 max-[767px]:!text-[3.6vw] ${
+                className={`inline-flex items-center gap-2 rounded-[6px] border px-5 py-2.5 text-sm font-medium transition-colors duration-200 max-[767px]:!rounded-none max-[767px]:!border-0 max-[767px]:!bg-transparent max-[767px]:!px-0 max-[767px]:!py-0.5 max-[767px]:!text-[3.8vw] ${
                   isActive
-                    ? "border-[#ff4370] bg-[#ff4370] text-[#f8f7f3]"
-                    : "border-[rgba(248,247,243,0.18)] bg-transparent text-[#f8f7f3] hover:border-[#f8f7f3]"
+                    ? "border-[#ff4370] bg-[#ff4370] text-[#f8f7f3] max-[767px]:!bg-transparent max-[767px]:!text-[#ff4370] max-[767px]:!underline max-[767px]:!underline-offset-[5px] max-[767px]:!decoration-[1.5px]"
+                    : "border-[rgba(248,247,243,0.18)] bg-transparent text-[#f8f7f3] hover:border-[#f8f7f3] max-[767px]:!text-[rgba(248,247,243,0.72)] max-[767px]:!no-underline"
                 }`}
                 style={{ fontFamily: SHARP }}
               >

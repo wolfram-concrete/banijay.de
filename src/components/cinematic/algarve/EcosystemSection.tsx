@@ -216,8 +216,12 @@ export function AlgarveEcosystem() {
         gsap.set("[data-eco-orbit]", { autoAlpha: 0, scale: 0.62, transformOrigin: "50% 50%" });
         gsap.set("[data-eco-dot], [data-eco-anchor], [data-eco-b]", { autoAlpha: 0 });
         gsap.set("[data-eco-acc-row]", { autoAlpha: 0, y: 14 });
+        // EINMALIG (Wolfram 17.07., 5. Runde): once statt toggleActions. Vorher blendete
+        // das Reveal beim Zurück-/Weiterscrollen wieder aus (reverse) → wirkte „geblockt",
+        // Grafik verschwand, Sprünge. Jetzt spielt es genau EINMAL beim Reinscrollen und
+        // bleibt danach dauerhaft stehen — die Satellitengrafik ist ab dann immer sichtbar.
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: root.current, start: "top 72%", toggleActions: "play none none reverse" },
+          scrollTrigger: { trigger: root.current, start: "top 80%", once: true },
         });
         tl.to("[data-eco-reveal]", { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0)
           .to("[data-eco-orbit]", { autoAlpha: 1, scale: 1, duration: 0.6, stagger: 0.06, ease: "power2.out" }, 0.05)
@@ -225,6 +229,19 @@ export function AlgarveEcosystem() {
           .to("[data-eco-dot], [data-eco-anchor]", { autoAlpha: 1, duration: 0.35 }, 0.42)
           // die Rubriken kommen einzeln nach (sukzessive „zum Vorschein")
           .to("[data-eco-acc-row]", { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.1, ease: "power2.out" }, 0.55);
+
+        // PARALLAX (Wolfram 19.07.): die Section wirkte nach dem Wegfall des Pins sehr
+        // still. Die Grafik driftet jetzt gescrubbt gegen den Scroll (eigener Wrapper,
+        // damit die Reveal-Transform der Bühne unberührt bleibt) → Tiefe zurück.
+        gsap.fromTo(
+          "[data-eco-parallax]",
+          { y: -42 },
+          {
+            y: 42,
+            ease: "none",
+            scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true },
+          },
+        );
         return;
       }
 
@@ -349,6 +366,10 @@ export function AlgarveEcosystem() {
       {/* Der Teller: zentriert, mit vertikalen Gyroskop-Ringen ums Zentrum. Größer
           skaliert (Wolfram 14.07.): engeres viewBox (weniger Leerrand → Grafik füllt
           den Raum), höheres max-width auf großen Screens. */}
+      {/* Parallax-Wrapper (Wolfram 19.07.): auf Mobile driftet die Grafik gescrubbt gegen
+          den Scroll → Tiefe/Parallax. Eigener Wrapper, damit die Reveal-Transform auf der
+          INNEREN Bühne bleibt (kein doppelter transform-Writer). */}
+      <div data-eco-parallax>
       <div
         data-eco-reveal
         className="relative mx-auto mt-8 max-[767px]:!mt-4"
@@ -545,6 +566,7 @@ export function AlgarveEcosystem() {
             </div>
           );
         })}
+      </div>
       </div>
 
       {/* MOBILE-AKKORDEON (Wolfram 17.07., 2. Runde): unter der Satellitengrafik
