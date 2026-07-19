@@ -15,10 +15,14 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   geprüft, danach als klickbare `<a>`-Links auf Home und About verifiziert.
 - **Bewusst NICHT eingetragen:** Potatohead Pictures — die einzige belegte „URL" ist
   `endemolshine.de/ueber-uns/team/`, eine EndemolShine-Team-Seite, kein Company-Auftritt.
-- **Offen (Wolfram vorgelegt), zwei Quellen zeigen auf verschiedene Ziele:**
-  - Banijay Germany Live: Ökosystem `brainpool-live.de` vs. Card `banijaygermanylive.de` —
-    beide leben, welche gilt?
-  - Good Humor: Ökosystem `goodhumor.de` (echte Seite) vs. Card banijay.de-Presseartikel.
+- **Zwei Quellen-Konflikte geklärt (Wolfram 17.07.):**
+  - Banijay Germany Live hat eine eigene Domain → beide Ökosystem-Vorkommen (Entertainment
+    + Live) von `brainpool-live.de` auf `banijaygermanylive.de` korrigiert.
+  - Good Humor → `goodhumor.de`: Das Ökosystem war bereits richtig; die **Bento-Card**
+    (`companyCards.ts`) zeigte auf einen alten banijay.de-Presseartikel — auf `goodhumor.de`
+    umgestellt, veraltete `externalUrlNote` („keine eigenständige Website") entfernt.
+  - (Der News-Slug `brainpool-live-...` in `news.ts` ist ein Beitragsname, keine
+    Company-URL — bleibt.)
 - Nicht angetastet: ~9 Companies mit nur kosmetisch abweichender Schreibweise derselben
   Domain (`www`/`https`/Slash). Übrige unverlinkte Ökosystem-Einträge haben keine belegte
   URL → bleiben nach Projektregel unverlinkt.

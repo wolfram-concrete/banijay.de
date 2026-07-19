@@ -53,7 +53,7 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     label: "Entertainment",
     companies: [
       { name: "Banijay Productions Germany", url: "https://banijayproductions.de/" },
-      { name: "Banijay Germany Live", url: "https://www.brainpool-live.de" },
+      { name: "Banijay Germany Live", url: "https://www.banijaygermanylive.de/" },
       { name: "Endemol Shine Germany", url: "https://www.endemolshine.de/" },
       // Brainpool wieder aufgenommen (Wolfram 16.07.) — der Kundenwunsch vom 13.07.
       // ist revidiert. „Brainpool Pictures" bleibt vorerst raus.
@@ -81,7 +81,7 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Cologne Comedy Festival", url: "https://www.comedy.cologne/" },
       { name: "MyShow", url: "https://myshow.de/" },
       { name: "Brainpool", url: "https://brainpool.de/" },
-      { name: "Banijay Germany Live", url: "https://www.brainpool-live.de" },
+      { name: "Banijay Germany Live", url: "https://www.banijaygermanylive.de/" },
       { name: "NightWash Club", url: "https://nightwash-club.de/" },
       // war „OGPP" (Abkürzung, ohne Link) → richtiger Company-Name + Website (Wolfram 16.07.)
       { name: "Only Good People", url: "https://ogp.rocks/" },

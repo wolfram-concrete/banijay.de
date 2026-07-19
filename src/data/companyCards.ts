@@ -127,9 +127,10 @@ export const COMPANY_CARDS: CompanyCard[] = [
     tags: ["Comedy", "Fiction", "Writers Room"],
     knownFor: ["Comedy-Fiction", "Sitcoms", "Sketch-Formate"],
     context: "Label für scripted Humor innerhalb der Banijay-Familie.",
-    externalUrl:
-      "https://banijay.de/banijay-germany-und-stephan-denzer-gr%C3%BCnden-fiction-label-%E2%80%9Egood-humor%E2%80%9C.html",
-    externalUrlNote: "Keine eigenständige Website gefunden; CTA führt zur Banijay-Germany-Info.",
+    // Eigene Company-Domain (Wolfram 17.07.) — löst den alten banijay.de-Presseartikel
+    // ab („…Stephan Denzer gründen Fiction-Label Good Humor…"). goodhumor.de gibt 200
+    // und ist auch im Ökosystem (ecosystem.ts) hinterlegt.
+    externalUrl: "https://goodhumor.de/",
     image: "/companies/good-humor.jpg",
     imageAlt: "Good Humor – Teaserbild",
   },
