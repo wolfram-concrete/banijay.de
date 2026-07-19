@@ -25,7 +25,29 @@ export function SmoothScroll() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Expliziter, SYNCHRONER ScrollTrigger.refresh() bei Breiten-Resize (Wolfram 17.07.).
+    // Grund: mehrere Module sind gepinnt; beim Pinnen fixiert ScrollTrigger Breite/Position
+    // des Elements auf die Messung zum Pin-Zeitpunkt. Ändert sich danach die Viewport-
+    // BREITE (Preview Desktop↔Mobile umschalten, Geräte-Rotation), bleibt der Pin auf der
+    // alten Breite stehen → die Section erscheint seitlich eingezogen (Rahmen links/rechts).
+    // ScrollTriggers eigener Resize-Handler refresht zwar auch, aber deferred über einen
+    // rAF-Tick — und im eingeklappten/inaktiven Tab friert rAF ein, sodass der Refresh nie
+    // läuft. Ein direkter synchroner refresh() umgeht das. Nur auf BREITEN-Änderung, nicht
+    // auf jede Höhen-Änderung (mobile Adressleiste ein/aus), damit es nicht bei jedem Scroll
+    // feuert. Debounced.
+    let letzteBreite = window.innerWidth;
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      if (window.innerWidth === letzteBreite) return; // reine Höhenänderung ignorieren
+      letzteBreite = window.innerWidth;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
+      window.removeEventListener("resize", onResize);
+      clearTimeout(resizeTimer);
       gsap.ticker.remove(raf);
       lenis.destroy();
     };

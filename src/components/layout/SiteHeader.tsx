@@ -298,10 +298,17 @@ export function SiteHeader() {
         // Geschlossen liegt die Nav UNTER dem Footer (z-45 < Footer z-50) — am Seiten-
         // ende verschwindet die Top-Nav also hinter dem Footer (der hat eigene Links).
         // Sobald das Menü geöffnet wird, springt die Nav samt Overlay über alles (z-201).
-        className={`site-header-root fixed inset-x-0 top-0 bg-transparent ${open ? "z-[201]" : "z-[45]"}`}
-        style={{ paddingTop: "1.5vw", paddingBottom: "1.5vw" }}
+        // paddingTop auf Mobile deutlich größer (Wolfram 17.07.): 1.5vw = nur ~6px auf dem
+        // Telefon, das B/Logo klebte an der oberen Kante. Mobile 6vw (~23px), symmetrisch
+        // zum horizontalen 6vw-Rand → das B sitzt in einer gleichmäßigen Ecke. Desktop
+        // unverändert 1.5vw. (Inline-Padding raus, weil `!`-Klassen ein Inline-Style nicht
+        // überschreiben können.)
+        className={`site-header-root fixed inset-x-0 top-0 bg-transparent pt-[1.5vw] pb-[1.5vw] max-[767px]:!pt-[6vw] ${open ? "z-[201]" : "z-[45]"}`}
       >
-        <div className="flex items-center justify-between max-[767px]:!px-[4vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+        {/* Horizontaler Rand als EIN Wert für die ganze Menü-„Grid"-Spalte (Wolfram 17.07.):
+            Nav-Bar und Overlay nutzen mobil denselben 6vw-Rand, damit der Abstand Logo→links
+            exakt dem Abstand Nav-Wort→rechts entspricht. Desktop 2vw. */}
+        <div className="flex items-center justify-between px-[2vw] max-[767px]:!px-[6vw]">
           <Link
             href="/"
             onClick={() => {
@@ -406,7 +413,11 @@ export function SiteHeader() {
         className="fixed inset-0 z-[200] overflow-hidden transition-[height] duration-500 ease-in-out"
         style={{ height: open ? "100vh" : 0, background: CORAL }}
       >
-        <div style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
+        {/* Derselbe 6vw-Rand wie die Nav-Bar (Wolfram 17.07.): so bilden Logo, Nav-Wörter,
+            Social-Buttons und Podcast-Widget eine gemeinsame Grid-Spalte mit symmetrischem
+            Rand links/rechts. Vorher 2vw fix → Nav-Wörter klebten rechts, Social/Podcast
+            links an der Kante. Desktop bleibt 2vw. */}
+        <div className="px-[2vw] max-[767px]:!px-[6vw]">
           <div className="flex min-h-screen w-full flex-row-reverse items-start justify-between overflow-hidden pb-[3vw] pt-[9vw] max-[767px]:flex-col max-[767px]:gap-14 max-[767px]:overflow-auto max-[767px]:pb-20 max-[767px]:pt-28">
             {/* Große Links — rechtsbündig (auch auf Mobile; dort full-width, damit
                 items-end wirklich an den rechten Viewport-Rand schiebt). */}

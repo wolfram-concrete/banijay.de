@@ -5,6 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile: Menü-Overlay als einheitliches Grid + Logo-Abstand (17.07.)
+- **B/Logo oben** rückte auf Mobile von der oberen Kante ab: Nav-Bar `paddingTop`
+  1.5vw (~6px) → mobil **6vw (~23px)**. Desktop unverändert. (Inline-Padding auf Klassen
+  umgestellt, weil `!`-Klassen ein Inline-Style nicht überschreiben.)
+- **Menü-Overlay: EIN Rand-Wert für alles.** Vorher hatte die Nav-Bar 4vw, das Overlay
+  2vw → Logo und Nav-Wörter lagen nicht auf einer Linie, Social/Podcast klebten an den
+  Kanten. Jetzt mobil durchgängig **6vw** für Nav-Bar UND Overlay → gemeinsame Grid-Spalte.
+  Gemessen: Logo links 23, HOME/ABOUT/NEWS/CAREER rechts je 23, Instagram/LinkedIn links 23,
+  Podcast-Widget 23/23 (vorher rechts abgeschnitten). Desktop bleibt 2vw.
+- (Der abgeschnittene Titel im Spotify-Widget ist dessen internes Verhalten — das iframe
+  selbst sitzt jetzt sauber im Raster.)
+
+### Mobile: gepinnte Sections nach Breiten-Resize (17.07.)
+- Nach einem Live-Breitenwechsel (Preview Desktop↔Mobile, Geräte-Rotation) erschienen
+  gepinnte Sections seitlich eingezogen (Rahmen links/rechts): ScrollTrigger fixiert beim
+  Pinnen die Breite auf den Messwert zum Pin-Zeitpunkt; sein eigener Resize-Refresh läuft
+  deferred über einen rAF-Tick, der im inaktiven Tab einfriert.
+- Fix (`SmoothScroll.tsx`): expliziter, SYNCHRONER `ScrollTrigger.refresh()` bei
+  Breiten-Resize (debounced; nur Breite, nicht Höhe → feuert nicht bei der mobilen
+  Adressleiste). Reproduziert (390→1440→390) und verifiziert: Ring-Container danach wieder
+  links 0 / breite = Viewport.
+
 ### Mobile: horizontaler Overlauf behoben (17.07.)
 - Auf schmalen Viewports entstand rechts ein ~70 px breiter neutraler Streifen; Logo/Navi
   (fixed) richteten sich am Scrollbereich (460) statt am Viewport (390) aus.
