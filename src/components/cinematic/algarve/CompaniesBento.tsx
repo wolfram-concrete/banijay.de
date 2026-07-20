@@ -191,6 +191,10 @@ REEL["endemolshine-germany"] = "/company-media/endemolshine-germany.mp4";
 // B&B Endemol Shine Switzerland (Wolfram 20.07.) — Showreel der Schweizer Formate,
 // Quelle 28s, Ausschnitt 2–12s. Trägt in einigen Einstellungen ein SRF-Logo.
 REEL["bb-endemol-shine"] = "/company-media/bb-endemol-shine.mp4";
+// Lucky Pics (Wolfram 20.07.) — „CATCH!"-Trampolin-Show. Quelle war eine MXF
+// (DV, 1440×1080 anamorph, SAR 4:3 / DAR 16:9); ffmpeg entzerrt beim Skalieren auf
+// 960×540 (setsar=1). Ausschnitt 4–14s, keine Schwarzphasen.
+REEL["lucky-pics"] = "/company-media/lucky-pics.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";

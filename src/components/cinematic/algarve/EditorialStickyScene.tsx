@@ -216,9 +216,13 @@ export function EditorialStickyScene() {
   return (
     <div ref={section} className="relative max-md:!h-auto">
       {/* Gepinnte Bühne (Desktop) — auf Mobile normaler Fluss */}
+      {/* Mobile-Padding NUR oben (pt statt py, Wolfram 20.07.): Unten soll kein Abstand
+          mehr stehen, damit die weiße Story-Box direkt aus der letzten Akkordeon-Kachel
+          („170+ Companies weltweit") herauskommt. Die Story-Mask darunter hat ihrerseits
+          mt-0 auf Mobile. */}
       <div
         ref={stage}
-        className="flex h-screen items-center overflow-clip max-md:!static max-md:!h-auto max-md:!py-[6vw]"
+        className="flex h-screen items-center overflow-clip max-md:!static max-md:!h-auto max-md:!pt-[6vw]"
       >
         <div className="mx-auto w-full" style={{ maxWidth: "1920px", paddingLeft: "16px", paddingRight: "16px" }}>
           <div className="relative w-full overflow-visible max-md:!h-auto" style={{ height: "clamp(680px, 82vh, 1000px)" }}>

@@ -234,10 +234,12 @@ export function AlgarveEditorial() {
         <div
           data-ed-story-mask
           // Andock-marginTop (Andocken an die 100vh-Bühne) NUR Desktop (md:) — auf Mobile
-          // ist die Sticky-Scene content-hoch, dort würde die Formel die Box hochziehen und
-          // ins Akkordeon schieben. Mobil daher normaler Abstand (mt-10). Am Ende fährt die
-          // Box gescrubbt von unten heraus (yPercent -100 → 0, siehe useGSAP).
-          className="mx-auto mt-10 w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
+          // ist die Sticky-Scene content-hoch.
+          // Mobil KEIN Abstand mehr (mt-0, vorher mt-10): Die weiße Story soll direkt aus
+          // der letzten Akkordeon-Kachel („170+ Companies weltweit") herauskommen (Wolfram
+          // 20.07.). Zusammen mit dem entfernten unteren py der Sticky-Scene (dort jetzt
+          // pt statt py) dockt die Box bündig an die Kachel an.
+          className="mx-auto mt-0 w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
           style={{
             maxWidth: "1920px",
             paddingLeft: "16px",
