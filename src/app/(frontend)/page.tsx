@@ -40,9 +40,12 @@ export default function HomePage() {
         <div className="relative z-[2]">
           <AlgarveAboutIntro
             fadeExit
-            // Wording (Wolfram 17.07., zweite Fassung) — ersetzt „Unser Antrieb ist
+            // Wording (Wolfram 20.07., dritte Fassung) — Feinschliff der zweiten Fassung
+            // vom 17.07.: Doppelpunkt → Gedankenstrich, „von globaler Größe" → „globales",
+            // „einige der bekanntesten" → „die bekanntesten", „Live-Erlebnisse" →
+            // „außergewöhnlichsten Live-Erlebnisse". Davor stand „Unser Antrieb ist
             // Entertainment …", das wiederum den Lorem-ipsum-Platzhalter abgelöst hatte.
-            text="Das weltweit führende Zuhause für Kreative: ein Medien- und Entertainment-Powerhouse von globaler Größe, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um einige der bekanntesten Entertainment Brands und Live-Erlebnisse der Welt zu schaffen."
+            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment-Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu schaffen."
           />
         </div>
 
