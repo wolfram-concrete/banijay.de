@@ -32,9 +32,12 @@ const INK = "#0e0d0b";
 // „TV total" führen die obere Reihe an → im ersten Screen garantiert sichtbar.
 // Assets: /public/ip-brands (weboptimiert aus assets/Bilder, Höhe 560).
 //
-// Die 28 vorhandenen Motive sind auf 10/9/9 verteilt (statt 14/14) — für die dritte
-// Reihe gab es kein zusätzliches Material, also füllen die oberen Reihen weniger.
+// Die 30 vorhandenen Motive sind gleichmäßig auf 10/10/10 verteilt.
 // Kommen neue IP-Visuals dazu, einfach hier verteilen.
+// Nachtrag 20.07. (Wolfram): „Beauty & the Nerd" in die mittlere Reihe ergänzt (war
+// 10/9/9). Quelle nur 800×536 — auf Reihenhöhe 560 gebracht, also 4,5 % hochskaliert;
+// bei diesem Betrag optisch unauffällig. Der Quellordner heißt „Beaty and the nerd",
+// das ist ein Tippfehler im Ordnernamen, nicht der Sendungstitel.
 type Brand = { slug: string; name: string };
 const b = (slug: string, name: string): Brand => ({ slug, name });
 const BRANDS_TOP: Brand[] = [
@@ -55,6 +58,7 @@ const BRANDS_MID: Brand[] = [
   b("der-lehrer", "Der Lehrer"),
   b("tatort-munster", "Tatort Münster"),
   b("the-50", "The 50"),
+  b("beauty-and-the-nerd", "Beauty & the Nerd"),
   b("die-verrater", "Die Verräter"),
   b("villa-der-versuchung", "Villa der Versuchung"),
   b("richter-alexander-hold", "Richter Alexander Hold"),
@@ -70,6 +74,8 @@ const BRANDS_BOTTOM: Brand[] = [
   b("luminiscence", "Luminiscence"),
   b("mcdonalds-stromberg-mockumentary", "Stromberg × McDonald's"),
   b("tatort-nachtschatten", "Tatort Nachtschatten"),
+  // Nachtrag 20.07. (Wolfram) — Verteilung damit 10/10/10, alle drei Reihen gleich lang.
+  b("das-grosse-promi-buessen", "Das große Promi Büßen"),
 ];
 
 

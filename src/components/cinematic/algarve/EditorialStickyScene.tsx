@@ -47,10 +47,11 @@ const UNIT = "0.54em";
 
 // Alle Zahlen/Daten/Fakten von banijay.de. Farbe kommt NICHT mehr je Fakt, sondern
 // abwechselnd Magenta/Schwarz (Wolfram 14.07.) → siehe TONE unten.
-// label ist ein FESTES ZWEIZEILEN-PAAR (Wolfram 17.07.: „die Titel immer als
-// Zweizeiler"). Der Umbruch steht bewusst in den Daten statt im Textfluss: so ist
-// die Trennstelle bestimmt und wandert nicht mit Viewport/Schriftbreite.
-type Fact = { value: number; suffix: string; label: readonly [string, string]; copy: string };
+// label ist seit 20.07. (Wolfram) EIN String statt eines festen Zweizeilers — die
+// frühere Vorgabe „die Titel immer als Zweizeiler" (17.07.) ist damit abgelöst. Auf Desktop
+// stehen die Kachel-Titel einzeilig auf der Grundlinie von Ziffer und Einheit; auf Mobile
+// bricht der Text von selbst um, wenn die Breite nicht reicht.
+type Fact = { value: number; suffix: string; label: string; copy: string };
 // COPY VON HEIKE (Wolfram 17.07.) — wörtlich übernommen, nur die Anführungszeichen auf
 // die deutsche Form „…" vereinheitlicht (in der Vorlage gemischt: "TV total",
 // “Schlag den Star“). Wo noch kein Text vorliegt, steht „Text folgt." als Platzhalter.
@@ -68,13 +69,15 @@ const FACTS: Fact[] = [
   {
     value: 40,
     suffix: "+",
-    label: ["Companies und", "Labels"],
+    // „und" → „&" (Wolfram 20.07.). Gilt NUR hier; „Mitarbeiterinnen und Mitarbeiter"
+    // bleibt ausgeschrieben, das ist eine Paarformel und kein Aufzählungs-und.
+    label: "Companies & Labels",
     copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor und Brainpool samt Tochterfirmen wie Cape Cross und Brainpool Live. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
   },
   {
     value: 90,
     suffix: " %",
-    label: ["Primetime-", "Hitrate"],
+    label: "Primetime-Hitrate",
     copy: "Text folgt.",
   },
   {
@@ -82,30 +85,23 @@ const FACTS: Fact[] = [
     // 1400 — die alte 1.300 hätte der eigenen Copy widersprochen. site.ts mitgezogen.
     value: 1400,
     suffix: "+",
-    label: ["Mitarbeiterinnen und", "Mitarbeiter"],
+    label: "Mitarbeiterinnen und Mitarbeiter",
     copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten deutschen Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Promi Big Brother“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
   },
   {
     value: 4,
     suffix: " Mrd.",
-    label: ["Views & Zuschauer", "jährlich"],
+    label: "Views & Zuschauer jährlich",
     copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
   },
-  {
-    // 3.000 → 4.500 (Wolfram 17.07.). Heikes Überschrift sagte „4500+ hrs", ihr Fließtext
-    // „rund 3000 Stunden" — Wolframs Regel: DIE ZIFFER IST MASSGEBLICH, die Copy ist der
-    // ältere Stand und wird angeglichen. Daher hier BEIDES auf 4.500.
-    value: 4500,
-    suffix: " hrs.",
-    label: ["Stunden", "Entertainment"],
-    copy: "Banijay Germany profitiert von der unternehmerischen Diversität und Qualität innerhalb des Verbundes und vereint eine große Breite von Entertainment-Expertise unter einem Dach. Künstler und Kreative entwickeln und produzieren jedes Jahr gemeinsam rund 4500 Stunden Programm, darunter Bühnenshows, Live-Sendungen und Serien. Auch Online-Plattformen und Podcasts gehören zum Banijay-Kosmos.",
-  },
-  // Neu (Wolfram 17.07.) — steht bei „Stunden Entertainment", weil beide die
-  // Ausbringung im Jahr beschreiben. In Heikes Textlieferung nicht enthalten.
+  // ENTFERNT am 20.07. (Wolfram): die Kachel „4.500 hrs. · Stunden Entertainment".
+  // Damit sind es 6 statt 7 Kacheln — die Ziffernformel oben (DIGIT) teilt die
+  // Spaltenhöhe weiterhin durch 7; das ist bewusst so gelassen, weil flex-grow den
+  // Rest als Polster verteilt und die Kacheln sonst sprunghaft größer würden.
   {
     value: 1500,
     suffix: "+",
-    label: ["Live-Veranstaltungen", "jährlich"],
+    label: "Live-Veranstaltungen jährlich",
     copy: "Text folgt.",
   },
   {
@@ -113,7 +109,7 @@ const FACTS: Fact[] = [
     // für die About-Fakten — dort mitgezogen, sonst widersprächen sich die Seiten.
     value: 170,
     suffix: "+",
-    label: ["Companies", "weltweit"],
+    label: "Companies weltweit",
     copy: "Text folgt.",
   },
 ];
@@ -295,7 +291,7 @@ export function EditorialStickyScene() {
                 const isSymbol = isPlus || sym === "%";
                 return (
                   <button
-                    key={f.label.join(" ")}
+                    key={f.label}
                     type="button"
                     data-fact-card
                     onClick={() => setOpen(isOpen ? null : i)}
@@ -364,19 +360,19 @@ export function EditorialStickyScene() {
                           <span style={{ fontSize: UNIT, whiteSpace: "pre" }}>{f.suffix}</span>
                         )}
                       </span>
-                      {/* Label rechts neben der Einheit — IMMER zwei Zeilen, Umbruch fest aus
-                          den Daten (kein Umbruch nach Breite). whiteSpace:nowrap je Zeile, damit
-                          keine dritte Zeile entstehen kann. */}
+                      {/* Label rechts neben der Einheit. EINZEILIG auf Desktop (Wolfram
+                          20.07.) — vorher ein fester Zweizeiler aus den Daten.
+                          `md:whitespace-nowrap` erzwingt die eine Zeile ab dem md-Breakpoint;
+                          darunter (Mobile) fehlt das nowrap, der Text bricht dort also von
+                          selbst um, wenn die Breite nicht reicht.
+                          Die Grundlinie regelt weiterhin `alignItems: "last baseline"` am
+                          Flex-Container oben: bei einer Zeile ist first = last, der Titel
+                          fluchtet also exakt mit der Unterlänge von Ziffer und Einheit. */}
                       <span
-                        className="min-w-0 flex-1"
+                        className="min-w-0 flex-1 md:whitespace-nowrap"
                         style={{ fontSize: "clamp(0.85rem, 0.95vw, 1.05rem)", lineHeight: "124%", color: tone.label, fontWeight: 500 }}
                       >
-                        <span className="block" style={{ whiteSpace: "nowrap" }}>
-                          {f.label[0]}
-                        </span>
-                        <span className="block" style={{ whiteSpace: "nowrap" }}>
-                          {f.label[1]}
-                        </span>
+                        {f.label}
                       </span>
                       <ChevronDown
                         className="h-5 w-5 shrink-0 self-center transition-transform duration-300"

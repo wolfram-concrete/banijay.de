@@ -64,8 +64,10 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // Companies bleiben unverlinkt, solange kein Link belegt ist (Regel oben).
       { name: "filmpool entertainment", url: "https://filmpool-entertainment.de/" },
       { name: "South & Browse", url: "https://south-and-browse.com/de/" },
-      { name: "Rainer Laux Productions" },
-      { name: "Lucky Pics" },
+      // Beide ohne eigenen Web-Auftritt → Verweis auf die jeweilige Mutter
+      // (Wolfram 20.07.): Rainer Laux → EndemolShine, Lucky Pics → Brainpool.
+      { name: "Rainer Laux Productions", url: "https://endemolshine.de/" },
+      { name: "Lucky Pics", url: "https://brainpool.de/" },
       { name: "Minestrone TV" },
       { name: "Ladykracher" },
       { name: "Doc.Banijay" },

@@ -166,64 +166,78 @@ export function AlgarveEcosystem() {
   // Hover-Highlight (Wolfram 15.07.): beim Überfahren färbt sich die Card magenta.
   const [hovered, setHovered] = useState<string | null>(null);
 
-  // AUFKLAPPRICHTUNG PER MESSUNG (Wolfram 20.07.) — vorher entschied allein die Lage
-  // des Ankers (fy > 0.62), ob eine Card nach oben aufklappt. Das ignoriert zwei Dinge:
-  // wie HOCH die Card wird und wie hoch das FENSTER ist. Entertainment hat mit Abstand
-  // die längste Liste; auf flachen Laptop-Viewports lief sie deshalb unten raus,
-  // obwohl ihr Anker in der oberen Hälfte sitzt. Jetzt wird beim Öffnen der reale
-  // Platzbedarf gegen den echten Platz im Viewport gerechnet.
+  // MITTELACHSIGES AUFKLAPPEN (Wolfram 20.07., dritte und finale Fassung).
+  //
+  // Vorgeschichte, damit niemand einen der beiden Vorgänger wieder einbaut:
+  //  1. Ursprünglich entschied allein die Ankerlage (fy > 0.62), ob eine Card nach oben
+  //     aufklappt. Das ignoriert, wie hoch die Card wird und wie hoch das Fenster ist —
+  //     Entertainment (längste Liste, Anker in der oberen Hälfte) lief unten raus.
+  //  2. Dann: bessere Richtung per Messung + Deckelung mit Innenscroll. Der Innenscroll
+  //     ist von Wolfram verworfen worden — zu Recht: Eine scrollende Liste in einem
+  //     schwebenden Container auf einer scrollenden Seite ist unangenehm. Zusätzlich hat
+  //     die Scrollleiste (15px) den Text enger umbrechen lassen und die Card dadurch um
+  //     41px HÖHER gemacht — die Lösung hat ihr eigenes Problem verschärft.
+  //
+  // Jetzt: Die Card wird MITTIG am Anker aufgeklappt (halb nach oben, halb nach unten)
+  // und danach, falls nötig, so weit ins Fenster geschoben, dass sie ganz sichtbar ist.
+  // Mittelachsig nutzt den Platz auf BEIDEN Seiten des Ankers statt nur auf einer —
+  // gemessen reicht das für Entertainment (537px) ab ~637px Fensterhöhe.
+  //
+  // Nebenwirkung dieser Wahl, bewusst in Kauf genommen: Weil Entertainment nun beide
+  // Seiten braucht, sollte sein Anker möglichst nah an der vertikalen Mitte sitzen. Er
+  // tut es (376 von 760). Ihn — wie zwischenzeitlich überlegt — nach oben zu schieben
+  // würde die Lösung VERSCHLECHTERN. Die Rosette bleibt daher unangetastet.
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [flipUp, setFlipUp] = useState<Record<string, boolean>>({});
-  // Deckel für die Listenhöhe, wenn die Card auch in der besseren Richtung nicht
-  // vollständig ins Fenster passt (null = kein Deckel nötig).
-  const [contentCap, setContentCap] = useState<Record<string, number | null>>({});
+  // Vertikale Korrektur in px gegenüber der mittigen Lage (0 = exakt mittig am Anker).
+  const [shiftY, setShiftY] = useState<Record<string, number>>({});
 
   // Luft, die oben/unten frei bleiben muss. Oben liegt der Header (72px) über der
   // Grafik — darunter darf die Card nicht verschwinden.
   const PAD_TOP = 84;
   const PAD_BOTTOM = 16;
-  // Untergrenze für die gedeckelte Liste — darunter wäre der Scrollbereich sinnlos.
-  const MIN_LIST_H = 140;
-  // Reserve auf den Deckel. Gemessen (20.07.): die reale Card wird ~14px höher als
-  // Kopf + Deckel, weil Innenpadding und Rahmen der Liste oben drauf kommen. Ohne die
-  // Reserve schrumpft der geplante Rand unten von 16px auf 2px.
-  const CAP_BUFFER = 20;
 
-  const measureFlip = useCallback((key: string) => {
+  const measurePlacement = useCallback((key: string) => {
     const el = cardRefs.current[key];
     const head = el?.querySelector<HTMLElement>("[data-eco-head]");
     const inner = el?.querySelector<HTMLElement>("[data-eco-panel-inner]");
     if (!el || !head || !inner) return;
 
-    // ACHTUNG, hier lag der erste Fehlversuch: NICHT den [data-eco-panel]-Wrapper
-    // messen. Der wächst per grid-template-rows-Transition von 0fr auf 1fr, und zum
-    // Messzeitpunkt (direkt nach dem Öffnen, vor dem Paint) steht er noch auf 0 —
-    // scrollHeight liefert dort 0, die Card hätte nie umgeklappt. Der INNERE
-    // Content-Block dagegen hat seine echte Höhe sofort, weil die Breite (width: auto
-    // bei isActive) ohne Transition gesetzt wird und der Text korrekt umbricht.
-    const full = head.offsetHeight + inner.getBoundingClientRect().height;
+    // ACHTUNG, hier lag ein früherer Fehlversuch: NICHT den [data-eco-panel]-Wrapper
+    // messen. Der wächst per grid-template-rows-Transition von 0fr auf 1fr und steht
+    // zum Messzeitpunkt (direkt nach dem Öffnen, vor dem Paint) noch auf 0 →
+    // scrollHeight liefert 0. Der INNERE Content-Block hat seine echte Höhe sofort.
+    // Die aktive Card wird zusätzlich per scale(1.04) vergrößert (siehe transform
+    // unten). Ohne diesen Faktor rechnet die Platzierung mit einer zu kleinen Card und
+    // die Ränder fallen ~20px knapper aus als geplant — gemessen am 20.07.
+    const ACTIVE_SCALE = 1.04;
+    const full = (head.offsetHeight + inner.getBoundingClientRect().height) * ACTIVE_SCALE;
 
-    // Ankerpunkt (der Satellit, an dem die Card hängt) aus der aktuellen Lage
-    // zurückrechnen — je nachdem, ob sie gerade nach oben oder unten hängt.
-    const rect = el.getBoundingClientRect();
-    const anchorY = flipUp[key] ? rect.bottom + 10 : rect.top - 12;
+    // Ankerpunkt UNABHÄNGIG von der aktuellen Transform bestimmen: offsetTop ist die
+    // gerechnete `top`-Position im Stage-Container und wird von transform nicht
+    // verändert. Das ist robuster als das Zurückrechnen aus getBoundingClientRect,
+    // an dem die Vorgängerfassung sich verhakt hat.
+    const stage = el.offsetParent as HTMLElement | null;
+    if (!stage) return;
+    const anchorY = stage.getBoundingClientRect().top + el.offsetTop;
 
-    const roomBelow = window.innerHeight - (anchorY + 12) - PAD_BOTTOM;
-    const roomAbove = anchorY - 10 - PAD_TOP;
+    const maxBottom = window.innerHeight - PAD_BOTTOM;
+    const top = anchorY - full / 2;
+    const bottom = anchorY + full / 2;
 
-    // Erst die bessere Richtung wählen: umklappen, wenn es unten nicht reicht UND
-    // oben mehr Platz ist.
-    const next = full > roomBelow && roomAbove > roomBelow;
-    setFlipUp((prev) => (prev[key] === next ? prev : { ...prev, [key]: next }));
+    let shift = 0;
+    if (full > maxBottom - PAD_TOP) {
+      // Card höher als das Fenster: oben bündig, unten läuft sie raus. Nur noch als
+      // Notfall — passiert erst unter ~637px Fensterhöhe.
+      shift = PAD_TOP - top;
+    } else if (top < PAD_TOP) {
+      shift = PAD_TOP - top;
+    } else if (bottom > maxBottom) {
+      shift = maxBottom - bottom;
+    }
 
-    // Zweite Stufe (Wolfram 20.07.): Entertainment ist so lang, dass es auf flachen
-    // Fenstern in KEINE Richtung komplett passt (z. B. 1440×760: braucht 475px, hat
-    // unten 356px, oben 282px). Dann wird die Liste auf den real verfügbaren Platz
-    // gedeckelt und scrollt innen — abgeschnitten wird nichts mehr, auf keinem Format.
-    const room = next ? roomAbove : roomBelow;
-    const cap = full > room ? Math.max(MIN_LIST_H, room - head.offsetHeight - CAP_BUFFER) : null;
-    setContentCap((prev) => (prev[key] === cap ? prev : { ...prev, [key]: cap }));
-  }, [flipUp]);
+    const gerundet = Math.round(shift);
+    setShiftY((prev) => (prev[key] === gerundet ? prev : { ...prev, [key]: gerundet }));
+  }, []);
 
 
   // Aktive Geometrie: Desktop quer, Mobile hochformatig (Wolfram 17.07.). EIN Satz
@@ -240,20 +254,20 @@ export function AlgarveEcosystem() {
   const VBH = isMobile ? 800 : 640; // viewBox Höhe
   const pt = (orbit: number, deg: number) => pointOn(ST, ORB, orbit, deg);
 
-  // Vor dem Paint messen, damit die Card direkt in der richtigen Richtung aufgeht
+  // Vor dem Paint messen, damit die Card direkt an der richtigen Stelle aufgeht
   // (steht hier unten, weil isMobile erst oberhalb deklariert wird).
   useLayoutEffect(() => {
     if (!active || isMobile) return;
-    measureFlip(active);
-  }, [active, isMobile, measureFlip]);
+    measurePlacement(active);
+  }, [active, isMobile, measurePlacement]);
 
   // Fenstergröße ändert den verfügbaren Platz → offene Card neu bewerten.
   useEffect(() => {
     if (!active || isMobile) return;
-    const onResize = () => measureFlip(active);
+    const onResize = () => measurePlacement(active);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [active, isMobile, measureFlip]);
+  }, [active, isMobile, measurePlacement]);
 
   useGSAP(
     () => {
@@ -531,14 +545,21 @@ export function AlgarveEcosystem() {
           // Flip mitten im Stapel ließe zwei benachbarte Karten gegeneinander öffnen und
           // sich in den Ecken berühren. Darum klappen auf Mobile ALLE einheitlich nach
           // unten auf → die fy-Staffelung (≥0.12 Abstand) hält sie sauber getrennt.
-          // fy > 0.62 ist nur noch die VORAB-Annahme für den ersten Frame (SSR/vor der
-          // Messung). Sobald die Card offen ist, entscheidet die reale Messung —
-          // siehe measureFlip oben.
-          const low = !isMobile && (flipUp[cat.key] ?? fy > 0.62);
+          // DESKTOP: mittelachsig am Anker (-50%), plus die gemessene Korrektur, damit
+          // die Card ganz im Fenster steht. Vor der Messung ist die Korrektur 0 — die
+          // Card geht also mittig auf, was für alle kurzen Rubriken bereits stimmt.
+          // MOBILE: unverändert nach unten aufklappen (12px unter dem Chip). Der
+          // Chip-Stack ist dort rein vertikal; mittelachsig würden benachbarte Karten
+          // ineinanderlaufen. Deshalb greift die neue Logik ausdrücklich nur am Desktop.
           const anchorX = fx > 0.76 ? "-92%" : fx < 0.24 ? "-8%" : "-50%";
-          const anchorY = low ? "calc(-100% - 10px)" : "12px";
+          const shift = shiftY[cat.key] ?? 0;
+          const anchorY = isMobile
+            ? "12px"
+            : shift === 0
+            ? "-50%"
+            : `calc(-50% + ${shift}px)`;
           const originX = fx > 0.76 ? "92%" : fx < 0.24 ? "8%" : "50%";
-          const originY = low ? "100%" : "0%";
+          const originY = isMobile ? "0%" : "50%";
           return (
             <div
               key={cat.key}
@@ -615,17 +636,11 @@ export function AlgarveEcosystem() {
                     transition: "grid-template-rows .45s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
-                  <ul
-                    className="m-0 min-h-0 list-none p-0"
-                    style={{
-                      // Gedeckelt nur, wenn die Messung es verlangt — sonst wie bisher
-                      // reines overflow:hidden für die Aufklapp-Animation.
-                      maxHeight: isActive && contentCap[cat.key] ? contentCap[cat.key]! : undefined,
-                      overflowY: isActive && contentCap[cat.key] ? "auto" : "hidden",
-                      overflowX: "hidden",
-                      overscrollBehavior: "contain", // kein Durchscrollen auf die Seite
-                    }}
-                  >
+                  {/* KEIN maxHeight/Innenscroll mehr (Wolfram 20.07.): Die Liste läuft
+                      immer auf voller Höhe; für die Sichtbarkeit sorgt die mittelachsige
+                      Platzierung oben. overflow:hidden bleibt allein für die
+                      Aufklapp-Animation nötig. */}
+                  <ul className="m-0 min-h-0 list-none overflow-hidden p-0">
                     {/* Kompakter (Wolfram 15.07.): kleinere Zeilen/Padding → auch die
                         11-zeilige Entertainment-Karte passt in den gepinnten Viewport. */}
                     <div data-eco-panel-inner className="flex flex-col px-3.5 pb-2 pt-0.5">

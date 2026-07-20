@@ -178,6 +178,19 @@ REEL["cape-cross-postproduction"] = "/company-media/cape-cross-postproduction.mp
 // Mit dem alten VLC-Verfahren wären es ~2 MB bei SSIM ~0,73 gewesen. Alle künftigen
 // Clips so enkodieren; die 22 älteren stehen noch zur Neuberechnung an (Task #77).
 REEL["myspass"] = "/company-media/myspass.mp4";
+// Drei Zulieferungen vom 20.07. (Wolfram), alle mit ffmpeg CRF 28:
+// Banijay Productions Germany → Trailer „Villa der Versuchung" (Quelle 30s).
+// Ausschnitt 3–13s: die Quelle hat Schwarzblenden bei 13,36 / 19,12 / 26,04s, der
+// erste Versuch (5–15s) hatte die 13,36er drin. 3–13 endet 0,36s davor.
+REEL["banijay-productions-germany"] = "/company-media/banijay-productions-germany.mp4";
+// Doc.Banijay → FC-Köln-Trailer. Quelle ist ProRes 4K (1,44 GB, 17s), Ausschnitt 3–13s.
+REEL["doc-banijay"] = "/company-media/doc-banijay.mp4";
+// EndemolShine Germany → „ESG - Trailer 2023" (Quelle 187s). Ausschnitt 1–11s, endet
+// vor der Schwarzblende bei 11,52s.
+REEL["endemolshine-germany"] = "/company-media/endemolshine-germany.mp4";
+// B&B Endemol Shine Switzerland (Wolfram 20.07.) — Showreel der Schweizer Formate,
+// Quelle 28s, Ausschnitt 2–12s. Trägt in einigen Einstellungen ein SRF-Logo.
+REEL["bb-endemol-shine"] = "/company-media/bb-endemol-shine.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";

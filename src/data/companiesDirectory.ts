@@ -105,14 +105,18 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   { id: "doc-banijay", name: "Doc.Banijay", ecoKeys: ["entertainment"], logo: L("doc-banijay.png"), tags: ["Entertainment"] },
   { id: "ladykracher", name: "Ladykracher", ecoKeys: ["entertainment"], logo: L("ladykracher.png"), tags: ["Entertainment"] },
   { id: "minestrone-tv", name: "Minestrone TV", ecoKeys: ["entertainment"], logo: L("minestrone-tv.png"), tags: ["Entertainment"] },
-  { id: "rainer-laux-productions", name: "Rainer Laux Productions", ecoKeys: ["entertainment"], logo: L("rainer-laux-productions.png"), tags: ["Entertainment"] },
+  // Kein eigener Web-Auftritt → Link auf die Mutter EndemolShine (Wolfram 20.07.).
+  // Das ist bewusst ein Verweis auf die Dachgesellschaft, kein Eigen-Auftritt.
+  { id: "rainer-laux-productions", name: "Rainer Laux Productions", ecoKeys: ["entertainment"], logo: L("rainer-laux-productions.png"), url: "https://endemolshine.de/", tags: ["Entertainment"] },
   { id: "myspass", name: "MySpass", ecoKeys: ["audio", "distribution"], logo: L("myspass.png"), tags: ["Audio", "Distribution & Brand"] },
   { id: "podcast-bande", name: "Podcast Bande", ecoKeys: ["audio"], logo: L("podcast-bande.png"), tags: ["Audio"] },
   // All3Media-Companies (Übernahme; nicht in der Coopetition-Grafik) stehen jetzt alle
   // weiter oben (Wolfram 16.07.) — filmpool ×2, Magic Connection, South & Browse.
 
   // ── Platzhalter aus der Coopetition-Grafik (kein Logo im Ordner) ───────
-  { id: "lucky-pics", name: "Lucky Pics", ecoKeys: ["entertainment"], tags: ["Entertainment"], placeholder: true },
+  // Kein eigener Web-Auftritt → Link auf die Mutter Brainpool (Wolfram 20.07.).
+  // Wie bei Rainer Laux ein bewusster Verweis auf die Dachgesellschaft.
+  { id: "lucky-pics", name: "Lucky Pics", ecoKeys: ["entertainment"], url: "https://brainpool.de/", tags: ["Entertainment"], placeholder: true },
   // Logo (Wolfram 16.07.): das NightWash-Club-Logo ist ein FARBIGES Hochformat-Logo
   // (Bubble + Neon-Schild) — anders als die sonst breiten Weiß-Logos. Es bekommt daher
   // per logoClass mehr Höhe, sonst wäre es im höhenbegrenzten Slot nur ~20px breit.
