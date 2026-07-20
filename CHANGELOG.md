@@ -5,6 +5,16 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Hero: dritter Frame neu (20.07.)
+- **Alle Frame-3-Hero-Motive** (der „We Are Banijay"-Typo-Frame) aus dem aktualisierten
+  `assets/Visuals/Hero`-Ordner neu weboptimiert — je 5 Desktop + 5 Mobile: Home, About,
+  Career, News und die (aktuell ungenutzte) Companies-Variante.
+- Reiner Asset-Tausch, KEINE Code-Änderung: Die Dateinamen und Maße bleiben (Desktop
+  2880×2129, Mobile 1400×1861 hochkant), nur die Bildinhalte sind neu. mozjpeg q82,
+  Desktop ~150–167 KB, Mobile ~88–102 KB.
+- Companies-Variante mitgezogen, obwohl in keiner Section referenziert (kein
+  Companies-Hero auf der Seite) — hält den Satz konsistent.
+
 ### Company-Logos, Team-Layout, IP-Ticker (20.07., zweiter Block)
 - **Company-Logo-Abstand fest statt prozentual.** Vorher `right-[4%] top-[6%]` — Prozent
   oben rechnet gegen die Höhe, Prozent rechts gegen die Breite, also liefen die Abstände
