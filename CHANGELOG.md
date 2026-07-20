@@ -5,6 +5,25 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Preloader: Partikelgröße + Querbalken im Hero (20.07.)
+- **Partikel quollen beim B-Aufbau auf.** Der Punktradius wuchs während des Formens mit
+  (`0.6 → 1.15`), der Warp startete danach bei Faktor `1.0` — sichtbar als „erst dicker,
+  dann kleiner, dann Zoom". Jetzt bleibt die Punktgröße beim Formen **konstant klein**
+  (0.6) und der Warp startet bei **exakt derselben** 0.6 → kein Aufquellen, kein
+  Größensprung, die Streaks skalieren von der kleinen Größe nativ hoch.
+- **Querbalken im oberen Hero nach der Warp-Blende.** Ursache war der Magenta-Grund in
+  `AlgarveHome` (`absolute inset-x-0`, `top: 26vh`), dessen Gradient **hart** mit `#1e0816`
+  begann. Da `SECTION_BG` auf `transparent` steht, schien darüber der globale MoodBackdrop
+  durch → die Oberkante stand als sichtbare Querkante quer im Hero (Desktop **und** Mobile),
+  bis der Hero-Aufbau sie überdeckte („blendet sich wieder weg").
+  Fix: Der Gradient blendet über die ersten **10 % aus Transparenz ein** statt hart zu
+  starten; ab 10 % unverändert deckend, die Abdeckung hinter der radialen Hero-Kante (der
+  eigentliche Zweck des Elements) bleibt vollständig erhalten.
+- Verifiziert: Gradient startet nachweislich transparent (`rgba(30,8,22,0) 0%` → deckend ab
+  10 %), Hero rendert ohne harte Kante. Den exakten Moment direkt nach dem Warp kann das
+  Preview-Pane nicht nachstellen (Intro läuft dort in einem Tick durch) — die strukturelle
+  Ursache ist aber beseitigt.
+
 ### Team: echtes Portrait für Heike Lutzer (20.07.)
 - **Heike Lutzer** bekommt ihr echtes Foto und löst damit den Platzhalter `lead-8.jpg` ab —
   neue Datei `public/people/heike-lutzer.jpg`, Datenzeile in `leadership.ts` umgehängt,

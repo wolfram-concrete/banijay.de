@@ -268,9 +268,15 @@ export function AlgarveHome({
           bottom: 0,
           // Gradient (Wolfram 14.07.): vom moody Hero-Grund (oben, an der radialen
           // Kante) zum Magenta der 1. Section (unten) durchlayern. Companies: dunkel.
+          // OBERKANTE WEICH (Wolfram 20.07.): Der Gradient begann hart bei #1e0816 —
+          // weil SECTION_BG transparent ist, schien darüber der MoodBackdrop durch und
+          // die Oberkante bei 26vh stand als sichtbarer BALKEN quer im Hero (Desktop wie
+          // Mobile, bis der Hero-Aufbau sie überdeckte). Jetzt blendet der Gradient über
+          // die ersten 10 % aus Transparenz ein; ab 10 % ist er unverändert deckend, die
+          // Abdeckung hinter der radialen Hero-Kante bleibt also erhalten.
           background: dark
             ? "transparent"
-            : "linear-gradient(180deg, #1e0816 0%, #1e0816 34%, #8a1e4e 58%, #ff4370 82%)",
+            : "linear-gradient(180deg, rgba(30,8,22,0) 0%, #1e0816 10%, #1e0816 34%, #8a1e4e 58%, #ff4370 82%)",
           zIndex: 0,
         }}
       />

@@ -158,7 +158,11 @@ export const PreloaderParticles = forwardRef<PreloaderParticlesHandle>(function 
           a *= p.mag ? 1 : 0.9;
           if (a <= 0.02) continue;
           ctx.beginPath();
-          ctx.arc(x, y, p.size * dpr * (0.6 + 0.55 * ef), 0, Math.PI * 2);
+          // KONSTANTE Punktgröße (Wolfram 20.07.): vorher wuchs der Radius beim Formen
+          // (0.6 → 1.15) und fiel beim Warp-Start wieder auf 1.0 — die Partikel quollen
+          // erst auf und wurden dann kleiner, bevor sie aufzogen. Jetzt bleiben sie klein
+          // und skalieren erst im Warp nativ hoch (gleicher Startfaktor 0.6 dort).
+          ctx.arc(x, y, p.size * dpr * 0.6, 0, Math.PI * 2);
           ctx.fillStyle = p.mag ? `rgba(255,67,112,${a})` : `rgba(248,247,243,${a})`;
           ctx.fill();
         }
@@ -180,7 +184,9 @@ export const PreloaderParticles = forwardRef<PreloaderParticlesHandle>(function 
           ctx.beginPath();
           ctx.moveTo(x0, y0);
           ctx.lineTo(x1, y1);
-          ctx.lineWidth = p.size * dpr * (1 + ew * 3.2);
+          // Startfaktor 0.6 = exakt die Punktgröße aus der Form-Phase → nahtloser
+          // Übergang ohne Größensprung, von dort skaliert der Streak nativ hoch.
+          ctx.lineWidth = p.size * dpr * (0.6 + ew * 3.2);
           ctx.lineCap = "round";
           ctx.strokeStyle = p.mag ? `rgba(255,67,112,${a})` : `rgba(248,247,243,${a})`;
           ctx.stroke();

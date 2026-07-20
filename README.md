@@ -24,7 +24,9 @@ Look umgestellt — ein globaler `MoodBackdrop` (Schwarz/Brombeere/Magenta mit w
 Glows), transparente Sections, Milchglas-Panels und eckige Container (Design-Vorgabe: keine
 abgerundeten Ecken außer minimalen Curvings an CTAs). Die Home öffnet mit einer
 Intro-Animation (Staub sammelt sich zur B-Form → „Welcome to a new Era" → Staub-Explosion als
-Blende auf den Hero) und einem zweilagigen Brennglas-Hero: die WebGL-Linse bricht ein Komposit
+Blende auf den Hero; die Partikel behalten dabei durchgehend ihre kleine Punktgröße und
+skalieren erst im Warp nativ hoch — kein Aufquellen, kein Größensprung an der Blende)
+und einem zweilagigen Brennglas-Hero: die WebGL-Linse bricht ein Komposit
 aus dem roten Glas-B UND der Headline „WE ARE BANIJAY" (Buchstaben sind IN der Linse gebrochen
 sichtbar), unterhalb steht die Schrift auf Sternenstaub. Beim Scrollen formt sich die radiale
 Unterkante, weiße Satelliten-Ringe fächern als konzentrische Schar sequenziell heraus (mit
