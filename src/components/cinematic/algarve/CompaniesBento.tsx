@@ -458,13 +458,20 @@ export function AlgarveCompaniesBento() {
                   />
                 )}
 
-                {/* Echtes weißes Company-Logo oben rechts (Platzhalter: keins) */}
+                {/* Echtes weißes Company-Logo oben rechts (Platzhalter: keins).
+                    ABSTAND FEST STATT PROZENTUAL (Wolfram 20.07.): vorher
+                    `right-[4%] top-[6%]`. Prozent oben rechnet gegen die HÖHE, Prozent
+                    rechts gegen die BREITE — bei den unterschiedlich geschnittenen
+                    Bento-Kacheln liefen die beiden Abstände dadurch auseinander.
+                    Gemessen: hohe Kachel (336×498) oben 30px / rechts 13px, breite
+                    Kachel (680×245) oben 15px / rechts 27px. Mit `top-3.5 right-3.5`
+                    sind es überall gleiche 14px. */}
                 {card.logo && (
                   <img
                     src={card.logo}
                     alt=""
                     aria-hidden
-                    className={`absolute right-[4%] top-[6%] w-auto max-w-[34%] object-contain opacity-95 ${
+                    className={`absolute right-3.5 top-3.5 w-auto max-w-[34%] object-contain opacity-95 ${
                       card.logoClass ?? "h-[1.4rem] md:h-[1.6rem]"
                     }`}
                   />

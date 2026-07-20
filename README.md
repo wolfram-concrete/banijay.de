@@ -158,7 +158,7 @@ Vor dem Livegang abzuarbeiten:
 | Thema | Stand | Zu tun |
 |---|---|---|
 | **Company-Videos neu enkodieren** | 22 Altclips aus der VLC-Ära, 67 MB, SSIM ~0,73 | Mit ffmpeg neu rechnen (CRF 28/30) — siehe „Video-Toolchain" |
-| **Company-Material vollständig** | 19 von 35 Kacheln haben eigenes Video/Foto | Restliche 16 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
+| **Company-Material vollständig** | 23 von 35 Kacheln haben eigenes Video/Foto | Restliche 12 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
 | **Video-Ladeverhalten** | 11,86 MB Video beim ersten Seitenaufruf, 35 Requests, 14 Kacheln ohne Poster | `preload="none"`, `src` erst nahe Viewport setzen, Poster ergänzen; große Hero-Files (28,5 MB) ggf. auf Video-CDN |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |

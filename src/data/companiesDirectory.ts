@@ -98,7 +98,13 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
 
   // NEU (Marcus-Info 14.07.): Label mit Food-Experte Sebastian Lege — Content
   // aus companyCards.ts (internes Anschreiben, nichts erfunden).
-  fromCard("pausenclown-media", ["entertainment"], L("pausenclown-media.png")),
+  // Logo +50 % (Wolfram 20.07.): Standard ist h-[1.4rem] md:h-[1.6rem] → ×1.5 =
+  // h-[2.1rem] md:h-[2.4rem]. fromCard reicht logoClass NICHT durch, darum als
+  // Objekt geschrieben (Card-Texte manuell übernommen).
+  {
+    ...fromCard("pausenclown-media", ["entertainment"], L("pausenclown-media.png")),
+    logoClass: "h-[2.1rem] md:h-[2.4rem]",
+  },
 
   // ── mit Logo, Content folgt (Namen aus Grafik/Logo-Ordner) ─────────────
   { id: "cape-cross-postproduction", name: "Cape Cross Postproduction", ecoKeys: ["tech"], logo: L("cape-cross-postproduction.png"), url: "http://www.capecross.de/", tags: ["Tech"] },

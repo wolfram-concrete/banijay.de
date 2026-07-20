@@ -5,6 +5,24 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Company-Logos, Team-Layout, IP-Ticker (20.07., zweiter Block)
+- **Company-Logo-Abstand fest statt prozentual.** Vorher `right-[4%] top-[6%]` — Prozent
+  oben rechnet gegen die Höhe, Prozent rechts gegen die Breite, also liefen die Abstände
+  je Kachelformat auseinander (hohe Kachel oben 30/rechts 13, breite Kachel oben 15/
+  rechts 27). Jetzt `top-3.5 right-3.5` → überall gleiche 14px. Betraf alle Logos, aufge-
+  fallen an Pausenclown.
+- **Pausenclown-Media-Logo +50 %** (h-[1.4rem]→h-[2.1rem], md h-[1.6rem]→h-[2.4rem]) über
+  `logoClass`. Gemessen: 26px→38px.
+- **Team-Grid: Matthaeus Jaworeks 3-zeilige Rolle** („Director Financial Planning,
+  Reporting & Controlling") ragte unten aus der Bühne. Die Rolle ist bewusst auf 1 Zeile
+  Höhe fixiert (damit alle Namen fluchten), Mehrzeiler hängen per overflow nach unten.
+  Fix: unten 2,4rem Reserve (2 Rollen-Zeilen, Worst Case) → das flex-1-Grid schrumpft
+  minimal, der ganze Aufbau rückt nach oben, der Überhang hat Platz. Gemessen ohne Cut
+  bei 1440×900 und 1120×760 (dort 3 Zeilen).
+- **IP-Ticker, dritte Reihe:** Klarstellung — die Reihe stand nur in der Preview-Sitzung
+  still, weil ich sie zuvor für einen Screenshot angehalten und verschoben hatte. Im
+  Code läuft sie (`ipBrandsLeft`, 64s); nach Reload wieder in Bewegung. Keine Änderung.
+
 ### Video-Toolchain auf ffmpeg umgestellt (20.07.)
 - **`brew install ffmpeg` ist erledigt** (8.1.2, libx264/x265/SVT-AV1) — nach Wolframs
   Freigabe. Damit sind CEWE-ffmpeg, `avconvert` und VLC als Notlösungen abgelöst.

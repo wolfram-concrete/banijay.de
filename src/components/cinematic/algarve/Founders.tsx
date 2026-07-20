@@ -260,7 +260,16 @@ export function AlgarveFounders({
           className="mx-auto flex h-full w-full flex-col"
           style={{
             maxWidth: "min(1680px, 105vh)",
-            padding: "clamp(1.6rem, 4vw, 4rem) 2vw clamp(1rem, 3vw, 2.5rem)",
+            // UNTEN RESERVE FÜR DEN ROLLEN-ÜBERHANG (Wolfram 20.07.): Die Rolle ist auf
+            // 1 Zeile Höhe fixiert (damit alle Namen fluchten), Mehrzeiler hängen per
+            // overflow:visible nach unten. Matthaeus Jaworeks 3-zeiliger Titel („Director
+            // Financial Planning, Reporting & Controlling") ragte dadurch unten aus der
+            // Bühne. Statt seinen Titel zu kürzen, reservieren wir unten 2 ROLE-Zeilen
+            // (den Worst Case) — das schrumpft das flex-1-Grid minimal und rückt den
+            // GANZEN Aufbau nach oben, wo der Überhang Platz hat. calc behält die
+            // responsive Basis und addiert nur den festen Reserve-Betrag.
+            padding:
+              "clamp(1.6rem, 4vw, 4rem) 2vw calc(clamp(1rem, 3vw, 2.5rem) + 2.4rem)",
           }}
         >
           {/* TEAM-HEADLINE — LINKSBÜNDIG in Statement-Formatierung (Wolfram 16.07.).
