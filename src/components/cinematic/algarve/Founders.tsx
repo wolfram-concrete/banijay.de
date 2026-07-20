@@ -215,18 +215,27 @@ export function AlgarveFounders({
           gsap.set(words, { yPercent: 0 });
           return;
         }
+        // Mobile-Headline (in mTeam) vs. Desktop-Headline (in der gepinnten Bühne):
+        // - Desktop: TRIGGER = die SECTION, NICHT die Headline (Wolfram 16.07.): die
+        //   gepinnte Headline wird position:fixed → ihre eigene „top 88%"-Marke kann sie
+        //   nach dem Pin-Start nie mehr erreichen. Die Section behält ihre Layout-Position.
+        // - Mobile (Wolfram 19.07.): die Mobile-Headline ist bis zum End-Pin (bottom bottom)
+        //   im normalen Fluss. Am `root` zu triggern war auf der About-Seite unzuverlässig
+        //   (Section sitzt dort anders / Pin-Spacer) → das Reveal blieb aus, die Überschrift
+        //   fehlte. Darum triggert die Mobile-Headline auf SICH SELBST → feuert verlässlich,
+        //   sobald sie ins Bild scrollt.
+        const isMobileHead = !!mTeam.current?.contains(head);
         gsap.set(words, { yPercent: 118 });
         gsap.to(words, {
           yPercent: 0,
           ease: "power3.out",
           duration: 0.9,
           stagger: 0.12,
-          // TRIGGER = die SECTION, nicht die Headline selbst (Wolfram 16.07.): Die
-          // Desktop-Headline sitzt in der gepinnten Bühne. Ein gepinntes Element wird
-          // position:fixed — es wandert ab dem Pin-Start nicht mehr mit dem Scroll, seine
-          // eigene „top 88%"-Marke kann es danach nie mehr erreichen. Die Section
-          // dagegen behält ihre Layout-Position über die ganze Pin-Strecke.
-          scrollTrigger: { trigger: root.current, start: "top 88%", once: true },
+          scrollTrigger: {
+            trigger: isMobileHead ? head : root.current,
+            start: isMobileHead ? "top 92%" : "top 88%",
+            once: true,
+          },
         });
       });
     },
@@ -355,14 +364,19 @@ export function AlgarveFounders({
                 data-team-mtile
                 className={`flex flex-col gap-3 ${feature ? "col-span-2" : ""}`}
               >
+                {/* FIX (Wolfram 19.07.): das Bild ABSOLUT positioniert — sonst trieb es als
+                    Flex-Kind (min-height:auto) die Containerhöhe auf seine natürliche
+                    Bildproportion und die aspect-ratio wurde ignoriert (Natalis 3:4-Bild
+                    ergab so ein niedrigeres Feld als die 0.665-Portraits). Jetzt bestimmt die
+                    aspect-ratio die Höhe → ALLE Kacheln exakt 4/5, Leader nur voller Breite. */}
                 <div
-                  className="overflow-clip"
-                  style={{ aspectRatio: feature ? "16 / 10" : "4 / 5", background: "rgba(255,255,255,0.08)" }}
+                  className="relative overflow-clip"
+                  style={{ aspectRatio: "4 / 5", background: "rgba(255,255,255,0.08)" }}
                 >
                   <img
                     src={p.img}
                     alt={p.name}
-                    className="h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                     style={{ filter: "grayscale(1)", objectPosition: focus(p.img) }}
                   />
                 </div>

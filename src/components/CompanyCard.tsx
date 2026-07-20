@@ -37,7 +37,7 @@ export function CompanyCard({ company }: { company: Company }) {
         {/* Tier-Label */}
         <span
           className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.12em]"
-          style={{ background: "rgba(0,0,0,0.32)", color: "#f8f7f3", backdropFilter: "blur(6px)" }}
+          style={{ background: "rgba(0,0,0,0.32)", color: "#f8f7f3", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
         >
           {company.tier}
         </span>

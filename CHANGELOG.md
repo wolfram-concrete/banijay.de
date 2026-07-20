@@ -5,6 +5,117 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Preloader: Scroll während des Intros gesperrt (19.07.)
+- Beim Erst-Load bzw. beim Klick auf Home ratterte die Seite HINTER dem laufenden
+  Preloader schon an die Zielposition, wenn man währenddessen scrollte — man landete nicht
+  im Hero.
+- **Ursache (Race):** `IntroOverlay` rief `window.__lenis?.stop()` — mountet es aber VOR
+  `SmoothScroll`, existiert `__lenis` dort noch nicht → Optional-Chaining = No-Op, und
+  `SmoothScroll` erzeugte danach ein **laufendes** Lenis. `overflow:hidden` allein hält
+  Lenis nicht auf.
+- **Fix, drei Schichten:**
+  1. `SmoothScroll.tsx` liest beim Erzeugen das `data-intro`-Flag und startet Lenis
+     **gestoppt**; Freigabe erst auf `banijay:introdone`. Damit sind BEIDE Mount-Reihenfolgen
+     abgedeckt (mountet SmoothScroll zuerst, greift weiterhin `IntroOverlay`s `.stop()`).
+  2. `IntroOverlay.tsx` sperrt zusätzlich die nativen Auslöser: `wheel`, `touchmove` und die
+     Scroll-Tasten (↑↓, Bild auf/ab, Pos1/Ende, Leertaste) mit `passive:false` + `preventDefault`.
+  3. Beim Freigeben hart `scrollTo(0,0)` **und** `lenis.scrollTo(0, immediate)` → Start
+     garantiert im Hero. Unmount mitten im Intro löst die Sperre sauber (kein Hängenbleiben).
+- Verifiziert (Mechanismus isoliert): Lenis gestoppt + 10× Mausrad → `scrollY` bleibt **0**;
+  nach `start()` → 3940. Das echte Intro-Fenster ist im Preview-Pane nicht reproduzierbar
+  (GSAP `lagSmoothing(0)` + gedrosseltes rAF spielt die 7-s-Timeline in einem Tick ab) →
+  Endabnahme im echten Browser.
+
+### Browser-Kompatibilität: Safari-Prefix + Menü-Overlay auf dvh (19.07.)
+- `CompanyCard.tsx`: fehlendes `-webkit-backdrop-filter` ergänzt (Tier-Label-Milchglas
+  blurrte in Safari nicht). Alle übrigen `backdrop-filter`/`mask-image`-Stellen waren
+  bereits korrekt geprefixt.
+- `SiteHeader.tsx`: Fullscreen-Menü von `100vh` auf **`100dvh`** (plus `min-h-[100dvh]`).
+  Auf mobile Safari/Chrome ragte das Overlay hinter die Adressleiste → untere
+  Instagram/LinkedIn/Podcast-Buttons abgeschnitten bzw. Sprung beim Ein-/Ausblenden. Das
+  Menü ist **kein** Scroll-Pin → `dvh` ist hier gefahrlos.
+- **Bewusst NICHT angefasst:** die übrigen 55 `100vh`. 6 der Dateien sind gepinnt
+  (AlgarveHome, EditorialStickyScene, EcosystemSection, CompaniesScroller,
+  CareerRoleScroller, Founders) und die Home nutzt `-100vh`-Overlaps, die exakt mit den
+  gepinnten `100vh`-Höhen zusammenpassen. Blindes `dvh` würde die Scroll-Choreografie
+  brechen → separater, section-weiser Job mit Gerätetest.
+
+### Ökosystem: eigenständige Mobile-Ansicht (19.07.)
+- Die gepinnte Desktop-Orbit-Grafik mit Chips auf den Bahnen funktionierte auf 9:16 nicht.
+  Mobile ist jetzt ein **eigener Pfad** (per Breakpoint gegated, Desktop unverändert):
+  **symmetrisches Atom** oben (gleich lange Bahnen, Tilts gleichmäßig ~alle 30° verteilt →
+  keine dominante Achse, quadratisch zentriert), darunter die Rubriken als
+  **Akkordeonliste** mit Trennlinien; immer nur eine offen.
+- **Kein Pin/Scrub auf Mobile** — stattdessen einmaliges Reveal (`once`) plus gescrubbter
+  **Parallax-Drift** der Grafik. Vorher blendete das Reveal beim Weiterscrollen wieder aus
+  (`toggleActions … reverse`) → wirkte „geblockt", Grafik verschwand.
+- **Fix `useGSAP revertOnUpdate: true`:** ohne das blieb der beim SSR-Erstrender (isMobile
+  startet false) erzeugte Desktop-**Pin** auf Mobile aktiv (Section `fixed`, Pin-Spacer) —
+  betrifft auch echte Handys, da SSR immer als Desktop startet.
+- `page.tsx`: der `-100vh`-Statement-Overlap gilt nur noch ab `md` — mobil schimmerte sonst
+  das Statement-Wording hinter Grafik + Liste durch.
+
+### Companies-Bento Mobile: Zwischenheadline + platzsparender Filter (19.07.)
+- **Neue Mobile-Zwischenheadline „40+ / COMPANIES & / LABELS"** (Dreizeiler) über der
+  Company-Video-Section — sie ersetzt die Desktop-Swap-Phase des Ökosystems, die mobil aus ist.
+  Gestaltung 1:1 wie „About Banijay": gescrubbte Konvergenz (obere Zeile von −15vh, untere
+  von +15vh, scrub 0.8) + einblendender Sternenstaub, uppercase, `letter-spacing -0.02em`.
+- **Bug dabei gefunden:** `line-height: 112%` stand auf dem `h2` ohne eigene `font-size`
+  (Default 16px) → 18px-Zeilenboxen, die 56px-„40+"-Glyphen liefen über und überlagerten die
+  Caption. Fix: **unitless** `line-height` (skaliert mit der jeweiligen Span-Schriftgröße).
+- **Kategoriefilter mobil:** statt Chip-Buttons **unterstrichene Text-Hyperlinks** in exakt
+  **2 Zeilen** (aktiv magenta + unterstrichen) → spart Höhe. Desktop behält die Chips.
+- Mehr Abstand nach oben zur Ökosystem-Akkordeonsektion (~112 → ~177 px).
+
+### About Banijay (Marcus): Mobile-Section neu aufgebaut (19.07.)
+- **Bild** höher (104vw, Hochformat) mit der Quote unten drauf, **sticky unter der Nav**
+  (`top: 72px`, knapp unterm B-Logo) und **„zoomt zusammen"** beim Scrollen (Höhe gescrubbt
+  104vw → 62vw). Kein Pin (auf Mobile heikel), nur Sticky + Scrub.
+- **Quote-Laufweite** mobil 64 % → **90 %** → 6 statt 9 Zeilen, ragt nicht mehr so hoch ins Bild.
+- **Fakten-Akkordeon:** Karten geschlossen kompakt (**136 → 63 px** — `flex-grow` füllte
+  vorher die Höhe auf, dazu `min-height` raus), Lücke zum Bild geschlossen.
+- **Farbkodierung repariert:** `clearProps: "all"` wischte auf Mobile den von React gesetzten
+  Karten-`background` (Magenta/transparent) mit weg — deshalb fehlte die Desktop-Farblogik
+  dort komplett. Jetzt werden nur noch die GSAP-Props zurückgesetzt.
+- **Akkordeon fließt natürlich** statt fixem `overflow`-Panel: die unterste Karte wurde
+  abgeschnitten und das Modul wuchs beim Aufklappen nicht mit. (Nebeneffekt: das sticky Bild
+  hält länger, weil der Container höher ist.)
+- **„Die Banijay Story"** mobil ohne `yPercent`-Parallax (nur Desktop): der zog die weiße Box
+  erst voll herein, wenn das Akkordeon schon aus dem Screen war → man sah den Text nie ganz.
+  Jetzt normaler Block, sofort vollständig sichtbar. Desktop-Andock-`marginTop` ebenfalls auf
+  `md:` begrenzt.
+
+### Team-Section Mobile + drei Portraits (19./20.07.)
+- **Headline mittelachsig** (war linksbündig).
+- **Die drei Leader** (Marcus, Knut, Michael Laegel) mobil jeweils über die **volle Breite**
+  gestapelt, darunter durchgehend zweispaltig.
+- **aspect-ratio-Bug behoben:** der Bildcontainer ist ein Flex-Kind (`min-height:auto`), das
+  `<img>` trieb die Höhe auf seine **natürliche** Bildproportion → die `aspect-ratio` wurde
+  ignoriert und jede Kachel war so hoch wie ihr Bild (Natalis 3:4-Foto ergab ein sichtbar
+  niedrigeres Feld als die 0.665-Portraits). Fix: Bild **absolut** positioniert → jetzt sind
+  **alle** Kacheln exakt 4/5.
+- **Headline-Reveal-Trigger:** das Mobile-Reveal hing am `root` (ganze Section) und feuerte
+  auf der About-Seite nicht zuverlässig → „Unser Team" fehlte dort ganz. Triggert jetzt auf
+  der Mobile-Headline selbst.
+- **Portraits:** **Elena Kats** — Name + Titel „Director Finance Projects & Business Systems"
+  ergänzt, Ganzkörper-Sitzfoto eng auf Kopf/Oberkörper beschnitten (Kopf ~28 % wie die
+  anderen). **Natali Naso** — `lead-6.jpg` war exakt 4/5 und blieb dadurch ungecroppt (weite
+  Sitz-Komposition mit Weißraum) → jetzt eng beschnitten (900×1200, 3:4). **Michael Gaul** —
+  neues Foto (weiter Loft-Shot, Kopf nur ~8,5 % der Bildhöhe, Person links außen) auf
+  Kopf ~29 % rangezoomt und mittig gesetzt.
+
+### Performance-/Browser-Audit (19.07., nur Analyse)
+- **Videos:** 167 MB in `public/` (49 Dateien), davon nur ~21 referenziert. Laufzeit-relevant
+  sind v. a. die 12 Company-Clips (~55 MB, je 3–7 MB, Autoplay bei Sichtbarkeit) → Task #77
+  (neu enkodieren) ist der Haupthebel. **86,9 MB Videos sind gar nicht referenziert**
+  (`hero.mp4` 28,5 MB, `hero-design` 12, `kompetenz-reel` 12,8 …) → Deploy-Ballast.
+- **Bilder:** 45 MB PNG; die dicksten sind Orphans (`stage-portrait.png` 15,4 MB,
+  `preloader.png` 13,4 MB, `g10.jpeg` 11 MB). Echter Laufzeit-Posten: `career/c1–c4.png`
+  (~2 MB je) → nach JPG/WebP.
+- **Browser:** keine `:has()`/`@container`/`text-wrap` → keine bleeding-edge-Risiken;
+  `overflow: clip` (57×) ab Safari 16 ok; WebGL-Hero als Perf-Last auf Low-End-Mobile im Blick.
+  Offen: `100vh → dvh/svh` (siehe oben).
+
 ### Mobile: Menü-Overlay als einheitliches Grid + Logo-Abstand (17.07.)
 - **B/Logo oben** rückte auf Mobile von der oberen Kante ab: Nav-Bar `paddingTop`
   1.5vw (~6px) → mobil **6vw (~23px)**. Desktop unverändert. (Inline-Padding auf Klassen

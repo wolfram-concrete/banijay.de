@@ -25,6 +25,20 @@ export function SmoothScroll() {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // INTRO-SPERRE (Wolfram 19.07.): Läuft der Preloader noch, muss Lenis GESTOPPT starten.
+    // Der IntroOverlay ruft zwar window.__lenis.stop() — mountet er aber VOR dieser
+    // Komponente, existiert __lenis dort noch nicht (No-Op) und das frische Lenis lief
+    // munter weiter: man konnte während des Intros scrollen und die Seite ratterte im
+    // Hintergrund an die Zielposition. Darum hier das data-intro-Flag lesen und erst auf
+    // „banijay:introdone" wieder freigeben.
+    const introActive = document.documentElement.dataset.intro === "1";
+    if (introActive) lenis.stop();
+    const onIntroDone = () => {
+      lenis.scrollTo(0, { immediate: true });
+      lenis.start();
+    };
+    window.addEventListener("banijay:introdone", onIntroDone);
+
     // Expliziter, SYNCHRONER ScrollTrigger.refresh() bei Breiten-Resize (Wolfram 17.07.).
     // Grund: mehrere Module sind gepinnt; beim Pinnen fixiert ScrollTrigger Breite/Position
     // des Elements auf die Messung zum Pin-Zeitpunkt. Ändert sich danach die Viewport-
@@ -47,6 +61,7 @@ export function SmoothScroll() {
 
     return () => {
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("banijay:introdone", onIntroDone);
       clearTimeout(resizeTimer);
       gsap.ticker.remove(raf);
       lenis.destroy();

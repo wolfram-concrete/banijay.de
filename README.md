@@ -51,6 +51,21 @@ Hairlines zwischen den Einträgen. Die News-Page überblendet ihr Statement per 
 Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
 Film-Snippets ragen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
+**Mobile ist kein verkleinertes Desktop.** Drei Sektionen haben auf schmalen Viewports einen
+eigenen Aufbau (per Breakpoint gegated, Desktop bleibt unberührt): Das **Ökosystem** zeigt statt
+der gepinnten Orbit-Grafik mit Chips ein symmetrisches Atom (gleich lange Bahnen, Tilts
+gleichmäßig rundum) und darunter die Rubriken als Akkordeonliste — ohne Pin, mit einmaligem
+Reveal und gescrubbtem Parallax-Drift. Die **About-Banijay-(Marcus-)Section** stellt das
+Porträt hochformatig sticky unter die Nav, zoomt es beim Scrollen zusammen und gibt darunter
+die kompakten, farbkodierten Fakten-Akkordeons frei (Magenta/transparent wie auf Desktop);
+die „Banijay Story" steht dort ohne Parallax, damit sie vollständig im Screen liegt. Im
+**Companies-Bento** ersetzt eine eigene Zwischenheadline „40+ / Companies & / Labels" (gescrubbte
+Konvergenz + Staub, wie „About Banijay") die Desktop-Swap-Phase, und der Kategoriefilter läuft
+als zweizeilige, unterstrichene Textlinks statt als Chip-Buttons. Im **Team-Grid** stehen die drei
+Leader über die volle Breite, darunter durchgehend zweispaltig mit einheitlich 4/5-Kacheln.
+Während des **Preloaders** ist Scrollen hart gesperrt (Lenis startet gestoppt, zusätzlich
+`wheel`/`touchmove`/Scroll-Tasten abgefangen) — man landet immer im Hero.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript**

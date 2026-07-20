@@ -411,14 +411,18 @@ export function SiteHeader() {
       {/* Fullscreen-Overlay */}
       <div
         className="fixed inset-0 z-[200] overflow-hidden transition-[height] duration-500 ease-in-out"
-        style={{ height: open ? "100vh" : 0, background: CORAL }}
+        // 100dvh statt 100vh (Wolfram 19.07., Browser-Opt): das Fullscreen-Menü ist KEIN
+        // Scroll-Pin → dvh ist hier gefahrlos und füllt auf mobile Safari/Chrome exakt den
+        // sichtbaren Viewport (mit 100vh ragte es hinter die Adressleiste → untere Buttons
+        // abgeschnitten / Sprung beim Ein-/Ausblenden der Leiste).
+        style={{ height: open ? "100dvh" : 0, background: CORAL }}
       >
         {/* Derselbe 6vw-Rand wie die Nav-Bar (Wolfram 17.07.): so bilden Logo, Nav-Wörter,
             Social-Buttons und Podcast-Widget eine gemeinsame Grid-Spalte mit symmetrischem
             Rand links/rechts. Vorher 2vw fix → Nav-Wörter klebten rechts, Social/Podcast
             links an der Kante. Desktop bleibt 2vw. */}
         <div className="px-[2vw] max-[767px]:!px-[6vw]">
-          <div className="flex min-h-screen w-full flex-row-reverse items-start justify-between overflow-hidden pb-[3vw] pt-[9vw] max-[767px]:flex-col max-[767px]:gap-14 max-[767px]:overflow-auto max-[767px]:pb-20 max-[767px]:pt-28">
+          <div className="flex min-h-[100dvh] w-full flex-row-reverse items-start justify-between overflow-hidden pb-[3vw] pt-[9vw] max-[767px]:flex-col max-[767px]:gap-14 max-[767px]:overflow-auto max-[767px]:pb-20 max-[767px]:pt-28">
             {/* Große Links — rechtsbündig (auch auf Mobile; dort full-width, damit
                 items-end wirklich an den rechten Viewport-Rand schiebt). */}
             <nav

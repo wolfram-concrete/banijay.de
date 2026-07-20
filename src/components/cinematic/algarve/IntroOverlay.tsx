@@ -29,6 +29,26 @@ export function IntroOverlay() {
 
   useGSAP(
     () => {
+      // HARTE SCROLL-SPERRE während des Preloaders (Wolfram 19.07.): overflow:hidden +
+      // lenis.stop() allein reichten nicht — man konnte während des Intros scrollen und die
+      // Seite ratterte im Hintergrund an die Zielposition. Darum zusätzlich die nativen
+      // Scroll-Auslöser abfangen (wheel/touchmove/Scroll-Tasten), passive:false wegen
+      // preventDefault. Wird in cleanup() wieder gelöst.
+      const preventScroll = (e: Event) => e.preventDefault();
+      const preventScrollKeys = (e: KeyboardEvent) => {
+        if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) e.preventDefault();
+      };
+      const lockScroll = () => {
+        window.addEventListener("wheel", preventScroll, { passive: false });
+        window.addEventListener("touchmove", preventScroll, { passive: false });
+        window.addEventListener("keydown", preventScrollKeys);
+      };
+      const unlockScroll = () => {
+        window.removeEventListener("wheel", preventScroll);
+        window.removeEventListener("touchmove", preventScroll);
+        window.removeEventListener("keydown", preventScrollKeys);
+      };
+
       const finish = () => {
         (window as { __introDone?: boolean }).__introDone = true;
         window.dispatchEvent(new Event("banijay:introdone"));
@@ -41,6 +61,13 @@ export function IntroOverlay() {
         finish();
         delete document.documentElement.dataset.intro;
         document.documentElement.style.overflow = "";
+        unlockScroll();
+        // Immer im Hero starten: während der Sperre kann sich nichts verschoben haben,
+        // aber wir setzen hart auf 0, bevor Lenis wieder übernimmt.
+        window.scrollTo(0, 0);
+        (window as { __lenis?: { start: () => void; scrollTo: (t: number, o?: object) => void } }).__lenis?.scrollTo(0, {
+          immediate: true,
+        });
         (window as { __lenis?: { start: () => void } }).__lenis?.start();
         setDone(true);
         // Nach dem Entsperren neu vermessen — der gepinnte Hero (radialer Aufbau)
@@ -63,6 +90,9 @@ export function IntroOverlay() {
 
       document.documentElement.dataset.intro = "1";
       document.documentElement.style.overflow = "hidden";
+      lockScroll();
+      // Lenis kann hier noch nicht existieren (SmoothScroll mountet ggf. später) — darum
+      // liest SmoothScroll zusätzlich das data-intro-Flag und startet erst auf „introdone".
       (window as { __lenis?: { stop: () => void } }).__lenis?.stop();
       window.scrollTo(0, 0);
 
@@ -97,6 +127,14 @@ export function IntroOverlay() {
         // wird NICHT mehr hier ausgelöst, sondern erst in cleanup (onComplete), wenn das
         // Overlay komplett weg ist (Wolfram 15.07.).
         .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 6.15);
+
+      // Sicherheitsnetz: wird die Komponente mitten im Intro unmountet (Routenwechsel),
+      // darf die Scroll-Sperre nicht hängen bleiben.
+      return () => {
+        unlockScroll();
+        delete document.documentElement.dataset.intro;
+        document.documentElement.style.overflow = "";
+      };
     },
     { scope: root },
   );
