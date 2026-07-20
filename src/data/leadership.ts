@@ -36,7 +36,9 @@ export const LEADERSHIP: Leader[] = [
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
   { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
   { name: "Natali Naso", role: "Director Human Resources", img: "/people/lead-6.jpg" },
-  { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/lead-8.jpg" },
+  // Echtes Portrait (Wolfram 20.07.) — löst den Platzhalter lead-8.jpg ab. Ganzkörper-
+  // Quelle eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %, wie die übrigen Portraits).
+  { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },
   { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/lead-1.jpg" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-2.jpg ab.
   // Quelle: assets/People/aylin.jpg (vormals „2026_07 Banijay _ Nick Harwart-9572-2.jpg";

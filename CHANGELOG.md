@@ -5,6 +5,20 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team: echtes Portrait für Heike Lutzer (20.07.)
+- **Heike Lutzer** bekommt ihr echtes Foto und löst damit den Platzhalter `lead-8.jpg` ab —
+  neue Datei `public/people/heike-lutzer.jpg`, Datenzeile in `leadership.ts` umgehängt,
+  Fokuswert (`50% 18%`) auf den neuen Dateinamen umgezogen. `lead-8.jpg` wird nirgends mehr
+  referenziert.
+- Beschnitt nach derselben Regel wie die übrigen Zulieferungen: Ganzkörper-Quelle
+  (3812×5712, Kopf nur ~10 % der Bildhöhe, Person links im Bild) eng auf **Kopf ~29 %** der
+  Rahmenhöhe gerechnet, Kopf-Oberkante bei 12 %, horizontal auf ihr Gesicht zentriert →
+  Ausgabe 900×1200 (3:4) wie alle anderen Portraits.
+- Verifiziert: lädt sauber (900×1200), `object-position 50% 18%`, kein `lead-8` mehr im DOM.
+- **Stand jetzt: 9 von 12 Portraits echt.** Übrig als Platzhalter: Marcus Wolter,
+  Natali Naso (`lead-6.jpg` zeigt eine andere Person), Janine Berns — `lead-1.jpg` weiterhin
+  doppelt (Marcus + Janine).
+
 ### Preloader: Scroll während des Intros gesperrt (19.07.)
 - Beim Erst-Load bzw. beim Klick auf Home ratterte die Seite HINTER dem laufenden
   Preloader schon an die Zielposition, wenn man währenddessen scrollte — man landete nicht

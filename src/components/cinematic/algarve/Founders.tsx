@@ -62,7 +62,9 @@ const FOCUS: Record<string, string> = {
   // Oberkörper beschnitten (3/4, Kopf ~29 %) wie die übrigen Portraits → gleicher Top-Bias.
   "/people/lead-6.jpg": "50% 12%",
   "/people/lead-7.jpg": "50% 26%",
-  "/people/lead-8.jpg": "50% 22%",
+  // Heike Lutzer (Wolfram 20.07.) — echtes Portrait, löst lead-8.jpg ab. Ganzkörper-Quelle
+  // eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %) → gleicher Top-Bias wie die anderen.
+  "/people/heike-lutzer.jpg": "50% 18%",
   "/people/lead-9.jpg": "50% 22%",
 };
 const focus = (img: string) => FOCUS[img] ?? "50% 20%";

@@ -157,8 +157,7 @@ Vor dem Livegang abzuarbeiten:
 |---|---|---|
 | **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
-| **Leadership-/People-Bilder** | 8 von 12 echt — Rest Platzhalter, `lead-1.jpg` sogar doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
-| **Elena Kats: Name + Rolle fehlen** | Kachel ohne Beschriftung (Foto da, `name`/`role` leer) | Nachname + Position in `leadership.ts` eintragen |
+| **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
@@ -240,11 +239,11 @@ braucht dafür nur ein anderes `img`.
 
 ### Team-Portraits: Beschnitt-Regel und eine offene Frage
 
-**8 von 12 echt** (Knut, Michael Laegel, Simone, Aylin, Elena, Michael Gaul, Sebastian,
-Matthaeus), vier noch Platzhalter — `lead-1.jpg` läuft doppelt (Marcus Wolter + Janine
-Berns), was in der Team-Section auffällt, sobald man hinsieht. **Elena Kats** hat zwar ihr
-echtes Foto, aber vorerst **weder Namen noch Rolle** (Datei hieß nur `Elena.jpg`, Position
-unbekannt) — beides vor Livegang eintragen.
+**9 von 12 echt** (Knut, Michael Laegel, Simone, Heike, Aylin, Elena, Michael Gaul,
+Sebastian, Matthaeus), drei noch Platzhalter: **Marcus Wolter**, **Natali Naso** (`lead-6.jpg`
+zeigt eine andere Person) und **Janine Berns** — `lead-1.jpg` läuft doppelt (Marcus + Janine),
+was in der Team-Section auffällt, sobald man hinsieht. Elena Kats hat inzwischen Name und
+Rolle („Director Finance Projects & Business Systems").
 
 **Beschnitt-Regel für neue Portraits.** Die Zulieferungen aus der 2026er-Session sind
 GANZKÖRPER-Aufnahmen (~3800–4900 px breit, Seitenverhältnis 0,665). Die Team-Kacheln sind
