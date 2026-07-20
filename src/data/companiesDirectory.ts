@@ -127,7 +127,9 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // (Bubble + Neon-Schild) — anders als die sonst breiten Weiß-Logos. Es bekommt daher
   // per logoClass mehr Höhe, sonst wäre es im höhenbegrenzten Slot nur ~20px breit.
   { id: "nightwash-club", name: "NightWash Club", ecoKeys: ["live"], logo: L("nightwash-club.png"), logoClass: "h-[3.4rem] md:h-[4rem]", url: "https://nightwash-club.de/", tags: ["Live"], placeholder: true },
-  { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], tags: ["Artists"], placeholder: true },
+  // Vorerst auf die Only-Good-People-Website (ogp.rocks) verlinkt (Wolfram 20.07.) —
+  // bewusster Verweis auf die verwandte Company, bis ein eigener Auftritt vorliegt.
+  { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], url: "https://ogp.rocks/", tags: ["Artists"], placeholder: true },
   // NUR AUS DER VIDEO-LISTEN-SECTION (Bento) ENTFERNT (Wolfram 16.07.): SRM Music,
   // MySpass Audio, Major Minor, MadeFor Music, BP Music Publishing und Banijay
   // Infrastructure. Im Ökosystem (ecosystem.ts) und im Ökosystem-Verzeichnis bleiben

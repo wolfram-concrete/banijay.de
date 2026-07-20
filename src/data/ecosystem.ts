@@ -114,7 +114,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "SR Management", url: "http://www.srmanagement.de/" },
       { name: "En2rage", url: "http://en2rage.de/" },
       { name: "Only Good People", url: "https://ogp.rocks/" },
-      { name: "Only Good Party People" },
+      // Vorerst auf ogp.rocks (Only Good People) verlinkt (Wolfram 20.07.), bis eigener Auftritt.
+      { name: "Only Good Party People", url: "https://ogp.rocks/" },
       { name: "Elevate", url: "https://www.elevate-mgmt.de/" },
     ],
   },

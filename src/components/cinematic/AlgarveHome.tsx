@@ -265,7 +265,16 @@ export function AlgarveHome({
         className="pointer-events-none absolute inset-x-0"
         style={{
           top: "26vh",
-          bottom: 0,
+          // NAHT-ÜBERLAPP (Wolfram 20.07.): −6px statt 0. An der Unterkante (dem Übergang
+          // zur Statement-/DustStage-Fläche) treffen zwei getrennt gerasterte Magenta-
+          // Gradienten aufeinander — der lineare Balken hier und der radiale DustStage-
+          // Veil darunter, beide ≈ #ff4370. Geometrisch liegen sie pixelgenau (Lücke 0),
+          // aber auf Retina/bei Browser-Zoom kann der Browser an der geteilten Kante eine
+          // 1px-Antialiasing-Naht zeichnen, durch die der dunkle Seitengrund (#0a0208)
+          // durchscheint (die dünne Linie, Wolframs Screenshot). Der Balken reicht jetzt
+          // 6px unter seinen Container (hinter den Veil, unsichtbar) → die Naht liegt auf
+          // Magenta statt auf Dunkel, egal bei welchem DPR/Zoom.
+          bottom: "-6px",
           // Gradient (Wolfram 14.07.): vom moody Hero-Grund (oben, an der radialen
           // Kante) zum Magenta der 1. Section (unten) durchlayern. Companies: dunkel.
           // OBERKANTE WEICH (Wolfram 20.07.): Der Gradient begann hart bei #1e0816 —

@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Hero-Naht + Only Good Party People (20.07., dritter Block)
+- **Dünne Linie am Hero→Statement-Übergang** (Wolfram): kein Struktur-Fehler. Gemessen
+  liegen Balken-Unterkante, Statement- und DustStage-Veil-Oberkante alle pixelgenau auf
+  1908,0 (Lücke 0), beide Bänder sind dieselbe Farbe #ff4370. Die Linie ist ein
+  Antialiasing-Artefakt: zwei getrennt gerasterte Magenta-Gradienten (linearer Balken +
+  radialer Veil) an geteilter Kante zeigen auf Retina/bei Zoom einen 1px-Saum, durch den
+  der dunkle Grund (#0a0208) schimmert. Defensiv behoben: Der Hero-Balken reicht jetzt 6px
+  unter seinen Container (hinter den Veil) → die Naht liegt immer auf Magenta, unabhängig
+  von DPR/Zoom. Kein Overflow, Layout unverändert.
+- **Only Good Party People** vorerst auf ogp.rocks (Only Good People) verlinkt — bewusster
+  Verweis auf die verwandte Company bis zum eigenen Auftritt. In Bento-Directory + Ökosystem.
+
 ### Hero: dritter Frame neu (20.07.)
 - **Alle Frame-3-Hero-Motive** (der „We Are Banijay"-Typo-Frame) aus dem aktualisierten
   `assets/Visuals/Hero`-Ordner neu weboptimiert — je 5 Desktop + 5 Mobile: Home, About,

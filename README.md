@@ -167,7 +167,7 @@ Vor dem Livegang abzuarbeiten:
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
 | **Story-Text auf der Home** | `Lorem ipsum` | Echten Text (siehe `Editorial.tsx`) |
 | **Fakten-Copy (3 von 7)** | `Text folgt.` steht sichtbar auf der Seite | Texte für 90 %, 170+ und 1.500+ nachliefern (siehe unten) |
-| **Company-URLs im Ökosystem** | 20 von 40 Einträgen unverlinkt | Fehlende Websites nachliefern (siehe unten) |
+| **Company-URLs im Ökosystem** | 12 von 45 Einträgen unverlinkt (Stand 20.07., war 20/40) | Fehlende Websites nachliefern (siehe unten) |
 | **Wording** | Entwurf | Freigabe Heike/Redaktion |
 
 ### Unverlinkte Companies im Ökosystem
@@ -177,19 +177,16 @@ Die URLs stammen ausschließlich aus dem Scrape der bisherigen banijay.de (`scra
 es wird keine Adresse geraten. Im Verzeichnis erkennt man die Betroffenen am fehlenden
 Pfeil-Icon.
 
-Betroffen ist die **Hälfte des Verzeichnisses: 20 von 40 Einträgen** (Stand 17.07.):
+Noch ohne Link: **12 von 45 Einträgen** (Stand 20.07., zuletzt viele URLs nachgetragen):
 
 | Rubrik | Ohne Link |
 |---|---|
-| Entertainment | filmpool entertainment · South & Browse · Rainer Laux Productions · Lucky Pics · Minestrone TV · Ladykracher · Doc.Banijay · Potatohead Pictures · EndemolShine Poland |
-| Audio | Banijay Media Germany · MySpass Audio · SRM Music · Major Minor · BP Music Publishing · Podcast Bande · MySpass |
-| Artists | Only Good Party People |
-| Distribution & Brand | MySpass · Banijay Media Germany · Magic Connection |
+| Entertainment | Minestrone TV · Ladykracher · Doc.Banijay · Potatohead Pictures (bewusst — hat keine eigene Website) |
+| Audio | MySpass Audio · SRM Music · Major Minor · BP Music Publishing · Podcast Bande · MySpass |
+| Distribution & Brand | MySpass |
 | Tech | Banijay Infrastructure |
-| Fiction | filmpool fiction |
 
-(MySpass und Banijay Media Germany stehen in zwei Rubriken — beim Nachtragen der URL
-beide Vorkommen ergänzen.)
+(MySpass steht in mehreren Rubriken — beim Nachtragen der URL alle Vorkommen ergänzen.)
 
 Aktuelle Liste jederzeit erzeugbar:
 
