@@ -11,11 +11,14 @@ export const CAREER = {
     image: "/career/career-hero-poster.jpg",
   },
 
-  // Intro zur Rollenwelt (Cards darunter): NUR EIN Copytext, keine eigene Headline.
-  // Die Rollen-Domänen (Produktion/Redaktion/… ) stehen bereits im Hero-Body — hier
-  // NICHT wiederholen (sonst Dopplung).
+  // Intro zur Rollenwelt (Cards darunter).
+  // Wording von Wolfram (20.07.) — ersetzt „Viele Companies, viele Rollen, ein
+  // gemeinsames Ziel: …". Der Text hat jetzt ZWEI Ebenen: Zeile 1 ist ein Zuruf, danach
+  // folgt der Fließtext. Das „\n" trennt beide — der Statement-Renderer in
+  // AlgarveHome.tsx bricht dort um und hält den Zuruf auf einer eigenen Zeile.
+  // (Der alte Kommentar „keine eigene Headline" ist damit überholt.)
   roleIntro: {
-    text: "Viele Companies, viele Rollen, ein gemeinsames Ziel: Jobs bei Banijay entstehen dort, wo Entertainment gemacht wird — direkt in den Companies und Labels der Gruppe.",
+    text: "Finde hier deinen Traumjob!\nEine Karriere bei uns bedeutet die Möglichkeit, deine ganz eigene Erfolgsstory zu schreiben. Wenn du Entertainment liebst und mit uns die Welt verändern willst, sieh nach, ob eine unserer Stellen zu dir passen könnte.",
   },
 
   // Rollenwelt als Sticky-Card-Stack (value-features/ServicesStack-Prinzip).

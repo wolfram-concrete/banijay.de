@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -166,6 +166,66 @@ export function AlgarveEcosystem() {
   // Hover-Highlight (Wolfram 15.07.): beim Überfahren färbt sich die Card magenta.
   const [hovered, setHovered] = useState<string | null>(null);
 
+  // AUFKLAPPRICHTUNG PER MESSUNG (Wolfram 20.07.) — vorher entschied allein die Lage
+  // des Ankers (fy > 0.62), ob eine Card nach oben aufklappt. Das ignoriert zwei Dinge:
+  // wie HOCH die Card wird und wie hoch das FENSTER ist. Entertainment hat mit Abstand
+  // die längste Liste; auf flachen Laptop-Viewports lief sie deshalb unten raus,
+  // obwohl ihr Anker in der oberen Hälfte sitzt. Jetzt wird beim Öffnen der reale
+  // Platzbedarf gegen den echten Platz im Viewport gerechnet.
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [flipUp, setFlipUp] = useState<Record<string, boolean>>({});
+  // Deckel für die Listenhöhe, wenn die Card auch in der besseren Richtung nicht
+  // vollständig ins Fenster passt (null = kein Deckel nötig).
+  const [contentCap, setContentCap] = useState<Record<string, number | null>>({});
+
+  // Luft, die oben/unten frei bleiben muss. Oben liegt der Header (72px) über der
+  // Grafik — darunter darf die Card nicht verschwinden.
+  const PAD_TOP = 84;
+  const PAD_BOTTOM = 16;
+  // Untergrenze für die gedeckelte Liste — darunter wäre der Scrollbereich sinnlos.
+  const MIN_LIST_H = 140;
+  // Reserve auf den Deckel. Gemessen (20.07.): die reale Card wird ~14px höher als
+  // Kopf + Deckel, weil Innenpadding und Rahmen der Liste oben drauf kommen. Ohne die
+  // Reserve schrumpft der geplante Rand unten von 16px auf 2px.
+  const CAP_BUFFER = 20;
+
+  const measureFlip = useCallback((key: string) => {
+    const el = cardRefs.current[key];
+    const head = el?.querySelector<HTMLElement>("[data-eco-head]");
+    const inner = el?.querySelector<HTMLElement>("[data-eco-panel-inner]");
+    if (!el || !head || !inner) return;
+
+    // ACHTUNG, hier lag der erste Fehlversuch: NICHT den [data-eco-panel]-Wrapper
+    // messen. Der wächst per grid-template-rows-Transition von 0fr auf 1fr, und zum
+    // Messzeitpunkt (direkt nach dem Öffnen, vor dem Paint) steht er noch auf 0 —
+    // scrollHeight liefert dort 0, die Card hätte nie umgeklappt. Der INNERE
+    // Content-Block dagegen hat seine echte Höhe sofort, weil die Breite (width: auto
+    // bei isActive) ohne Transition gesetzt wird und der Text korrekt umbricht.
+    const full = head.offsetHeight + inner.getBoundingClientRect().height;
+
+    // Ankerpunkt (der Satellit, an dem die Card hängt) aus der aktuellen Lage
+    // zurückrechnen — je nachdem, ob sie gerade nach oben oder unten hängt.
+    const rect = el.getBoundingClientRect();
+    const anchorY = flipUp[key] ? rect.bottom + 10 : rect.top - 12;
+
+    const roomBelow = window.innerHeight - (anchorY + 12) - PAD_BOTTOM;
+    const roomAbove = anchorY - 10 - PAD_TOP;
+
+    // Erst die bessere Richtung wählen: umklappen, wenn es unten nicht reicht UND
+    // oben mehr Platz ist.
+    const next = full > roomBelow && roomAbove > roomBelow;
+    setFlipUp((prev) => (prev[key] === next ? prev : { ...prev, [key]: next }));
+
+    // Zweite Stufe (Wolfram 20.07.): Entertainment ist so lang, dass es auf flachen
+    // Fenstern in KEINE Richtung komplett passt (z. B. 1440×760: braucht 475px, hat
+    // unten 356px, oben 282px). Dann wird die Liste auf den real verfügbaren Platz
+    // gedeckelt und scrollt innen — abgeschnitten wird nichts mehr, auf keinem Format.
+    const room = next ? roomAbove : roomBelow;
+    const cap = full > room ? Math.max(MIN_LIST_H, room - head.offsetHeight - CAP_BUFFER) : null;
+    setContentCap((prev) => (prev[key] === cap ? prev : { ...prev, [key]: cap }));
+  }, [flipUp]);
+
+
   // Aktive Geometrie: Desktop quer, Mobile hochformatig (Wolfram 17.07.). EIN Satz
   // Ableitungen, den Rendering UND Choreografie gemeinsam nutzen.
   const isMobile = useIsMobile();
@@ -179,6 +239,21 @@ export function AlgarveEcosystem() {
   const VBW = isMobile ? 800 : 1300; // viewBox Breite
   const VBH = isMobile ? 800 : 640; // viewBox Höhe
   const pt = (orbit: number, deg: number) => pointOn(ST, ORB, orbit, deg);
+
+  // Vor dem Paint messen, damit die Card direkt in der richtigen Richtung aufgeht
+  // (steht hier unten, weil isMobile erst oberhalb deklariert wird).
+  useLayoutEffect(() => {
+    if (!active || isMobile) return;
+    measureFlip(active);
+  }, [active, isMobile, measureFlip]);
+
+  // Fenstergröße ändert den verfügbaren Platz → offene Card neu bewerten.
+  useEffect(() => {
+    if (!active || isMobile) return;
+    const onResize = () => measureFlip(active);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [active, isMobile, measureFlip]);
 
   useGSAP(
     () => {
@@ -456,7 +531,10 @@ export function AlgarveEcosystem() {
           // Flip mitten im Stapel ließe zwei benachbarte Karten gegeneinander öffnen und
           // sich in den Ecken berühren. Darum klappen auf Mobile ALLE einheitlich nach
           // unten auf → die fy-Staffelung (≥0.12 Abstand) hält sie sauber getrennt.
-          const low = !isMobile && fy > 0.62;
+          // fy > 0.62 ist nur noch die VORAB-Annahme für den ersten Frame (SSR/vor der
+          // Messung). Sobald die Card offen ist, entscheidet die reale Messung —
+          // siehe measureFlip oben.
+          const low = !isMobile && (flipUp[cat.key] ?? fy > 0.62);
           const anchorX = fx > 0.76 ? "-92%" : fx < 0.24 ? "-8%" : "-50%";
           const anchorY = low ? "calc(-100% - 10px)" : "12px";
           const originX = fx > 0.76 ? "92%" : fx < 0.24 ? "8%" : "50%";
@@ -465,6 +543,9 @@ export function AlgarveEcosystem() {
             <div
               key={cat.key}
               data-eco-card
+              ref={(el) => {
+                cardRefs.current[cat.key] = el;
+              }}
               className="absolute"
               onMouseEnter={() => setHovered(cat.key)}
               onMouseLeave={() => setHovered((h) => (h === cat.key ? null : h))}
@@ -506,6 +587,7 @@ export function AlgarveEcosystem() {
               >
                 <button
                   type="button"
+                  data-eco-head
                   onClick={() => setActive(isActive ? null : cat.key)}
                   aria-expanded={isActive}
                   className="flex w-full items-center gap-2 whitespace-nowrap px-3.5 py-1.5 text-left text-[1.15rem] font-semibold uppercase tracking-[0.12em]"
@@ -522,6 +604,7 @@ export function AlgarveEcosystem() {
                 </button>
                 {/* Akkordeon: Companies als CTAs (echte Website-Links, sonst Text) */}
                 <div
+                  data-eco-panel
                   style={{
                     display: "grid",
                     gridTemplateRows: isActive ? "1fr" : "0fr",
@@ -532,10 +615,20 @@ export function AlgarveEcosystem() {
                     transition: "grid-template-rows .45s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
-                  <ul className="m-0 min-h-0 list-none overflow-hidden p-0">
+                  <ul
+                    className="m-0 min-h-0 list-none p-0"
+                    style={{
+                      // Gedeckelt nur, wenn die Messung es verlangt — sonst wie bisher
+                      // reines overflow:hidden für die Aufklapp-Animation.
+                      maxHeight: isActive && contentCap[cat.key] ? contentCap[cat.key]! : undefined,
+                      overflowY: isActive && contentCap[cat.key] ? "auto" : "hidden",
+                      overflowX: "hidden",
+                      overscrollBehavior: "contain", // kein Durchscrollen auf die Seite
+                    }}
+                  >
                     {/* Kompakter (Wolfram 15.07.): kleinere Zeilen/Padding → auch die
                         11-zeilige Entertainment-Karte passt in den gepinnten Viewport. */}
-                    <div className="flex flex-col px-3.5 pb-2 pt-0.5">
+                    <div data-eco-panel-inner className="flex flex-col px-3.5 pb-2 pt-0.5">
                       {cat.companies.map((c) => (
                         <li key={c.name} className="leading-tight">
                           {c.url ? (

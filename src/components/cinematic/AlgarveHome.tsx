@@ -445,13 +445,27 @@ export function AlgarveHome({
               opacity: 0,
             }}
           >
-            {/* Wort-für-Wort-Reveal beim Ins-Bild-Scrollen (Wolfram 14.07.) */}
-            {statement.split(" ").map((w, i, arr) => [
-              <span key={i} data-hero-stmt-word className="inline-block" style={{ willChange: "transform, opacity" }}>
-                {w}
-              </span>,
-              i < arr.length - 1 ? " " : "",
-            ])}
+            {/* Wort-für-Wort-Reveal beim Ins-Bild-Scrollen (Wolfram 14.07.).
+                Ein „\n" im Statement erzwingt einen Umbruch (Wolfram 20.07., Career-
+                Text: Zuruf auf eigener Zeile, darunter der Fließtext). Der Umbruch
+                zählt NICHT als Wort, die Reveal-Reihenfolge bleibt also lückenlos. */}
+            {statement.split(/(\n)/).map((chunk, ci) =>
+              chunk === "\n" ? (
+                <br key={`br-${ci}`} />
+              ) : (
+                chunk.split(" ").map((w, i, arr) => [
+                  <span
+                    key={`${ci}-${i}`}
+                    data-hero-stmt-word
+                    className="inline-block"
+                    style={{ willChange: "transform, opacity" }}
+                  >
+                    {w}
+                  </span>,
+                  i < arr.length - 1 ? " " : "",
+                ])
+              ),
+            )}
           </p>
         </section>
       )}
