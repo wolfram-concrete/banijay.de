@@ -39,9 +39,10 @@ export const ABOUT = {
   world: {
     eyebrow: "Local Everywhere",
     headline: "Local everywhere",
-    // Mit Lorem ipsum aufgefüllt (Wolfram 20.07.), bis finaler, längerer Text vorliegt.
+    // KOMPLETT Lorem ipsum (Wolfram 20.07.): jeglicher echte Text aus diesem Block
+    // entfernt, bis finales Wording vorliegt.
     text:
-      "Banijay Germany ist Teil eines internationalen Netzwerks aus Territory Holdings, Labels, Rights-, Kids-&-Family- und Live-Einheiten. So verbinden wir lokale Marktnähe mit globaler Formatkraft, Austausch und Reichweite. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
     note: "Geschichten entstehen lokal. Ihre Wirkung kann überall beginnen.",
     image: "/about-world/banijay-worldwide-bkg.jpg",
     cta: { text: "Banijay World ansehen", href: "https://www.banijay.com/our-world/" },
