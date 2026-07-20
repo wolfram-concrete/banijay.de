@@ -29,10 +29,12 @@ export const ABOUT = {
       "Unsere Stärke liegt in der Verbindung: kreative Unternehmer:innen, starke Companies und die Kraft eines internationalen Entertainment-Hauses. So entstehen Formate, die nicht nur produziert werden, sondern Menschen erreichen.",
   },
   international: {
-    headline: "Aus Deutschland. Mit Anschluss an die ganze Banijay-Welt.",
-    // Mit Lorem ipsum aufgefüllt (Wolfram 20.07.), bis finaler, längerer Text vorliegt.
+    // KOMPLETT Lorem ipsum (Wolfram 20.07.): jeglicher echter Text aus diesem Block
+    // entfernt, bis finales Wording vorliegt. headline + text werden auf der About-Seite
+    // zu EINEM Statement verkettet (`${headline} ${text}`).
+    headline: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.",
     text:
-      "Banijay Germany ist Teil der internationalen Banijay-Gruppe. So treffen lokale Marktnähe, globale Erfahrung und ein Netzwerk aus mehr als 130 Companies weltweit zusammen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "Sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   },
   world: {
     eyebrow: "Local Everywhere",
