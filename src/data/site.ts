@@ -35,11 +35,14 @@ export const STATS: Stat[] = [
   // 1.300+ → 1.400+ (Heike 17.07.) — muss mit der Editorial-Fact-Section auf der Home
   // übereinstimmen (EditorialStickyScene.tsx).
   { value: "1.400+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
-  { value: "40+", label: "Companies und Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
+  // Schreibweise exakt wie die Editorial-Facts (Wolfram 20.07.): kaufmännisches „&".
+  { value: "40+", label: "Companies & Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
   { value: "4 Mrd.", label: "Views & Zuschauer jährlich", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
   // 3.000 → 4.500 (Wolfram 17.07.) — muss mit der Editorial-Fact-Section auf der Home
   // übereinstimmen (EditorialStickyScene.tsx).
-  { value: "4.500 hrs.", label: "Stunden Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
+  // „Stunden" entfernt (Wolfram 20.07.) — auf der Editorial-Fact-Section wurde dieselbe
+  // Kachel bereits von „Stunden" befreit. Label jetzt nur noch „Entertainment".
+  { value: "4.500 hrs.", label: "Entertainment", note: "Erfahrung, Reichweite und Umsetzungskraft über Genres und Plattformen." },
   // 130+ → 170+ korrigiert (Wolfram 17.07.) — muss mit der Editorial-Fact-Section auf
   // der Home übereinstimmen (EditorialStickyScene.tsx), sonst nennen Home und About
   // unterschiedliche Zahlen.

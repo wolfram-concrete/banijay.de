@@ -195,9 +195,12 @@ export function AlgarveProofVideo({
               <CountUp value={s.value} suffixStyle={{ fontSize: "0.56em" }} />
             </span>
             <div className="mt-[1vw] max-[767px]:!mt-[2vw]">
+              {/* MIXED CASE (Wolfram 20.07.): kein textTransform:uppercase mehr — die
+                  Labels sollen exakt wie die Editorial-Fact-Section auf der Company-Seite
+                  geschrieben stehen (gemischt, kaufmännisches „&"). */}
               <p
                 className="max-[767px]:!text-[3.4vw]"
-                style={{ fontFamily: SHARP, fontSize: "0.82vw", fontWeight: 700, letterSpacing: "0.05vw", textTransform: "uppercase", margin: 0 }}
+                style={{ fontFamily: SHARP, fontSize: "0.82vw", fontWeight: 700, letterSpacing: "0.05vw", margin: 0 }}
               >
                 {s.label}
               </p>

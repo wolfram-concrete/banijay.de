@@ -30,14 +30,16 @@ export const ABOUT = {
   },
   international: {
     headline: "Aus Deutschland. Mit Anschluss an die ganze Banijay-Welt.",
+    // Mit Lorem ipsum aufgefüllt (Wolfram 20.07.), bis finaler, längerer Text vorliegt.
     text:
-      "Banijay Germany ist Teil der internationalen Banijay-Gruppe. So treffen lokale Marktnähe, globale Erfahrung und ein Netzwerk aus mehr als 130 Companies weltweit zusammen.",
+      "Banijay Germany ist Teil der internationalen Banijay-Gruppe. So treffen lokale Marktnähe, globale Erfahrung und ein Netzwerk aus mehr als 130 Companies weltweit zusammen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   },
   world: {
     eyebrow: "Local Everywhere",
     headline: "Local everywhere",
+    // Mit Lorem ipsum aufgefüllt (Wolfram 20.07.), bis finaler, längerer Text vorliegt.
     text:
-      "Banijay Germany ist Teil eines internationalen Netzwerks aus Territory Holdings, Labels, Rights-, Kids-&-Family- und Live-Einheiten. So verbinden wir lokale Marktnähe mit globaler Formatkraft, Austausch und Reichweite.",
+      "Banijay Germany ist Teil eines internationalen Netzwerks aus Territory Holdings, Labels, Rights-, Kids-&-Family- und Live-Einheiten. So verbinden wir lokale Marktnähe mit globaler Formatkraft, Austausch und Reichweite. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
     note: "Geschichten entstehen lokal. Ihre Wirkung kann überall beginnen.",
     image: "/about-world/banijay-worldwide-bkg.jpg",
     cta: { text: "Banijay World ansehen", href: "https://www.banijay.com/our-world/" },
