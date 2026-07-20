@@ -440,17 +440,23 @@ export function AlgarveHome({
           className="relative z-[1] flex items-center justify-center overflow-clip max-[767px]:!px-[6vw]"
           style={{ minHeight: "82vh", paddingLeft: "6vw", paddingRight: "6vw" }}
         >
+          {/* GRÖSSE = HOME-STATEMENT (Wolfram 20.07.): Dieses Statement (About/Career/
+              News/Contact) war mit clamp(1.9rem, 3.6vw, 4.2rem)/lh 122%/20ch deutlich
+              GRÖSSER als das Home-Statement (AlgarveAboutIntro, „Das weltweit führende
+              Zuhause …"). Jetzt exakt dessen Werte übernommen: 2.5vw, lh 138%,
+              letterSpacing -0.104vw, maxWidth 55.28vw; mobil 6.4vw statt 7.4vw. */}
           <p
             data-hero-statement
-            className="max-[767px]:!text-[7.4vw]"
+            className="max-[767px]:!text-[6.4vw] max-[767px]:!leading-[140%] max-[767px]:!max-w-[92vw]"
             style={{
               fontFamily: "var(--font-sharp), sans-serif",
-              fontSize: "clamp(1.9rem, 3.6vw, 4.2rem)",
-              lineHeight: "122%",
+              fontSize: "2.5vw",
+              lineHeight: "138%",
               fontWeight: 500,
+              letterSpacing: "-0.104vw",
               textAlign: "center",
               color: "#f8f7f3",
-              maxWidth: "20ch",
+              maxWidth: "55.28vw",
               opacity: 0,
             }}
           >

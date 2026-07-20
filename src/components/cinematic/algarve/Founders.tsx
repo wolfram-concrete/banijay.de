@@ -218,15 +218,16 @@ export function AlgarveFounders({
           return;
         }
         // Mobile-Headline (in mTeam) vs. Desktop-Headline (in der gepinnten Bühne):
-        // - Desktop: TRIGGER = die SECTION, NICHT die Headline (Wolfram 16.07.): die
-        //   gepinnte Headline wird position:fixed → ihre eigene „top 88%"-Marke kann sie
-        //   nach dem Pin-Start nie mehr erreichen. Die Section behält ihre Layout-Position.
-        // - Mobile (Wolfram 19.07.): die Mobile-Headline ist bis zum End-Pin (bottom bottom)
-        //   im normalen Fluss. Am `root` zu triggern war auf der About-Seite unzuverlässig
-        //   (Section sitzt dort anders / Pin-Spacer) → das Reveal blieb aus, die Überschrift
-        //   fehlte. Darum triggert die Mobile-Headline auf SICH SELBST → feuert verlässlich,
-        //   sobald sie ins Bild scrollt.
+        // - Desktop: TRIGGER = die gepinnte BÜHNE ([data-team-stage]), NICHT die Headline
+        //   selbst (die wird beim Pin position:fixed → ihre eigene Marke ist danach
+        //   unerreichbar) und NICHT `root` (Wolfram 20.07.): `root` enthält Desktop- UND
+        //   Mobile-Team, und auf der About-Seite verschob der Pin-Spacer der Marcus-Section
+        //   darüber die gemessene root-Position → das „top 88%"-Reveal feuerte nicht, die
+        //   „Unser Team"-Headline blieb bei yPercent 118 versteckt. Die Bühne ist ein
+        //   stabiles Einzelelement und wird bei „top 82%" — VOR dem Pin (top top) — erreicht.
+        // - Mobile (Wolfram 19.07.): triggert auf SICH SELBST (kein Pin), feuert verlässlich.
         const isMobileHead = !!mTeam.current?.contains(head);
+        const stage = head.closest<HTMLElement>("[data-team-stage]");
         gsap.set(words, { yPercent: 118 });
         gsap.to(words, {
           yPercent: 0,
@@ -234,8 +235,8 @@ export function AlgarveFounders({
           duration: 0.9,
           stagger: 0.12,
           scrollTrigger: {
-            trigger: isMobileHead ? head : root.current,
-            start: isMobileHead ? "top 92%" : "top 88%",
+            trigger: isMobileHead ? head : (stage ?? root.current),
+            start: isMobileHead ? "top 92%" : "top 82%",
             once: true,
           },
         });
