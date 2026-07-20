@@ -195,6 +195,11 @@ REEL["bb-endemol-shine"] = "/company-media/bb-endemol-shine.mp4";
 // (DV, 1440×1080 anamorph, SAR 4:3 / DAR 16:9); ffmpeg entzerrt beim Skalieren auf
 // 960×540 (setsar=1). Ausschnitt 4–14s, keine Schwarzphasen.
 REEL["lucky-pics"] = "/company-media/lucky-pics.mp4";
+// Only Good Party People (Wolfram 20.07.) — Handy-HOCHFORMAT (2160×3840, 9:16).
+// Für die Querkachel ein 16:9-Band aus dem OBEREN Bereich geschnitten (crop offset 700
+// von 3840), wo Gesichter + Action sitzen; unten wären nur Einkaufswagen/Boden. Danach
+// auf 960×540. Ausschnitt 3–13s, keine Schwarzphasen.
+REEL["only-good-party-people"] = "/company-media/only-good-party-people.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
