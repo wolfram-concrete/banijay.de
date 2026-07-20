@@ -157,10 +157,12 @@ const REEL: Record<string, string> = Object.fromEntries(
 // nicht (exit 127) — nicht davorsetzen, sonst läuft der Befehl gar nicht.
 // Ergebnis wie immer im Browser gegengeprüft (11 Frames, Farbdrift-Check gegen die
 // CEWE-Falle): 0 korrupt, natürliche Farben.
-// NICHT übernommen: Banijay Germany Live / Luminiscence — das Video trägt von Anfang bis
-// Ende eingebrannte Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …),
-// es gibt keinen textfreien Abschnitt. Die Kachel behält bis auf Weiteres das
-// generische Reel.
+// Banijay Germany Live / Luminiscence — auf Ansage von Wolfram (20.07.) doch übernommen.
+// ACHTUNG, bekannte Einschränkung: Das Video trägt über die ganze Länge eingebrannte
+// Untertitel („DER WÄCHTER HAMBURGS", „LEUCHTFEUER DES NORDENS" …), es gibt keinen
+// textfreien Abschnitt. Der Kachel-Titel liegt darüber. Quelle war die 16:9-Fassung
+// (…-16x9-eventim.mp4), Ausschnitt 3–13 s.
+REEL["banijay-germany-live"] = "/company-media/banijay-germany-live.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
@@ -173,6 +175,10 @@ REEL["endemol-shine-polska"] = "/company-media/endemol-shine-polska.mp4";
 REEL["minestrone-tv"] = "/company-media/minestrone-tv.mp4";
 REEL["ladykracher"] = "/company-media/ladykracher.mp4";
 REEL["nightwash-club"] = "/company-media/nightwash-club.mp4";
+// Cologne Comedy Festival (Wolfram 20.07.): aus „CCF 2025 Trailer kurz.mp4" (1920×1080,
+// 142 s, 139 MB) ein 10-s-Ausschnitt (5–15 s) auf das Format der übrigen Clips gebracht —
+// 960×540, ohne Ton, 2,1 MB. Der Hochkant-`CCF2025Final.mov` schied aus: die Kacheln sind quer.
+REEL["cologne-comedy-festival"] = "/company-media/cologne-comedy-festival.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
@@ -188,6 +194,13 @@ const STILL: Record<string, { src: string; alt: string; objectPosition: string }
   },
 };
 
+// ARBEITSMARKER „Material fehlt noch" (Wolfram 20.07.): Companies ohne eigenes Video/Foto
+// laufen weiterhin mit einem generischen `reel-N.mp4` aus der Auto-Zuordnung oben. Genau
+// die bekommen einen leicht transparenten Magenta-Layer über die Kachel, damit auf einen
+// Blick sichtbar ist, für welche Companies noch Bewegtbild/Bilder gebraucht werden.
+// ⚠️ VOR LIVEGANG ENTFERNEN, sobald alle Clips geliefert sind (Stand 20.07.: 21 von 35).
+const hasOwnMedia = (id: string) =>
+  !!STILL[id] || !/^\/company-media\/reel-\d+\.mp4$/.test(REEL[id] ?? "");
 
 export function AlgarveCompaniesBento() {
   const root = useRef<HTMLElement>(null);
@@ -388,6 +401,17 @@ export function AlgarveCompaniesBento() {
                 )}
                 {/* Scrim für Lesbarkeit */}
                 <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
+
+                {/* ARBEITSMARKER: Magenta-Layer auf Companies, für die noch kein eigenes
+                    Video/Foto vorliegt (siehe hasOwnMedia oben). Vor Livegang entfernen. */}
+                {!hasOwnMedia(card.id) && (
+                  <div
+                    aria-hidden
+                    data-bento-missing
+                    className="pointer-events-none absolute inset-0"
+                    style={{ background: "rgba(255,67,112,0.45)" }}
+                  />
+                )}
 
                 {/* Echtes weißes Company-Logo oben rechts (Platzhalter: keins) */}
                 {card.logo && (

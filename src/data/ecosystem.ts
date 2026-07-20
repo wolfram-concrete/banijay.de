@@ -59,10 +59,11 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // ist revidiert. „Brainpool Pictures" bleibt vorerst raus.
       { name: "Brainpool", url: "https://brainpool.de/" },
       { name: "B&B Endemol Shine Switzerland", url: "https://bbendemolshine.ch/" },
-      // Kundenfeedback 17.07.: All3Media-Companies ins Ökosystem ergänzt. Kein Link —
-      // im Scrape der bisherigen banijay.de ist für sie keiner belegt (Regel oben).
-      { name: "filmpool entertainment" },
-      { name: "South & Browse" },
+      // Kundenfeedback 17.07.: All3Media-Companies ins Ökosystem ergänzt. Die beiden
+      // URLs hat Wolfram am 20.07. nachgeliefert (beide 200); die übrigen All3Media-
+      // Companies bleiben unverlinkt, solange kein Link belegt ist (Regel oben).
+      { name: "filmpool entertainment", url: "https://filmpool-entertainment.de/" },
+      { name: "South & Browse", url: "https://south-and-browse.com/de/" },
       { name: "Rainer Laux Productions" },
       { name: "Lucky Pics" },
       { name: "Minestrone TV" },
@@ -123,8 +124,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "MySpass" },
       // URL nachgetragen (Wolfram 17.07.) — zweites Vorkommen, siehe „Audio".
       { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
-      // Kundenfeedback 17.07. — kein belegter Link (Regel oben).
-      { name: "Magic Connection" },
+      // URL nachgeliefert von Wolfram (20.07.), vorher unverlinkt. Gibt 200.
+      { name: "Magic Connection", url: "https://www.magic-connection.de/" },
     ],
   },
   {
@@ -145,8 +146,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "MadeFor", url: "https://madefor.film/" },
       { name: "Good Humor", url: "https://goodhumor.de/" },
       { name: "Dynamic Ally Pictures", url: "https://dynamic-ally-pictures.com/" },
-      // Kundenfeedback 17.07. — kein belegter Link (Regel oben).
-      { name: "filmpool fiction" },
+      // URL nachgeliefert von Wolfram (20.07.), vorher unverlinkt. Gibt 200.
+      { name: "filmpool fiction", url: "https://www.filmpool-fiction.de/home.html" },
     ],
   },
 ];

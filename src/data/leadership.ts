@@ -5,8 +5,9 @@
 // DIE REIHENFOLGE IST DAS LAYOUT (Wolfram 17.07.) — Founders.tsx rendert stur nach
 // Index, es gibt kein Zeilen-Feld:
 //   Index 0–2   → Leader-Reihe oben, größere Kacheln (Marcus, Knut, Michael Laegel)
-//   Index 3–7   → mittlere Reihe, fünf Kacheln (die Frauen)
-//   Index 8–11  → untere Reihe (Elena eröffnet sie, dahinter die drei Männer)
+//   Index 3–6   → mittlere Reihe (Simone, Natali, Heike, Janine)
+//   Index 7–11  → untere Reihe (Elena, die drei Männer, Aylin als Letzte)
+// Aylin Firat steht seit 20.07. GANZ HINTEN (Wolfram) — vorher Index 7.
 // Wolframs Regel für die mittlere Reihe: dort stehen die Frauen des Teams. Die
 // Zuordnung ist NICHT aus den Daten belegbar — es gibt kein Geschlechtsfeld, und die
 // Fotos sind Platzhalter (Marcus Wolter trägt aktuell das Bild einer Frau). Sie beruht
@@ -40,16 +41,6 @@ export const LEADERSHIP: Leader[] = [
   // Quelle eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %, wie die übrigen Portraits).
   { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },
   { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/lead-1.jpg" },
-  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-2.jpg ab.
-  // Quelle: assets/People/aylin.jpg (vormals „2026_07 Banijay _ Nick Harwart-9572-2.jpg";
-  // Nick Harwart ist der Fotograf, nicht die abgebildete Person).
-  // Original 3750×5636 ist eine GANZKÖRPER-Aufnahme; in der 142×138-Kachel wäre der Kopf
-  // winzig gewesen, während alle Nachbarn Kopf-Schulter-Porträts sind. Daher beschnitten.
-  // AUSSCHNITT „mittel" (Wolfram 17.07.): 1983×2644 ab 193,1037 — der Kopf füllt damit
-  // ~32 % der Ausschnitthöhe. Aus den Gesichtskoordinaten gerechnet (Kopf oben 1354,
-  // Kinn 2200, Gesichtsmitte x 1184), nicht geschätzt. Es gab auch eine engere Variante
-  // (~38 %, Ausschnitt 1670×2226 ab 349,1087) — Wolfram wählte die mittlere.
-  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
   // Elena Kats (Wolfram 17.07.) — neue, zwölfte Person, „als Letzte von den Frauen"
   // eingefügt; die Männer rücken dadurch einen Index nach hinten. Dadurch ist die
   // mittlere Reihe weiter mit den 5 bisherigen Frauen voll, Elena eröffnet die untere
@@ -83,4 +74,10 @@ export const LEADERSHIP: Leader[] = [
     role: "Director Financial Planning, Reporting & Controlling",
     img: "/people/matthaeus-jaworek.jpg",
   },
+  // AYLIN STEHT GANZ HINTEN (Wolfram 20.07.) — vorher Index 7 (Ende der mittleren
+  // Reihe), jetzt als letzte Kachel des Grids. Dadurch rücken Elena und die drei
+  // Männer je einen Index nach vorn.
+  // Quelle: assets/People/aylin.jpg (vormals „2026_07 Banijay _ Nick Harwart-9572-2.jpg";
+  // Nick Harwart ist der Fotograf, nicht die abgebildete Person).
+  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
 ];

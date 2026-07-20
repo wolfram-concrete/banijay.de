@@ -11,8 +11,10 @@ import { COMPANY_CARDS } from "@/data/companyCards";
 
 // Externe Company-URLs (aus den kuratierten companyCards) je Company-Slug.
 // Kleiner Remap für abweichende Slugs (ogp-only-good-people → only-good-people).
+// Companies ohne eigene Website (externalUrl optional) fallen hier raus, damit die Map
+// keine undefined-Werte enthält und urlForSlug sauber undefined liefert.
 const URL_BY_ID: Record<string, string> = Object.fromEntries(
-  COMPANY_CARDS.map((c) => [c.id, c.externalUrl]),
+  COMPANY_CARDS.filter((c) => c.externalUrl).map((c) => [c.id, c.externalUrl!]),
 );
 const urlForSlug = (slug: string): string | undefined =>
   URL_BY_ID[slug] ?? URL_BY_ID[slug.replace(/^ogp-/, "")];

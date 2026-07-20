@@ -33,7 +33,12 @@ export interface CompanyCard {
   tags: string[];
   knownFor: string[];
   context?: string;
-  externalUrl: string;
+  /**
+   * Externe Company-Website. Optional (Wolfram 20.07.): Nicht jede Company hat eine
+   * eigene Seite — Potatohead Pictures z. B. hat keine. In dem Fall lassen wir das Feld
+   * weg statt auf eine fremde Seite umzuleiten; alle Consumer blenden den CTA dann aus.
+   */
+  externalUrl?: string;
   /** Nur redaktioneller Hinweis — NICHT auf der Card anzeigen. */
   externalUrlNote?: string;
   image: string;
@@ -145,9 +150,10 @@ export const COMPANY_CARDS: CompanyCard[] = [
     tags: ["Food", "Factual", "Personality"],
     knownFor: ["Kitchen Impossible", "Mälzer und Henssler liefern ab!", "Food-Formate"],
     context: "Als Label / Tochter von EndemolShine darstellen.",
-    externalUrl: "https://endemolshine.de/ueber-uns/team/",
-    externalUrlNote:
-      "Keine eigenständige Potatohead-Website gefunden; CTA führt zur EndemolShine-Teamseite.",
+    // KEIN externalUrl (Wolfram 20.07.): „bitte die website bei potatoehead pictures
+    // global rausnehmen. da gibt es keine." Der frühere Ersatz-CTA auf die
+    // EndemolShine-Teamseite ist damit ebenfalls raus — lieber gar kein Link als ein
+    // Link, der woanders hinführt. Auch in ecosystem.ts steht Potatohead unverlinkt.
     image: "/companies/potatohead-pictures.jpg",
     imageAlt: "Potatohead Pictures – Teaserbild",
   },

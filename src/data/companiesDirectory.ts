@@ -72,13 +72,15 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   fromCard("good-humor", ["fiction"], L("good-humor.png")),
   // All3Media-Companies (Übernahme) — bewusst WEIT OBEN einsortiert (Wolfram 16.07.,
   // ~3. Zeile) statt hinten bei den übrigen All3Media-Einträgen.
-  { id: "filmpool-entertainment", name: "filmpool entertainment", ecoKeys: ["entertainment"], logo: L("filmpool-entertainment.png"), tags: ["Entertainment"] },
-  { id: "filmpool-fiction", name: "filmpool fiction", ecoKeys: ["fiction"], logo: L("filmpool-fiction.png"), tags: ["Fiction"] },
+  // URLs nachgeliefert von Wolfram (20.07.) — vorher standen alle vier ohne Link da,
+  // weil im Scrape der alten banijay.de für sie keiner belegt war. Alle vier geben 200.
+  { id: "filmpool-entertainment", name: "filmpool entertainment", ecoKeys: ["entertainment"], logo: L("filmpool-entertainment.png"), url: "https://filmpool-entertainment.de/", tags: ["Entertainment"] },
+  { id: "filmpool-fiction", name: "filmpool fiction", ecoKeys: ["fiction"], logo: L("filmpool-fiction.png"), url: "https://www.filmpool-fiction.de/home.html", tags: ["Fiction"] },
   // ecoKeys/tags nachgetragen (Kundenfeedback 17.07.): Beide standen ohne Rubrik da und
   // fielen dadurch aus JEDEM Bento-Rubrikfilter heraus — sichtbar waren sie nur unter
   // „Alle". filmpool ×2 hatten ihre Keys bereits.
-  { id: "magic-connection", name: "Magic Connection", ecoKeys: ["distribution"], logo: L("magic-connection.png"), tags: ["Distribution & Brand"] },
-  { id: "south-and-browse", name: "South & Browse", ecoKeys: ["entertainment"], logo: L("south-and-browse.png"), tags: ["Entertainment"] },
+  { id: "magic-connection", name: "Magic Connection", ecoKeys: ["distribution"], logo: L("magic-connection.png"), url: "https://www.magic-connection.de/", tags: ["Distribution & Brand"] },
+  { id: "south-and-browse", name: "South & Browse", ecoKeys: ["entertainment"], logo: L("south-and-browse.png"), url: "https://south-and-browse.com/de/", tags: ["Entertainment"] },
   fromCard("dynamic-ally-pictures", ["fiction"], L("dynamic-ally-pictures.png")),
   fromCard("myshow", ["live"], L("myshow.png")),
   fromCard("cologne-comedy-festival", ["live"], L("cologne-comedy-festival.png")),
