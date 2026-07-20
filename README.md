@@ -157,7 +157,9 @@ Vor dem Livegang abzuarbeiten:
 
 | Thema | Stand | Zu tun |
 |---|---|---|
-| **Company-Videos neu enkodieren** | 3,8–6 MB je Clip | Auf ~1–1,5 MB bringen (Niveau der `reel-*.mp4`) |
+| **Company-Videos neu enkodieren** | 22 Altclips aus der VLC-Ära, 67 MB, SSIM ~0,73 | Mit ffmpeg neu rechnen (CRF 28/30) — siehe „Video-Toolchain" |
+| **Company-Material vollständig** | 19 von 35 Kacheln haben eigenes Video/Foto | Restliche 16 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
+| **Video-Ladeverhalten** | 11,86 MB Video beim ersten Seitenaufruf, 35 Requests, 14 Kacheln ohne Poster | `preload="none"`, `src` erst nahe Viewport setzen, Poster ergänzen; große Hero-Files (28,5 MB) ggf. auf Video-CDN |
 | **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
 | **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
@@ -285,62 +287,70 @@ Einsortiert wurde nach Vornamen; es geht mit genau fünf Personen rechnerisch au
 Fünferreihe auf. Vor dem Livegang mit Banijay gegenprüfen und in `leadership.ts`
 korrigieren — das Layout folgt der Reihenfolge automatisch.
 
-### Warum die Company-Videos zu groß sind
+### Video-Toolchain: ffmpeg (seit 20.07.)
 
-`public/company-media/{filmpool-fiction,south-and-browse,good-humor,madefor}.mp4`
-liegen bei 3,8–6 MB für 8 s — die älteren `reel-*.mp4` bei ~1 MB. Grund ist die
-Toolchain, nicht das Material:
-
-- **ffmpeg ist auf der Maschine nicht installiert.** Das einzige auffindbare Binary
-  steckt in einer Fremd-App (CEWE) und ist mit `--enable-libopenh264 --disable-yasm`
-  gebaut. Es **dekodiert die Quellen fehlerhaft** und kodiert rosa/grünen Datenmüll
-  in die Ausgabe — bei plausibel aussehenden Bitraten. Nicht verwendbar.
-- Deshalb lief die Konvertierung über **`avconvert`** (Apples AVFoundation-Pipeline,
-  Systembestandteil, dekodiert sauber). Das kennt aber nur feste Qualitäts-Presets und
-  **keine Bitratensteuerung** → die Dateien geraten 3–4× zu groß. Zusätzlich schreibt es
-  die **AAC-Tonspur mit**, obwohl die Kacheln stumm laufen — totes Gewicht.
-- **Seit 17.07.: VLC ist das bessere Werkzeug.** `/Applications/VLC.app` (3.0.16) kann
-  Bitraten steuern und Ton weglassen — bei gleicher Länge und Auflösung **4,0 statt
-  6–6,7 MB**. Die vier neuesten Clips (Endemol Shine Polska, Minestrone, Ladykracher,
-  NightWash) sind damit gebaut:
-
-  ```bash
-  /Applications/VLC.app/Contents/MacOS/VLC -I dummy -q "<quelle>" \
-    --start-time=<start> --stop-time=<ende> \
-    --sout "#transcode{vcodec=h264,vb=2200,width=960,acodec=none}:standard{access=file,mux=mp4,dst=<ziel>.mp4}" \
-    vlc://quit
-  ```
-
-  Damit ist VLC auch der naheliegende Kandidat für den Sammel-Reencode unten — womöglich
-  ohne dass ffmpeg überhaupt installiert werden muss.
-
-#### MXF-Quellen (Minestrone, Ladykracher)
-
-Manche Zulieferungen kommen als **MXF** (Profi-Format). Dann gilt:
-
-- **`avconvert` scheitert hart**: „unable to read". AVFoundation unterstützt MXF nicht,
-  macOS liest nicht einmal die Metadaten (`kMDItemCodecs`, Dauer, Auflösung = `null`).
-- **VLC kann es** — siehe Befehl oben.
-- **Der Browser kann es nicht.** Der übliche Frame-Kontaktbogen fällt damit aus. Umweg:
-  erst einen Proxy der GANZEN Datei ziehen (`width=480,vb=500`), den im Browser abtasten,
-  dann den finalen Ausschnitt aus dem **Original** schneiden.
-- ⚠️ **`timeout` gibt es auf macOS nicht** (exit 127). Nicht vor VLC setzen — der Befehl
-  läuft sonst gar nicht und man hält das Ergebnis für einen Erfolg.
-
-**Fix vor Livegang:** echtes ffmpeg mit `libx264` installieren (`brew install ffmpeg`),
-dann je Clip:
+**`brew install ffmpeg` ist erledigt** (8.1.2, mit libx264/x265/SVT-AV1). Damit ist die
+gesamte Vorgeschichte aus CEWE-ffmpeg, `avconvert` und VLC hinfällig. Standardbefehl für
+einen Kachel-Clip:
 
 ```bash
-ffmpeg -ss <start> -i <quelle> -t 8 -vf scale=960:-2 -r 25 \
-       -c:v libx264 -crf 26 -preset slow -an -movflags +faststart <ziel>.mp4
+ffmpeg -y -ss <start> -t 10 -i "<quelle>" -vf "scale=960:-2" \
+       -c:v libx264 -crf 28 -preset slow -profile:v high -pix_fmt yuv420p \
+       -an -movflags +faststart "public/company-media/<slug>.mp4"
 ```
 
-Die Schnittpunkte (`-ss`) stehen kommentiert in `CompaniesBento.tsx` bei der
-`REEL`-Zuordnung — sie sind an einem Frame-Kontaktbogen abgelesen (textfreier
-Mittelteil, keine Vorspann-/Insert-Szenen) und können 1:1 übernommen werden.
+#### Warum nicht mehr VLC — gemessen, nicht geschätzt
 
-**Gegenprüfen:** Nach dem Enkodieren die Kacheln im Browser ansehen — ein defektes
-Video fällt an der Bitrate NICHT auf, nur am Bild.
+VLC lief mit **fester** Bitrate (`vb=1600`). Feste Bitrate verteilt Daten gleichmäßig,
+egal wie viel im Bild passiert — bei Bühnenlicht, Feuer und Konzertmitschnitten (also
+fast allen Clips hier) bricht die Qualität weg. Am Clip *Cape Cross Postproduction*
+gegen eine CRF-16-Referenz gemessen (SSIM, 1,0 = identisch):
+
+| Kodierung | Größe | SSIM |
+|---|---|---|
+| VLC, feste Bitrate 1600 | 2,02 MB | **0,73** |
+| ffmpeg CRF 26 | 2,23 MB | 0,974 |
+| ffmpeg CRF 28 | 1,77 MB | 0,968 |
+| ffmpeg CRF 30 | 1,43 MB | 0,962 |
+
+Also: ffmpeg liefert bei **30 % kleinerer Datei** deutlich besseres Bild. Es gibt hier
+keinen Zielkonflikt — die VLC-Dateien sind gleichzeitig zu groß *und* sichtbar
+verschlechtert. VLC verschluckt zudem Einzelbilder (263 statt 265 bei cape-cross).
+
+⚠️ **Fallstrick beim Nachmessen:** SSIM vergleicht Bild für Bild. Laufen die Spuren
+zeitlich versetzt (unterschiedliche Framezahl, ungenauer `-ss`-Schnitt), misst man Unsinn
+— die ersten beiden Messungen dieser Tabelle waren aus genau dem Grund wertlos. Immer den
+Versatz durchtesten und den besten Wert nehmen:
+
+```bash
+ffmpeg -i <kandidat> -i <referenz> \
+  -lavfi "[0:v]trim=start_frame=<n>,setpts=PTS-STARTPTS[a];[1:v]setpts=PTS-STARTPTS[b];[a][b]ssim" \
+  -f null -
+```
+
+#### Ablauf für einen neuen Clip
+
+1. **Prüfen, ob überhaupt Bild drin ist** — Zulieferungen sind mehrfach defekt gewesen:
+   ```bash
+   ffmpeg -i "<quelle>" -vf "blackdetect=d=0.3:pix_th=0.10" -an -f null -
+   ```
+   `CC_Website_1.mp4` (Cape Cross) war mit 97 s deklariert, enthielt aber nur ~3 s
+   Logotafel und danach 87 s Schwarzbild — im **Original**, nicht durch den Transcode.
+2. **Ausschnitt wählen** über einen Kontaktbogen:
+   ```bash
+   ffmpeg -i "<quelle>" -vf "select='not(mod(n\,105))',scale=320:-2,tile=4x3" -frames:v 1 sheet.png
+   ```
+3. Enkodieren (Befehl oben), dann **im Browser gegenprüfen** — ein defektes Video fällt an
+   der Dateigröße NICHT auf, nur am Bild.
+
+MXF-Quellen liest ffmpeg direkt; der frühere Proxy-Umweg über VLC entfällt.
+⚠️ `timeout` gibt es auf macOS nicht (exit 127) — nicht vorsetzen.
+
+#### Offen: Sammel-Reencode
+
+Die **22 älteren Clips** stammen noch aus der VLC-/avconvert-Ära und stehen zur
+Neuberechnung an (67 MB gesamt, Schätzung danach etwa die Hälfte bei besserem Bild).
+CRF-Stufe (28 oder 30) ist noch nicht entschieden.
 
 ## Assets & Git
 

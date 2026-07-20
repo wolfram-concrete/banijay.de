@@ -163,6 +163,21 @@ const REEL: Record<string, string> = Object.fromEntries(
 // textfreien Abschnitt. Der Kachel-Titel liegt darüber. Quelle war die 16:9-Fassung
 // (…-16x9-eventim.mp4), Ausschnitt 3–13 s.
 REEL["banijay-germany-live"] = "/company-media/banijay-germany-live.mp4";
+// influence.vision (Wolfram 20.07.) — Quelle „IVA - Final Cut - 6.0.mp4", 1920×1080,
+// Ausschnitt 3–13 s.
+REEL["influence-vision"] = "/company-media/influence-vision.mp4";
+// Cape Cross Postproduction (Wolfram 20.07.). ACHTUNG BEI NACHLIEFERUNGEN: Wolfram
+// hatte CC_Website_1.mp4 ausgewählt, die ist aber defekt — 97s deklariert, davon nur
+// ~3s Logotafel und danach 87s Schwarzbild (im Quellfile selbst, nicht durch den
+// Transcode). Stattdessen CC_Website_3.mp4 (10,6s, durchgehend Bild). Alternative
+// wäre CC_Website_2.mp4, ebenfalls intakt.
+REEL["cape-cross-postproduction"] = "/company-media/cape-cross-postproduction.mp4";
+// MySpass (Wolfram 20.07.) — Bildschirmmitschnitt der MySpass-Website (scrollendes
+// Show-Raster), Quelle 50,7s, Ausschnitt 12–22s.
+// ERSTER CLIP MIT FFMPEG statt VLC (libx264 CRF 28, faststart): 0,52 MB bei SSIM 0,985.
+// Mit dem alten VLC-Verfahren wären es ~2 MB bei SSIM ~0,73 gewesen. Alle künftigen
+// Clips so enkodieren; die 22 älteren stehen noch zur Neuberechnung an (Task #77).
+REEL["myspass"] = "/company-media/myspass.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
@@ -191,6 +206,23 @@ const STILL: Record<string, { src: string; alt: string; objectPosition: string }
     src: "/company-media/pausenclown-sebastian-lege.jpg",
     alt: "Sebastian Lege, Food-Experte, Koch & Entertainer",
     objectPosition: "50% 22%",
+  },
+  // Magic Connection (Wolfram 20.07.): Für diese Company gibt es kein Video, nur dieses
+  // Foto — es läuft daher über den Still-Zweig und bekommt denselben Ken-Burns-Zoom.
+  // ANDERE LOGIK ALS OBEN: Hier ist kein Gesicht der Anker, sondern der Schriftzug
+  // „WE LIKE YOU. TOO :)".
+  // WICHTIG, sonst bricht es wieder: Der Anschnitt steckt IM BILD, nicht in
+  // objectPosition. Das Originalfoto (1000×667, Verhältnis 1.50) hat fast exakt das
+  // Kachelformat (≈1.48) — vertikal gibt es also nichts zu verschieben, objectPosition
+  // läuft dort ins Leere. Im Original sitzt das Schild in der unteren Bildhälfte und
+  // lag damit genau unter dem Kachel-Titel; „TOO :)" war verdeckt. Deshalb sind oben
+  // 150 px Blattwerk weggeschnitten (jetzt 1000×517, Verhältnis 1.93) — das Schild
+  // rutscht dadurch in die obere Bildhälfte. Wer das Bild neu exportiert, muss diesen
+  // Anschnitt mitliefern.
+  "magic-connection": {
+    src: "/company-media/magic-connection.jpg",
+    alt: "Wandbild mit dem Schriftzug „WE LIKE YOU. TOO :)“",
+    objectPosition: "50% 50%",
   },
 };
 

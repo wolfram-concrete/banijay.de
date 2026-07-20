@@ -5,6 +5,80 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Video-Toolchain auf ffmpeg umgestellt (20.07.)
+- **`brew install ffmpeg` ist erledigt** (8.1.2, libx264/x265/SVT-AV1) — nach Wolframs
+  Freigabe. Damit sind CEWE-ffmpeg, `avconvert` und VLC als Notlösungen abgelöst.
+- **Anlass war Wolframs Frage, ob der bisherige Stand livegang-tauglich ist. Antwort nach
+  Messung: nein — und zwar aus einem anderen Grund als angenommen.** Ich hatte behauptet,
+  die VLC-Dateien seien „rund ein Drittel größer als nötig". Tatsächlich sind sie
+  **sichtbar verschlechtert**: VLC lief mit fester Bitrate (`vb=1600`), die bei bewegten
+  und dunklen Szenen wegbricht — und genau davon leben die Clips (Bühnenlicht, Feuer,
+  Konzerte). Am Clip Cape Cross gegen eine CRF-16-Referenz gemessen: **VLC 2,02 MB bei
+  SSIM 0,73** gegen **ffmpeg CRF 30 1,43 MB bei SSIM 0,962**. Kleiner UND besser, kein
+  Zielkonflikt. VLC verschluckt zusätzlich Einzelbilder (263 statt 265).
+- **Methodischer Fallstrick, dokumentiert im README:** Die ersten beiden SSIM-Messungen
+  waren wertlos, weil die Spuren zeitlich versetzt liefen — dann vergleicht SSIM Bild 10
+  mit Bild 12. Erst ein Durchtesten des Frame-Versatzes (0–3) hat bestätigt, dass der
+  Qualitätsunterschied real ist und kein Messartefakt.
+- **Neuer Standardablauf** für jede Zulieferung: erst `blackdetect` (Zulieferungen waren
+  mehrfach defekt), dann Kontaktbogen für den Ausschnitt, dann `libx264 -crf 28 -preset
+  slow -movflags +faststart`, dann Sichtprüfung im Browser.
+- **Offen:** Die 22 Altclips (67 MB) stehen zur Neuberechnung an; CRF 28 oder 30 ist noch
+  nicht entschieden.
+- **Performance-Bestandsaufnahme** (auf Wolframs Frage, ebenfalls im README): Beim reinen
+  Seitenaufruf ohne Scrollen werden **12,85 MB** übertragen, davon **11,86 MB Video** über
+  35 Requests; `team-all3media.mp4` (6,67 MB) lädt komplett. 14 von 34 Kacheln haben kein
+  Posterbild. Gut ist dagegen: `moov`-Atom vorn (streambar), IntersectionObserver pausiert
+  außerhalb des Sichtfelds, `preload="metadata"` statt `auto`.
+
+### Company-Material: 5 neue Kacheln + Magenta-Arbeitsmarker (20.07.)
+- **Neu mit eigenem Material:** Cologne Comedy Festival, Banijay Germany Live
+  (Luminescence — die eingebrannten Untertitel sind laut Wolfram kein Ausschlusskriterium
+  mehr, die alte Code-Notiz dazu ist hinfällig), influence.vision, Cape Cross
+  Postproduction, MySpass (erster Clip mit ffmpeg: **0,52 MB bei SSIM 0,985**, mit VLC
+  wären es ~2 MB bei ~0,73 gewesen), Magic Connection.
+- **Cape Cross: nicht die ausgewählte Datei verwendet.** `CC_Website_1.mp4` ist defekt —
+  97 s deklariert, davon ~3 s Logotafel und **87 s Schwarzbild im Quellfile selbst**.
+  Stattdessen `CC_Website_3.mp4`. Wolfram informiert; ein sauberer Export wäre nachzufragen.
+- **Magic Connection ist ein Foto, kein Video** → läuft über den Still-Zweig mit dem
+  vorhandenen Ken-Burns-Zoom (Scale 1,0 → 1,08 über 14 s, yoyo).
+  ⚠️ **Der Anschnitt steckt IM BILD, nicht in `objectPosition`:** Das Original (1000×667,
+  Verhältnis 1,50) hat fast exakt das Kachelformat (≈1,48) — vertikal gibt es nichts zu
+  verschieben, `objectPosition` läuft ins Leere. Im Original lag der Schriftzug in der
+  unteren Bildhälfte und damit unter dem Kachel-Titel; „TOO :)" war verdeckt. Fix: oben
+  150 px Blattwerk weggeschnitten (jetzt 1000×517).
+- **Magenta-Arbeitsmarker** (`data-bento-missing`, `rgba(255,67,112,0.45)`) auf allen
+  Kacheln ohne eigenes Material — auf Wolframs Wunsch, damit auf einen Blick sichtbar ist,
+  was noch fehlt. Stand: **16 von 35 offen**. ⚠️ Vor Livegang entfernen.
+
+### Ökosystem: Aufklapprichtung per Messung statt fester Regel (20.07.)
+- **Entertainment lief unten aus dem Bild** (Wolfram, flacher Laptop-Viewport). Ursache:
+  Die Richtung entschied allein die Ankerlage (`fy > 0.62`) und ignorierte, wie hoch die
+  Card wird und wie hoch das Fenster ist. Entertainment hat die längste Liste, sitzt aber
+  in der oberen Hälfte.
+- **Hochschieben allein hätte es nicht gelöst:** Bei 1440×760 braucht die Card 475 px, hat
+  unten 356 px und oben 282 px — sie passt in **keine** Richtung. Daher zweistufig: erst
+  die bessere Richtung per Messung, dann bei Bedarf Deckelung der Liste auf den real
+  verfügbaren Platz mit Innenscroll.
+- **Fallstrick für später:** NICHT den `[data-eco-panel]`-Wrapper messen. Der wächst per
+  `grid-template-rows`-Transition und steht zum Messzeitpunkt noch auf 0 → `scrollHeight`
+  liefert 0, die Card klappt nie um. Gemessen wird der innere Content-Block.
+- Verifiziert ohne Überlauf bei 1920×1080, 1440×760, 1366×540, 1280×620; auf hohen Fenstern
+  greift der Deckel nicht (Verhalten unverändert). Mobile-Akkordeon unberührt.
+
+### Texte & URLs (20.07.)
+- **Home-Statement**, dritte Fassung: Gedankenstrich statt Doppelpunkt, „globales
+  Powerhouse", „die bekanntesten Brands", „außergewöhnlichsten Live-Erlebnisse".
+- **Career-Statement** neu: „Finde hier deinen Traumjob! …". Der Statement-Renderer
+  respektiert jetzt ein `\n` als Umbruch; Statements ohne `\n` rendern unverändert.
+  ⚠️ Offen: Der Zuruf steht in derselben Größe wie der Fließtext und liest sich nicht als
+  Headline; der Block ist mobil 14 Zeilen lang. Hierarchie-Entscheidung steht bei Wolfram.
+- **Vier neue Company-URLs** (alle auf 200 geprüft): filmpool entertainment, filmpool
+  fiction, Magic Connection, South & Browse — in Bento-Directory und Ökosystem.
+- **Potatohead Pictures global entlinkt** — es gibt keine eigene Website. Der frühere
+  Ersatz-CTA auf die EndemolShine-Teamseite ist mit raus, `externalUrl` ist jetzt optional.
+- **Team:** Aylin Firat ans Ende des Grids.
+
 ### Preloader: Partikelgröße + Querbalken im Hero (20.07.)
 - **Partikel quollen beim B-Aufbau auf.** Der Punktradius wuchs während des Formens mit
   (`0.6 → 1.15`), der Warp startete danach bei Faktor `1.0` — sichtbar als „erst dicker,
