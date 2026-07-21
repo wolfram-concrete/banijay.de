@@ -171,10 +171,10 @@ export function AlgarveProofVideo({
             key={s.label}
             data-pv-tile
             data-pv-source={isCenter ? true : undefined}
-            className={`flex flex-col justify-between max-[767px]:!min-h-[34vw] max-[767px]:!p-[5vw] md:flex-1 md:basis-0 ${
+            className={`flex flex-col justify-between max-[767px]:!min-h-[26vw] max-[767px]:!p-[5vw] md:flex-1 md:basis-0 ${
               isCenter ? "col-span-2" : ""
             }`}
-            style={{ background: bg, color: PAPER, padding: "1.6vw", minHeight: "18vw", willChange: "transform, opacity" }}
+            style={{ background: bg, color: PAPER, padding: "1.6vw", minHeight: "13vw", willChange: "transform, opacity" }}
           >
             {/* EINHEITLICHE Zifferngröße für alle Kacheln. clamp statt festem vw:
                 „3.000 hrs." ist die längste Zahl und muss in derselben Kachelbreite
@@ -194,26 +194,18 @@ export function AlgarveProofVideo({
             >
               <CountUp value={s.value} suffixStyle={{ fontSize: "0.56em" }} />
             </span>
-            <div className="mt-[1vw] max-[767px]:!mt-[2vw]">
-              {/* MIXED CASE (Wolfram 20.07.): kein textTransform:uppercase mehr — die
-                  Labels sollen exakt wie die Editorial-Fact-Section auf der Company-Seite
-                  geschrieben stehen (gemischt, kaufmännisches „&"). */}
-              <p
-                className="max-[767px]:!text-[3.4vw]"
-                style={{ fontFamily: SHARP, fontSize: "0.82vw", fontWeight: 700, letterSpacing: "0.05vw", margin: 0 }}
-              >
-                {s.label}
-              </p>
-              {/* Copytext je Kennzahl (Wolfram 14.07.) */}
-              {s.note && (
-                <p
-                  className="mt-[0.5vw] max-[767px]:!mt-[1.5vw] max-[767px]:!text-[3vw]"
-                  style={{ fontFamily: SHARP, fontSize: "0.72vw", fontWeight: 400, lineHeight: "128%", margin: 0, opacity: isCenter ? 0.78 : 0.62 }}
-                >
-                  {s.note}
-                </p>
-              )}
-            </div>
+            {/* NUR die Headline auf der unteren Ebene (Wolfram 21.07.): Die Copytexte
+                unter den Kennzahlen sind raus, die Boxen niedriger — justify-between
+                verankert die Headline bündig am unteren Rand, sodass alle Labels auf
+                EINER Ebene fluchten (Mehrzeiler wachsen nach oben).
+                MIXED CASE (Wolfram 20.07.): kein textTransform:uppercase — exakt wie die
+                Editorial-Fact-Section auf der Company-Seite (gemischt, kaufmännisches „&"). */}
+            <p
+              className="max-[767px]:!text-[3.4vw]"
+              style={{ fontFamily: SHARP, fontSize: "0.82vw", fontWeight: 700, letterSpacing: "0.05vw", margin: 0 }}
+            >
+              {s.label}
+            </p>
           </div>
         );
       })}

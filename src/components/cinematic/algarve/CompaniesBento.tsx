@@ -48,13 +48,18 @@ const TAIL_UNIFORM = 8;
 // IMMER KLEINES MODUL (Wolfram 16.07.): diese Companies bekommen NIE einen Span —
 // weder breit noch hochformatig, auch nicht als letzte Kachel. Ihr Motiv trägt kein
 // großes Format.
-const SMALL_ONLY = new Set<string>(["lucky-pics"]);
+// MyShow ergänzt (Wolfram 21.07.): war als col-span-2 (Index 9) die breite Box — soll nur
+// noch EIN Element sein. Der Ausgleich läuft über cologne-comedy-festival (FORCE_SPAN unten).
+const SMALL_ONLY = new Set<string>(["lucky-pics", "myshow"]);
 // FESTES FORMAT (Wolfram 16.07.): diese Companies bekommen IMMER denselben Span,
 // unabhängig von ihrer Position — ihr Motiv verträgt kein anderes Format.
 // Pausenclown: Hochformat-Porträt (Sebastian Lege) → nie breit, sondern eine
 // einspaltige Box über zwei Zeilen.
 const FORCE_SPAN: Record<string, string> = {
   "pausenclown-media": "md:row-span-2",
+  // AUSGLEICH FÜR MYSHOW (Wolfram 21.07.): Cologne Comedy Festival (eigenes Video) wird
+  // dafür breit — es übernimmt das col-span-2, das MyShow abgegeben hat.
+  "cologne-comedy-festival": "md:col-span-2",
 };
 const spanFor = (i: number, total: number, id?: string) =>
   id && SMALL_ONLY.has(id)
@@ -267,6 +272,10 @@ const STILL: Record<string, { src: string; alt: string; objectPosition: string }
 const hasOwnMedia = (id: string) =>
   !!STILL[id] || !/^\/company-media\/reel-\d+\.mp4$/.test(REEL[id] ?? "");
 
+// KEIN MARKER (Wolfram 21.07.): Bei diesen Companies wird der Magenta-Arbeitsmarker NICHT
+// gezeigt, auch wenn (noch) kein eigenes Bewegtbild vorliegt.
+const NO_MARKER = new Set<string>(["dynamic-ally-pictures"]);
+
 export function AlgarveCompaniesBento() {
   const root = useRef<HTMLElement>(null);
   const [rubrik, setRubrik] = useState<string>("alle");
@@ -469,7 +478,7 @@ export function AlgarveCompaniesBento() {
 
                 {/* ARBEITSMARKER: Magenta-Layer auf Companies, für die noch kein eigenes
                     Video/Foto vorliegt (siehe hasOwnMedia oben). Vor Livegang entfernen. */}
-                {!hasOwnMedia(card.id) && (
+                {!hasOwnMedia(card.id) && !NO_MARKER.has(card.id) && (
                   <div
                     aria-hidden
                     data-bento-missing

@@ -30,25 +30,19 @@ const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
 const INK = "#0e0d0b";
 
-// Rollen-Palette (aus dem abgelösten CareerRoleStack übernommen, damit die
-// Farbfolge der Section erhalten bleibt): Magenta → Laser Pink → Coral → Violett.
-const ROLE_COLORS = ["#ff4370", "#e71d7d", "#ff5a47", "#31105a"] as const;
-
-// Grundfarbe = Farbe der ERSTEN Karte → die Intro ist magenta, und die erste
-// Verfärbung fällt nicht auf (sie ist die Ruhelage). Nie transparent, sonst
-// scheint der Sternenstaub-Backdrop durch die Fläche.
+// NEUTRALES MAGENTA (Wolfram 21.07.): Die frühere Rollen-Palette (Magenta → Laser Pink
+// → Coral → Violett) ist entfallen — die Fläche bleibt jetzt durchgehend bei dieser einen
+// Grundfarbe. Nie transparent, sonst scheint der Sternenstaub-Backdrop durch.
 const BASE_BG: [number, number, number] = [255, 67, 112];
 
-function hexToRgb(hex: string): [number, number, number] {
-  const c = hex.replace("#", "");
-  return [parseInt(c.slice(0, 2), 16), parseInt(c.slice(2, 4), 16), parseInt(c.slice(4, 6), 16)];
-}
-
-const cards = CAREER.roles.map((r, i) => ({
+const cards = CAREER.roles.map((r) => ({
   title: r.title,
   claim: r.claim,
   text: r.text,
-  color: hexToRgb(ROLE_COLORS[i % ROLE_COLORS.length]),
+  // Kein Farbwechsel je Karte mehr (Wolfram 21.07.): alle Karten tragen dieselbe
+  // Grundfarbe → der Hintergrund-Ticker (Desktop + Mobile) interpoliert nur noch auf
+  // BASE_BG, die Fläche bleibt konstant magenta.
+  color: BASE_BG,
 }));
 
 const N = cards.length;
@@ -61,24 +55,23 @@ const N = cards.length;
 // stehen (am Live-Modul vermessen). Die Beats sind deshalb auf vier Karten neu
 // gerechnet; die Section-Höhe leitet sich aus denselben Zahlen ab, damit Timeline
 // und Scrollweg nicht auseinanderlaufen.
+// ALLE KARTEN AUF EINMAL (Wolfram 21.07.): Der frühere Fan+Swipe (nur 3 Karten sichtbar,
+// die restlichen swipen durch die Mitte) ist entfallen. Die Wörter öffnen die Mitte, dann
+// steigen ALLE vier Karten gestaffelt auf und ordnen sich als EINE Reihe an — danach hält
+// die Anordnung. Deutlich kürzere Section, da kein Swipe-Weg mehr.
 const T = {
   wordsIn: 0, // Wörter faden als ein Satz ein
   wordsInDur: 0.6,
   wordsApart: 0.7, // sie ziehen an die Ränder
-  wordsApartDur: 1.4,
-  cardsUp: 2.2, // Karten wachsen aus der Mitte
-  cardsUpDur: 0.6,
-  cardsUpStagger: 0.25,
-  fan: 3.5, // Fächern links/mitte/rechts
-  fanDur: 1.0,
-  swipe: 4.8, // erster Swipe-Step
-  swipeDur: 0.95,
-  swipeGap: 1.0, // Abstand zwischen den Steps
-  hold: 1.2, // finale Anordnung steht still
+  wordsApartDur: 1.2,
+  cardsUp: 2.0, // Karten wachsen aus der Mitte in ihre Reihen-Slots
+  cardsUpDur: 0.9,
+  cardsUpStagger: 0.22,
+  hold: 1.4, // finale Reihe steht still
 } as const;
 
-const UNITS = T.swipe + Math.max(0, N - 3) * T.swipeGap + T.swipeDur + T.hold;
-const VH_PER_UNIT = 43; // Scrollweg je Timeline-Einheit → ~300vh bei 4 Rollen
+const UNITS = T.cardsUp + Math.max(0, N - 1) * T.cardsUpStagger + T.cardsUpDur + T.hold;
+const VH_PER_UNIT = 43; // Scrollweg je Timeline-Einheit → ~210vh bei 4 Rollen
 const TOTAL_VH = Math.round(UNITS * VH_PER_UNIT);
 
 export function AlgarveCareerRoleScroller() {
@@ -180,12 +173,19 @@ export function AlgarveCareerRoleScroller() {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const els = gsap.utils.toArray<HTMLElement>("[data-role-card]");
-      if (els.length < 3) return;
+      if (!els.length) return;
 
-      // Startlagen: die ersten drei mittig gestapelt (scale 0), der Rest rechts
-      // vorbereitet und TRANSPARENT — sonst lugt Karte 4 auf Fullsize ins Bild.
-      gsap.set(els.slice(0, 3), { scale: 0, xPercent: 0, rotation: 0 });
-      els.slice(3).forEach((el, i) => gsap.set(el, { xPercent: 200 + i * 100, scale: 0.8, rotation: 4, opacity: 0 }));
+      // Reihen-Slots: alle Karten sitzen final NEBENEINANDER (eine Reihe). xPercent ist
+      // relativ zur eigenen Kachelbreite (21.25vw) → 100 = eine Kachelbreite Versatz.
+      const SLOT_SCALE = 0.82;
+      const slot = (i: number) => ({
+        xPercent: (i - (N - 1) / 2) * 100, // Zentren im Abstand einer Kachelbreite
+        rotation: (i - (N - 1) / 2) * 2.4, // dezenter Fächer
+        scale: SLOT_SCALE,
+      });
+
+      // Startlage: alle Karten mittig gestapelt, unsichtbar klein.
+      gsap.set(els, { scale: 0, xPercent: 0, rotation: 0, opacity: 1 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -218,43 +218,18 @@ export function AlgarveCareerRoleScroller() {
         T.wordsApart,
       );
 
-      // 3) ERST danach steigen die ersten drei Karten aus dem Loch auf.
-      tl.to(
-        els.slice(0, 3),
-        { scale: 1, duration: T.cardsUpDur, stagger: T.cardsUpStagger, ease: "power2.out" },
-        T.cardsUp,
-      );
+      // 3) ERST danach steigen ALLE Karten gestaffelt aus dem Loch auf und fahren dabei
+      //    direkt in ihren Reihen-Slot — kein Fan+Swipe mehr, alle vier bleiben sichtbar.
+      els.forEach((el, i) => {
+        const s = slot(i);
+        tl.to(
+          el,
+          { scale: s.scale, xPercent: s.xPercent, rotation: s.rotation, duration: T.cardsUpDur, ease: "power2.out" },
+          T.cardsUp + i * T.cardsUpStagger,
+        );
+      });
 
-      // Fächern: Karte 1 links, Karte 3 rechts, Karte 2 bleibt mittig.
-      tl.to(els[0], { xPercent: -100, scale: 0.8, rotation: -4, duration: T.fanDur, ease: "power2.inOut" }, T.fan)
-        .to(els[1], { xPercent: 0, scale: 0.9, rotation: 0, duration: T.fanDur, ease: "power2.inOut" }, T.fan)
-        .to(els[2], { xPercent: 100, scale: 0.8, rotation: 4, duration: T.fanDur, ease: "power2.inOut" }, T.fan);
-
-      // 4) 3-Slot-Swipe: pro Step rückt alles einen Slot (100) nach links.
-      for (let step = 1; step <= N - 3; step++) {
-        const pos = T.swipe + (step - 1) * T.swipeGap;
-        els.forEach((el, index) => {
-          const x = (index - step - 1) * 100;
-          const isCenter = x === 0;
-          const isSide = Math.abs(x) === 100;
-          const isFar = Math.abs(x) >= 200;
-          tl.to(
-            el,
-            {
-              xPercent: x,
-              scale: isCenter ? 0.9 : isSide ? 0.8 : 0.72,
-              rotation: x < 0 ? -4 : x > 0 ? 4 : 0,
-              opacity: isFar ? 0 : 1,
-              duration: T.swipeDur,
-              ease: "power2.inOut",
-            },
-            pos,
-          );
-        });
-      }
-
-      // End-Hold: ein leerer Beat NACH der letzten Karte → die finale Anordnung steht
-      // noch ein Stück still, statt sofort weiterzufliegen.
+      // End-Hold: die fertige Reihe steht noch ein Stück still, statt sofort weiterzufliegen.
       tl.to({}, { duration: T.hold }, UNITS - T.hold);
     },
     { scope: root },

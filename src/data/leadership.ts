@@ -55,7 +55,10 @@ export const LEADERSHIP: Leader[] = [
   { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },
   // natali-naso.jpg: aus dem vorigen Crop höher + größer nachgeschärft (~31 %, war ~28 %).
   { name: "Natali Naso", role: "Director Human Resources", img: "/people/natali-naso.jpg" },
-  { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/lead-1.jpg" },
+  // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab. Quelle
+  // assets/People/Janine.jpg (4912×7360), nach der Reihen-Norm beschnitten: Kopf ~33 %,
+  // Kinn auf Output-Zeile 508, höher gerückt. extract(411,143,3378,4505).
+  { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/janine-berns.jpg" },
   // Elena Kats (Wolfram 17.07.) — neue, zwölfte Person, „als Letzte von den Frauen"
   // eingefügt; die Männer rücken dadurch einen Index nach hinten. Dadurch ist die
   // mittlere Reihe weiter mit den 5 bisherigen Frauen voll, Elena eröffnet die untere

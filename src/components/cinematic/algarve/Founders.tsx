@@ -66,6 +66,9 @@ const FOCUS: Record<string, string> = {
   // übrigen Standard-Reihen (Kopf ~32 %, 12 % Luft oben) → gleicher Fokuswert wie die
   // Nachbarn (18 %). Löst den Platzhalter lead-6.jpg ab.
   "/people/natali-naso.jpg": "50% 18%",
+  // Janine Berns (Wolfram 21.07.) — echtes Portrait, löst lead-1.jpg ab. Nach derselben
+  // Reihen-Norm beschnitten (Kopf ~33 %, höher) → gleicher Top-Bias wie die Nachbarn.
+  "/people/janine-berns.jpg": "50% 18%",
   "/people/lead-7.jpg": "50% 26%",
   // Heike Lutzer (Wolfram 20.07.) — echtes Portrait, löst lead-8.jpg ab. Ganzkörper-Quelle
   // eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %) → gleicher Top-Bias wie die anderen.
