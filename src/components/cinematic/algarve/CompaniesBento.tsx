@@ -60,6 +60,9 @@ const FORCE_SPAN: Record<string, string> = {
   // AUSGLEICH FÜR MYSHOW (Wolfram 21.07.): Cologne Comedy Festival (eigenes Video) wird
   // dafür breit — es übernimmt das col-span-2, das MyShow abgegeben hat.
   "cologne-comedy-festival": "md:col-span-2",
+  // HOCHFORMAT (Wolfram 21.07.): Only Good People bekommt eine hohe Kachel (zwei Zeilen) —
+  // ihr Reel ist nativ Hochformat (720×1280) und läuft dort als Portrait ohne Beschneidung.
+  "only-good-people": "md:row-span-2",
 };
 const spanFor = (i: number, total: number, id?: string) =>
   id && SMALL_ONLY.has(id)
@@ -232,15 +235,21 @@ REEL["potatohead-pictures"] = "/company-media/potatohead-pictures.mp4";
 // 69 s) — die meisten Shots sind Totalen; der Anfang (2–12 s) zeigt ihn nah. 16:9-Band
 // (crop 720×405 @ y219) → 960×540, ohne Ton.
 REEL["sr-management"] = "/company-media/sr-management.mp4";
-// MyShow (Wolfram 21.07.): Scroll-Screencast der myshow.de (1440×920, 45 s). Der Anfang
-// (~3–7 s) zeigt ein Cookie-Banner-Modal — deshalb erst AB 8 s geschnitten (der Banner ist
-// weg, sauberer Scroll durch Hero → Show-Kacheln). 10 s, 16:9-Crop → 960×540, ohne Ton.
+// MyShow (Wolfram 21.07.): Scroll-Screencast der myshow.de (1440×920, 25 fps). Der Anfang
+// (~3–7 s) zeigt ein Cookie-Banner-Modal — deshalb erst AB 8 s geschnitten (Banner weg,
+// sauberer Scroll durch Hero → Show-Kacheln). Der Screencast scrollte stufig/ruckartig →
+// zusätzlich 1,5× verlangsamt (setpts) + Motion-Interpolation auf 60 fps (minterpolate mci)
+// → flüssiger, weicher Scroll. 16:9-Crop → 960×540, ohne Ton (~14,9 s).
 REEL["myshow"] = "/company-media/myshow.mp4";
 // Only Good People (Wolfram 21.07.): „Selfiesandra.mp4" (Sport-Reel „Sportarten mit
 // SelfieSandra", 720×1280 hochkant, 28 s). 10-s-Ausschnitt (8–18 s, Action-Mix: HYROX,
-// Flag Football, Calisthenics). 16:9-Band aus dem Hochformat (crop 720×404 @ y280) →
-// 960×540, ohne Ton — die Kachel ist quer, daher Band statt Container-Umbau.
+// Flag Football, Calisthenics). Als PORTRAIT 540×960 (ohne Ton) belassen — die Kachel ist
+// hier row-span-2 (Hochformat, s. FORCE_SPAN), das native Hochkant-Reel füllt sie direkt.
 REEL["only-good-people"] = "/company-media/only-good-people.mp4";
+// Brainpool (Wolfram 21.07.): „SDS_75_Bielendorfer_Aussenspiel_kurz.mxf" (Schlag den Star,
+// 1920×1080 echtes 16:9 / SAR 1:1 — kein Entzerren nötig, mpeg2video, 25 fps). 10-s-
+// Ausschnitt (16–26 s: Fahrer + nächtlicher Auto-Parcours) → 960×540, ohne Ton.
+REEL["brainpool"] = "/company-media/brainpool.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
