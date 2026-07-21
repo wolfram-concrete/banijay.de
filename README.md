@@ -238,13 +238,18 @@ banijay.de ausgeliefert. Das sind Fotos bzw. Bildmontagen der jeweiligen Redakti
 ob eine Nutzungserlaubnis vorliegt — sonst auf eigene Motive umstellen; das Datenmodell
 braucht dafür nur ein anderes `img`.
 
-### Team-Portraits: Beschnitt-Regel und eine offene Frage
+### Team-Portraits: Beschnitt-Regel
 
-**9 von 12 echt** (Knut, Michael Laegel, Simone, Heike, Aylin, Elena, Michael Gaul,
-Sebastian, Matthaeus), drei noch Platzhalter: **Marcus Wolter**, **Natali Naso** (`lead-6.jpg`
-zeigt eine andere Person) und **Janine Berns** — `lead-1.jpg` läuft doppelt (Marcus + Janine),
-was in der Team-Section auffällt, sobald man hinsieht. Elena Kats hat inzwischen Name und
-Rolle („Director Finance Projects & Business Systems").
+**12 von 12 echt (Stand 21.07.)** — alle Platzhalter sind abgelöst, `lead-1.jpg` läuft
+nicht mehr doppelt. Zuletzt: Marcus Wolter, Matthaeus Jaworek, Janine Berns, Natali Naso.
+
+**Kopf-Normalisierung (21.07.).** Die mittlere Reihe + Aylin wurden auf **Matthäus als
+Referenz** vereinheitlicht: Gesichter höher (mehr Körper unten), Kopf ~33 % der Kachel,
+Kinne auf einer Output-Zeile. Gerechnet wird im 900×1200-Output (nicht mehr „X % der
+Ausschnitthöhe"): Haaransatz ≈ Zeile 175, Kinn ≈ 508, Kopfhöhe ≈ 333 px. **Simone bleibt
+~40 %** — ihr Original ist ein enger Close-up (Kopf füllt die volle Bildbreite), unter ~40 %
+geht es physikalisch nicht (bräuchte mehr Bild links/rechts). Reihenfolge-Änderung 21.07.:
+**Heike Lutzer vor Natali Naso**.
 
 **Beschnitt-Regel für neue Portraits.** Die Zulieferungen aus der 2026er-Session sind
 GANZKÖRPER-Aufnahmen (~3800–4900 px breit, Seitenverhältnis 0,665). Die Team-Kacheln sind
@@ -277,12 +282,11 @@ Die Reihenfolge in `src/data/leadership.ts` **ist** das Layout — `Founders.tsx
 stur nach Index (0–2 Leader-Reihe, 3–7 Mitte, ab 8 unten). Wolframs Regel: in der
 mittleren Reihe stehen die Frauen des Teams.
 
-**Diese Zuordnung ist nicht belegt.** Es gibt kein Geschlechtsfeld in den Daten, und die
-Fotos taugen nicht als Beleg — sie sind Platzhalter und passen nicht zu den Namen (unter
-„Marcus Wolter" liegt derzeit das Bild einer Frau, unter „Natali Naso" das eines Mannes).
-Einsortiert wurde nach Vornamen; es geht mit genau fünf Personen rechnerisch auf die
-Fünferreihe auf. Vor dem Livegang mit Banijay gegenprüfen und in `leadership.ts`
-korrigieren — das Layout folgt der Reihenfolge automatisch.
+**Diese Zuordnung ist nicht belegt.** Es gibt kein Geschlechtsfeld in den Daten; einsortiert
+wurde nach Vornamen, und es geht mit genau fünf Personen rechnerisch auf die Fünferreihe
+auf. (Die Fotos sind seit 21.07. alle echt und passen zu den Namen — sie taugen aber
+weiterhin nicht als Beleg für die Reihen-Logik.) Vor dem Livegang mit Banijay gegenprüfen
+und in `leadership.ts` korrigieren — das Layout folgt der Reihenfolge automatisch.
 
 ### Video-Toolchain: ffmpeg (seit 20.07.)
 

@@ -5,6 +5,32 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team-Fotos komplett, Kopf-Normalisierung, Career & Company-Videos (21.07.)
+- **Alle 12 Team-Portraits sind jetzt echt.** Die letzten Platzhalter (`lead-1.jpg`)
+  abgelöst: **Marcus Wolter** (Leader-Reihe, wie Michael Laegel beschnitten), **Matthaeus
+  Jaworek** (neues Foto), **Janine Berns** und **Natali Naso**. `lead-1.jpg` läuft nicht
+  mehr doppelt.
+- **Kopf-Normalisierung der mittleren Reihe + Aylin** (2 Runden): Gesichter höher gerückt
+  (mehr Körper unten), Kopfgrößen an **Matthäus als Referenz** angeglichen (~33 %), Kinne
+  auf eine Output-Zeile. Simone bleibt bei ~40 % — ihr Original ist ein enger Close-up
+  (Kopf füllt die volle Bildbreite), kleiner geht physikalisch nicht.
+- **Positionen Heike Lutzer ↔ Natali Naso** in der mittleren Reihe getauscht.
+- **About: „Unser Team"-Headline** erscheint jetzt zuverlässig — neue `staticHead`-Prop
+  setzt die Headline auf About statisch sichtbar (das Wort-Reveal feuerte wegen mehrerer
+  gepinnter Sektionen davor nicht verlässlich). Home behält die Animation.
+- **About-Fakten-Boxen:** Copytexte raus, Headlines bündig auf die untere Ebene, Boxen
+  niedriger (18vw→13vw).
+- **Editorial (Marcus-Interview):** neues Foto `IMG_6457`.
+- **Career „Unser Angebot":** Hintergrund konstant **neutrales Magenta** (kein Farb-Shift
+  je Rolle mehr), und **alle vier Karten gleichzeitig sichtbar** — Fan+Swipe entfernt, die
+  Karten steigen auf und ordnen sich als eine Reihe an; Section deutlich kürzer.
+- **Companies-Bento:** **MyShow** als Einzelkachel (war breit), **Cologne Comedy Festival**
+  dafür breit; Magenta-Arbeitsmarker bei **Dynamic Ally** entfernt.
+- **Vier neue Company-Videos** (ffmpeg CRF 28, 960×540, ohne Ton): **Potatohead Pictures**
+  (Kitchen Impossible), **SR Management** (Giovanni Zarrella), **MyShow** (Scroll-Screencast,
+  Cookie-Banner am Anfang übersprungen, Schnitt ab 8 s), **Only Good People** (Sport-Reel
+  „SelfieSandra", 16:9-Band aus Hochformat).
+
 ### Hero-Naht + Only Good Party People (20.07., dritter Block)
 - **Dünne Linie am Hero→Statement-Übergang** (Wolfram): kein Struktur-Fehler. Gemessen
   liegen Balken-Unterkante, Statement- und DustStage-Veil-Oberkante alle pixelgenau auf

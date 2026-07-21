@@ -236,6 +236,11 @@ REEL["sr-management"] = "/company-media/sr-management.mp4";
 // (~3–7 s) zeigt ein Cookie-Banner-Modal — deshalb erst AB 8 s geschnitten (der Banner ist
 // weg, sauberer Scroll durch Hero → Show-Kacheln). 10 s, 16:9-Crop → 960×540, ohne Ton.
 REEL["myshow"] = "/company-media/myshow.mp4";
+// Only Good People (Wolfram 21.07.): „Selfiesandra.mp4" (Sport-Reel „Sportarten mit
+// SelfieSandra", 720×1280 hochkant, 28 s). 10-s-Ausschnitt (8–18 s, Action-Mix: HYROX,
+// Flag Football, Calisthenics). 16:9-Band aus dem Hochformat (crop 720×404 @ y280) →
+// 960×540, ohne Ton — die Kachel ist quer, daher Band statt Container-Umbau.
+REEL["only-good-people"] = "/company-media/only-good-people.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
