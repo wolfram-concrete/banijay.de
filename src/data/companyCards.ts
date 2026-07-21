@@ -371,6 +371,24 @@ export const COMPANY_CARDS: CompanyCard[] = [
     image: "/companies/pausenclown-media.jpg",
     imageAlt: "Pausenclown Media – Sebastian Lege",
   },
+  {
+    // ShowdownTV (Wolfram 21.07.) — neue Streaming-/Live-Entertainment-Plattform von
+    // Banijay Media Germany (Launch April 2026, Fokus Kampfsport & Live-Events).
+    // Logo + Kachel-Video folgen noch → Poster-Platzhalter, Video-REEL wird nachgetragen.
+    id: "showdown-tv",
+    index: "22",
+    cluster: "Digital & Media",
+    kind: "platform",
+    name: "ShowdownTV",
+    profile: "Streaming-Plattform für Live-Entertainment und Kampfsport.",
+    body: "Banijay Media Germany bündelt auf ShowdownTV Live-Events, Kampfsport und Show-Entertainment – von Promi-Boxen bis Wrestling, im Web, per App und auf Smart-TV.",
+    tags: ["Live", "Kampfsport", "Streaming"],
+    knownFor: ["Das große Promi-Boxen", "TV total Promi-Wrestling", "Ringlife Combat Series"],
+    context: "Live-Entertainment und Combat-Sport als eigene Plattform.",
+    externalUrl: "https://www.showdowntv.com/",
+    image: "/companies/showdown-tv.jpg",
+    imageAlt: "ShowdownTV – Teaserbild",
+  },
 ];
 
 /** Badge-Label je Card-Kind (nur wenn ≠ "company"). */

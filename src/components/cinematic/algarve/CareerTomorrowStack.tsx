@@ -122,10 +122,16 @@ export function AlgarveCareerTomorrowStack() {
 
           {/* ── Bild rechts (mit gedämpftem Parallax) — nur Desktop. Mobil sitzt das
               Bild oberhalb der Copy (siehe Textspalte).
-              Container-Ratio = native Ratio des Keyvisuals (1,951:1) statt der früheren
-              5:6-Hochkant-Box: Das Visual ist quer und trägt Typo + B-Marke, in 5:6
-              hätte object-cover beides zerschnitten. ─────────────────────────── */}
-          <div className="relative overflow-clip max-[767px]:!hidden" style={{ aspectRatio: String(tomorrow.imageAspect) }}>
+              FULL-BLEED RECHTS (Wolfram 21.07.): Der Container bricht aus dem zentrierten
+              max-w-1440-/2vw-Raster nach rechts bis an die Viewport-Kante aus (negative
+              marginRight = Distanz Content-Rechtskante → Screenrand: min(720px,50vw) −
+              50vw − 2vw). Vertikal `self-stretch` → das Bild füllt die volle Höhe der
+              Textspalte (oben bei der Headline, unten bündig mit der Copy/CTA) statt der
+              früheren fixen 1,951:1-Box. object-cover übernimmt den nun höheren Ausschnitt. */}
+          <div
+            className="relative self-stretch overflow-clip max-[767px]:!hidden"
+            style={{ marginRight: "calc(min(720px, 50vw) - 50vw - 2vw)" }}
+          >
             <img
               ref={img}
               src={tomorrow.image}

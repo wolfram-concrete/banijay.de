@@ -13,7 +13,7 @@ Sticky-Nav, Bildcontainer nutzen native Seitenverhältnisse und Fokuspunkte. Das
 News-Grid ist ein CSS-Grid-Masonry mit nativen Thumbnail-Proportionen + Feature-Karten
 (2 Spalten) und berechneten Row-Spans. Scroll-getriebene Zähler laufen über
 ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden starten.
-Alle Subpages (About/Companies/Career/News/Contact) teilen sich denselben **Home-Hero**
+Alle Subpages (Career/News/Contact) teilen sich denselben **Home-Hero**
 (`AlgarveHome`): die „We Are Banijay"-Frame-Sequenz + auffächernde Satellitenringe auf
 dunklem Sternenstaub, darunter das seiteneigene Statement mittelachsig. Frame 3 ist je
 Seite passend (`/hero-v2/frame-3-<page>.jpg`, z. B. „ABOUT"/„CAREER"). Ein globaler
@@ -89,9 +89,11 @@ npm run lint    # ESLint
 
 ```
 src/
-  app/(frontend)/        Seiten: Home, About, Career, News, Contact
+  app/(frontend)/        Seiten: Home, Career, News, Contact
                          (Companies-Seite entfernt, 16.07. — das Companies-Bento
-                         lebt auf der Home)
+                         lebt auf der Home. About-Seite archiviert, 21.07. —
+                         `about/page.tsx.archived`, Route liefert 404; die
+                         Editorial-/Facts-Inhalte leben auf der Home)
   components/
     cinematic/           AlgarveHome (Hero, global auf allen Seiten mit eigenem
                          frame3 + Statement), IntroOverlay (Preloader: läuft bei
@@ -101,7 +103,8 @@ src/
                          EditorialStickyScene (Facts), Founders/Team (Prop
                          holdForOverlay: Halte-Beat nur, wenn eine Folge-Section
                          mit -100vh darüberzieht), LogoReveal, NewsStack
-                         About:  ProofVideo (Zahlen mittelachsig, gleich große
+                         About (archiviert 21.07., Komponenten bleiben im Repo):
+                         ProofVideo (Zahlen mittelachsig, gleich große
                          Ziffern; das Video blüht aus der MITTLEREN Kachel auf),
                          Testimonials (Zitat-Fächer der Geschäftsführer:innen,
                          Daten 1:1 von banijay.de), WorldNetwork („Local

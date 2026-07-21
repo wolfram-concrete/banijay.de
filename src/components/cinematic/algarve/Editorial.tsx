@@ -24,7 +24,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
-const INK = "#0e0d0b";
+const MAGENTA = "#ff4370";
 
 // IP-BRANDS SLIDER (Wolfram 15.07., dritte Reihe 16.07.): die ikonischen Banijay-IPs
 // laufen als DREI Reihen — links / rechts / links. Jeder Container behält die
@@ -225,20 +225,18 @@ export function AlgarveEditorial() {
             Zitat-Block mehr. */}
         <EditorialStickyScene />
 
-        {/* „Die Story" — DOCKT an den Marcus/Facts-Körper (Wolfram 16.07.): identischer
-            Container wie die Sticky-Scene (mx-auto, maxWidth 1920, 16px Innenabstand) →
-            läuft links wie rechts exakt bündig mit dem Modul darüber. Kein [1fr_3fr]-
-            Einzug und kein marginTop mehr — die Box sitzt direkt darunter.
-            Die Maske clippt sie; beim Weiterscrollen (nachdem die Zahlen-Section steht)
-            schiebt sich die weiße Box als Parallax darunter hervor. */}
+        {/* MAGENTA-LEISTE statt weißer Story-Box (Wolfram 21.07.): Der große weiße
+            Textcontainer „Die Banijay Story" ist ersetzt durch eine Magenta-Leiste mit
+            den Inhalten der alten banijay.de — LINKS „170+ Companies weltweit", RECHTS
+            der Link zu banijay.com. Der lange 2-spaltige Story-Text ist damit raus; er
+            liegt zur Wiederverwendung in der Git-Historie (Stand fbeaae05 ff.).
+            Container-Geometrie unverändert: identisch bündig mit der Sticky-Scene
+            (maxWidth 1920, 16px Innenabstand), Parallax-Maske bleibt. */}
         <div
           data-ed-story-mask
           // Andock-marginTop (Andocken an die 100vh-Bühne) NUR Desktop (md:) — auf Mobile
-          // ist die Sticky-Scene content-hoch.
-          // Mobil KEIN Abstand mehr (mt-0, vorher mt-10): Die weiße Story soll direkt aus
-          // der letzten Akkordeon-Kachel („170+ Companies weltweit") herauskommen (Wolfram
-          // 20.07.). Zusammen mit dem entfernten unteren py der Sticky-Scene (dort jetzt
-          // pt statt py) dockt die Box bündig an die Kachel an.
+          // ist die Sticky-Scene content-hoch. Mobil KEIN Abstand (mt-0): Die Leiste kommt
+          // direkt aus der letzten Akkordeon-Kachel („4.500 hrs. Entertainment") heraus.
           className="mx-auto mt-0 w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
           style={{
             maxWidth: "1920px",
@@ -248,86 +246,42 @@ export function AlgarveEditorial() {
         >
           <div
             data-ed-story
-            className="flex flex-col"
-            style={{ gap: "1.6rem", background: PAPER, color: INK, padding: "clamp(1.8rem, 3vw, 3rem)" }}
+            className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
+            style={{ background: MAGENTA, color: PAPER, padding: "clamp(2.2rem, 4vw, 4.2rem) clamp(1.8rem, 3vw, 3.4rem)" }}
           >
-            <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: INK }}>
-              Die Banijay Story
-            </h3>
-            {/* ZWEISPALTIG (Wolfram 21.07.): der lange Story-Text fließt auf Desktop in
-                zwei Spalten (magazinartig); die Headline oben spannt über beide. Mobil
-                einspaltig. Zwischenüberschriften mit break-*-avoid, damit sie nicht am
-                Spaltenende von ihrem Absatz getrennt werden. */}
-            <div className="columns-1 md:columns-2" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)", columnGap: "2.5rem" }}>
-              {/* Finaler Story-Text (Wolfram 21.07., lange Fassung mit Zwischenüberschriften).
-                  Korrigiert ggü. Vorlage: „Wir bauen wir auf" → „Wir bauen auf",
-                  „Luminiscence" → „Luminescence". */}
-              <p className="mb-4">
-Im Jahr 2018 von Marcus Wolter und der Banijay Group gegründet, ist die Banijay Germany das
-                führende Entertainment-Haus Deutschlands, deren Unterhaltungsprogramme im Fernsehen, im
-                Internet und auf der Bühne jedes Jahr fast vier Milliarden Zuschauerinnen und Zuschauer
-                erreichen.
-              </p>
-              <p className="mb-4">
-Zur Banijay Gruppe gehören unter anderem Banijay Productions Germany, Endemol Shine Germany,
-                Filmpool, MadeFor, SR Management, Only Good People, Banijay Media Germany, Good Humor, die
-                Influencer-Plattform influence.vision und Brainpool samt Tochterfirmen wie unter anderem MTS
-                und Cape Cross.
-              </p>
-              <p className="mb-4">
-Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay
-                Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch
-                Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten. Geprägt von
-                Unabhängigkeit, kreativer Freiheit und visionärem Unternehmergeist schloss sich Banijay
-                Germany im Juli 2026 im Rahmen einer strategischen Partnerschaft mit All3Media zusammen.
-              </p>
-
-              <p className="mb-2 mt-2 break-inside-avoid break-after-avoid" style={{ fontWeight: 600, color: INK }}>
-                Unsere Marken und IPs sind das Fundament
-              </p>
-              <p className="mb-4">
-Wir halten schon heute den größten Schatz an IP über alle Plattformen. Im Jahr produzieren
-                wir zusammen rund 4.500 Stunden Entertainment – das sind im Schnitt jeden Tag über 12
-                Stunden. Dazu gehören aktuell in Deutschland starke Reality-Brands wie Die Verräter, Villa
-                der Versuchung, Kampf der Realitystars oder The 50, Entertainment-Marken wie Schlag den Star,
-                Die Höhle der Löwen, The Masked Singer oder Kitchen Impossible, Fiction-Formate wie Tatort,
-                Stromberg, Der Lehrer, Kommissar Dupin, Dünentod oder Die Landarztpraxis, sowie Live-Events
-                wie NightWash, Die besten Comedians Deutschlands oder Luminescence. Zu unserem Portfolio
-                gehören zudem Dokumentationen, Factual Entertainment wie Bitte melde dich, Scripted Reality
-                wie Barbara Salesch oder Richter Alexander Hold, Branded Entertainment wie die McDonalds
-                Stromberg Mockumentary sowie Vertical Drama und Social Media Content.
-              </p>
-              <p className="mb-4">
-Wir bauen auf die eigene Reichweite unserer Marken: Im gesamten Banijay-Netzwerk erreichen
-                wir mit unserem Content jeden Monat mehr als 160 Mio. Video Views, die digitale
-                Bruttoreichweite beträgt insgesamt rund 4 Milliarden Kontakte im Jahr. Mit unseren über 1.500
-                Live-Veranstaltungen im Jahr berühren wir mehr als 1 Million Menschen live.
-              </p>
-
-              <p className="mb-2 mt-2 break-inside-avoid break-after-avoid" style={{ fontWeight: 600, color: INK }}>
-                Vielfalt und unternehmerische Freiheit machen uns stark und unabhängig.
-              </p>
-              <p className="mb-4">
-Die Grundlage der Banijay Germany sind zwei Grundpfeiler: Starke Marken, die zu Love Brands
-                unserer Zuschauerinnen und Zuschauer geworden sind, sowie die Exzellenz unserer Teams, die
-                Brands der Zukunft und die kommenden großen Marken aufzubauen und zu produzieren.
-              </p>
-              <p className="mb-4">
-Stärker zusammen innerhalb des Banijay Ökosystems. Unser Ökosystem verbindet Entertainment,
-                Vermarktung, Künstler, Live und Technologie zu einem starken Netzwerk.
-              </p>
-              <p className="mb-4">
-Unser Antrieb ist Entertainment, das jeden Tag Millionen Menschen erreicht, begeistert und
-                den Zeitgeist prägt. Vielfalt und unternehmerische Freiheit machen uns stark und unabhängig.
-                Unser Ökosystem verbindet Entertainment, Vermarktung, Künstler, Live und Technologie zu einem
-                starken Netzwerk.
-              </p>
-              <p className="mb-4">
-Wir verstehen uns als Entertainment-Gruppe, die die gesamte Wertschöpfungskette bedient. Mit
-                TV-Shows, Serien, Streaming-Formaten, Kinofilmen, Live-Events, Podcasts oder Social Media
-                Content sind wir jeden Tag für unser Publikum da.
-              </p>
+            {/* LINKS — 170+ Companies weltweit (aus der Coopetition-Grafik / alte Seite) */}
+            <div className="flex flex-col">
+              {/* „+" als Einheitszeichen analog zu den Facts-Kacheln (Wolfram 21.07.):
+                  kleiner (0.54em wie UNIT dort), eng an der Ziffer (marginLeft 0.04em) und
+                  um den Sharp-Grotesk-Glyph-Offset abgesenkt (top 0.14em), damit es wie „+"
+                  bei 1.400+ sitzt statt als vollwertige Ziffer. */}
+              <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(3.4rem, 7vw, 7rem)", lineHeight: "94%", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
+                170
+                <span style={{ fontSize: "0.54em", marginLeft: "0.04em", position: "relative", top: "0.14em" }}>+</span>
+              </span>
+              <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", marginTop: "0.5rem", letterSpacing: "0.01em" }}>
+                Companies weltweit
+              </span>
             </div>
+
+            {/* RECHTS — Link zum globalen Netzwerk auf banijay.com */}
+            <a
+              href="https://www.banijay.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-3 self-start md:self-auto"
+              style={{
+                fontFamily: SHARP,
+                fontWeight: 500,
+                fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)",
+                color: PAPER,
+                borderBottom: "2px solid rgba(248,247,243,0.55)",
+                paddingBottom: "0.35rem",
+              }}
+            >
+              banijay.com
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+            </a>
           </div>
         </div>
       </div>

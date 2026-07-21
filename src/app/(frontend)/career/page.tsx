@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
-import { AlgarveCareerRoleScroller } from "@/components/cinematic/algarve/CareerRoleScroller";
+// ARCHIVIERT (Wolfram 21.07.): Die Section „Unser Angebot" (Rollenwelt-Swipe) wird vorerst
+// nicht mehr gebraucht. Import + Render bewusst nur auskommentiert, NICHT gelöscht — die
+// Komponente CareerRoleScroller.tsx bleibt als „Speicher" im Repo und ist so jederzeit
+// wieder aktivierbar.
+// import { AlgarveCareerRoleScroller } from "@/components/cinematic/algarve/CareerRoleScroller";
 import { AlgarveCareerJobsPreview } from "@/components/cinematic/algarve/CareerJobsPreview";
 import { AlgarveCareerLocations } from "@/components/cinematic/algarve/CareerLocations";
 import { AlgarveLogoTicker } from "@/components/cinematic/algarve/LogoTicker";
@@ -30,10 +34,10 @@ export default function CareerPage() {
         statement={CAREER.roleIntro.text}
       />
 
-      {/* 02 Rollenwelt — Swipe-Bühne (Wolfram 16.07.): löst den Sticky-Card-Stack ab
-          und übernimmt die Choreografie der früheren Home-Companies-Section
-          (Wörter auseinander → Karten aus der Mitte → Swipe, Grund färbt mit). */}
-      <AlgarveCareerRoleScroller />
+      {/* 02 Rollenwelt „Unser Angebot" — ARCHIVIERT (Wolfram 21.07.): vorerst entfernt,
+          wird aktuell nicht mehr gebraucht. Komponente bleibt als Speicher im Repo
+          (CareerRoleScroller.tsx) und lässt sich durch Ent-Kommentieren zurückholen. */}
+      {/* <AlgarveCareerRoleScroller /> */}
 
       {/* 03 Aktuelle Jobs */}
       <AlgarveCareerJobsPreview />

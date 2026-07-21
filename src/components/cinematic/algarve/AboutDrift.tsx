@@ -10,6 +10,14 @@ import { useEffect, useRef } from "react";
 
 const BG = "transparent";
 
+// ⚠️ SNIPPET-REGEL (Wolfram 21.07.): KEINE Trailer-Ausschnitte mit Text-/Zahlen-
+// Einblendungen (die Magenta-Cards „25+ Companies & Labels", „300+ Shows. Every Year.",
+// „#1 in Entertainment", „26,5% Top Market Share", „STORY-MAKING SET FREE" usw.) und
+// keine Reality-/Anschnitt-Motive. clip-07 (war „300+ Shows"-Card) und clip-08 (war
+// „25+ Companies"-Card) frisch aus dem 9×16-Unternehmenstrailer nachgeschnitten:
+// clip-07 = 158s (Bergsteiger/Helikopter-Tal), clip-08 = 291s (Zipline über Wasser).
+// Beide vor dem Deploy Frame-für-Frame auf Textfreiheit geprüft.
+//
 // Container-Konfiguration (a–k) exakt nach Template — Klasse, Snippet, Parallax-Tiefe.
 // speed = vertikale Parallax-Tiefe. Bewusst ruhiger als das Template (× ~0.55),
 // damit die Container beim Scrollen nicht so weit driften und oben nicht so schnell

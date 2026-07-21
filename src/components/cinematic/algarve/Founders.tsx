@@ -55,7 +55,11 @@ const FOCUS: Record<string, string> = {
   // anders beschnitten — siehe leadership.ts. Dort zeigt die Kachel nur 55 % der
   // Bildhöhe, deshalb ein knapperer Top-Bias als bei den 32%-Portraits.
   "/people/michael-laegel.jpg": "50% 14%",
-  "/people/knut-kremling.jpg": "50% 8%",
+  // Scheitel-Angleichung Leader-Reihe (Wolfram 21.07.): 8 % → 5 %, damit Knuts Scheitel
+  // on-screen auf ~12 % rutscht und mit Marcus/Michael Laegel fluchtet (sein Bild ist
+  // 900×1353 mit anderem Fokus-Bias als die 900×1200-Portraits). Größe unverändert — sein
+  // Original (nur 1362×2048, enge Rahmung) lässt kein weiteres Herauszoomen zu.
+  "/people/knut-kremling.jpg": "50% 5%",
   // Kopfgrößen-Normalisierung (Wolfram 20.07.): jetzt 900×1200 (3:4) mit Kopf ~38 % /
   // Kopf-Oberkante 12 % wie die Standard-Reihe → gleicher Fokuswert 18 %.
   "/people/simone-lenzen.jpg": "50% 18%",

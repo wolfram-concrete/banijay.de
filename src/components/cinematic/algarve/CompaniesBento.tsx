@@ -174,11 +174,10 @@ REEL["banijay-germany-live"] = "/company-media/banijay-germany-live.mp4";
 // influence.vision (Wolfram 20.07.) — Quelle „IVA - Final Cut - 6.0.mp4", 1920×1080,
 // Ausschnitt 3–13 s.
 REEL["influence-vision"] = "/company-media/influence-vision.mp4";
-// Cape Cross Postproduction (Wolfram 20.07.). ACHTUNG BEI NACHLIEFERUNGEN: Wolfram
-// hatte CC_Website_1.mp4 ausgewählt, die ist aber defekt — 97s deklariert, davon nur
-// ~3s Logotafel und danach 87s Schwarzbild (im Quellfile selbst, nicht durch den
-// Transcode). Stattdessen CC_Website_3.mp4 (10,6s, durchgehend Bild). Alternative
-// wäre CC_Website_2.mp4, ebenfalls intakt.
+// Cape Cross Postproduction (Wolfram 21.07.): jetzt „Container-Fun-Compilation.mp4"
+// (1920×1080 echtes 16:9, 30 s) — zwei Leute fahren in einem Müllcontainer die Straße
+// runter. 10-s-Ausschnitt (13–23 s) → 960×540, ohne Ton. (Löst das frühere CC_Website_3
+// ab; CC_Website_1 war defekt — 87 s Schwarzbild im Quellfile.)
 REEL["cape-cross-postproduction"] = "/company-media/cape-cross-postproduction.mp4";
 // MySpass (Wolfram 20.07.) — Bildschirmmitschnitt der MySpass-Website (scrollendes
 // Show-Raster), Quelle 50,7s, Ausschnitt 12–22s.
@@ -230,6 +229,11 @@ REEL["nightwash-club"] = "/company-media/nightwash-club.mp4";
 // 142 s, 139 MB) ein 10-s-Ausschnitt (5–15 s) auf das Format der übrigen Clips gebracht —
 // 960×540, ohne Ton, 2,1 MB. Der Hochkant-`CCF2025Final.mov` schied aus: die Kacheln sind quer.
 REEL["cologne-comedy-festival"] = "/company-media/cologne-comedy-festival.mp4";
+// MTS Management (Wolfram 21.07.): „Tony_Bauer_Fallschirmspringer_Sammlung_kurz.mxf"
+// (1920×1080 echtes 16:9, mpeg2video, 68 s) — Comedian Tony Bauer live auf großer
+// Show-Bühne mit Licht-Arcs. 10-s-Ausschnitt (46–56 s) → 960×540, ohne Ton. CRF 30
+// (statt 28), weil die Funken-/Partikel-Effekte sonst >2,4 MB treiben.
+REEL["mts-management"] = "/company-media/mts-management.mp4";
 // Potato Head Pictures (Wolfram 21.07.): aus „KI10_S84_Maelzer_Oliver_CO.mp4" (Kitchen
 // Impossible, 1080×1920 hochkant, 68 s) ein 10-s-Ausschnitt (40–50 s, Koch spricht →
 // Küchen-Action). 16:9-Band aus dem oberen Bereich (crop 1080×608 @ y328) → 960×540, ohne Ton.

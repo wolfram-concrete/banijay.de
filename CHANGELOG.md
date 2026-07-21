@@ -5,6 +5,40 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### About-Archivierung, Editorial-Magenta-Leiste, Scheitel-Angleichung Team & Career-Full-Bleed (21.07., 4. Runde)
+- **About-Seite komplett archiviert.** Route `/about` liefert jetzt 404: `about/page.tsx`
+  → `about/page.tsx.archived` umbenannt (Code bleibt als Speicher, per Zurückbenennen
+  reaktivierbar). Aus der Navigation (`site.ts`) und dem Scroll-Label (`SiteHeader.tsx`)
+  genommen. Die Editorial-/Facts-Inhalte leben unverändert auf der **Home**.
+- **Editorial-Facts (Home) — Wording:** „Primetime-Hitrate" → **„Primetime Hitrate"**
+  (Bindestrich raus), „…und Mitarbeiter" → **„Mitarbeiterinnen & Mitarbeiter"** (kaufm. &),
+  „…Zuschauer jährlich" → **„Views & Zuschauer"**, „Live-Veranstaltungen jährlich" →
+  **„Live-Veranstaltungen"** (jeweils „jährlich" raus).
+- **Facts-Kachel „170+ Companies weltweit" → „4.500 hrs. Entertainment"** (Copy von der
+  3000er-Vorlage gemäß Ziffern-Regel auf 4.500 angeglichen).
+- **Weiße „Banijay Story"-Box → Magenta-Leiste** (`#ff4370`): links **170+ Companies
+  weltweit**, rechts **banijay.com**-Link (Inhalte wie auf der alten Seite). Das „+" ist
+  als Einheitszeichen formatiert (0,54em, `top 0.14em`) — analog zu den Facts. Der lange
+  2-spaltige Story-Text ist raus (liegt in der Git-Historie).
+- **Drift-Band (Career Code of Conduct) — zwei Text-Card-Clips ersetzt:** `clip-07`
+  (endete auf „300+ SHOWS. EVERY YEAR.") und `clip-08` („25+ COMPANIES & LABELS") frisch
+  aus dem 9×16-Trailer geschnitten (158 s Bergsteiger/Helikopter, 291 s Zipline über
+  Wasser), Frame-für-Frame textfrei geprüft. Snippet-Regel im Code hinterlegt.
+- **Team-Portraits — Scheitel-Angleichung je Reihe** (frisch aus den Originalen, per
+  Kachel-Replikat verifiziert): **Leader** (Ref Marcus) — Michael Laegel hoch, mittig, auf
+  Marcus-Größe; Knut per object-position (8 %→5 %) scheitelbündig (Größe unverändert, sein
+  Original 1362×2048 lässt kein Herauszoomen zu). **Mitte** (Ref Heike) — Simone höher +
+  kleiner, Natali kleiner/links/höher, Janine mittig/höher, Michael Gaul runter/kleiner.
+  **Unten** (Ref Matthäus) — Elena höher, Sebastian runter, Aylin höher + nach links.
+  Zusätzlich **Elena Kats ↔ Michael Gaul** getauscht.
+- **Career „Banijay Tomorrow": rechtes Keyvisual full-bleed.** Der Bild-Container bricht
+  aus dem zentrierten Raster nach rechts bis an die Viewport-Kante aus (negative
+  `marginRight`) und füllt via `self-stretch` die volle Höhe der Textspalte (Headline →
+  Copy/CTA). Kein horizontaler Overflow; einkomponierte Typo bleibt unbeschnitten.
+- **ShowdownTV** als neue Company in allen Verzeichnissen (Bento, Ökosystem, Directory,
+  Cards) + Weiß-Logo; **MTS Management** (Tony Bauer) und **Cape Cross Postproduction**
+  Videos enkodiert; Career-Section „Unser Angebot" archiviert (`CareerRoleScroller`).
+
 ### Team-Fotos komplett, Kopf-Normalisierung, Career & Company-Videos (21.07.)
 - **Alle 12 Team-Portraits sind jetzt echt.** Die letzten Platzhalter (`lead-1.jpg`)
   abgelöst: **Marcus Wolter** (Leader-Reihe, wie Michael Laegel beschnitten), **Matthaeus

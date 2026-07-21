@@ -134,6 +134,10 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // Vorerst auf die Only-Good-People-Website (ogp.rocks) verlinkt (Wolfram 20.07.) —
   // bewusster Verweis auf die verwandte Company, bis ein eigener Auftritt vorliegt.
   { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], url: "https://ogp.rocks/", tags: ["Artists"], placeholder: true },
+  // ShowdownTV (Wolfram 21.07.) — neue Plattform von Banijay Media Germany. Logo geliefert
+  // (Wolfram 21.07.): weißes Hochformat-Logo (V-Mark über Wortmarke) → wie NightWash mehr
+  // Höhe per logoClass, sonst wäre die Wortmarke im Standard-Slot zu klein. Video folgt noch.
+  { id: "showdown-tv", name: "ShowdownTV", ecoKeys: ["live", "distribution"], logo: L("showdown-tv.png"), logoClass: "h-[3rem] md:h-[3.6rem]", url: "https://www.showdowntv.com/", tags: ["Live", "Distribution & Brand"] },
   // NUR AUS DER VIDEO-LISTEN-SECTION (Bento) ENTFERNT (Wolfram 16.07.): SRM Music,
   // MySpass Audio, Major Minor, MadeFor Music, BP Music Publishing und Banijay
   // Infrastructure. Im Ökosystem (ecosystem.ts) und im Ökosystem-Verzeichnis bleiben

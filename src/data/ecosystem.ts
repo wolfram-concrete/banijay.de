@@ -45,6 +45,9 @@ export const ECO_BY_COMPANY_CARD: Record<string, string[]> = {
   "elevate-talent-management": ["artists"],
   "bb-endemol-shine": ["entertainment"],
   "endemol-shine-polska": ["entertainment"],
+  // ShowdownTV (Wolfram 21.07.): Live-Entertainment-/Kampfsport-Plattform von Banijay
+  // Media Germany → Live UND Distribution & Brand.
+  "showdown-tv": ["live", "distribution"],
 };
 
 export const ECO_CATEGORIES: EcoCategory[] = [
@@ -90,6 +93,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "NightWash Club", url: "https://nightwash-club.de/" },
       // war „OGPP" (Abkürzung, ohne Link) → richtiger Company-Name + Website (Wolfram 16.07.)
       { name: "Only Good People", url: "https://ogp.rocks/" },
+      // ShowdownTV (Wolfram 21.07.) — Live-Entertainment-/Kampfsport-Plattform.
+      { name: "ShowdownTV", url: "https://www.showdowntv.com/" },
     ],
   },
   {
@@ -131,6 +136,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
       // URL nachgeliefert von Wolfram (20.07.), vorher unverlinkt. Gibt 200.
       { name: "Magic Connection", url: "https://www.magic-connection.de/" },
+      // ShowdownTV (Wolfram 21.07.) — Streaming-Plattform von Banijay Media Germany.
+      { name: "ShowdownTV", url: "https://www.showdowntv.com/" },
     ],
   },
   {

@@ -145,7 +145,7 @@ const MAGENTA = "#ff4370";
 const PAGE_LABEL: Record<string, string> = {
   // „/" (Home) absichtlich NICHT gelistet — das eingerastete Label soll nur auf
   // Unterseiten als Orientierung erscheinen, nicht auf der Startseite.
-  "/about": "About",
+  // "/about": "About", // ARCHIVIERT (Wolfram 21.07.) — Route liegt als page.tsx.archived
   "/career": "Career",
   "/news": "News",
   "/contact": "Contact",

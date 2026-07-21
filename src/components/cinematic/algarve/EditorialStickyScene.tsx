@@ -77,7 +77,7 @@ const FACTS: Fact[] = [
   {
     value: 90,
     suffix: " %",
-    label: "Primetime-Hitrate",
+    label: "Primetime Hitrate",
     // Finaler Text (Wolfram 21.07.); Bold-Auszeichnungen der Vorlage in normalen Fließtext
     // überführt, zwei Deklinations-Tippfehler korrigiert („vergleichbaren", „unserer Shows").
     copy: "Unsere selbstauferlegte Währung bei Banijay: die Primetime Hitrate. Seit 2023 analysieren wir monatlich die On-Air-Performance aller Banijay-Formate – mit dem Ziel einer transparenten und vergleichbaren Erfolgsmessung. Unsere Währung: die Primetime Hitrate. Wie viele unserer Shows lagen über dem jeweiligen Senderschnitt und fanden damit ihr Publikum? Für uns in der Banijay-Gruppe bedeutet das: eine Hitrate von 90 Prozent! Das ist nicht nur eine starke Performance unserer Teams, sondern auch ein Signal für die Unterhaltung in Deutschland: Starke Entertainment-Marken mit klarer Haltung und Wiedererkennbarkeit liefern in einem umkämpften Markt ab.",
@@ -87,13 +87,13 @@ const FACTS: Fact[] = [
     // 1400 — die alte 1.300 hätte der eigenen Copy widersprochen. site.ts mitgezogen.
     value: 1400,
     suffix: "+",
-    label: "Mitarbeiterinnen und Mitarbeiter",
+    label: "Mitarbeiterinnen & Mitarbeiter",
     copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten deutschen Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Promi Big Brother“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
   },
   {
     value: 4,
     suffix: " Mrd.",
-    label: "Views & Zuschauer jährlich",
+    label: "Views & Zuschauer",
     copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
   },
   // ENTFERNT am 20.07. (Wolfram): die Kachel „4.500 hrs. · Stunden Entertainment".
@@ -103,16 +103,19 @@ const FACTS: Fact[] = [
   {
     value: 1500,
     suffix: "+",
-    label: "Live-Veranstaltungen jährlich",
+    label: "Live-Veranstaltungen",
     copy: "Text folgt.",
   },
   {
-    // 130+ → 170+ korrigiert (Wolfram 17.07.). Dieselbe Zahl steht in site.ts (STATS)
-    // für die About-Fakten — dort mitgezogen, sonst widersprächen sich die Seiten.
-    value: 170,
-    suffix: "+",
-    label: "Companies weltweit",
-    copy: "Text folgt.",
+    // ERSETZT am 21.07. (Wolfram): die Kachel „170+ Companies weltweit" ist raus — die
+    // „170+ Companies weltweit"-Aussage lebt jetzt in der Magenta-Leiste unter den Facts
+    // (Editorial.tsx). An ihrer Stelle steht wieder „4.500 hrs. Entertainment" (war bis
+    // 20.07. schon einmal da). Copy ist Wolframs 3000er-Vorlage, gemäß seiner Regel (Ziffer
+    // ist maßgeblich) auf 4.500 angeglichen: „rund 3000 Stunden" → „rund 4.500 Stunden".
+    value: 4500,
+    suffix: " hrs.",
+    label: "Entertainment",
+    copy: "Banijay Germany profitiert von der unternehmerischen Diversität und Qualität innerhalb des Verbundes und vereint eine große Breite von Entertainment-Expertise unter einem Dach. Künstler und Kreative entwickeln und produzieren jedes Jahr gemeinsam rund 4.500 Stunden Programm, darunter Bühnenshows, Live-Sendungen und Serien. Auch Online-Plattformen und Podcasts gehören zum Banijay-Kosmos.",
   },
 ];
 

@@ -9,8 +9,11 @@ export interface NavItem {
 /** Empfohlene Hauptnavigation (Konzept „Navigation"). Team gehört auf About. */
 export const NAV_ITEMS: NavItem[] = [
   // Companies-Seite entfernt (Wolfram 16.07.) — das Companies-Bento lebt auf der Home.
+  // About-Seite ARCHIVIERT (Wolfram 21.07.): vorerst komplett aus der Seite genommen.
+  // Die Route liegt als Speicher unter about/page.tsx.archived — durch Zurück-Benennen
+  // in page.tsx (+ diesen Nav-Eintrag reaktivieren) jederzeit wieder online.
   { label: "Banijay", href: "/" },
-  { label: "About", href: "/about" },
+  // { label: "About", href: "/about" },
   { label: "News", href: "/news" },
   { label: "Career", href: "/career" },
 ];

@@ -20,6 +20,23 @@ export interface Leader {
   img: string;
 }
 
+// ── SCHEITEL-ANGLEICHUNG JE REIHE (Wolfram 21.07., 4. Runde) ─────────────────
+// Neue Regel: nicht mehr Kinn-, sondern SCHEITELhöhe fluchtet je Reihe (frisch aus den
+// Originalen geschnitten, Größe wo genannt angepasst). Referenzen + neue extract()-Werte:
+//   LEADER-Reihe (Ref = Marcus, Scheitel on-screen ~12 %):
+//     • Michael Laegel: war zu tief + zu klein → extract(1378,1629,2005,2673) aus
+//       „Michael Laegel.jpg" (Scheitel 12 %, Kinn 48 %, mittig — wie Marcus).
+//     • Knut: Scheitel via object-position 8 %→5 % (Founders FOCUS) auf 12 % geholt.
+//       „ein bisschen kleiner" NICHT möglich — Original nur 1362×2048, bereits volle Breite.
+//   MITTLERE Reihe (Ref = Heike, Scheitel ~13 %):
+//     • Simone: extract(268,330,3328,4437) „Simone Lenzen.jpg" (höher + kleiner)
+//     • Natali:  extract(477,793,2588,3450) „Natali.jpg" (kleiner, links, höher)
+//     • Janine:  extract(978,479,2760,3680) „Janine.jpg" (mittig, höher)
+//     • Michael Gaul: extract(878,250,2669,3559) „Michael Gaul.jpg" (runter + kleiner)
+//   UNTERE Reihe (Ref = Matthäus, Scheitel ~12 %):
+//     • Elena:     extract(407,876,3313,4417) „Elena.jpg" (höher)
+//     • Sebastian: extract(864,526,2693,3590) „Sebastian lege.jpg" (runter)
+//     • Aylin:     extract(891,863,2917,3889) „Aylin.jpg" (höher + nach links, Gesicht ~55 %)
 export const LEADERSHIP: Leader[] = [
   // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab (den Janine
@@ -38,6 +55,9 @@ export const LEADERSHIP: Leader[] = [
   // Knut (~43 %). Nachskaliert (Wolfram 21.07., 2. Runde): Kopf −15 % + auf die Leader-
   // Kinnlinie (~49 % der Kachel) gehoben — frisch aus assets/People/Michael Laegel.jpg
   // (4912×7360) beschnitten: extract(839,1629,2283,3043).
+  // HORIZONTAL ZENTRIERT (Wolfram 21.07., 4. Runde): saß zu weit rechts (~68 %), links war
+  // zu viel weiße Wand zu sehen. Fenster nach rechts geschoben → Gesicht ~51 %, Wand nur
+  // noch schmaler Streifen. extract(1240,1320,2250,3000).
   { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.jpg" },
 
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
@@ -68,7 +88,9 @@ export const LEADERSHIP: Leader[] = [
   // Reihe (Grid jetzt 3 / 5 / 4). Name + Rolle nachgetragen (Wolfram 19.07.).
   // Kopf-Normalisierung 21.07. (s. o. bei Simone): elena-kats.jpg höher gerückt (~32 %,
   // Kinn auf der Linie). Basis war der Crop aus assets/People/Elena.jpg (4912×7360).
-  { name: "Elena Kats", role: "Director Finance Projects & Business Systems", img: "/people/elena-kats.jpg" },
+  // POSITION GETAUSCHT (Wolfram 21.07.): Michael Gaul steht jetzt hier (vormals Elena Kats),
+  // Elena rückt dafür in die untere Reihe an Gauls alte Stelle.
+  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.jpg" },
 
   // ── Untere Reihe (Index 9–11) ─────────────────────────────────────────────
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.
@@ -78,7 +100,8 @@ export const LEADERSHIP: Leader[] = [
   // Ausschnitt 2489×3319 ab 0,1072 (aus Kopf oben 1470, Kinn 2532, Gesichtsmitte x 1208).
   // left auf 0 geklemmt, weil der rechnerische Wert negativ war — das Gesicht sitzt
   // dadurch bei 48,5 % statt exakt mittig, was optisch nicht auffällt.
-  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.jpg" },
+  // POSITION GETAUSCHT (Wolfram 21.07.): Hier steht jetzt Elena Kats (vormals Michael Gaul).
+  { name: "Elena Kats", role: "Director Finance Projects & Business Systems", img: "/people/elena-kats.jpg" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-7.jpg ab.
   // Beschnitten nach derselben Regel wie Aylin/Michael Gaul: Kopf = 32 % der
   // Ausschnitthöhe. Ausschnitt 2759×3678 ab 1639,737 (Kopf oben 1178, Kinn 2355,
