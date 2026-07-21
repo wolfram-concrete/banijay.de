@@ -159,7 +159,14 @@ function withHeadlinePlus(text: string) {
   ));
 }
 
-export function AlgarveEcosystem() {
+/**
+ * showSwap (Wolfram 20.07.): Steuert die Swap-Phase am Ende der gepinnten
+ * Choreografie („40+ / Companies & Labels", die auf der Home in die Companies-Liste
+ * überleitet). Auf der HOME true (Standard). Auf ABOUT false — dort folgt hinter dem
+ * Ökosystem direkt das Kontaktformular, kein Überleitungs-Swap nötig; die Grafik bleibt
+ * stehen und der Pin löst früher.
+ */
+export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {}) {
   const root = useRef<HTMLElement>(null);
   // Keine geöffnete Card beim Eintritt (Wolfram 13.07.): Cards erst auf Klick.
   const [active, setActive] = useState<string | null>(null);
@@ -360,15 +367,19 @@ export function AlgarveEcosystem() {
       gsap.set("[data-eco-dot], [data-eco-anchor]", { autoAlpha: 0 });
       gsap.set("[data-eco-b]", { autoAlpha: 0 });
       gsap.set("[data-eco-card]", { autoAlpha: 0 });
-      gsap.set("[data-eco-swap-first]", { autoAlpha: 0, yPercent: -90 });
-      gsap.set("[data-eco-swap-last]", { autoAlpha: 0, yPercent: 90 });
-      gsap.set("[data-eco-swap-middle]", { autoAlpha: 0, scale: 1.18 });
+      if (showSwap) {
+        gsap.set("[data-eco-swap-first]", { autoAlpha: 0, yPercent: -90 });
+        gsap.set("[data-eco-swap-last]", { autoAlpha: 0, yPercent: 90 });
+        gsap.set("[data-eco-swap-middle]", { autoAlpha: 0, scale: 1.18 });
+      }
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: "+=260%",
+          // Ohne Swap-Phase (About) ist die Timeline nur ~halb so lang → Pin kürzer,
+          // damit nicht auf leerer, stehender Grafik weitergescrollt werden muss.
+          end: showSwap ? "+=260%" : "+=120%",
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
@@ -380,15 +391,18 @@ export function AlgarveEcosystem() {
         .to("[data-eco-b]", { autoAlpha: 1, duration: 0.2 }, 0.2)
         .to("[data-eco-dot], [data-eco-anchor]", { autoAlpha: 1, duration: 0.22, stagger: 0.02 }, 0.42)
         .to("[data-eco-card]", { autoAlpha: 1, duration: 0.14, stagger: 0.045, ease: "power2.out" }, 0.55)
-        // Phase 2 — Ruhe-Fenster
-        .to({}, { duration: 0.45 })
-        // Phase 3 — Swap: Ökosystem raus, Headline konvergiert herein
-        .to("[data-eco-reveal]", { autoAlpha: 0, duration: 0.3, ease: "power1.inOut" }, 1.35)
-        .to("[data-eco-swap-first]", { autoAlpha: 1, yPercent: 0, duration: 0.38, ease: "power2.out" }, 1.55)
-        .to("[data-eco-swap-last]", { autoAlpha: 1, yPercent: 0, duration: 0.38, ease: "power2.out" }, 1.55)
-        .to("[data-eco-swap-middle]", { autoAlpha: 1, scale: 1, duration: 0.34, ease: "power2.out" }, 1.62)
-        // Ruhe-Beat mit stehender Headline, bevor der Pin löst
-        .to({}, { duration: 0.3 });
+        // Phase 2 — Ruhe-Fenster (Lese-/Klick-Fenster)
+        .to({}, { duration: 0.45 });
+      // Phase 3 — Swap NUR mit showSwap (Home): Ökosystem raus, „40+"-Headline herein.
+      // Auf About (showSwap=false) bleibt die Grafik stehen und der Pin löst danach.
+      if (showSwap) {
+        tl.to("[data-eco-reveal]", { autoAlpha: 0, duration: 0.3, ease: "power1.inOut" }, 1.35)
+          .to("[data-eco-swap-first]", { autoAlpha: 1, yPercent: 0, duration: 0.38, ease: "power2.out" }, 1.55)
+          .to("[data-eco-swap-last]", { autoAlpha: 1, yPercent: 0, duration: 0.38, ease: "power2.out" }, 1.55)
+          .to("[data-eco-swap-middle]", { autoAlpha: 1, scale: 1, duration: 0.34, ease: "power2.out" }, 1.62)
+          // Ruhe-Beat mit stehender Headline, bevor der Pin löst
+          .to({}, { duration: 0.3 });
+      }
     },
     // Bei Breakpoint-Wechsel neu aufsetzen: Desktop- und Mobile-Zweig bauen völlig
     // andere Choreografien (Desktop pinnt+scrubbt, Mobile nicht). WICHTIG: revertOnUpdate
@@ -396,7 +410,7 @@ export function AlgarveEcosystem() {
     // (SSR-)Render als Desktop erzeugte PIN auf Mobile aktiv (Section fixed, Pin-Spacer),
     // was das Mobile-Layout zerstört. SSR startet immer isMobile=false → dieser Fall tritt
     // auch auf echten Handys auf. dependencies statt key-Remount, damit React-State bleibt.
-    { scope: root, dependencies: [isMobile], revertOnUpdate: true },
+    { scope: root, dependencies: [isMobile, showSwap], revertOnUpdate: true },
   );
 
   return (
@@ -430,20 +444,23 @@ export function AlgarveEcosystem() {
       />
 
       {/* SWAP-Headline (Phase 3): liegt unsichtbar über der ganzen Section und
-          konvergiert herein, sobald das Ökosystem ausgeblendet ist. */}
-      <div
-        data-eco-swap
-        aria-hidden
-        className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center max-[767px]:!px-[4vw]"
-        style={{ zIndex: 5 }}
-      >
-        <h2 data-eco-swap-first className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {withHeadlinePlus(SWAP_LINES[0])}
-        </h2>
-        <h2 data-eco-swap-last className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
-          {SWAP_LINES[1]}
-        </h2>
-      </div>
+          konvergiert herein, sobald das Ökosystem ausgeblendet ist. NUR mit showSwap
+          (Home) — auf About (showSwap=false) gar nicht gerendert. */}
+      {showSwap && (
+        <div
+          data-eco-swap
+          aria-hidden
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center max-[767px]:!px-[4vw]"
+          style={{ zIndex: 5 }}
+        >
+          <h2 data-eco-swap-first className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
+            {withHeadlinePlus(SWAP_LINES[0])}
+          </h2>
+          <h2 data-eco-swap-last className="max-[767px]:!text-[13vw] max-[767px]:!leading-[108%]" style={{ ...SWAP_LINE_STYLE, opacity: 0 }}>
+            {SWAP_LINES[1]}
+          </h2>
+        </div>
+      )}
 
       {/* Headline pur, mittelachsig — kein Eyebrow, keine Copy (Wording: Heike #58) */}
       <div data-eco-reveal className="relative mx-auto max-w-[900px] px-6 text-center">

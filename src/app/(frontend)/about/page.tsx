@@ -59,7 +59,7 @@ export default function AboutPage() {
           (AlgarveEcosystemDirectory) ist hier gegen die gepinnte Orbit-Choreografie
           getauscht. Die Section ist self-contained (eigener min-h-screen-Pin + Glow),
           braucht die Home-DustStage/-100vh-Überlagerung nicht. */}
-      <AlgarveEcosystem />
+      <AlgarveEcosystem showSwap={false} />
 
       {/* 10 Kontakt-Formular (Eingabetemplate) */}
       <AlgarveContactForm
