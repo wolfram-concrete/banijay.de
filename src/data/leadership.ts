@@ -24,8 +24,9 @@ export const LEADERSHIP: Leader[] = [
   // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab (den Janine
   // Berns weiter trägt). Quelle assets/People/Marcus.JPG (3804×5706, Ganzkörper), auf die
-  // LEADER-Kachel (1.207 Querformat) beschnitten wie Michael Laegel: extract(920,972,2261,3015)
-  // → Kopf + Kinn fluchten im Kachel-Band mit Laegel (~42 %). Fokuswert 14 % (s. Founders FOCUS).
+  // LEADER-Kachel (1.207 Querformat) beschnitten. Fokuswert 14 % (s. Founders FOCUS).
+  // Nachskaliert (Wolfram 21.07., 2. Runde): Kopf +15 % (aus dem vorigen 900×1200-Crop
+  // um den Kinnpunkt gezoomt) → näher an Knut.
   { name: "Marcus Wolter", role: "CEO", img: "/people/marcus-wolter.jpg" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.jpg" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-3.jpg ab.
@@ -34,8 +35,9 @@ export const LEADERSHIP: Leader[] = [
   // einem 0.75-Hochformat bleiben dort nur 55 % der Bildhöhe stehen (statt 73 %). Ein
   // 32 %-Kopf wie bei den anderen wäre hier auf 58 % der Kachelhöhe aufgeblasen worden.
   // Daher Kopf = 24 % der Ausschnitthöhe → 24/0.55 = 43,6 % der Kachel, das entspricht
-  // Knut (~43 %). Ausschnitt 4200×5600 ab 218,0 (Kopf oben 570, Kinn 1914,
-  // Gesichtsmitte x 2318). top auf 0 geklemmt, weil der Kopf nah am oberen Rand sitzt.
+  // Knut (~43 %). Nachskaliert (Wolfram 21.07., 2. Runde): Kopf −15 % + auf die Leader-
+  // Kinnlinie (~49 % der Kachel) gehoben — frisch aus assets/People/Michael Laegel.jpg
+  // (4912×7360) beschnitten: extract(839,1629,2283,3043).
   { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.jpg" },
 
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
@@ -51,7 +53,8 @@ export const LEADERSHIP: Leader[] = [
   // Kopf bleibt bei ~40 % (kleiner geht physikalisch nicht), sitzt jetzt aber höher.
   { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
   // POSITIONEN GETAUSCHT (Wolfram 21.07.): Heike vor Natali.
-  // heike-lutzer.jpg: aus dem vorigen Crop höher gerückt (~30 %, Kinn auf der Linie).
+  // heike-lutzer.jpg: höher gerückt, dann Kopf +20 % (Wolfram 21.07., 2. Runde — um den
+  // Kinnpunkt aus dem vorigen 900×1200-Crop gezoomt).
   { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },
   // natali-naso.jpg: aus dem vorigen Crop höher + größer nachgeschärft (~31 %, war ~28 %).
   { name: "Natali Naso", role: "Director Human Resources", img: "/people/natali-naso.jpg" },
@@ -87,9 +90,9 @@ export const LEADERSHIP: Leader[] = [
   {
     // Neues Portrait (Wolfram 21.07.) — löst die vorige Fassung ab. Quelle
     // assets/People/Matthaeus.jpg (4912×7360, Ganzkörper an Industrie-Wand). Beschnitten
-    // nach der Kopf-Normalisierung 21.07. (wie die mittlere Reihe): Kopf ~29 % der
-    // Ausschnitthöhe, Kinn auf Output-Zeile 559 → fluchtet mit Sebastian Menge in der
-    // unteren Reihe. Ausschnitt extract(557,1018,2257,3009), Gesichtsmitte x ~1685.
+    // nach der Kopf-Normalisierung 21.07. (wie die mittlere Reihe): Kinn auf der Linie,
+    // fluchtet mit Sebastian Menge. Nachskaliert (Wolfram 21.07., 2. Runde): Kopf +20 %
+    // (um den Kinnpunkt aus dem vorigen 900×1200-Crop gezoomt).
     name: "Matthaeus Jaworek",
     role: "Director Financial Planning, Reporting & Controlling",
     img: "/people/matthaeus-jaworek.jpg",
@@ -99,7 +102,8 @@ export const LEADERSHIP: Leader[] = [
   // Männer je einen Index nach vorn.
   // Quelle: assets/People/Aylin.jpg (4024×6048; vormals „2026_07 Banijay _ Nick Harwart-
   // 9572-2.jpg" — Nick Harwart ist der Fotograf, nicht die abgebildete Person).
-  // Kopf-Normalisierung 21.07. (2. Fassung): extract(208,519,3243,4324) → Kopf ~33 %
-  // (verkleinert), höher gerückt, Kinn auf der Reihen-Linie.
+  // Kopf-Normalisierung 21.07.: verkleinert, höher gerückt. Nachjustiert (Wolfram 21.07.,
+  // 2. Runde): Kopf +10 % UND nochmal höher gesetzt (um den Kinnpunkt gezoomt + Fenster
+  // nach unten verschoben, sodass mehr Körper unten steht).
   { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
 ];
