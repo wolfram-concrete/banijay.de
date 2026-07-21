@@ -36,7 +36,10 @@ export const LEADERSHIP: Leader[] = [
 
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
   { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
-  { name: "Natali Naso", role: "Director Human Resources", img: "/people/lead-6.jpg" },
+  // Echtes Portrait (Wolfram 20.07.) — löst den Platzhalter lead-6.jpg ab. Quelle
+  // assets/People/Natali.jpg (4912×7360), eng auf Kopf/Oberkörper beschnitten (Kopf
+  // ~32 % der Ausschnitthöhe, 12 % Luft oben) → 900×1200, wie die übrigen Standard-Reihen.
+  { name: "Natali Naso", role: "Director Human Resources", img: "/people/natali-naso.jpg" },
   // Echtes Portrait (Wolfram 20.07.) — löst den Platzhalter lead-8.jpg ab. Ganzkörper-
   // Quelle eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %, wie die übrigen Portraits).
   { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },

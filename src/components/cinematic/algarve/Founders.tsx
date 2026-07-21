@@ -53,14 +53,16 @@ const FOCUS: Record<string, string> = {
   // Bildhöhe, deshalb ein knapperer Top-Bias als bei den 32%-Portraits.
   "/people/michael-laegel.jpg": "50% 14%",
   "/people/knut-kremling.jpg": "50% 8%",
-  "/people/simone-lenzen.jpg": "50% 12%",
+  // Kopfgrößen-Normalisierung (Wolfram 20.07.): jetzt 900×1200 (3:4) mit Kopf ~38 % /
+  // Kopf-Oberkante 12 % wie die Standard-Reihe → gleicher Fokuswert 18 %.
+  "/people/simone-lenzen.jpg": "50% 18%",
   "/people/lead-3.jpg": "50% 12%",
   "/people/lead-4.jpg": "50% 22%",
   "/people/lead-5.jpg": "50% 20%",
-  // Natali Naso (Wolfram 19.07.): lead-6.jpg war 1200×1500 (exakt 4/5) → im 4/5-Container
-  // ungecroppt = ganze weite Sitz-Komposition mit viel Weißraum. Jetzt eng auf Kopf/
-  // Oberkörper beschnitten (3/4, Kopf ~29 %) wie die übrigen Portraits → gleicher Top-Bias.
-  "/people/lead-6.jpg": "50% 12%",
+  // Natali Naso (Wolfram 20.07.): echtes Portrait natali-naso.jpg, 900×1200 (3:4) wie die
+  // übrigen Standard-Reihen (Kopf ~32 %, 12 % Luft oben) → gleicher Fokuswert wie die
+  // Nachbarn (18 %). Löst den Platzhalter lead-6.jpg ab.
+  "/people/natali-naso.jpg": "50% 18%",
   "/people/lead-7.jpg": "50% 26%",
   // Heike Lutzer (Wolfram 20.07.) — echtes Portrait, löst lead-8.jpg ab. Ganzkörper-Quelle
   // eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %) → gleicher Top-Bias wie die anderen.
