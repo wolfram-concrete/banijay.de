@@ -232,6 +232,10 @@ REEL["potatohead-pictures"] = "/company-media/potatohead-pictures.mp4";
 // 69 s) — die meisten Shots sind Totalen; der Anfang (2–12 s) zeigt ihn nah. 16:9-Band
 // (crop 720×405 @ y219) → 960×540, ohne Ton.
 REEL["sr-management"] = "/company-media/sr-management.mp4";
+// MyShow (Wolfram 21.07.): Scroll-Screencast der myshow.de (1440×920, 45 s). Der Anfang
+// (~3–7 s) zeigt ein Cookie-Banner-Modal — deshalb erst AB 8 s geschnitten (der Banner ist
+// weg, sauberer Scroll durch Hero → Show-Kacheln). 10 s, 16:9-Crop → 960×540, ohne Ton.
+REEL["myshow"] = "/company-media/myshow.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
