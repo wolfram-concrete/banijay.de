@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveAboutIntro } from "@/components/cinematic/algarve/AboutIntro";
-import { AlgarveEcosystemDirectory } from "@/components/cinematic/algarve/EcosystemDirectory";
+import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSection";
 import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
 import { AlgarveProofVideo } from "@/components/cinematic/algarve/ProofVideo";
 import { AlgarveTestimonials } from "@/components/cinematic/algarve/Testimonials";
@@ -54,10 +54,12 @@ export default function AboutPage() {
           Auf der Home bleibt der Beat (dort zieht der LogoReveal darüber). */}
       <AlgarveFounders holdForOverlay={false} />
 
-      {/* 09 Ökosystem-Verzeichnis (Wolfram 14.07.: Ecosystem-Seite entfällt, ihre
-          Inhalte wandern ans Ende von About) — komplettes Companies-/Label-Verzeichnis
-          nach Kompetenzfeldern gruppiert. */}
-      <AlgarveEcosystemDirectory />
+      {/* 09 Das Banijay Ökosystem — dieselbe Orbit-Grafik-Section wie auf der Home
+          (Wolfram 20.07.): das frühere Companies-/Label-Verzeichnis
+          (AlgarveEcosystemDirectory) ist hier gegen die gepinnte Orbit-Choreografie
+          getauscht. Die Section ist self-contained (eigener min-h-screen-Pin + Glow),
+          braucht die Home-DustStage/-100vh-Überlagerung nicht. */}
+      <AlgarveEcosystem />
 
       {/* 10 Kontakt-Formular (Eingabetemplate) */}
       <AlgarveContactForm
