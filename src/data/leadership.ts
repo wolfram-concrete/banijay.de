@@ -20,23 +20,26 @@ export interface Leader {
   img: string;
 }
 
-// ── SCHEITEL-ANGLEICHUNG JE REIHE (Wolfram 21.07., 4. Runde) ─────────────────
-// Neue Regel: nicht mehr Kinn-, sondern SCHEITELhöhe fluchtet je Reihe (frisch aus den
-// Originalen geschnitten, Größe wo genannt angepasst). Referenzen + neue extract()-Werte:
+// ── SCHEITEL-ANGLEICHUNG + ZENTRIERUNG JE REIHE (Wolfram 21.07., 5. Runde) ────
+// Regel: SCHEITELhöhe fluchtet je Reihe, Gesicht horizontal MITTIG (frisch aus den
+// Originalen). Werte der 5. Runde (Feinschliff nach Wolframs Sicht: mehrere waren zu
+// groß / nicht mittig). Referenzen + aktuelle extract()-Werte:
 //   LEADER-Reihe (Ref = Marcus, Scheitel on-screen ~12 %):
-//     • Michael Laegel: war zu tief + zu klein → extract(1378,1629,2005,2673) aus
-//       „Michael Laegel.jpg" (Scheitel 12 %, Kinn 48 %, mittig — wie Marcus).
-//     • Knut: Scheitel via object-position 8 %→5 % (Founders FOCUS) auf 12 % geholt.
-//       „ein bisschen kleiner" NICHT möglich — Original nur 1362×2048, bereits volle Breite.
-//   MITTLERE Reihe (Ref = Heike, Scheitel ~13 %):
-//     • Simone: extract(268,330,3328,4437) „Simone Lenzen.jpg" (höher + kleiner)
-//     • Natali:  extract(477,793,2588,3450) „Natali.jpg" (kleiner, links, höher)
-//     • Janine:  extract(978,479,2760,3680) „Janine.jpg" (mittig, höher)
-//     • Michael Gaul: extract(878,250,2669,3559) „Michael Gaul.jpg" (runter + kleiner)
-//   UNTERE Reihe (Ref = Matthäus, Scheitel ~12 %):
-//     • Elena:     extract(407,876,3313,4417) „Elena.jpg" (höher)
-//     • Sebastian: extract(864,526,2693,3590) „Sebastian lege.jpg" (runter)
-//     • Aylin:     extract(891,863,2917,3889) „Aylin.jpg" (höher + nach links, Gesicht ~55 %)
+//     • Marcus: extract(1052,1000,2091,2788) „Marcus.JPG" — bewusst tiefer (~17 %) und
+//       weiter links (~37 %) gesetzt (Wolfram-Wunsch), nicht auf die 12 %-Linie.
+//     • Michael Laegel: extract(1378,1629,2005,2673) „Michael Laegel.jpg" (Scheitel 12 %,
+//       Kinn 48 %, mittig).
+//     • Knut: Scheitel via object-position 8 %→5 % (Founders FOCUS) auf 12 %. „kleiner"
+//       NICHT möglich — Original nur 1362×2048, bereits volle Breite.
+//   MITTLERE Reihe (Ref = Heike, Scheitel ~13 %, Gesicht mittig):
+//     • Simone: extract(127,213,3745,4994) „Simone Lenzen.jpg" (kleiner, mittig)
+//     • Natali:  extract(323,794,2586,3448) „Natali.jpg" (mittig)
+//     • Janine:  extract(597,331,3190,4253) „Janine.jpg" (kleiner, mittig)
+//     • Michael Gaul: extract(772,158,3202,4269) „Michael Gaul.jpg" (deutlich kleiner, mittig)
+//   UNTERE Reihe (Ref = Matthäus, Scheitel ~12 %, Gesicht mittig):
+//     • Elena:     extract(696,1070,2933,3911) „Elena.jpg" (größer, mittig)
+//     • Sebastian: extract(703,454,2692,3589) „Sebastian lege.jpg" (mittig)
+//     • Aylin:     extract(716,863,2917,3889) „Aylin.jpg" (Gesicht ~52 %, leicht nach rechts)
 export const LEADERSHIP: Leader[] = [
   // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab (den Janine

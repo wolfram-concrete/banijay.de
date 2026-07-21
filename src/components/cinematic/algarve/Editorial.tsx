@@ -246,11 +246,14 @@ export function AlgarveEditorial() {
         >
           <div
             data-ed-story
-            className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
-            style={{ background: MAGENTA, color: PAPER, padding: "clamp(2.2rem, 4vw, 4.2rem) clamp(1.8rem, 3vw, 3.4rem)" }}
+            className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
+            style={{ background: MAGENTA, color: PAPER, padding: "clamp(1.4rem, 2.6vw, 2.8rem) clamp(1.8rem, 3vw, 3.4rem)" }}
           >
-            {/* LINKS — 170+ Companies weltweit (aus der Coopetition-Grafik / alte Seite) */}
-            <div className="flex flex-col">
+            {/* LINKS — 170+ Companies weltweit (aus der Coopetition-Grafik / alte Seite).
+                „Companies weltweit" sitzt auf der GRUNDLINIE von „170+" (Wolfram 21.07.):
+                nebeneinander statt gestapelt, per items-baseline auf die Ziffern-Unterlänge.
+                Der Kasten ist zudem flacher (kleineres vertikales Padding). */}
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               {/* „+" als Einheitszeichen analog zu den Facts-Kacheln (Wolfram 21.07.):
                   kleiner (0.54em wie UNIT dort), eng an der Ziffer (marginLeft 0.04em) und
                   um den Sharp-Grotesk-Glyph-Offset abgesenkt (top 0.14em), damit es wie „+"
@@ -259,7 +262,7 @@ export function AlgarveEditorial() {
                 170
                 <span style={{ fontSize: "0.54em", marginLeft: "0.04em", position: "relative", top: "0.14em" }}>+</span>
               </span>
-              <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", marginTop: "0.5rem", letterSpacing: "0.01em" }}>
+              <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", letterSpacing: "0.01em" }}>
                 Companies weltweit
               </span>
             </div>

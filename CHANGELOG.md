@@ -5,6 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team-Feinschliff (Größe/Mitte), Marcus-Position & Magenta-Leiste-Baseline (21.07., 5. Runde)
+- **Team-Portraits nachjustiert** (mehrere waren zu groß bzw. nicht mittig): **Simone**,
+  **Janine** kleiner + mittig; **Michael Gaul** deutlich kleiner + mittig; **Natali**
+  mittig; **Elena** größer + mittig; **Sebastian** mittig; **Aylin** leicht nach rechts
+  (~52 %). Methode diesmal zuverlässiger: Quell-Landmarken aus den dokumentierten Crops +
+  gemessenen Ist-Positionen abgeleitet (statt neuer Original-Messungen).
+- **Marcus Wolter** bewusst etwas tiefer (~17 %) und weiter links (~37 %) in seiner
+  Leader-Kachel gesetzt (Wolfram-Wunsch) — nicht auf der 12 %-Scheitellinie der anderen.
+- **Editorial-Magenta-Leiste:** „Companies weltweit" sitzt jetzt auf der **Grundlinie von
+  „170+"** (nebeneinander, `items-baseline`) statt gestapelt; der Kasten ist **flacher**
+  (vertikales Padding reduziert, ~189 statt ~258 px).
+
 ### About-Archivierung, Editorial-Magenta-Leiste, Scheitel-Angleichung Team & Career-Full-Bleed (21.07., 4. Runde)
 - **About-Seite komplett archiviert.** Route `/about` liefert jetzt 404: `about/page.tsx`
   → `about/page.tsx.archived` umbenannt (Code bleibt als Speicher, per Zurückbenennen
