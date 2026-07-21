@@ -255,12 +255,25 @@ export function AlgarveEditorial() {
               Die Banijay Story
             </h3>
             <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)" }}>
-              {/* Platzhalter (Wolfram 15.07.: Story-Text auf Lorem ipsum, bis finales Wording). */}
+              {/* Finaler Story-Text (Wolfram 21.07., löst das Lorem-ipsum ab). */}
               <p className="m-0">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                Im Jahr 2018 von Marcus Wolter und der Banijay Group gegründet, ist die Banijay Germany das
+                führende Entertainment-Haus Deutschlands, deren Unterhaltungsprogramme im Fernsehen, im
+                Internet und auf der Bühne jedes Jahr fast vier Milliarden Zuschauerinnen und Zuschauer
+                erreichen.
               </p>
               <p className="m-0">
-                Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+                Zur Banijay Gruppe gehören unter anderem Banijay Productions Germany, Endemol Shine Germany,
+                Filmpool, MadeFor, SR Management, Only Good People, Banijay Media Germany, Good Humor, die
+                Influencer-Plattform influence.vision und Brainpool samt Tochterfirmen wie unter anderem MTS
+                und Cape Cross.
+              </p>
+              <p className="m-0">
+                Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay
+                Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch
+                Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten. Geprägt von
+                Unabhängigkeit, kreativer Freiheit und visionärem Unternehmergeist schloss sich Banijay
+                Germany im Juli 2026 im Rahmen einer strategischen Partnerschaft mit All3Media zusammen.
               </p>
             </div>
           </div>
