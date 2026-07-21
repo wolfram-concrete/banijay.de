@@ -200,6 +200,9 @@ REEL["lucky-pics"] = "/company-media/lucky-pics.mp4";
 // von 3840), wo Gesichter + Action sitzen; unten wären nur Einkaufswagen/Boden. Danach
 // auf 960×540. Ausschnitt 3–13s, keine Schwarzphasen.
 REEL["only-good-party-people"] = "/company-media/only-good-party-people.mp4";
+// Podcast Bande (Wolfram 20.07.) — Trailer „Tutto Bene" mit Giovanni & Stefano Zarrella.
+// Quelle 1280×720/16:9/30s, Ausschnitt 3–13s. Eingebrannte Untertitel (kein Ausschluss).
+REEL["podcast-bande"] = "/company-media/podcast-bande.mp4";
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
