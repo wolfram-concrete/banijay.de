@@ -32,14 +32,17 @@ export interface Leader {
 //     • Knut: Scheitel via object-position 8 %→5 % (Founders FOCUS) auf 12 %. „kleiner"
 //       NICHT möglich — Original nur 1362×2048, bereits volle Breite.
 //   MITTLERE Reihe (Ref = Heike, Scheitel ~13 %, Gesicht mittig):
+//   6. Runde (21.07.): Gesichtsmitte diesmal DIREKT an den deployten Dateien gemessen
+//   (volle Kachelbreite = On-Screen-X) statt am Original — mehrere saßen noch off-center.
 //     • Simone: extract(127,213,3745,4994) „Simone Lenzen.jpg" (kleiner, mittig)
-//     • Natali:  extract(323,794,2586,3448) „Natali.jpg" (mittig)
-//     • Janine:  extract(597,331,3190,4253) „Janine.jpg" (kleiner, mittig)
-//     • Michael Gaul: extract(772,158,3202,4269) „Michael Gaul.jpg" (deutlich kleiner, mittig)
+//     • Natali:  extract(504,794,2586,3448) „Natali.jpg" (war rechts → mittig)
+//     • Janine:  extract(693,331,3190,4253) „Janine.jpg" (war rechts → mittig)
+//     • Michael Gaul: extract(78,106,3502,4669) „Michael Gaul.jpg" (nochmals kleiner + aus
+//       der linken Ecke in die Mitte)
 //   UNTERE Reihe (Ref = Matthäus, Scheitel ~12 %, Gesicht mittig):
-//     • Elena:     extract(696,1070,2933,3911) „Elena.jpg" (größer, mittig)
-//     • Sebastian: extract(703,454,2692,3589) „Sebastian lege.jpg" (mittig)
-//     • Aylin:     extract(716,863,2917,3889) „Aylin.jpg" (Gesicht ~52 %, leicht nach rechts)
+//     • Elena:     extract(755,1070,2933,3911) „Elena.jpg" (größer, mittig)
+//     • Sebastian: extract(972,454,2692,3589) „Sebastian lege.jpg" (war weit rechts → mittig)
+//     • Aylin:     extract(748,903,2687,3582) „Aylin.jpg" (größer, Gesicht ~52 %)
 export const LEADERSHIP: Leader[] = [
   // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab (den Janine
