@@ -66,7 +66,9 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   fromCard("brainpool", ["entertainment", "live"], L("brainpool.png")),
   fromCard("bb-endemol-shine", ["entertainment"], L("bb-endemol-shine.png")),
   fromCard("endemol-shine-polska", ["entertainment"], L("endemol-shine-polska.png")),
-  fromCard("potatohead-pictures", ["entertainment"], L("potatohead-pictures.png")),
+  // Potatohead → EndemolShine (Wolfram 20.07.): jetzt doch auf die Mutter verlinkt (der
+  // Card-externalUrl ist undefined, siehe companyCards.ts) — daher hier per Objekt.
+  { ...fromCard("potatohead-pictures", ["entertainment"], L("potatohead-pictures.png")), url: "https://endemolshine.de/" },
   fromCard("banijay-germany-live", ["entertainment", "live"], L("banijay-germany-live.svg")),
   fromCard("madefor", ["fiction"], L("madefor.png")),
   fromCard("good-humor", ["fiction"], L("good-humor.png")),
@@ -108,9 +110,11 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
 
   // ── mit Logo, Content folgt (Namen aus Grafik/Logo-Ordner) ─────────────
   { id: "cape-cross-postproduction", name: "Cape Cross Postproduction", ecoKeys: ["tech"], logo: L("cape-cross-postproduction.png"), url: "http://www.capecross.de/", tags: ["Tech"] },
-  { id: "doc-banijay", name: "Doc.Banijay", ecoKeys: ["entertainment"], logo: L("doc-banijay.png"), tags: ["Entertainment"] },
-  { id: "ladykracher", name: "Ladykracher", ecoKeys: ["entertainment"], logo: L("ladykracher.png"), tags: ["Entertainment"] },
-  { id: "minestrone-tv", name: "Minestrone TV", ecoKeys: ["entertainment"], logo: L("minestrone-tv.png"), tags: ["Entertainment"] },
+  // Verweise auf die jeweilige Mutter-Company (Wolfram 20.07.), bis eigener Auftritt:
+  // Doc.Banijay → Banijay Productions Germany, Ladykracher + Minestrone → Brainpool.
+  { id: "doc-banijay", name: "Doc.Banijay", ecoKeys: ["entertainment"], logo: L("doc-banijay.png"), url: "https://www.banijayproductions.de/", tags: ["Entertainment"] },
+  { id: "ladykracher", name: "Ladykracher", ecoKeys: ["entertainment"], logo: L("ladykracher.png"), url: "https://brainpool.de/", tags: ["Entertainment"] },
+  { id: "minestrone-tv", name: "Minestrone TV", ecoKeys: ["entertainment"], logo: L("minestrone-tv.png"), url: "https://brainpool.de/", tags: ["Entertainment"] },
   // Kein eigener Web-Auftritt → Link auf die Mutter EndemolShine (Wolfram 20.07.).
   // Das ist bewusst ein Verweis auf die Dachgesellschaft, kein Eigen-Auftritt.
   { id: "rainer-laux-productions", name: "Rainer Laux Productions", ecoKeys: ["entertainment"], logo: L("rainer-laux-productions.png"), url: "https://endemolshine.de/", tags: ["Entertainment"] },
