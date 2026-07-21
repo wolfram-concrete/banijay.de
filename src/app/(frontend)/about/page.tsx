@@ -52,7 +52,7 @@ export default function AboutPage() {
           Ihr -100vh-Overlap hatte den Halte-Beat am Ende des Team-Pins gedeckt — ohne
           Nachfolger wäre daraus ~1 Screen Leerlauf geworden, in dem das Team nur steht.
           Auf der Home bleibt der Beat (dort zieht der LogoReveal darüber). */}
-      <AlgarveFounders holdForOverlay={false} />
+      <AlgarveFounders holdForOverlay={false} staticHead />
 
       {/* 09 Das Banijay Ökosystem — dieselbe Orbit-Grafik-Section wie auf der Home
           (Wolfram 20.07.): das frühere Companies-/Label-Verzeichnis

@@ -34,6 +34,9 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 // Top-Bias. Default: leicht nach oben versetzt.
 const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
+  // Marcus Wolter (Wolfram 21.07.) — echtes Portrait in der LEADER-Reihe, wie Michael
+  // Laegel beschnitten (Kopf sitzt oben im 900×1200-Ausschnitt) → derselbe Fokuswert 14 %.
+  "/people/marcus-wolter.jpg": "50% 14%",
   "/people/lead-2.jpg": "50% 14%",
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
@@ -94,6 +97,7 @@ function TeamHeadWords({ text }: { text: string }) {
 
 export function AlgarveFounders({
   holdForOverlay = true,
+  staticHead = false,
 }: {
   /** Halte-Beat am Ende des Team-Pins: das komplette Team steht still, damit die
    *  FOLGE-Section mit ihrem -100vh-Overlap darüberziehen kann (Home: LogoReveal).
@@ -101,6 +105,14 @@ export function AlgarveFounders({
    *  mehr (Wolfram 16.07.) — dort false, sonst stünde das Team ~1 Screen lang
    *  unbedeckt still und es läse sich als Hänger. */
   holdForOverlay?: boolean;
+  /** Desktop-Headline STATISCH sichtbar statt per Wort-Reveal (Wolfram 21.07.).
+   *  Das Reveal triggert auf die gepinnte Bühne; auf der About-Seite verschieben die
+   *  MEHREREN gepinnten Sektionen davor (ProofVideo, AboutIntro-tall, WorldNetwork)
+   *  die gemessene Trigger-Position, sodass „top 82%" dort nicht verlässlich feuert →
+   *  die „Unser Team"-Headline blieb bei yPercent 118 versteckt. Auf About darum
+   *  static: Wörter sofort bei yPercent 0, kein fragiler Scroll-Trigger. Home behält
+   *  die Animation (ein einzelner Pin davor, Trigger feuert dort zuverlässig). */
+  staticHead?: boolean;
 } = {}) {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
@@ -230,6 +242,11 @@ export function AlgarveFounders({
         // - Mobile (Wolfram 19.07.): triggert auf SICH SELBST (kein Pin), feuert verlässlich.
         const isMobileHead = !!mTeam.current?.contains(head);
         const stage = head.closest<HTMLElement>("[data-team-stage]");
+        // Desktop-Headline auf About: statisch sichtbar (kein Scroll-Reveal, s. o.).
+        if (staticHead && !isMobileHead) {
+          gsap.set(words, { yPercent: 0 });
+          return;
+        }
         gsap.set(words, { yPercent: 118 });
         gsap.to(words, {
           yPercent: 0,

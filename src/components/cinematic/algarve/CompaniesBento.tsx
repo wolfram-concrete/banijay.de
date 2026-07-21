@@ -219,6 +219,14 @@ REEL["nightwash-club"] = "/company-media/nightwash-club.mp4";
 // 142 s, 139 MB) ein 10-s-Ausschnitt (5–15 s) auf das Format der übrigen Clips gebracht —
 // 960×540, ohne Ton, 2,1 MB. Der Hochkant-`CCF2025Final.mov` schied aus: die Kacheln sind quer.
 REEL["cologne-comedy-festival"] = "/company-media/cologne-comedy-festival.mp4";
+// Potato Head Pictures (Wolfram 21.07.): aus „KI10_S84_Maelzer_Oliver_CO.mp4" (Kitchen
+// Impossible, 1080×1920 hochkant, 68 s) ein 10-s-Ausschnitt (40–50 s, Koch spricht →
+// Küchen-Action). 16:9-Band aus dem oberen Bereich (crop 1080×608 @ y328) → 960×540, ohne Ton.
+REEL["potatohead-pictures"] = "/company-media/potatohead-pictures.mp4";
+// SR Management (Wolfram 21.07.): aus „GiovanniZ2.mp4" (Giovanni Zarrella, 720×1280 hochkant,
+// 69 s) — die meisten Shots sind Totalen; der Anfang (2–12 s) zeigt ihn nah. 16:9-Band
+// (crop 720×405 @ y219) → 960×540, ohne Ton.
+REEL["sr-management"] = "/company-media/sr-management.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
