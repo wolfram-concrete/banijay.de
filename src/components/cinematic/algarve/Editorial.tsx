@@ -254,26 +254,78 @@ export function AlgarveEditorial() {
             <h3 className="m-0" style={{ fontFamily: SHARP, fontSize: "clamp(1.3rem, 2.2vw, 2.2rem)", fontWeight: 500, color: INK }}>
               Die Banijay Story
             </h3>
-            <div className="flex flex-col gap-4" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)" }}>
-              {/* Finaler Story-Text (Wolfram 21.07., löst das Lorem-ipsum ab). */}
-              <p className="m-0">
-                Im Jahr 2018 von Marcus Wolter und der Banijay Group gegründet, ist die Banijay Germany das
+            {/* ZWEISPALTIG (Wolfram 21.07.): der lange Story-Text fließt auf Desktop in
+                zwei Spalten (magazinartig); die Headline oben spannt über beide. Mobil
+                einspaltig. Zwischenüberschriften mit break-*-avoid, damit sie nicht am
+                Spaltenende von ihrem Absatz getrennt werden. */}
+            <div className="columns-1 md:columns-2" style={{ fontSize: "clamp(1rem, 1.25vw, 1.35rem)", lineHeight: "145%", color: "rgba(14,13,11,0.78)", columnGap: "2.5rem" }}>
+              {/* Finaler Story-Text (Wolfram 21.07., lange Fassung mit Zwischenüberschriften).
+                  Korrigiert ggü. Vorlage: „Wir bauen wir auf" → „Wir bauen auf",
+                  „Luminiscence" → „Luminescence". */}
+              <p className="mb-4">
+Im Jahr 2018 von Marcus Wolter und der Banijay Group gegründet, ist die Banijay Germany das
                 führende Entertainment-Haus Deutschlands, deren Unterhaltungsprogramme im Fernsehen, im
                 Internet und auf der Bühne jedes Jahr fast vier Milliarden Zuschauerinnen und Zuschauer
                 erreichen.
               </p>
-              <p className="m-0">
-                Zur Banijay Gruppe gehören unter anderem Banijay Productions Germany, Endemol Shine Germany,
+              <p className="mb-4">
+Zur Banijay Gruppe gehören unter anderem Banijay Productions Germany, Endemol Shine Germany,
                 Filmpool, MadeFor, SR Management, Only Good People, Banijay Media Germany, Good Humor, die
                 Influencer-Plattform influence.vision und Brainpool samt Tochterfirmen wie unter anderem MTS
                 und Cape Cross.
               </p>
-              <p className="m-0">
-                Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay
+              <p className="mb-4">
+Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay
                 Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch
                 Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten. Geprägt von
                 Unabhängigkeit, kreativer Freiheit und visionärem Unternehmergeist schloss sich Banijay
                 Germany im Juli 2026 im Rahmen einer strategischen Partnerschaft mit All3Media zusammen.
+              </p>
+
+              <p className="mb-2 mt-2 break-inside-avoid break-after-avoid" style={{ fontWeight: 600, color: INK }}>
+                Unsere Marken und IPs sind das Fundament
+              </p>
+              <p className="mb-4">
+Wir halten schon heute den größten Schatz an IP über alle Plattformen. Im Jahr produzieren
+                wir zusammen rund 4.500 Stunden Entertainment – das sind im Schnitt jeden Tag über 12
+                Stunden. Dazu gehören aktuell in Deutschland starke Reality-Brands wie Die Verräter, Villa
+                der Versuchung, Kampf der Realitystars oder The 50, Entertainment-Marken wie Schlag den Star,
+                Die Höhle der Löwen, The Masked Singer oder Kitchen Impossible, Fiction-Formate wie Tatort,
+                Stromberg, Der Lehrer, Kommissar Dupin, Dünentod oder Die Landarztpraxis, sowie Live-Events
+                wie NightWash, Die besten Comedians Deutschlands oder Luminescence. Zu unserem Portfolio
+                gehören zudem Dokumentationen, Factual Entertainment wie Bitte melde dich, Scripted Reality
+                wie Barbara Salesch oder Richter Alexander Hold, Branded Entertainment wie die McDonalds
+                Stromberg Mockumentary sowie Vertical Drama und Social Media Content.
+              </p>
+              <p className="mb-4">
+Wir bauen auf die eigene Reichweite unserer Marken: Im gesamten Banijay-Netzwerk erreichen
+                wir mit unserem Content jeden Monat mehr als 160 Mio. Video Views, die digitale
+                Bruttoreichweite beträgt insgesamt rund 4 Milliarden Kontakte im Jahr. Mit unseren über 1.500
+                Live-Veranstaltungen im Jahr berühren wir mehr als 1 Million Menschen live.
+              </p>
+
+              <p className="mb-2 mt-2 break-inside-avoid break-after-avoid" style={{ fontWeight: 600, color: INK }}>
+                Vielfalt und unternehmerische Freiheit machen uns stark und unabhängig.
+              </p>
+              <p className="mb-4">
+Die Grundlage der Banijay Germany sind zwei Grundpfeiler: Starke Marken, die zu Love Brands
+                unserer Zuschauerinnen und Zuschauer geworden sind, sowie die Exzellenz unserer Teams, die
+                Brands der Zukunft und die kommenden großen Marken aufzubauen und zu produzieren.
+              </p>
+              <p className="mb-4">
+Stärker zusammen innerhalb des Banijay Ökosystems. Unser Ökosystem verbindet Entertainment,
+                Vermarktung, Künstler, Live und Technologie zu einem starken Netzwerk.
+              </p>
+              <p className="mb-4">
+Unser Antrieb ist Entertainment, das jeden Tag Millionen Menschen erreicht, begeistert und
+                den Zeitgeist prägt. Vielfalt und unternehmerische Freiheit machen uns stark und unabhängig.
+                Unser Ökosystem verbindet Entertainment, Vermarktung, Künstler, Live und Technologie zu einem
+                starken Netzwerk.
+              </p>
+              <p className="mb-4">
+Wir verstehen uns als Entertainment-Gruppe, die die gesamte Wertschöpfungskette bedient. Mit
+                TV-Shows, Serien, Streaming-Formaten, Kinofilmen, Live-Events, Podcasts oder Social Media
+                Content sind wir jeden Tag für unser Publikum da.
               </p>
             </div>
           </div>

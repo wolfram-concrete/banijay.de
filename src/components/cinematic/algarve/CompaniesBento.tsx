@@ -192,6 +192,9 @@ REEL["myspass"] = "/company-media/myspass.mp4";
 // erste Versuch (5–15s) hatte die 13,36er drin. 3–13 endet 0,36s davor.
 REEL["banijay-productions-germany"] = "/company-media/banijay-productions-germany.mp4";
 // Doc.Banijay → FC-Köln-Trailer. Quelle ist ProRes 4K (1,44 GB, 17s), Ausschnitt 3–13s.
+// Doc.Banijay (Wolfram 21.07.): „Bad Banker.mp4" (4K, Cinemascope MIT Letterbox). Die
+// schwarzen Balken (282 px oben/unten, Inhalt 3840×1596) sind weggeschnitten und mittig
+// auf 16:9 zugeschnitten (crop 2837×1596 @ 501,282) → 960×540, ohne Ton. Segment 14–24 s.
 REEL["doc-banijay"] = "/company-media/doc-banijay.mp4";
 // EndemolShine Germany → „ESG - Trailer 2023" (Quelle 187s). Ausschnitt 1–11s, endet
 // vor der Schwarzblende bei 11,52s.

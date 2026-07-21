@@ -78,7 +78,9 @@ const FACTS: Fact[] = [
     value: 90,
     suffix: " %",
     label: "Primetime-Hitrate",
-    copy: "Text folgt.",
+    // Finaler Text (Wolfram 21.07.); Bold-Auszeichnungen der Vorlage in normalen Fließtext
+    // überführt, zwei Deklinations-Tippfehler korrigiert („vergleichbaren", „unserer Shows").
+    copy: "Unsere selbstauferlegte Währung bei Banijay: die Primetime Hitrate. Seit 2023 analysieren wir monatlich die On-Air-Performance aller Banijay-Formate – mit dem Ziel einer transparenten und vergleichbaren Erfolgsmessung. Unsere Währung: die Primetime Hitrate. Wie viele unserer Shows lagen über dem jeweiligen Senderschnitt und fanden damit ihr Publikum? Für uns in der Banijay-Gruppe bedeutet das: eine Hitrate von 90 Prozent! Das ist nicht nur eine starke Performance unserer Teams, sondern auch ein Signal für die Unterhaltung in Deutschland: Starke Entertainment-Marken mit klarer Haltung und Wiedererkennbarkeit liefern in einem umkämpften Markt ab.",
   },
   {
     // 1.300+ → 1.400+ (Heike 17.07.): Ihre Überschrift UND ihr Fließtext nennen beide
