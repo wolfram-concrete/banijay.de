@@ -421,14 +421,14 @@ export function AlgarveCareerRoleScroller() {
                 className="m-0 uppercase"
                 style={{ fontFamily: SHARP, fontSize: "5vw", lineHeight: "110%", fontWeight: 500, letterSpacing: "-0.1vw", color: PAPER, transformOrigin: "100%" }}
               >
-                Deine
+                Unser
               </h2>
               <h2
                 ref={wordR}
                 className="m-0 uppercase"
                 style={{ fontFamily: SHARP, fontSize: "5vw", lineHeight: "110%", fontWeight: 500, letterSpacing: "-0.1vw", color: PAPER, transformOrigin: "0%" }}
               >
-                Rollen
+                Angebot
               </h2>
             </div>
           </div>
@@ -485,7 +485,7 @@ export function AlgarveCareerRoleScroller() {
           className="relative m-0 w-full text-center uppercase"
           style={{ fontFamily: SHARP, fontSize: "13vw", fontWeight: 500, letterSpacing: "-0.5vw", lineHeight: 0.95, color: PAPER, zIndex: 30 }}
         >
-          Deine
+          Unser
         </h2>
         <div
           ref={mTrack}
@@ -526,7 +526,7 @@ export function AlgarveCareerRoleScroller() {
           className="relative m-0 w-full text-center uppercase"
           style={{ fontFamily: SHARP, fontSize: "13vw", fontWeight: 500, letterSpacing: "-0.5vw", lineHeight: 0.95, color: PAPER, zIndex: 30 }}
         >
-          Rollen
+          Angebot
         </h2>
       </section>
     </>

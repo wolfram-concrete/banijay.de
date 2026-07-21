@@ -45,7 +45,7 @@ export default function HomePage() {
             // „einige der bekanntesten" → „die bekanntesten", „Live-Erlebnisse" →
             // „außergewöhnlichsten Live-Erlebnisse". Davor stand „Unser Antrieb ist
             // Entertainment …", das wiederum den Lorem-ipsum-Platzhalter abgelöst hatte.
-            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment-Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu schaffen."
+            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment-Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu erschaffen."
           />
         </div>
 

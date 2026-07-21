@@ -82,10 +82,11 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     key: "live",
     label: "Live",
     companies: [
+      // Banijay Germany Live an die erste Stelle (Wolfram 20.07.).
+      { name: "Banijay Germany Live", url: "https://www.banijaygermanylive.de/" },
       { name: "Cologne Comedy Festival", url: "https://www.comedy.cologne/" },
       { name: "MyShow", url: "https://myshow.de/" },
       { name: "Brainpool", url: "https://brainpool.de/" },
-      { name: "Banijay Germany Live", url: "https://www.banijaygermanylive.de/" },
       { name: "NightWash Club", url: "https://nightwash-club.de/" },
       // war „OGPP" (Abkürzung, ohne Link) → richtiger Company-Name + Website (Wolfram 16.07.)
       { name: "Only Good People", url: "https://ogp.rocks/" },
