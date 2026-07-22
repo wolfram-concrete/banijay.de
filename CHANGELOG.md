@@ -5,6 +5,30 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile-QA-Runde: Headlines, Video-Karten, Slider, Footer (22.07., Nacht)
+- **Zwischenüberschriften (mobil) vereinheitlicht:** ABOUT BANIJAY, ICONIC IP, UNSER TEAM und
+  „40+ COMPANIES & LABELS" jetzt alle 13vw (Referenzgröße ICONIC IP), Abstände an der
+  ABOUT-BANIJAY-Benchmark `min(46vh, 440px)`.
+- **Company-Video-Karten:** Blitzer-Kanten weg (Scrim + Medium je 1px überscannt, vom
+  overflow-hidden geclippt); **Elevate** bekommt einen echten Video-Frame als Poster statt des
+  formatfüllend gestreckten Logos.
+- **ICONIC-IP-Marquee (mobil):** vierte Reihe (rechts→links) ergänzt, alle Reihen 25 % größer
+  (108→135px). Desktop unverändert (3 Reihen).
+- **Marcus-Quote (mobil):** Bildcontainer 30 % höher, Quote von 4vw auf 3.1vw verkleinert
+  (lange Quote war nicht lesbar).
+- **Facts-Akkordeon:** Titelfarbe = Ziffernfarbe (`tone.fg` statt gedämpftem `tone.label`);
+  Ziffern-/Titelgrößen bleiben wie zuvor (die „170+"-Angleichung wurde zurückgenommen).
+- **#BanijayGermany-Slider (mobil):** kein Pin mehr → nativer horizontaler Swipe
+  (overflow-x-auto + scroll-snap); behebt Ruck beim Einrasten, Swipe-Timing und den zu früh
+  hochlaufenden Footer. Mehr Abstand zur Magenta-Section darüber (Top-Padding 5.56→18vw).
+- **News-Hero (mobil):** harter Umbruch „Immer auf dem / neuesten Stand:".
+- **Footer:** „Pressekontakt:" wie Mail/Tel formatiert (gedämpftes Label + Doppelpunkt).
+- **Impressum/Datenschutz:** kein eingerastetes Seitenlabel mehr unter dem B-Logo (die langen
+  Wörter ragten mobil aus dem Screen).
+- **Lucky Pics:** weißes Schriftlogo oben rechts auf der Company-Karte.
+- **Offen (braucht Live-Tuning):** die Team→Video-Blende (LogoReveal, gepinnte `-100vh`-
+  Overlap-Choreografie) — im automatisierten Preview nicht zuverlässig reproduzierbar.
+
 ### Social-Feed gemischt, Team-Feinschliff, Brainpool-Video (22.07., spätabends)
 - **Social-Feed – neue Datenlogik:**
   - **Home:** Instagram-Feed `@banijaygermany` läuft jetzt über **Elfsight** (von Banijay
