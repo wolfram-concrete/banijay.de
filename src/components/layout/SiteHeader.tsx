@@ -153,8 +153,9 @@ const PAGE_LABEL: Record<string, string> = {
   "/career": "Career",
   "/news": "News",
   "/contact": "Contact",
-  "/impressum": "Impressum",
-  "/datenschutz": "Datenschutz",
+  // Impressum/Datenschutz bewusst OHNE eingerastetes Seitenlabel (Wolfram 22.07.): die
+  // langen Wörter ragten mobil unter dem B-Logo aus dem Screen. Auf diesen Rechtsseiten
+  // zeigen wir nur das B — welche Seite es ist, ist ohnehin klar.
 };
 const labelForPath = (path: string): string | undefined =>
   PAGE_LABEL[path] ?? (path.startsWith("/news/") ? "News" : undefined);

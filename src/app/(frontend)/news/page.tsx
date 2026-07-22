@@ -22,7 +22,7 @@ export default async function NewsPage() {
       <AlgarveHome
         variant="companies"
         frame3="/hero-v2/frame-3-news.jpg"
-        statement={"Immer auf dem neuesten Stand:\nEntdecke aktuelle Meldungen, Projekte und Erfolgsgeschichten aus dem Banijay-Netzwerk."}
+        statement={"Immer auf dem\nneuesten Stand:\nEntdecke aktuelle Meldungen, Projekte und Erfolgsgeschichten aus dem Banijay-Netzwerk."}
         parallaxExit
       />
 

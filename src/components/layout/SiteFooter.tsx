@@ -139,8 +139,11 @@ export function SiteFooter() {
                       Überschrift → Name → Adresse untereinander. Die Person trägt den
                       Kontakt, nicht eine Sammeladresse. */}
                   <div style={{ fontSize: "1.05rem", lineHeight: "1.6", marginTop: "0.9rem" }}>
-                    <div>Pressekontakt</div>
-                    <div>{CONTACT.pressContact}</div>
+                    {/* „Pressekontakt:" wie Mail/Tel formatiert (Wolfram 22.07.): gedämpfte
+                        Label-Farbe (opacity 0.5) + Doppelpunkt, Name in Normalfarbe daneben. */}
+                    <div>
+                      <span style={{ opacity: 0.5 }}>Pressekontakt:</span> {CONTACT.pressContact}
+                    </div>
                     <a href={`mailto:${CONTACT.pressEmail}`} className="underline underline-offset-2 hover:opacity-70">
                       {CONTACT.pressEmail}
                     </a>
