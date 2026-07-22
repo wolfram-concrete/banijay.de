@@ -219,8 +219,9 @@ export function AlgarveFounders({
       // LogoReveal-Videos legten das Video über die untersten Reihen (Sebastian/Matthäus/
       // Aylin) — es wurde „zu früh hochgezogen", ruckelte und schnitt Teammitglieder ab.
       // Auf Mobile scrollt das Team jetzt vollständig durch; das LogoReveal-Video folgt
-      // OHNE Overlap (dort marginTop mobil = 0), sodass alle Personen sichtbar bleiben
-      // und der Übergang sauber läuft. (Desktop behält Pin + Overlap unverändert.)
+      // OHNE Overlap, mit etwas Abstand danach (dort marginTop mobil = +32vh, Wolfram
+      // 22.07.: „ein bisschen mehr Pause", bevor sich das Video über Aylins letzte Kachel
+      // legt), sodass alle Personen sichtbar bleiben. (Desktop behält Pin + Overlap.)
     },
     { scope: root },
   );
