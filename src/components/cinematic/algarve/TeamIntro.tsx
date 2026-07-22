@@ -45,7 +45,7 @@ export function TeamIntro() {
   );
 
   return (
-    <div ref={root} data-mo-intro className="relative flex w-full items-center justify-center overflow-clip" style={{ height: "78vh", minHeight: "520px" }}>
+    <div ref={root} data-mo-intro className="relative flex w-full items-center justify-center overflow-clip max-[767px]:!h-[min(46vh,440px)] max-[767px]:!min-h-0" style={{ height: "78vh", minHeight: "520px" }}>
       {/* zentraler Sternenstaub hinter der Headline (wächst mit dem Scrub) — wie About */}
       <div
         data-ti-dust
@@ -59,7 +59,7 @@ export function TeamIntro() {
         <DustLayer boost={0.85} center={{ x: 0.5, y: 0.5 }} radius={0.6} />
       </div>
       <h2
-        className="relative z-[1] m-0 text-center text-[#f8f7f3]"
+        className="relative z-[1] m-0 text-center text-[#f8f7f3] max-[767px]:!text-[13vw]"
         style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "112%", fontWeight: 500, textTransform: "uppercase", letterSpacing: "-0.02em" }}
       >
         {/* kein per-Zeilen-overflow-hidden — der Translate wird vom overflow-clip gefasst (wie About) */}

@@ -427,7 +427,8 @@ export function AlgarveCompaniesBento() {
         <div
           data-bento-40-head
           className="relative mb-4 mt-10 flex flex-col items-center justify-center overflow-clip text-center md:hidden"
-          style={{ minHeight: "min(34vh, 320px)" }}
+          // Abstand an die „About Banijay"-Benchmark angeglichen (Wolfram 22.07.): min(46vh,440px).
+          style={{ minHeight: "min(46vh, 440px)" }}
         >
           {/* Staub-Ebene wie hinter „About Banijay" (data-ed-head-dust) — blendet
               gescrubbt ein, maskiert an den Kanten. */}
@@ -457,7 +458,7 @@ export function AlgarveCompaniesBento() {
                 Zeilen umbrechen → 40+ / COMPANIES & / LABELS.
                 Label auf ~40+-Größe hochgezogen (Wolfram 21.07.): 7vw → 14vw, damit die
                 Zwischenheadline mobil so prominent wirkt wie die Ziffer darüber. */}
-            <span data-bento-40-last className="block" style={{ fontSize: "14vw", marginTop: "0.1em" }}>
+            <span data-bento-40-last className="block" style={{ fontSize: "13vw", marginTop: "0.1em" }}>
               Companies &amp;<br />Labels
             </span>
           </h2>
