@@ -434,7 +434,11 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
         className="pointer-events-none absolute"
         style={{
           left: "50%",
-          top: "58%",
+          // Desktop: 58 % der (gepinnten, festen) Section-Höhe. Mobile (Wolfram 22.07.):
+          // FESTE Höhe hinter der Grafik statt Prozent — sonst wandert der Glow beim
+          // Aufklappen der Akkordeon-Karten mit nach unten (die Section wächst, 58 % rutscht
+          // mit). 30vh hält ihn neutral hinter dem Ökosystem-Atom, unabhängig vom Akkordeon.
+          top: isMobile ? "30vh" : "58%",
           width: "110vmin",
           height: "110vmin",
           transform: "translate(-50%, -50%)",
