@@ -93,7 +93,7 @@ const FACTS: Fact[] = [
   {
     value: 4,
     suffix: " Mrd.",
-    label: "Views & Zuschauer",
+    label: "Views",
     copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
   },
   // ENTFERNT am 20.07. (Wolfram): die Kachel „4.500 hrs. · Stunden Entertainment".

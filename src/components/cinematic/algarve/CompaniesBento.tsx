@@ -257,6 +257,11 @@ REEL["only-good-people"] = "/company-media/only-good-people.mp4";
 // 1920×1080 echtes 16:9 / SAR 1:1 — kein Entzerren nötig, mpeg2video, 25 fps). 10-s-
 // Ausschnitt (16–26 s: Fahrer + nächtlicher Auto-Parcours) → 960×540, ohne Ton.
 REEL["brainpool"] = "/company-media/brainpool.mp4";
+// Elevate Talent Management (Wolfram 22.07.): „Sandra Hesch - Hey Hübscher.mp4" (Talent
+// Sandra Hesch, Football-Content im Trikot auf dem Platz, 1280×720 echtes 16:9, 25 fps,
+// 148 s). 10-s-Ausschnitt (24–34 s: Ballkontrolle nah, Gesicht sichtbar) → 960×540, ohne
+// Ton. Textfrei.
+REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4";
 
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom

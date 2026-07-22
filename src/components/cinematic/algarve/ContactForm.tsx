@@ -55,14 +55,24 @@ function SubmitButton() {
   );
 }
 
+// Default-Anliegen (Companies/Kontakt). Career übergibt eigene Optionen (Wolfram 22.07.).
+const DEFAULT_TOPICS: { value: string; label: string }[] = [
+  { value: "format", label: "Formatidee / Produktion" },
+  { value: "partner", label: "Partnerschaft" },
+  { value: "other", label: "Sonstiges" },
+];
+
 export function AlgarveContactForm({
   headline,
   copy,
+  topics = DEFAULT_TOPICS,
 }: {
   /** Seitenkontextbezogene Überschrift. */
   headline: string;
   /** Kurze begleitende Copy. */
   copy?: string;
+  /** „Worum geht’s?"-Auswahl je Seitenkontext (Career weicht ab). */
+  topics?: { value: string; label: string }[];
 }) {
   const root = useRef<HTMLElement>(null);
   const [sent, setSent] = useState(false);
@@ -171,9 +181,11 @@ export function AlgarveContactForm({
                     defaultValue=""
                   >
                     <option value="" style={{ background: "#1a0612", color: "#f8f7f3" }}>Bitte wählen …</option>
-                    <option value="format" style={{ background: "#1a0612", color: "#f8f7f3" }}>Formatidee / Produktion</option>
-                    <option value="partner" style={{ background: "#1a0612", color: "#f8f7f3" }}>Partnerschaft</option>
-                    <option value="other" style={{ background: "#1a0612", color: "#f8f7f3" }}>Sonstiges</option>
+                    {topics.map((t) => (
+                      <option key={t.value} value={t.value} style={{ background: "#1a0612", color: "#f8f7f3" }}>
+                        {t.label}
+                      </option>
+                    ))}
                   </select>
                 </Field>
 

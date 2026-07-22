@@ -104,13 +104,14 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // URL nachgetragen (Wolfram 17.07.): war unverlinkt, obwohl in companyCards.ts belegt
       // (externalUrl). banijaymedia.de gibt 200. Steht auch unter „Distribution & Brand".
       { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
-      { name: "MySpass Audio" },
+      // MySpass-Einheiten auf die MySpass-Plattform verlinkt (Wolfram 22.07.).
+      { name: "MySpass Audio", url: "https://www.myspass.de/" },
       { name: "SRM Music" },
       { name: "MadeFor Music", url: "https://madefor.film/" },
       { name: "Major Minor" },
       { name: "BP Music Publishing" },
       { name: "Podcast Bande" },
-      { name: "MySpass" },
+      { name: "MySpass", url: "https://www.myspass.de/" },
     ],
   },
   {
@@ -131,7 +132,7 @@ export const ECO_CATEGORIES: EcoCategory[] = [
     label: "Distribution & Brand",
     companies: [
       { name: "Influence Vision", url: "http://www.influencevision.com" },
-      { name: "MySpass" },
+      { name: "MySpass", url: "https://www.myspass.de/" },
       // URL nachgetragen (Wolfram 17.07.) — zweites Vorkommen, siehe „Audio".
       { name: "Banijay Media Germany", url: "https://www.banijaymedia.de/" },
       // URL nachgeliefert von Wolfram (20.07.), vorher unverlinkt. Gibt 200.

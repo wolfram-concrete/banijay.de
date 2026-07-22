@@ -118,7 +118,7 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // Kein eigener Web-Auftritt → Link auf die Mutter EndemolShine (Wolfram 20.07.).
   // Das ist bewusst ein Verweis auf die Dachgesellschaft, kein Eigen-Auftritt.
   { id: "rainer-laux-productions", name: "Rainer Laux Productions", ecoKeys: ["entertainment"], logo: L("rainer-laux-productions.png"), url: "https://endemolshine.de/", tags: ["Entertainment"] },
-  { id: "myspass", name: "MySpass", ecoKeys: ["audio", "distribution"], logo: L("myspass.png"), tags: ["Audio", "Distribution & Brand"] },
+  { id: "myspass", name: "MySpass", ecoKeys: ["audio", "distribution"], logo: L("myspass.png"), url: "https://www.myspass.de/", tags: ["Audio", "Distribution & Brand"] },
   { id: "podcast-bande", name: "Podcast Bande", ecoKeys: ["audio"], logo: L("podcast-bande.png"), tags: ["Audio"] },
   // All3Media-Companies (Übernahme; nicht in der Coopetition-Grafik) stehen jetzt alle
   // weiter oben (Wolfram 16.07.) — filmpool ×2, Magic Connection, South & Browse.

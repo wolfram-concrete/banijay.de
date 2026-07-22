@@ -33,13 +33,16 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 // abgeschnitten werden — Portraits mit Kopf weit oben brauchen einen stärkeren
 // Top-Bias. Default: leicht nach oben versetzt.
 //
-// PORTRAIT-MASTER-TAUSCH (Wolfram 22.07.): Alle 9 Team-Portraits AUSSER Marcus, Knut,
-// Michael Laegel sind gegen Wolframs vor-normalisierte „Portrait-master"-Bilder getauscht
-// (assets/People/Portrait-master-*.jpg, alle 2682×4032, identische Rahmung → in public
-// nur proportional auf 900×1353 web-optimiert, KEIN Neu-Zuschnitt). Sie sitzen daher jetzt
-// alle auf object-position „50% 0%" (oben + seitlich bündig, object-cover füllt die Breite)
-// und sind bereits in der Datei gleich groß. Die veralteten Einzelkommentare unten (900×1200,
-// „Kopf 32 %", Top-Bias 18 %) beziehen sich auf die VORIGEN Crops und sind damit hinfällig.
+// TEAM-FOTO-TAUSCH gegen Editorial-Porträts (Wolfram 22.07., finale Runde): Alle Portraits
+// AUSSER Marcus + Michael Laegel (die bleiben) sind gegen Wolframs neue Einzelaufnahmen aus
+// assets/People/ getauscht (Simone.jpg, Heike Lutzer.JPG, Janine.jpg, Michael Gaul.jpg,
+// Elena.jpg, Sebastian lege.jpg, Matthaeus.jpg, Aylin.jpg, Natali.jpeg, Knut.JPG). Das sind
+// KEINE vor-normierten Master (die liegen im Backup-Ordner assets/People/vereinheitlicht/),
+// sondern Editorial-Shots mit unterschiedlicher Rahmung — jeder EINZELN auf die Reihen-Norm
+// beschnitten: Kopf ~27 %, Scheitel ~8 %, Gesicht mittig → 900×1353. Dadurch sitzen sie auf
+// object-position „50% 0%" (oben + seitlich bündig) alle gleich groß/hoch. Knut ist Leader-
+// Reihe (900×1200 @ 14 %, s. u.). Die veralteten Einzelkommentare unten (900×1200, „Kopf
+// 32 %", Top-Bias 18 %) beziehen sich auf VORIGE Crops und sind hinfällig.
 const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
   // Marcus Wolter (Wolfram 21.07.) — echtes Portrait in der LEADER-Reihe, wie Michael
@@ -63,11 +66,11 @@ const FOCUS: Record<string, string> = {
   // anders beschnitten — siehe leadership.ts. Dort zeigt die Kachel nur 55 % der
   // Bildhöhe, deshalb ein knapperer Top-Bias als bei den 32%-Portraits.
   "/people/michael-laegel.jpg": "50% 14%",
-  // Scheitel-Angleichung Leader-Reihe (Wolfram 21.07.): 8 % → 5 %, damit Knuts Scheitel
-  // on-screen auf ~12 % rutscht und mit Marcus/Michael Laegel fluchtet (sein Bild ist
-  // 900×1353 mit anderem Fokus-Bias als die 900×1200-Portraits). Größe unverändert — sein
-  // Original (nur 1362×2048, enge Rahmung) lässt kein weiteres Herauszoomen zu.
-  "/people/knut-kremling.jpg": "50% 5%",
+  // Knut Kremling — NEUES hochauflösendes Portrait (Wolfram 22.07., Knut.JPG 3800×5712).
+  // Jetzt wie Marcus/Michael Laegel auf 900×1200 beschnitten (Scheitel ~12 %, Kinn ~48 %,
+  // mittig, gleiche Kopfgröße) → derselbe Leader-Fokuswert 14 %. Löst die alte niedrig
+  // aufgelöste Quelle (1362×2048) ab, die kein Herauszoomen zuließ. extract(673,1220,1922,2563).
+  "/people/knut-kremling.jpg": "50% 14%",
   // Kopfgrößen-Normalisierung (Wolfram 20.07.): jetzt 900×1200 (3:4) mit Kopf ~38 % /
   // Kopf-Oberkante 12 % wie die Standard-Reihe → gleicher Fokuswert 18 %.
   "/people/simone-lenzen.jpg": "50% 0%",

@@ -64,6 +64,12 @@ export default function CareerPage() {
       <AlgarveContactForm
         headline={"Kein passender Job\ndabei?"}
         copy="Erzähl uns, was du mitbringst — wir freuen uns über deine Initiativbewerbung und melden uns bei dir."
+        // Career-spezifische Anliegen (Wolfram 22.07.).
+        topics={[
+          { value: "initiativbewerbung", label: "Initiativbewerbung" },
+          { value: "format-idee", label: "Format-Idee" },
+          { value: "sonstiges", label: "Sonstiges" },
+        ]}
       />
     </>
   );
