@@ -120,7 +120,9 @@ src/
                          mit), CareerJobsPreview, CareerLocations,
                          CareerTomorrowStack, CodeOfConductBand („WE ARE BANIJAY"
                          → Statement), CareerSocialFeed/-Slider (Caption via
-                         showText: Career an, Home aus)
+                         showText: Career an, Home aus). Datenquelle: Home =
+                         Instagram (Elfsight), Career/News = LinkedIn (Juicer) +
+                         Instagram (Elfsight) gemischt, dublettenbereinigt
                          News:   NewsSections (Rubrik-Blöcke Presse · Podcast ·
                          Primetime-Hitrate · Marcus Wolter · Social; je Block
                          Headline + Linie + nativer Slider, rechts im Anschnitt)
@@ -168,7 +170,7 @@ Vor dem Livegang abzuarbeiten:
 | **Company-Videos neu enkodieren** | 22 Altclips aus der VLC-Ära, 67 MB, SSIM ~0,73 | Mit ffmpeg neu rechnen (CRF 28/30) — siehe „Video-Toolchain" |
 | **Company-Material vollständig** | 23 von 35 Kacheln haben eigenes Video/Foto | Restliche 12 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
 | **Video-Ladeverhalten** | 11,86 MB Video beim ersten Seitenaufruf, 35 Requests, 14 Kacheln ohne Poster | `preload="none"`, `src` erst nahe Viewport setzen, Poster ergänzen; große Hero-Files (28,5 MB) ggf. auf Video-CDN |
-| **Social-Feed-Zugänge** | Juicer-JSON, öffentlich | Meta-/Instagram-Tokens + offizielle LinkedIn-API klären |
+| **Social-Feed-Zugänge** | LinkedIn via Juicer-JSON + Instagram via Elfsight-Data-Service (beide undokumentiert/inoffiziell) | Vor Livegang gegen offizielle **Meta-/Instagram-Graph-API** + LinkedIn-API absichern; Elfsight-Endpoints können sich ändern |
 | **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |

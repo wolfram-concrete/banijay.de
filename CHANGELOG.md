@@ -5,6 +5,31 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Social-Feed gemischt, Team-Feinschliff, Brainpool-Video (22.07., spätabends)
+- **Social-Feed – neue Datenlogik:**
+  - **Home:** Instagram-Feed `@banijaygermany` läuft jetzt über **Elfsight** (von Banijay
+    eingerichtet), aber im **eigenen Banijay-Slider** (kein Fremd-iframe). Die Posts kommen
+    server-seitig aus Elfsights Data-Service; die Instagram-Cover laufen über den
+    `phosphor`-Bildproxy (Instagram blockt direktes Hotlinking). Reine Reels ohne Cover werden
+    übersprungen, Slider-Bilder `loading="eager"`.
+  - **Career + News:** LinkedIn (Juicer) **und** Instagram (Elfsight) in **einer** datums-
+    sortierten Liste, **kanalübergreifend dublettenbereinigt** (gleicher Aufhänger / Text-
+    Jaccard ≥ 0,5 / gleiches Motiv + ähnlicher Text — Bild-Hash allein untauglich, da IG/LI
+    unterschiedlich croppen). Bei Doppelpostings bleibt **Instagram** stehen (`PREFER`).
+  - ⚠️ Elfsight-Endpoints sind undokumentiert → vor Livegang gegen die offizielle
+    Meta-/Instagram-Graph-API absichern; Fetch fällt weich aus (Section blendet sich aus).
+- **Editorial-Quote-Section:** farbiges Marcus-Bild (`macus zitat.JPG`) enger gecroppt
+  (größer, links-of-center); Textcontainer auf `min(62rem, 86%)`; Zitat auf **einen Absatz**
+  gekürzt (erster Absatz raus, verbleibender öffnet mit Anführungszeichen).
+- **Team-Grid 3 / 5 / 4:** mittlere Reihe fünf inkl. **Michael Gaul**, untere Reihe vier
+  (Elena, Sebastian, Matthaeus, Aylin); untere Reihe **gleich hoch** wie die mittlere (48vh),
+  damit unten nichts angeschnitten wirkt.
+- **Team-Fotos angeglichen:** Michael Laegel kleiner/tiefer, Scheitel bündig mit Marcus/Knut;
+  Simone/Natali/Janine feinplatziert; **Natali** Scheitel auf Heike-Höhe; **untere Reihe je
+  ~8 % kleiner** im Container (Person im 900×1353-Rahmen verkleinert, weicher Selbst-Blur-Rand).
+- **Company-Video:** **Brainpool** zeigt jetzt den Roland-Kaiser-Clip (5-Segment-Montage,
+  960×540, libx264 CRF 28, ohne Ton, +faststart).
+
 ### Team-Section final: nur noch „Snap" (Widget + andere Varianten entfernt) (22.07., Abend)
 - **Entscheidung:** Team-Section läuft final als **Snap** — Umschalt-Widget und die übrigen
   Varianten (Raster/Editorial/Clean/Masonry) entfernt (`TeamSwitcher`, `Founders`,
