@@ -5,6 +5,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team-Section final: nur noch „Snap" (Widget + andere Varianten entfernt) (22.07., Abend)
+- **Entscheidung:** Team-Section läuft final als **Snap** — Umschalt-Widget und die übrigen
+  Varianten (Raster/Editorial/Clean/Masonry) entfernt (`TeamSwitcher`, `Founders`,
+  `FoundersEditorial`, `FoundersClean`, `FoundersMosaik` gelöscht). Fokuspunkte in
+  `teamFocus.ts` ausgelagert.
+- **Snap-Layout 3 / 4 / 5:** oben Marcus · Knut · Michael Laegel (größer), darunter 4, dann 5;
+  **kein Ein-Viewport-Snap** mehr — man scrollt durch die drei Reihen, der Pin/Halt kommt erst
+  **unterhalb der dritten Reihe** (`bottom bottom`), dann steigt die LogoReveal-Blende auf.
+- **„UNSER TEAM"-Intro** ist jetzt **exakt wie „ABOUT BANIJAY"** formatiert (7vw, 112 %,
+  −0.02em) und animiert (zwei Zeilen konvergieren gescrubbt, Staub blendet gescrubbt auf) —
+  gemeinsame `TeamIntro`-Komponente.
+- **Team-Fotos:** Marcus (`Marcus-edit.jpg`, Leader-Crop) ins Team, das bisherige S/W-Foto in
+  die Quote-Section; Janine (`Janine-neu.jpg`) neu. **Live-Veranstaltungen**-Text mit Umbruch
+  nach dem ersten Satz.
+
 ### Team-Section: fünf umschaltbare Layout-Varianten + „UNSER TEAM"-Intro (22.07.)
 - **Umschalt-Widget** (`TeamSwitcher`) mit fünf Team-Layouts: **Raster** (gepinntes
   Spiral-Grid), **Snap** (alle 12 in EINEM Viewport, gleich große Kacheln), **Editorial**

@@ -6,21 +6,21 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { LEADERSHIP } from "@/data/leadership";
-import { focus } from "./Founders";
-import { DustLayer } from "./DustLayer";
+import { focus } from "./teamFocus";
+import { TeamIntro } from "./TeamIntro";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SHARP = "var(--font-sharp), sans-serif";
 
-// TEAM-VARIANTE „SNAP" (Wolfram 22.07., 4. Runde) — ECHTES Snap-Fenster mit Einrasten:
-// alle 12 in EINER Bildschirmhöhe (6×2, gleich große Kacheln), und die Section wird beim
-// Erreichen GEPINNT (rastet ein, steht still), während sie sich final aufbaut. Danach
-// steigt die LogoReveal-Videofläche (marginTop -100vh) über das stehende Team auf — dieselbe
-// Choreografie wie bei „Raster". Marcus steht vorne (oben-links). Karten ohne weiße Kontur,
-// wachsen mit mehrzeiligen Titeln mit.
+// TEAM-VARIANTE „SNAP" (Wolfram 22.07., finale Fassung) — kein Ein-Viewport-Snap mehr:
+// Reihen 3 / 4 / 5 (oben Marcus, Knut, Michael Laegel), man scrollt durch die drei Reihen,
+// und ERST UNTERHALB der dritten Reihe rastet die Section ein (Pin „bottom bottom") und gibt
+// dann die LogoReveal-Videoblende frei. Karten kantig, ohne Kontur, wachsen mit.
 
-const PEOPLE = LEADERSHIP;
+const ROW1 = LEADERSHIP.slice(0, 3); // Marcus, Knut, Michael Laegel
+const ROW2 = LEADERSHIP.slice(3, 7); // vier
+const ROW3 = LEADERSHIP.slice(7, 12); // fünf
 
 // Milchglas-Namenskarte — OHNE weiße Kontur, wächst mit (kein whitespace-nowrap auf Rolle).
 export function GlassCard({ name, role }: { name: string; role: string }) {
@@ -67,13 +67,6 @@ export function AlgarveFoundersSnap() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // INTRO „UNSER TEAM" — Word-Reveal aus der Maske (wie die übrigen Headlines).
-      const words = gsap.utils.toArray<HTMLElement>("[data-mo-word]");
-      if (words.length) {
-        gsap.from(words, { yPercent: 120, duration: 1.1, ease: "power4.out", stagger: 0.12, scrollTrigger: { trigger: "[data-mo-intro]", start: "top 70%", once: true } });
-      }
-
-      // Kacheln staffeln beim Eintritt herein.
       const tiles = gsap.utils.toArray<HTMLElement>("[data-mo-tile]");
       gsap.set(tiles, { autoAlpha: 0, scale: 1.03 });
       ScrollTrigger.batch(tiles, {
@@ -82,16 +75,12 @@ export function AlgarveFoundersSnap() {
         onEnter: (b) => gsap.to(b, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out", stagger: 0.04 }),
       });
 
-      // EINRASTEN nur Desktop: das 100vh-Snap-Fenster wird gepinnt (steht 100vh lang still),
-      // während es fertig aufbaut. Über diese gepinnte Fläche steigt danach die LogoReveal-
-      // Videoblende (marginTop -100vh) auf — genau wie beim gepinnten Raster. Der Pin liefert
-      // zugleich die 100vh Overlap-Distanz, die die Blende erwartet (deshalb KEIN Auslauf-
-      // Spacer mehr). Mobile: kein Pin (LogoReveal-marginTop +32vh, kein Overlap).
-      // Pin-Strecke 190% (Wolfram 22.07.): die ersten ~90vh sind REINER Halt (Team steht
-      // still, KEIN Video), erst die letzten 100vh überlagert die LogoReveal-Blende. So
-      // bekommt das Team spürbar Raum, bevor sich das Video darüberschiebt.
+      // EINRASTEN ERST UNTERHALB DER 3. REIHE (Wolfram 22.07.): Das Raster ist höher als ein
+      // Viewport — man scrollt durch die drei Reihen, und sobald die Unterkante den Viewport-
+      // Boden erreicht, wird gepinnt (start „bottom bottom"). ~90vh reiner Halt, dann steigt
+      // die LogoReveal-Blende auf. Kein direktes Snapping der ganzen Fläche mehr.
       if (grid.current && window.matchMedia("(min-width: 768px)").matches) {
-        ScrollTrigger.create({ trigger: grid.current, start: "top top", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
+        ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
       }
     },
     { scope: root },
@@ -99,46 +88,40 @@ export function AlgarveFoundersSnap() {
 
   return (
     <section ref={root} className="relative w-full overflow-clip" style={{ background: "transparent" }}>
-      {/* ── INTRO-Sequenz „UNSER TEAM" auf dem Sternenstaub. ───────────────────────────── */}
-      <div data-mo-intro className="relative flex w-full items-center justify-center overflow-clip" style={{ height: "78vh", minHeight: "520px" }}>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            maskImage: "linear-gradient(180deg, transparent 0%, black 16%, black 84%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 16%, black 84%, transparent 100%)",
-          }}
-        >
-          <DustLayer boost={0.85} center={{ x: 0.5, y: 0.5 }} radius={0.62} />
+      {/* ── INTRO „UNSER TEAM" — exakt wie „ABOUT BANIJAY" formatiert/animiert. ─────────── */}
+      <TeamIntro />
+
+      {/* ── Desktop: Reihen 3 / 4 / 5, keine Stege. Oben die Leader (höher/größer). ─────── */}
+      <div ref={grid} className="flex w-full flex-col max-[767px]:hidden" style={{ gap: 0 }}>
+        <div className="flex w-full" style={{ gap: 0, height: "64vh" }}>
+          {ROW1.map((p) => (
+            <div key={p.img} style={{ flex: "1 1 0", minWidth: 0 }}>
+              <TeamTile img={p.img} name={p.name} role={p.role} />
+            </div>
+          ))}
         </div>
-        <h2 className="relative z-[1] m-0 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: SHARP, fontWeight: 500, letterSpacing: "-0.03em", lineHeight: 0.92 }}>
-          <span className="block overflow-hidden">
-            <span data-mo-word className="block text-[9vw] max-[767px]:!text-[15vw]">Unser</span>
-          </span>
-          <span className="block overflow-hidden">
-            <span data-mo-word className="block text-[9vw] max-[767px]:!text-[15vw]">Team</span>
-          </span>
-        </h2>
+        <div className="flex w-full" style={{ gap: 0, height: "48vh" }}>
+          {ROW2.map((p) => (
+            <div key={p.img} style={{ flex: "1 1 0", minWidth: 0 }}>
+              <TeamTile img={p.img} name={p.name} role={p.role} />
+            </div>
+          ))}
+        </div>
+        <div className="flex w-full" style={{ gap: 0, height: "40vh" }}>
+          {ROW3.map((p) => (
+            <div key={p.img} style={{ flex: "1 1 0", minWidth: 0 }}>
+              <TeamTile img={p.img} name={p.name} role={p.role} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* ── SNAP-FENSTER: alle 12 in EINER Bildschirmhöhe, gleich große Kacheln (6×2). ──── */}
-      <div
-        ref={grid}
-        className="grid w-full max-[767px]:hidden"
-        style={{ gridTemplateColumns: "repeat(6, 1fr)", gridTemplateRows: "repeat(2, 1fr)", gap: 0, height: "100vh" }}
-      >
-        {PEOPLE.map((p) => (
-          <TeamTile key={p.img} img={p.img} name={p.name} role={p.role} />
-        ))}
-      </div>
-
-      {/* ── Mobile: 3 Spalten × 4 Reihen — ebenfalls ein Screen (100dvh), gleich groß. ──── */}
-      <div
-        className="hidden w-full max-[767px]:grid"
-        style={{ gridTemplateColumns: "repeat(3, 1fr)", gridTemplateRows: "repeat(4, 1fr)", gap: 0, height: "100dvh" }}
-      >
-        {PEOPLE.map((p) => (
-          <TeamTile key={p.img} img={p.img} name={p.name} role={p.role} />
+      {/* ── Mobile: 2 Spalten, Leader zuerst; durchgängig hochformatig. ─────────────────── */}
+      <div className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
+        {LEADERSHIP.map((p) => (
+          <div key={p.img} style={{ aspectRatio: "4 / 5" }}>
+            <TeamTile img={p.img} name={p.name} role={p.role} />
+          </div>
         ))}
       </div>
     </section>

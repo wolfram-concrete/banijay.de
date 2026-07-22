@@ -5,7 +5,7 @@ import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSectio
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
-import { AlgarveTeamSwitcher } from "@/components/cinematic/algarve/TeamSwitcher";
+import { AlgarveFoundersSnap } from "@/components/cinematic/algarve/FoundersSnap";
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
@@ -71,12 +71,10 @@ export default function HomePage() {
           bis Heike #58 liefert). */}
       <AlgarveEditorial />
 
-      {/* „Ein Dach. Viele Handschriften." → Warp-Blende → Team liegt jetzt als
-          EINE gepinnte Bühne IN <AlgarveFounders /> (Wolfram 14.07.): die Headline
-          baut sich auf subtilem Staub auf, der Warp blendet über und gibt das Team
-          AN GLEICHER STELLE frei — kein Scroll-Übergang, keine Zwischen-Section. */}
-      {/* Team-Section mit Umschalt-Widget: „Raster" (bisher) ↔ „Mosaik" (Wolfram 22.07.). */}
-      <AlgarveTeamSwitcher />
+      {/* Team-Section (Wolfram 22.07., final): „UNSER TEAM"-Intro (wie „About Banijay"
+          animiert) → Snap-Raster 3/4/5, das erst unterhalb der dritten Reihe einrastet und
+          dann die LogoReveal-Videoblende freigibt. Varianten-Widget entfernt. */}
+      <AlgarveFoundersSnap />
 
       {/* Bild-zu-Logo-Masken-Reveal → Magenta-Fläche leitet in die News über */}
       <AlgarveLogoReveal />
