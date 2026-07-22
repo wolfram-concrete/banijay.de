@@ -91,7 +91,9 @@ export function AlgarveFoundersSnap() {
       {/* ── INTRO „UNSER TEAM" — exakt wie „ABOUT BANIJAY" formatiert/animiert. ─────────── */}
       <TeamIntro />
 
-      {/* ── Desktop: Reihen 3 / 4 / 5, keine Stege. Oben die Leader (höher/größer). ─────── */}
+      {/* ── Desktop: Reihen 3 / 5 / 4, keine Stege. Oben die Leader (höher/größer). Untere
+             Reihe gleich hoch wie die mittlere (48vh, Wolfram 22.07.), damit unten nichts
+             angeschnitten wirkt. ──────────────────────────────────────────────────────── */}
       <div ref={grid} className="flex w-full flex-col max-[767px]:hidden" style={{ gap: 0 }}>
         <div className="flex w-full" style={{ gap: 0, height: "64vh" }}>
           {ROW1.map((p) => (
@@ -107,7 +109,7 @@ export function AlgarveFoundersSnap() {
             </div>
           ))}
         </div>
-        <div className="flex w-full" style={{ gap: 0, height: "40vh" }}>
+        <div className="flex w-full" style={{ gap: 0, height: "48vh" }}>
           {ROW3.map((p) => (
             <div key={p.img} style={{ flex: "1 1 0", minWidth: 0 }}>
               <TeamTile img={p.img} name={p.name} role={p.role} />
