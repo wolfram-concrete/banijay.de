@@ -72,7 +72,7 @@ const FACTS: Fact[] = [
     // „und" → „&" (Wolfram 20.07.). Gilt NUR hier; „Mitarbeiterinnen und Mitarbeiter"
     // bleibt ausgeschrieben, das ist eine Paarformel und kein Aufzählungs-und.
     label: "Companies & Labels",
-    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor und Brainpool samt Tochterfirmen wie Cape Cross und Brainpool Live. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
+    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
   },
   {
     value: 90,
@@ -88,13 +88,13 @@ const FACTS: Fact[] = [
     value: 1400,
     suffix: "+",
     label: "Mitarbeiterinnen & Mitarbeiter",
-    copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten deutschen Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Promi Big Brother“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
+    copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Wer wird Millionär?“, „Promi Big Brother“, „Berlin – Tag & Nacht“, „Temptation Island“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
   },
   {
     value: 4,
     suffix: " Mrd.",
     label: "Views",
-    copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Group, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
+    copy: "Banijay Germany ist die größte, unabhängige deutsche Produktionsfirma, deren Unterhaltungsprogramme im Fernsehen, im Internet und auf der Bühne jedes Jahr vier Milliarden Zuschauerinnen und Zuschauer erreichen. Als Teil der internationalen Banijay Entertainment, dem weltweit führenden Content-Haus, ist Banijay Germany hervorragend aufgestellt, um den Wandel der Unterhaltungsindustrie durch Digitalisierung und neue Streaming-Anbieter erfolgreich zu gestalten.",
   },
   // ENTFERNT am 20.07. (Wolfram): die Kachel „4.500 hrs. · Stunden Entertainment".
   // Damit sind es 6 statt 7 Kacheln — die Ziffernformel oben (DIGIT) teilt die
@@ -104,7 +104,7 @@ const FACTS: Fact[] = [
     value: 1500,
     suffix: "+",
     label: "Live-Veranstaltungen",
-    copy: "Text folgt.",
+    copy: "Banijay Germany ist die Adresse, wenn es um Live-Brands, Tour-Booking und die Entwicklung und Inszenierung innovativer Live-Shows geht. Zu unserem Live Portfolio gehören die etablierten Brands wie das COLOGNE COMEDY FESTIVAL, Die besten Comedians Deutschlands, NightWash und die 1LIVE Comedy-Nacht XXL sowie der neue NightWash Club in Köln. Wir kümmern uns um Künstler-Bookings, wie beispielsweise von Atze Schröder oder Michael Mittermeier und wir bringen immersive Events an den Start - mit der dritten Ausgabe der erfolgreichen immersive Show Luminiscence in den Kathedralen des Landes.",
   },
   {
     // ERSETZT am 21.07. (Wolfram): die Kachel „170+ Companies weltweit" ist raus — die
@@ -246,7 +246,10 @@ export function EditorialStickyScene() {
                 src="/editorial/marcus-wolter.jpg"
                 alt="Marcus Wolter, Founder & CEO Banijay Germany"
                 className="h-full w-full object-cover"
-                style={{ objectPosition: "50% 32%" }}
+                // Neues Hochformat-Porträt (Wolfram 22.07., photo.jpeg 2326×2908 → 1500×1875):
+                // Gesicht sitzt im oberen Drittel → Fokus hoch (32 %→15 %), damit Kopf/Oberkörper
+                // zeigen und unten Platz für den Quote-Scrim bleibt.
+                style={{ objectPosition: "50% 15%" }}
               />
               {/* Scrim unten für die Quote-Lesbarkeit */}
               <div

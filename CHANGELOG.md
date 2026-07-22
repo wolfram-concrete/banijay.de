@@ -5,6 +5,37 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Team-Section: fünf umschaltbare Layout-Varianten + „UNSER TEAM"-Intro (22.07.)
+- **Umschalt-Widget** (`TeamSwitcher`) mit fünf Team-Layouts: **Raster** (gepinntes
+  Spiral-Grid), **Snap** (alle 12 in EINEM Viewport, gleich große Kacheln), **Editorial**
+  (variables 7×6-Feinraster, Marcus/Knut/Michael Laegel als größte Container), **Clean**
+  (helles Corporate-Raster, 3 Leader oben + ruhiges 3-Spalten-Grid, weiße Namenskarten) und
+  **Masonry** (full-bleed gap-0-Masonry nach Briefing: 3 Large versetzt + 9 Standard, weiße
+  Namenskarten, kein Hintergrund/Schatten/Border/Filter).
+- **„UNSER TEAM" als Intro-Sequenz** vor Raster/Snap/Editorial (Word-Reveal auf Sternenstaub);
+  die alte In-Stage-Headline im Raster wurde entfernt (keine Doppelung).
+- **Einrasten:** Snap/Editorial/Clean/Masonry werden beim Erreichen gepinnt (ScrollTrigger),
+  halten ~90vh still und geben dann die LogoReveal-Videoblende frei — dasselbe physische
+  Verhalten wie das Raster. Video-Timing bei allen Varianten großzügiger (mehr Space).
+- **Namenskarten** kantig (Heike-Regel), ohne weiße Kontur, wachsen bei mehrzeiligen Titeln mit.
+
+### Company-Videos, Marcus-Fotos, News-Nachschlag & Wording (22.07.)
+- **Company-Videos** (weboptimiert, CRF 28, ohne Ton): ShowdownTV (Live-Mitschnitt, Hochformat),
+  en2rage (Montage mit Evelyn Burdecki), Brainpool (Best-Of-Puffi-Montage), EndemolShine Germany
+  (5-Sequenzen-Montage statt flackerndem Trailer-Anfang), Elevate.
+- **Marcus-Fotos** getauscht: Team (S/W, `Marcus2.JPG` → Leader-Crop), Quote-Section
+  (`Marcus Quote.jpeg`, 1500×1875).
+- **News** (Crawl von banijay.de): zwei neue Beiträge — „Christian Franckenstein im Banijay-
+  Podcast WOLTER TALKS" (20.07.), „Banijay Germany gründet neue Company mit Sebastian Lege"
+  (14.07.), inkl. optimierter Titelbilder. News-Hero-Statement + harter Umbruch nach Doppelpunkt.
+- **Wording** (Editorial-Fact-Cards & Home-Statement): „Entertainment Powerhouse" (ohne
+  Bindestrich), „Banijay Group" → „Banijay Entertainment", 40+-Companies-Text (filmpool
+  entertainment, Banijay Germany Live, Cape Cross), Mitarbeiter-Text (WWM, Berlin – Tag & Nacht,
+  Temptation Island; „deutschen" gestrichen), Live-Veranstaltungen-Text, „Views" statt
+  „Views & Zuschauer".
+- **`SOCIAL-FEED-TOKENS-ANLEITUNG.md`**: Kunden-Handout zum offenen Instagram-Token (LinkedIn
+  läuft bereits via Juicer; Instagram-Quelle im Juicer-Konto neu zu verbinden).
+
 ### Mobile-Fixes: Nav (Spotify/News-Preview), größere Zwischenheadlines, Team→Video-Timing (21.07.)
 - **Mobile-Navigation, Spotify:** Das `open.spotify.com`-Embed wird auf Mobilgeräten oft
   vom Tracking-Schutz geblockt (kaputte graue Box). Auf Mobile blende ich das iframe aus

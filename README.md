@@ -46,7 +46,12 @@ sitzt das Einheiten-„+" grundlinienbündig an der Ziffer (Wrapper mit eigener 
 Glyph-Offset), genau wie `%`/`Mrd.`/`hrs.`. Team-Headlines
 bauen sich global wortweise aus einer Maske auf; das Team-Grid ist auf sehr breiten Screens
 auf `max 1680px` gedeckelt und zentriert, damit die Porträt-Kacheln nicht bis an die Ränder
-laufen und weniger vom Gesicht beschnitten wird. Die About-Facts stehen auf großen Screens
+laufen und weniger vom Gesicht beschnitten wird. Die **Team-Section** ist über ein
+Umschalt-Widget (`TeamSwitcher`) in fünf Layout-Varianten erlebbar — **Raster** (gepinntes
+Spiral-Grid), **Snap** (alle 12 in einem Viewport), **Editorial** (variables Feinraster mit
+größeren Leader-Kacheln), **Clean** (helles Corporate-Raster) und **Masonry** (full-bleed
+gap-0-Masonry, 3 Large versetzt + 9 Standard); allen vorangestellt die animierte „UNSER TEAM"-
+Intro, alle rasten beim Erreichen ein, bevor die LogoReveal-Videoblende aufsteigt. Die About-Facts stehen auf großen Screens
 zweispaltig (Copy links, Fakten-Block rechts), das Ökosystem-Verzeichnis in **4 Spalten**
 (CSS-columns). Die Home-News-Section stapelt ihre Beiträge als Sticky-Cards, getrennt durch schwarze
 Hairlines zwischen den Einträgen. Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die

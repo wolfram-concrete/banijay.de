@@ -263,6 +263,18 @@ REEL["brainpool"] = "/company-media/brainpool.mp4";
 // Ton. Textfrei.
 REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4";
 
+// ShowdownTV (Wolfram 22.07.): Live-Event-Mitschnitt (Boxring/Kampfsport-Arena, „SOCIETY"-
+// Crowd) — Hochformat 464×832 aus WhatsApp, weboptimiert (CRF 28, ohne Ton, faststart).
+REEL["showdown-tv"] = "/company-media/showdown-tv.mp4";
+
+// en2rage (Wolfram 22.07.): Künstlermanagement — Ausschnitt aus „TVT_AMG_09_Burdecki" (84s).
+// Montage aus drei Sequenzen, in denen Evelyn Burdecki prominent zu sehen ist (Sessel /
+// Tisch-Nahaufnahme / Close-up), 960×540, ohne Ton.
+REEL["en2rage"] = "/company-media/en2rage.mp4";
+
+// Brainpool (Wolfram 22.07.): neues Material „Best Of Puffi unterwegs Teil 3" (17 min) —
+// Montage aus fünf Sequenzen quer durch den Best-Of, 960×540, ohne Ton.
+
 // FOTO STATT BEWEGTBILD (Wolfram 16.07.): Companies, für die ein Still statt eines
 // Trailers vorliegt. Diese Kacheln bekommen einen leichten, langsamen Ken-Burns-Zoom
 // (siehe useGSAP unten) — Bewegung auch ohne Video.

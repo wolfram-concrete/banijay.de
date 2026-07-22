@@ -6,8 +6,11 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { LEADERSHIP } from "@/data/leadership";
+import { DustLayer } from "./DustLayer";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const SHARP = "var(--font-sharp), sans-serif";
 
 // Team (Algarve section_spiral-team, adaptiert): großer Schriftzug „TEAM" als
 // eigenständige Headline OBEN, darunter die Portraits. Die Cards starten in einem
@@ -43,7 +46,7 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 // object-position „50% 0%" (oben + seitlich bündig) alle gleich groß/hoch. Knut ist Leader-
 // Reihe (900×1200 @ 14 %, s. u.). Die veralteten Einzelkommentare unten (900×1200, „Kopf
 // 32 %", Top-Bias 18 %) beziehen sich auf VORIGE Crops und sind hinfällig.
-const FOCUS: Record<string, string> = {
+export const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
   // Marcus Wolter (Wolfram 21.07.) — echtes Portrait in der LEADER-Reihe, wie Michael
   // Laegel beschnitten (Kopf sitzt oben im 900×1200-Ausschnitt) → derselbe Fokuswert 14 %.
@@ -90,32 +93,10 @@ const FOCUS: Record<string, string> = {
   "/people/heike-lutzer.jpg": "50% 0%",
   "/people/lead-9.jpg": "50% 22%",
 };
-const focus = (img: string) => FOCUS[img] ?? "50% 20%";
-
-// Aufbauende Headline (Wolfram 15.07.): jedes Wort steigt aus einer Maske hoch
-// (gestaffelt), wenn die Team-Section ins Bild scrollt — global auf allen Pages.
-function TeamHeadWords({ text }: { text: string }) {
-  const words = text.split(" ");
-  return (
-    <>
-      {words.map((w, i) => (
-        <span
-          key={i}
-          className="inline-block overflow-hidden"
-          style={{ verticalAlign: "top", paddingBottom: "0.14em", marginBottom: "-0.14em", marginRight: i < words.length - 1 ? "0.26em" : 0 }}
-        >
-          <span data-team-headword className="inline-block" style={{ willChange: "transform" }}>
-            {w}
-          </span>
-        </span>
-      ))}
-    </>
-  );
-}
+export const focus = (img: string) => FOCUS[img] ?? "50% 20%";
 
 export function AlgarveFounders({
   holdForOverlay = true,
-  staticHead = false,
 }: {
   /** Halte-Beat am Ende des Team-Pins: das komplette Team steht still, damit die
    *  FOLGE-Section mit ihrem -100vh-Overlap darüberziehen kann (Home: LogoReveal).
@@ -123,18 +104,26 @@ export function AlgarveFounders({
    *  mehr (Wolfram 16.07.) — dort false, sonst stünde das Team ~1 Screen lang
    *  unbedeckt still und es läse sich als Hänger. */
   holdForOverlay?: boolean;
-  /** Desktop-Headline STATISCH sichtbar statt per Wort-Reveal (Wolfram 21.07.).
-   *  Das Reveal triggert auf die gepinnte Bühne; auf der About-Seite verschieben die
-   *  MEHREREN gepinnten Sektionen davor (ProofVideo, AboutIntro-tall, WorldNetwork)
-   *  die gemessene Trigger-Position, sodass „top 82%" dort nicht verlässlich feuert →
-   *  die „Unser Team"-Headline blieb bei yPercent 118 versteckt. Auf About darum
-   *  static: Wörter sofort bei yPercent 0, kein fragiler Scroll-Trigger. Home behält
-   *  die Animation (ein einzelner Pin davor, Trigger feuert dort zuverlässig). */
-  staticHead?: boolean;
 } = {}) {
+  const wrap = useRef<HTMLDivElement>(null);
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
   const mTeam = useRef<HTMLDivElement>(null); // Mobile-Team-Container (für End-Pin)
+
+  // INTRO „UNSER TEAM" (Wolfram 22.07.) — dieselbe Zwischen-Sequenz wie bei Snap/Editorial:
+  // eigener Screen auf dem Sternenstaub VOR der gepinnten Team-Bühne, Wörter steigen aus der
+  // Maske. Steht als Geschwister VOR <section ref=root>, damit der Team-Pin (Trigger = root,
+  // start „top top") unberührt bleibt.
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const words = gsap.utils.toArray<HTMLElement>("[data-mo-word]");
+      if (words.length) {
+        gsap.from(words, { yPercent: 120, duration: 1.1, ease: "power4.out", stagger: 0.12, scrollTrigger: { trigger: "[data-mo-intro]", start: "top 70%", once: true } });
+      }
+    },
+    { scope: wrap },
+  );
 
   useGSAP(
     () => {
@@ -185,7 +174,7 @@ export function AlgarveFounders({
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: holdForOverlay ? "+=210%" : "+=120%",
+          end: holdForOverlay ? "+=280%" : "+=120%",
           scrub: true,
           pin: "[data-team-stage]",
           invalidateOnRefresh: true,
@@ -229,54 +218,33 @@ export function AlgarveFounders({
     { scope: root },
   );
 
-  // Headline-Aufbau (Desktop + Mobile): Wörter steigen gestaffelt aus ihrer Maske,
-  // sobald die jeweilige „Unser Team"-Headline ins Bild scrollt.
-  useGSAP(
-    () => {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      gsap.utils.toArray<HTMLElement>("[data-team-head]").forEach((head) => {
-        const words = head.querySelectorAll<HTMLElement>("[data-team-headword]");
-        if (!words.length) return;
-        if (reduce) {
-          gsap.set(words, { yPercent: 0 });
-          return;
-        }
-        // Mobile-Headline (in mTeam) vs. Desktop-Headline (in der gepinnten Bühne):
-        // - Desktop: TRIGGER = die gepinnte BÜHNE ([data-team-stage]), NICHT die Headline
-        //   selbst (die wird beim Pin position:fixed → ihre eigene Marke ist danach
-        //   unerreichbar) und NICHT `root` (Wolfram 20.07.): `root` enthält Desktop- UND
-        //   Mobile-Team, und auf der About-Seite verschob der Pin-Spacer der Marcus-Section
-        //   darüber die gemessene root-Position → das „top 88%"-Reveal feuerte nicht, die
-        //   „Unser Team"-Headline blieb bei yPercent 118 versteckt. Die Bühne ist ein
-        //   stabiles Einzelelement und wird bei „top 82%" — VOR dem Pin (top top) — erreicht.
-        // - Mobile (Wolfram 19.07.): triggert auf SICH SELBST (kein Pin), feuert verlässlich.
-        const isMobileHead = !!mTeam.current?.contains(head);
-        const stage = head.closest<HTMLElement>("[data-team-stage]");
-        // Desktop-Headline auf About: statisch sichtbar (kein Scroll-Reveal, s. o.).
-        if (staticHead && !isMobileHead) {
-          gsap.set(words, { yPercent: 0 });
-          return;
-        }
-        gsap.set(words, { yPercent: 118 });
-        gsap.to(words, {
-          yPercent: 0,
-          ease: "power3.out",
-          duration: 0.9,
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: isMobileHead ? head : (stage ?? root.current),
-            start: isMobileHead ? "top 92%" : "top 82%",
-            once: true,
-          },
-        });
-      });
-    },
-    { scope: root },
-  );
-
   return (
-    <section ref={root} style={{ background: "transparent" }}>
-      {/* ── Desktop: gepinnte Bühne mit TEAM-Headline + entfaltendem Grid ──── */}
+    <div ref={wrap} className="relative">
+      {/* ── INTRO-Sequenz „UNSER TEAM" auf dem Sternenstaub, EIGENER Screen VOR der
+          gepinnten Team-Bühne (wie Snap/Editorial). ──────────────────────────────────── */}
+      <div data-mo-intro className="relative flex w-full items-center justify-center overflow-clip" style={{ height: "78vh", minHeight: "520px" }}>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            maskImage: "linear-gradient(180deg, transparent 0%, black 16%, black 84%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 16%, black 84%, transparent 100%)",
+          }}
+        >
+          <DustLayer boost={0.85} center={{ x: 0.5, y: 0.5 }} radius={0.62} />
+        </div>
+        <h2 className="relative z-[1] m-0 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: SHARP, fontWeight: 500, letterSpacing: "-0.03em", lineHeight: 0.92 }}>
+          <span className="block overflow-hidden">
+            <span data-mo-word className="block text-[9vw] max-[767px]:!text-[15vw]">Unser</span>
+          </span>
+          <span className="block overflow-hidden">
+            <span data-mo-word className="block text-[9vw] max-[767px]:!text-[15vw]">Team</span>
+          </span>
+        </h2>
+      </div>
+
+      <section ref={root} style={{ background: "transparent" }}>
+      {/* ── Desktop: gepinnte Bühne mit entfaltendem Grid (Headline jetzt als Intro davor) ──── */}
       <div data-team-stage className="relative max-[767px]:hidden" style={{ height: "100vh", overflow: "hidden" }}>
         {/* BREITE AN DIE HÖHE GEKOPPELT (Wolfram 16.07.): Die Bühne ist 100vh hoch, die
             Kachelbreite kam aber allein aus der Screenbreite → auf breiten/flachen Screens
@@ -302,28 +270,8 @@ export function AlgarveFounders({
               "clamp(1.6rem, 4vw, 4rem) 2vw calc(clamp(1rem, 3vw, 2.5rem) + 2.4rem)",
           }}
         >
-          {/* TEAM-HEADLINE — LINKSBÜNDIG in Statement-Formatierung (Wolfram 16.07.).
-              Vorher mittelachsig in der großen Display-Größe (7.22vw, gedeckelt auf
-              6.6rem = die „Iconic IP"-Klasse). Jetzt dieselbe Größe/Gewichtung wie die
-              Statement-Typo (clamp(1.9rem, 3.6vw, 4.2rem) / 500) und linksbündig — die
-              Headline konkurriert damit nicht mehr mit den Porträts und gibt der Bühne
-              zusätzlich Höhe zurück, die den Bildern zugutekommt. */}
-          <h2
-            data-team-head
-            className="m-0 text-left uppercase text-[#f8f7f3]"
-            style={{
-              fontFamily: "var(--font-sharp), sans-serif",
-              fontSize: "clamp(1.9rem, 3.6vw, 4.2rem)",
-              fontWeight: 500,
-              letterSpacing: "-0.03em",
-              lineHeight: "122%",
-              position: "relative",
-              zIndex: 3,
-              marginBottom: "clamp(0.8rem, 2vw, 1.6rem)",
-            }}
-          >
-            <TeamHeadWords text="Unser Team" />
-          </h2>
+          {/* Headline „Unser Team" jetzt als Intro-Sequenz VOR der Bühne (Wolfram 22.07.),
+              nicht mehr in der Bühne — daher hier entfernt. */}
 
           {/* Raster: DREI Reihen — oben die drei Leader (Marcus, Knut, Michael Laegel)
               in größeren Kacheln, AB DER ZWEITEN REIHE EIN FÜNFERGRID (Wolfram 17.07.,
@@ -385,11 +333,7 @@ export function AlgarveFounders({
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        {/* Mobil MITTELACHSIG (Wolfram 19.07.); Größe 7.4vw → 13vw (Wolfram 21.07.): die
-            Zwei-Wort-Zwischenheadline war zu klein, jetzt so prominent wie „40+/Companies". */}
-        <h2 data-team-head className="m-0 mb-8 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "13vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "112%" }}>
-          <TeamHeadWords text="Unser Team" />
-        </h2>
+        {/* Headline „Unser Team" jetzt als Intro-Sequenz VOR dem Team (Wolfram 22.07.). */}
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>
           {LEADERSHIP.map((p, i) => {
             // slice(0,11) entfernt (Wolfram 17.07.): mit Elena sind es 12 Personen — der
@@ -433,6 +377,7 @@ export function AlgarveFounders({
           })}
         </div>
       </div>
-    </section>
+      </section>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import { AlgarveEcosystem } from "@/components/cinematic/algarve/EcosystemSectio
 import { DustStage } from "@/components/cinematic/algarve/DustStage";
 import { AlgarveEditorial } from "@/components/cinematic/algarve/Editorial";
 import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
-import { AlgarveFounders } from "@/components/cinematic/algarve/Founders";
+import { AlgarveTeamSwitcher } from "@/components/cinematic/algarve/TeamSwitcher";
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
@@ -45,7 +45,7 @@ export default function HomePage() {
             // „einige der bekanntesten" → „die bekanntesten", „Live-Erlebnisse" →
             // „außergewöhnlichsten Live-Erlebnisse". Davor stand „Unser Antrieb ist
             // Entertainment …", das wiederum den Lorem-ipsum-Platzhalter abgelöst hatte.
-            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment-Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu erschaffen."
+            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu erschaffen."
           />
         </div>
 
@@ -75,7 +75,8 @@ export default function HomePage() {
           EINE gepinnte Bühne IN <AlgarveFounders /> (Wolfram 14.07.): die Headline
           baut sich auf subtilem Staub auf, der Warp blendet über und gibt das Team
           AN GLEICHER STELLE frei — kein Scroll-Übergang, keine Zwischen-Section. */}
-      <AlgarveFounders />
+      {/* Team-Section mit Umschalt-Widget: „Raster" (bisher) ↔ „Mosaik" (Wolfram 22.07.). */}
+      <AlgarveTeamSwitcher />
 
       {/* Bild-zu-Logo-Masken-Reveal → Magenta-Fläche leitet in die News über */}
       <AlgarveLogoReveal />

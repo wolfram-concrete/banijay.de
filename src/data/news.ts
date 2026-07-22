@@ -16,6 +16,37 @@ export interface NewsItem {
 }
 
 export const NEWS: NewsItem[] = [
+  // NEU (Crawl 22.07.2026 von banijay.de/news — zwei Meldungen seit dem letzten Stand 03.06.).
+  {
+    slug: "n-christian-franckenstein-im-banijay-podcast-wolter-talks",
+    title: "Christian Franckenstein im Banijay-Podcast WOLTER TALKS",
+    date: "20.07.2026",
+    category: "Wolter Talks",
+    author: "Redaktion",
+    img: "/news/scraped/00-christian-franckenstein-wolter-talks.jpg",
+    lead: "Wie steht es um die Zukunft der deutschen Medienbranche? Darüber diskutieren Marcus Wolter, CEO von Banijay Germany, und Dr. Christian Franckenstein, CEO der Bavaria Film, in der neuen Folge des Banijay-Podcasts WOLTER TALKS.",
+    body: [
+      "Als CEOs zweier großer Entertainment-Unternehmen stehen sie in vielen Bereichen im Wettbewerb – und teilen zugleich das Interesse an einem starken Medienstandort Deutschland. Beim Blick auf die Strukturen des Marktes vertreten sie jedoch nicht immer dieselben Positionen. Die beiden Medienmanager diskutieren offen die wirtschaftliche Lage der Branche, die Rolle öffentlich-rechtlicher Beteiligungen, die Zukunft des dualen Rundfunksystems und die internationale Wettbewerbsfähigkeit deutscher Produktionsunternehmen.",
+      "Mit Blick auf die wirtschaftliche Situation der Branche findet Franckenstein deutliche Worte: „Was mich schon umtreibt, ist, dass wir in dieser Branche, in Deutschland zumindest, über viele Jahre kein richtiges Wachstum haben.“ Die Folgen seien für viele Unternehmen spürbar: „Wir brauchen motivierte Mitarbeitende. Um diese Motivation aufrechtzuhalten, müssen wir sie angemessen vergüten. Und dafür brauchen wir Wachstum.“ Wolter sieht die Verantwortung dabei nicht allein bei den Marktbedingungen: „Die große Aufgabe ist es, uns immer wieder neu zu erfinden.“ Wachstum entstehe vor allem dort, wo neue Zielgruppen, Plattformen und Geschäftsmodelle erschlossen werden.",
+      "Kontrovers wird es bei der Diskussion über öffentlich-rechtliche Beteiligungen und die Zukunft des dualen Systems. Wolter fordert mehr Transparenz über die Marktstrukturen: „Ist es in diesen Zeiten richtig, dass drei Tochterfirmen von ARD und ZDF rund 800 Mio. Euro Umsatz erzielen, von denen mehr als zwei Drittel aus Aufträgen ihrer öffentlich-rechtlichen Eigentümer stammen?“ Zudem stellt Wolter die Frage, ob die bestehenden Strukturen noch zeitgemäß sind: „Es gibt aktuell rund 57 Tochterfirmen der öffentlich-rechtlichen Sender. Das war früher sinnvoll und notwendig, heute ist es dringend zu überdenken.“ Franckenstein sieht keine Bevorzugung durch seine Gesellschafter: „Meine Erfahrung ist: Wir werden in keinster Weise bevorteilt.“",
+      "Auch die Transformation des Produktionsmarktes beschäftigt beide CEOs. Die zunehmende Fragmentierung des Geschäfts beschreibt Franckenstein mit einem markanten Bild: „Wir sehen auf der anderen Seite, dass das Neugeschäft sich radikal atomisiert. Es wird kleinteiliger, es wird vielfältiger.“ Wolter sieht darin einen klaren Auftrag: „Wir müssen viel weniger von den klassischen Verbreitungswegen ausgehen als vielmehr davon, wo eigentlich unsere Kunden, die Zuschauerinnen und Zuschauer, sind.“",
+      "So unterschiedlich die Positionen in einzelnen Fragen auch sind: Beide eint das Interesse an einem starken und vielfältigen Medienstandort Deutschland. Für Marcus Wolter steht dabei vor allem die gemeinsame Verantwortung der Branche im Vordergrund: „Wir sind nicht die Gegner unserer Kunden, wir sind Partner. Und nur wenn diese Partner gemeinsam Erfolge erzielen, werden wir auch wieder wachsen.“",
+    ],
+  },
+  {
+    slug: "n-banijay-germany-gruendet-neue-company-mit-sebastian-lege",
+    title: "Banijay Germany gründet neue Company mit Sebastian Lege",
+    date: "14.07.2026",
+    category: "News",
+    author: "Redaktion",
+    img: "/news/scraped/00b-banijay-sebastian-lege-pausenclown.jpg",
+    lead: "Die Banijay-Familie in Deutschland wächst weiter: Gemeinsam mit dem Food-Experten, Koch und Entertainer Sebastian Lege wird das neue Label Pausenclown Media GmbH Entertainment-Inhalte rund um das Thema Food plattformübergreifend konzipieren und produzieren.",
+    body: [
+      "Sebastian Lege zählt zu den bekanntesten Food-Experten Deutschlands und verbindet als Produktentwickler, TV-Persönlichkeit und Entertainer fundierte Expertise mit breiter Medienpräsenz. Mit eigenen Formaten im ZDF, bei VOX sowie dem YouTube-Kanal „b/esser“ erreicht er ein Millionenpublikum. Mit dem Lifestyle-Label LEGELAND, das er gemeinsam mit dem Berliner Mode-Label The Dudes gegründet hat, verbindet er zudem Food, Fashion und digitale Inhalte.",
+      "Marcus Wolter äußert sich positiv zur Gründung und betont, dass „die Pausenclown Media ein starkes Setup mit Content und Talent“ darstellt. Arno Schneppenheim und Imke Runde werden das neue Label als Geschäftsführer und Executive Producer leiten.",
+      "Sebastian Lege unterstreicht sein Interesse daran, „Wissen über Lebensmittel in gute Unterhaltung“ zu verwandeln. Schneppenheim ergänzt, dass neben „hervorragenden TV-Erlebnissen“ auch Raum für Markenpartnerschaften entstehen wird.",
+    ],
+  },
   {
     slug: "n-aaron-troschke-im-banijay-podcast-wolter-talks",
     title: "Aaron Troschke im Banijay-Podcast WOLTER TALKS",
