@@ -62,6 +62,7 @@ export function TeamTile({ img, name, role }: { img: string; name: string; role:
 export function AlgarveFoundersSnap() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
+  const mobileGrid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -79,8 +80,16 @@ export function AlgarveFoundersSnap() {
       // Viewport — man scrollt durch die drei Reihen, und sobald die Unterkante den Viewport-
       // Boden erreicht, wird gepinnt (start „bottom bottom"). ~90vh reiner Halt, dann steigt
       // die LogoReveal-Blende auf. Kein direktes Snapping der ganzen Fläche mehr.
-      if (grid.current && window.matchMedia("(min-width: 768px)").matches) {
-        ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        if (grid.current) {
+          ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
+        }
+      } else if (mobileGrid.current) {
+        // MOBILE (Wolfram 22.07.): dieselbe Choreografie wie Desktop — das 2-Spalten-Raster
+        // baut sich erst VOLLSTÄNDIG auf, rastet dann ein (bottom bottom = Unterkante am
+        // Viewport-Boden), hält, und ERST DANN steigt die LogoReveal-Videoblende darüber auf.
+        // Vorher fehlte der Pin auf Mobile → das Video wischte schon während des Team-Scrollens.
+        ScrollTrigger.create({ trigger: mobileGrid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
       }
     },
     { scope: root },
@@ -119,7 +128,7 @@ export function AlgarveFoundersSnap() {
       </div>
 
       {/* ── Mobile: 2 Spalten, Leader zuerst; durchgängig hochformatig. ─────────────────── */}
-      <div className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
+      <div ref={mobileGrid} className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
         {LEADERSHIP.map((p) => (
           <div key={p.img} style={{ aspectRatio: "4 / 5" }}>
             <TeamTile img={p.img} name={p.name} role={p.role} />
