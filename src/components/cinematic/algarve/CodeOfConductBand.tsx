@@ -104,9 +104,14 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
             über ihn — bei 22vw funktionierte das, weil die Buchstaben so groß waren,
             dass die Container nur als Textur darüberzogen. In der jetzigen
             Headline-Größe (7vw) würden sie den Claim schlicht zudecken. */}
+        {/* Mobile-Zeilenabstand enger (Wolfram 21.07.): Bei 13vw wirkte die 132%-lineHeight
+            des zweizeiligen Claims („WE ARE" / „BANIJAY") zu luftig. Auf Mobile 1.06 —
+            UNITLESS (wichtig!): die %-Variante rechnet gegen die h2-eigene 7vw-Größe und
+            würde als fixe px an die 13vw-Spans vererbt → Zeilen überlappen. Unitless
+            multipliziert die jeweils EIGENE Span-Größe. */}
         <h2
           data-coc-claim
-          className="absolute z-10 m-0 w-full text-center uppercase"
+          className="absolute z-10 m-0 w-full text-center uppercase max-[767px]:!leading-[1.06]"
           style={{ ...CLAIM_STYLE, willChange: "transform, opacity" }}
         >
           {CLAIM_LINES.map((line) => (

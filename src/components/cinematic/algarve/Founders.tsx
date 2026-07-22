@@ -32,6 +32,14 @@ const ROLE = { color: "rgba(248,247,243,0.64)", fontSize: "clamp(0.7rem, 0.8vw, 
 // Fokuspunkt je Portrait (object-position), damit die Gesichter im Crop nie
 // abgeschnitten werden — Portraits mit Kopf weit oben brauchen einen stärkeren
 // Top-Bias. Default: leicht nach oben versetzt.
+//
+// PORTRAIT-MASTER-TAUSCH (Wolfram 22.07.): Alle 9 Team-Portraits AUSSER Marcus, Knut,
+// Michael Laegel sind gegen Wolframs vor-normalisierte „Portrait-master"-Bilder getauscht
+// (assets/People/Portrait-master-*.jpg, alle 2682×4032, identische Rahmung → in public
+// nur proportional auf 900×1353 web-optimiert, KEIN Neu-Zuschnitt). Sie sitzen daher jetzt
+// alle auf object-position „50% 0%" (oben + seitlich bündig, object-cover füllt die Breite)
+// und sind bereits in der Datei gleich groß. Die veralteten Einzelkommentare unten (900×1200,
+// „Kopf 32 %", Top-Bias 18 %) beziehen sich auf die VORIGEN Crops und sind damit hinfällig.
 const FOCUS: Record<string, string> = {
   "/people/lead-1.jpg": "50% 22%",
   // Marcus Wolter (Wolfram 21.07.) — echtes Portrait in der LEADER-Reihe, wie Michael
@@ -40,17 +48,17 @@ const FOCUS: Record<string, string> = {
   "/people/lead-2.jpg": "50% 14%",
   // Aylin Firat (Wolfram 17.07.) — echtes Portrait, ersetzt lead-2.jpg. Bereits auf
   // Kopf/Oberkörper beschnitten (siehe leadership.ts), daher nur leichter Top-Bias.
-  "/people/aylin-firat.jpg": "50% 18%",
+  "/people/aylin-firat.jpg": "50% 0%",
   // Elena Kats (Wolfram 19.07.) — Ganzkörper-Sitzfoto jetzt ENG auf Kopf/Oberkörper
   // beschnitten (Kopf ~28 % der Bildhöhe, wie die übrigen Portraits) → gleicher Top-Bias.
-  "/people/elena-kats.jpg": "50% 18%",
+  "/people/elena-kats.jpg": "50% 0%",
   // Michael Gaul (Wolfram 17.07.) — echtes Portrait, ersetzt lead-5.jpg. Nach derselben
   // Regel wie Aylin beschnitten (siehe leadership.ts), daher derselbe Top-Bias.
-  "/people/michael-gaul.jpg": "50% 18%",
+  "/people/michael-gaul.jpg": "50% 0%",
   // Alle vier Portraits aus der 2026er-Session sind nach derselben Regel beschnitten
   // (Kopf = 32 % der Ausschnitthöhe, siehe leadership.ts) → identischer Top-Bias.
-  "/people/matthaeus-jaworek.jpg": "50% 18%",
-  "/people/sebastian-menge.jpg": "50% 18%",
+  "/people/matthaeus-jaworek.jpg": "50% 0%",
+  "/people/sebastian-menge.jpg": "50% 0%",
   // Michael Laegel steht in der LEADER-Reihe (Kachel 1.36 statt 1.03) und ist daher
   // anders beschnitten — siehe leadership.ts. Dort zeigt die Kachel nur 55 % der
   // Bildhöhe, deshalb ein knapperer Top-Bias als bei den 32%-Portraits.
@@ -62,21 +70,21 @@ const FOCUS: Record<string, string> = {
   "/people/knut-kremling.jpg": "50% 5%",
   // Kopfgrößen-Normalisierung (Wolfram 20.07.): jetzt 900×1200 (3:4) mit Kopf ~38 % /
   // Kopf-Oberkante 12 % wie die Standard-Reihe → gleicher Fokuswert 18 %.
-  "/people/simone-lenzen.jpg": "50% 18%",
+  "/people/simone-lenzen.jpg": "50% 0%",
   "/people/lead-3.jpg": "50% 12%",
   "/people/lead-4.jpg": "50% 22%",
   "/people/lead-5.jpg": "50% 20%",
   // Natali Naso (Wolfram 20.07.): echtes Portrait natali-naso.jpg, 900×1200 (3:4) wie die
   // übrigen Standard-Reihen (Kopf ~32 %, 12 % Luft oben) → gleicher Fokuswert wie die
   // Nachbarn (18 %). Löst den Platzhalter lead-6.jpg ab.
-  "/people/natali-naso.jpg": "50% 18%",
+  "/people/natali-naso.jpg": "50% 0%",
   // Janine Berns (Wolfram 21.07.) — echtes Portrait, löst lead-1.jpg ab. Nach derselben
   // Reihen-Norm beschnitten (Kopf ~33 %, höher) → gleicher Top-Bias wie die Nachbarn.
-  "/people/janine-berns.jpg": "50% 18%",
+  "/people/janine-berns.jpg": "50% 0%",
   "/people/lead-7.jpg": "50% 26%",
   // Heike Lutzer (Wolfram 20.07.) — echtes Portrait, löst lead-8.jpg ab. Ganzkörper-Quelle
   // eng auf Kopf/Oberkörper beschnitten (Kopf ~29 %) → gleicher Top-Bias wie die anderen.
-  "/people/heike-lutzer.jpg": "50% 18%",
+  "/people/heike-lutzer.jpg": "50% 0%",
   "/people/lead-9.jpg": "50% 22%",
 };
 const focus = (img: string) => FOCUS[img] ?? "50% 20%";

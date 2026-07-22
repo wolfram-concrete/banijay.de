@@ -25,14 +25,6 @@ function IconLinkedin() {
   );
 }
 
-function IconSpotify() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
-      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.5 17.32a.75.75 0 0 1-1.03.25c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.57-1.05 8.49-.6 11.65 1.34.35.22.46.68.25 1.03zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.99-8.15-2.56-11.97-1.4a.94.94 0 1 1-.54-1.8c4.37-1.32 9.79-.68 13.49 1.6.44.27.58.85.31 1.29zm.13-3.4C15.73 8.28 8.5 8.05 4.78 9.18a1.13 1.13 0 1 1-.65-2.16c4.27-1.3 12.25-1.05 16.44 1.44a1.13 1.13 0 0 1-1.15 1.95z" />
-    </svg>
-  );
-}
-
 // News-Slider im Overlay: horizontale Artikel-Gallery, die von links einschiebt.
 // Öffnet unterhalb von „News"; die darunterliegenden Nav-Punkte rutschen runter.
 function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => void }) {
@@ -499,15 +491,19 @@ export function SiteHeader() {
               className="flex flex-col items-start gap-10 self-end transition-opacity duration-500 max-[767px]:w-full max-[767px]:gap-6 max-[767px]:self-start"
               style={{ opacity: infoVisible ? 1 : 0, color: INK }}
             >
-              {/* Spotify-Widget (WOLTER TALKS) — NUR Desktop (Wolfram 21.07.): Auf Mobile
-                  blockte der Browser-Tracking-Schutz das open.spotify.com-Embed häufig →
-                  kaputte graue Box. Mobil ersetzt ihn der Spotify-Button unten in „Folgen". */}
+              {/* Spotify-Widget (WOLTER TALKS) — Desktop großer Player (352), Mobile das
+                  kompakte Widget (152). Player steht wie zuvor im Menü auf ALLEN Viewports
+                  (kein Button) — Wolfram 21.07.
+                  loading="eager" statt "lazy" (Wolfram 21.07.): Das iframe liegt im
+                  Fixed-Overlay, das geschlossen height:0 hat. Lazy-Loading feuert den
+                  IntersectionObserver dort auf manchen (mobilen) Browsern erst spät oder
+                  gar nicht → leere/graue Box. Eager lädt das Embed sofort mit dem Overlay. */}
               <iframe
                 title="WOLTER TALKS auf Spotify"
                 src="https://open.spotify.com/embed/show/1DNETtYd9Y197eAQ45xMdh?utm_source=generator&theme=0"
-                loading="lazy"
+                loading="eager"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                className="h-[352px] w-[20rem] max-[767px]:!hidden"
+                className="h-[352px] w-[20rem] max-[767px]:order-2 max-[767px]:!h-[152px] max-[767px]:w-full max-[767px]:max-w-full"
                 style={{ borderRadius: 12, border: 0 }}
               />
               {/* Folgen (Instagram/LinkedIn) — auf Mobile ÜBER dem Spotify-Widget. */}
@@ -536,19 +532,9 @@ export function SiteHeader() {
                     <IconLinkedin />
                     LinkedIn
                   </a>
-                  {/* Spotify-Button NUR Mobile (Wolfram 21.07.) — Ersatz für den dort
-                      geblockten Embed-Player; Desktop nutzt das iframe-Widget oben. */}
-                  <a
-                    href="https://open.spotify.com/show/1DNETtYd9Y197eAQ45xMdh"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="WOLTER TALKS auf Spotify"
-                    className="hidden items-center gap-2 rounded-[6px] border border-[#0e0d0b] bg-transparent px-5 py-2.5 text-sm font-medium text-[#0e0d0b] transition-colors hover:bg-[#0e0d0b] hover:text-white max-[767px]:inline-flex"
-                    style={{ borderColor: INK }}
-                  >
-                    <IconSpotify />
-                    WOLTER TALKS
-                  </a>
+                  {/* Kein Spotify-Button auf Mobile (Wolfram 21.07.): der zuvor als Ersatz
+                      eingesetzte Button ist wieder raus — Mobile zeigt in „Folgen" nur
+                      Instagram + LinkedIn. Desktop behält den iframe-Player oben. */}
                 </div>
               </div>
               {/* Büro + Kontakt nur Desktop — auf Mobile steht alles im Footer. */}
