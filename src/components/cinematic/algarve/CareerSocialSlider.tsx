@@ -165,7 +165,10 @@ function Card({ post, showText }: { post: SocialPost; showText: boolean }) {
         {post.video ? (
           <VideoMedia post={post} />
         ) : (
-          <img src={post.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+          // eager statt lazy (Wolfram 22.07.): Der Slider zeigt max. 12 Karten; „lazy" ließ die
+          // horizontal versetzten Karten ab der dritten leer, weil der Lazy-Trigger bei per
+          // Transform seitlich einlaufenden Bildern nicht zuverlässig feuert.
+          <img src={post.image} alt="" loading="eager" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
         )}
         {/* Die Quellen-Kennzeichnung („LINKEDIN") ist raus (Wolfram 16.07.): Solange der
             Juicer-Feed ausschließlich LinkedIn liefert, stand sie redundant auf jeder

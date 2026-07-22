@@ -19,6 +19,13 @@ const ELF_URL = `https://widget-data.service.elfsight.com/api/posts?sources[]=${
 type ElfMedia = { type?: string; url?: string; thumbnail?: { url?: string } | null };
 type ElfPost = { type?: string; link?: string; publishedAt?: string; caption?: string; media?: ElfMedia[] };
 
+// Instagram-CDN-Bilder (scontent.cdninstagram.com) lassen sich NICHT direkt vom Browser
+// hotlinken — Instagram blockt Cross-Origin-Requests (IMG ERROR), nur das allererste kommt
+// zufällig durch. Elfsight löst das mit seinem Bild-Proxy `phosphor` (cached + liefert die
+// Motive mit korrekten Headern aus). Wir routen die Cover-Bilder deshalb durch denselben
+// Proxy — exakt wie das Widget. (Video-URLs bleiben direkt; die spielen der Album-Karte.)
+const proxyImg = (url: string) => `https://phosphor.utils.elfsightcdn.com/?url=${encodeURIComponent(url)}`;
+
 // Instagram-Caption (Plain-Text mit \n, Hashtags, @mentions) auf eine Kartencopy kürzen.
 function toPlainText(s: string, max = 180): string {
   const txt = (s ?? "")
@@ -37,9 +44,14 @@ function formatDate(iso?: string): string {
 }
 
 // Elfsight-Data-Service → unser SocialPost[]. Bild = erstes Medium mit Thumbnail (Album-
-// Cover/Foto); Video = mp4-URL (Reels haben KEIN Thumbnail — die Video-Karte tastet sich
-// selbst einen Frame ab, exakt wie beim bisherigen Juicer-Video-Post). Ohne Bild UND ohne
-// Video wird der Post übersprungen.
+// Cover / Foto-Post); Video = mp4-URL (nur bei Alben mit Video-Element).
+//
+// WICHTIG (Wolfram 22.07.): REINE REELS werden ÜBERSPRUNGEN. Ihre Datensätze enthalten KEIN
+// Cover-Bild (nur die Video-URL), und Instagrams Reel-mp4s (…/o1/v/t2/…) lassen sich im
+// Browser nicht direkt abspielen (MediaError 4) — ohne Poster UND ohne spielbares Video
+// blieben das leere Karten. Foto-Posts und Alben haben dagegen immer ein Cover-Thumbnail;
+// bei ihnen ist das Video nur Zugabe (spielt es nicht, bleibt das Poster stehen). Wir
+// fordern deshalb ein Bild (`image`) — kein Bild ⇒ Post raus. Bleiben ~36 Bild/Album-Posts.
 export async function fetchElfsightPosts(limit = 12): Promise<SocialPost[]> {
   try {
     const res = await fetch(ELF_URL, {
@@ -58,10 +70,10 @@ export async function fetchElfsightPosts(limit = 12): Promise<SocialPost[]> {
       const image = media.find((m) => m.thumbnail?.url)?.thumbnail?.url ?? "";
       const video = media.find((m) => m.type === "video" && m.url)?.url;
       const url = p.link ?? "";
-      if ((!image && !video) || !url || seen.has(url)) continue;
+      if (!image || !url || seen.has(url)) continue; // kein Cover-Bild (reines Reel) → raus
       seen.add(url);
       out.push({
-        image,
+        image: proxyImg(image), // über phosphor, sonst blockt Instagram das Hotlinking
         video,
         text: toPlainText(p.caption ?? ""),
         url,
