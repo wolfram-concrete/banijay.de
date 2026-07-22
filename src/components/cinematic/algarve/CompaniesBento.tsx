@@ -430,8 +430,10 @@ export function AlgarveCompaniesBento() {
                 die 56px-„40+"-Glyphen wären übergelaufen und hätten die Caption überlagert. */}
             <span data-bento-40-first className="block" style={{ fontSize: "15vw" }}>40+</span>
             {/* Mobile-Dreizeiler (Wolfram 19.07.): „Companies &" und „Labels" auf zwei
-                Zeilen umbrechen → 40+ / COMPANIES & / LABELS. */}
-            <span data-bento-40-last className="block" style={{ fontSize: "7vw", marginTop: "0.15em" }}>
+                Zeilen umbrechen → 40+ / COMPANIES & / LABELS.
+                Label auf ~40+-Größe hochgezogen (Wolfram 21.07.): 7vw → 14vw, damit die
+                Zwischenheadline mobil so prominent wirkt wie die Ziffer darüber. */}
+            <span data-bento-40-last className="block" style={{ fontSize: "14vw", marginTop: "0.1em" }}>
               Companies &amp;<br />Labels
             </span>
           </h2>

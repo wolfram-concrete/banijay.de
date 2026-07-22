@@ -296,8 +296,10 @@ export function AlgarveEditorial() {
         className="relative z-[1] mx-auto flex flex-col items-center justify-center overflow-clip text-center"
         style={{ maxWidth: "1800px", paddingLeft: "2vw", paddingRight: "2vw", marginTop: "5vw", minHeight: "min(38vh, 360px)" }}
       >
+        {/* Mobile deutlich größer (Wolfram 21.07.): die Zwei-Wort-Zwischenheadline war mit
+            7vw zu klein; auf Mobile auf 13vw (!important überschreibt das Inline-7vw). */}
         <h2
-          className="relative m-0"
+          className="relative m-0 max-[767px]:!text-[13vw]"
           style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "112%", fontWeight: 500, textTransform: "uppercase", letterSpacing: "-0.02em" }}
         >
           <span data-ed-hl2-first className="inline-block">Iconic</span>

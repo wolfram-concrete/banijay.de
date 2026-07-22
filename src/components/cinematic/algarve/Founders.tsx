@@ -206,22 +206,13 @@ export function AlgarveFounders({
           gsap.to(batch, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "power2.out", stagger: 0.1 }),
       });
 
-      // END-PIN: sobald der letzte Team-Screen erreicht ist (Container-Unterkante an
-      // Viewport-Unterkante), rastet das Team ein und HÄLT STILL — über diese Strecke
-      // schiebt sich die nächste Section (Home: LogoReveal, marginTop -100vh)
-      // von unten voll darüber. Analog zum Desktop-Team-Pin. pinSpacing ergänzt den
-      // Scrollweg; die -100vh der Folgesection überlagern die letzten 100vh des Pins.
-      if (mTeam.current) {
-        ScrollTrigger.create({
-          trigger: mTeam.current,
-          start: "bottom bottom",
-          end: "+=100%",
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        });
-      }
+      // END-PIN ENTFERNT (Wolfram 21.07.): Das mobile Team-Grid ist HÖHER als 100vh
+      // (12 Personen im 2-Spalter). Der frühere End-Pin + der -100vh-Overlap des
+      // LogoReveal-Videos legten das Video über die untersten Reihen (Sebastian/Matthäus/
+      // Aylin) — es wurde „zu früh hochgezogen", ruckelte und schnitt Teammitglieder ab.
+      // Auf Mobile scrollt das Team jetzt vollständig durch; das LogoReveal-Video folgt
+      // OHNE Overlap (dort marginTop mobil = 0), sodass alle Personen sichtbar bleiben
+      // und der Übergang sauber läuft. (Desktop behält Pin + Overlap unverändert.)
     },
     { scope: root },
   );
@@ -382,8 +373,9 @@ export function AlgarveFounders({
           statt starrer Raster. Die Kacheln bauen sich beim Scrollen Stück für
           Stück auf (gestaffelter Scale/Fade-Reveal, mReveal-useGSAP). */}
       <div ref={mTeam} className="hidden max-[767px]:block" style={{ padding: "16vw 3vw" }}>
-        {/* Mobil MITTELACHSIG (Wolfram 19.07.): war linksbündig, jetzt zentriert. 7.4vw. */}
-        <h2 data-team-head className="m-0 mb-8 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "7.4vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "122%" }}>
+        {/* Mobil MITTELACHSIG (Wolfram 19.07.); Größe 7.4vw → 13vw (Wolfram 21.07.): die
+            Zwei-Wort-Zwischenheadline war zu klein, jetzt so prominent wie „40+/Companies". */}
+        <h2 data-team-head className="m-0 mb-8 text-center uppercase text-[#f8f7f3]" style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "13vw", fontWeight: 500, letterSpacing: "-0.03em", lineHeight: "112%" }}>
           <TeamHeadWords text="Unser Team" />
         </h2>
         <div className="grid grid-cols-2" style={{ columnGap: "3vw", rowGap: "6vw" }}>

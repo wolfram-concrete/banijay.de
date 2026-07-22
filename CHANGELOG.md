@@ -5,6 +5,23 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile-Fixes: Nav (Spotify/News-Preview), größere Zwischenheadlines, Team→Video-Timing (21.07.)
+- **Mobile-Navigation, Spotify:** Das `open.spotify.com`-Embed wird auf Mobilgeräten oft
+  vom Tracking-Schutz geblockt (kaputte graue Box). Auf Mobile blende ich das iframe aus
+  und zeige stattdessen einen robusten **„WOLTER TALKS"-Button** (Spotify-Icon) in „Folgen".
+  Desktop behält den vollen Player.
+- **Mobile-Navigation, News-Preview:** Der aufklappende Artikel-Slider lag im rechtsbündigen
+  Nav-Block und war mit 92 vw breiter als die Content-Spalte → links abgeschnitten. Jetzt
+  `self-start` + volle Content-Breite → alles im Bild.
+- **Mobile-Zwischenheadlines größer** (Wolfram): Die Zwei-Wort-Headlines waren zu klein.
+  „Companies & Labels" 7 vw → 14 vw (≈ so groß wie „40+"), „Iconic IP" 7 vw → 13 vw,
+  „Unser Team" 7,4 vw → 13 vw. Desktop unverändert.
+- **Home Mobile — Team→Video-Blende entkoppelt:** Das mobile Team-Grid ist höher als 100vh;
+  der frühere End-Pin + der -100vh-Overlap des LogoReveal-Videos zogen das Video „zu früh"
+  über die untersten Reihen (ruckelte, schnitt Teammitglieder ab). Auf Mobile scrollt das
+  Team jetzt vollständig durch, das Video folgt OHNE Overlap (`marginTop` mobil = 0).
+  Desktop behält Pin + Overlap.
+
 ### Team-Feinschliff (Größe/Mitte), Marcus-Position & Magenta-Leiste-Baseline (21.07., 5. Runde)
 - **Team-Portraits nachjustiert** (mehrere waren zu groß bzw. nicht mittig): **Simone**,
   **Janine** kleiner + mittig; **Michael Gaul** deutlich kleiner + mittig; **Natali**
