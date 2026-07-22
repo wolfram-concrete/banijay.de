@@ -263,6 +263,13 @@ REEL["brainpool"] = "/company-media/brainpool.mp4";
 // Ton. Textfrei.
 REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4";
 
+// POSTER-Override (Wolfram 22.07.): Standard-Poster einer Video-Karte ist `card.image` —
+// das ist bei manchen Companies aber ein QUADRATISCHES LOGO, das als formatfüllender
+// Video-Poster verzerrt beim ersten Laden aufblitzt (Elevate: 270×270-Logo). Für diese
+// Fälle ein echter Frame aus dem jeweiligen Video als Poster.
+const POSTER: Record<string, string> = {};
+POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg";
+
 // ShowdownTV (Wolfram 22.07.): Live-Event-Mitschnitt (Boxring/Kampfsport-Arena, „SOCIETY"-
 // Crowd) — Hochformat 464×832 aus WhatsApp, weboptimiert (CRF 28, ohne Ton, faststart).
 REEL["showdown-tv"] = "/company-media/showdown-tv.mp4";
@@ -501,7 +508,7 @@ export function AlgarveCompaniesBento() {
                     data-bento-still
                     src={still.src}
                     alt={still.alt}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute -inset-px h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
                     style={{ objectPosition: still.objectPosition, willChange: "transform" }}
                   />
                 ) : (
@@ -511,14 +518,16 @@ export function AlgarveCompaniesBento() {
                     loop
                     playsInline
                     preload="metadata"
-                    poster={card.image}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    poster={POSTER[card.id] ?? card.image}
+                    className="absolute -inset-px h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
                   >
                     <source src={REEL[card.id]} type="video/mp4" />
                   </video>
                 )}
-                {/* Scrim für Lesbarkeit */}
-                <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
+                {/* Scrim für Lesbarkeit. `-inset-px` (1px über jede Kante, vom overflow-hidden
+                    geclippt) statt inset-0 — sonst blitzt bei Subpixel-Rundung links/rechts eine
+                    unverdunkelte 1px-Bildkante durch (Wolfram 22.07.). */}
+                <div className="pointer-events-none absolute -inset-px" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
 
                 {/* ARBEITSMARKER: Magenta-Layer auf Companies, für die noch kein eigenes
                     Video/Foto vorliegt (siehe hasOwnMedia oben). Vor Livegang entfernen. */}

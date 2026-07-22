@@ -77,6 +77,21 @@ const BRANDS_BOTTOM: Brand[] = [
   // Nachtrag 20.07. (Wolfram) — Verteilung damit 10/10/10, alle drei Reihen gleich lang.
   b("das-grosse-promi-buessen", "Das große Promi Büßen"),
 ];
+// VIERTE Reihe — NUR MOBILE (Wolfram 22.07.): läuft von rechts nach links. Kuratierter
+// Mix quer durch die drei Sets (dekorativer Marquee, Mehrfachnutzung einzelner Motive ok),
+// damit unter dem kürzeren Mobile-Viewport mehr IP-Fläche in Bewegung bleibt.
+const BRANDS_MOBILE4: Brand[] = [
+  b("the-masked-singer", "The Masked Singer"),
+  b("richter-alexander-hold", "Richter Alexander Hold"),
+  b("schlag-den-star", "Schlag den Star"),
+  b("wer-wird-millionar", "Wer wird Millionär"),
+  b("villa-der-versuchung", "Villa der Versuchung"),
+  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht"),
+  b("kitchen-impossible", "Kitchen Impossible"),
+  b("kommissar-dupin", "Kommissar Dupin"),
+  b("das-grosse-promi-buessen", "Das große Promi Büßen"),
+  b("tv-total", "TV total"),
+];
 
 
 export function AlgarveEditorial() {
@@ -313,11 +328,13 @@ export function AlgarveEditorial() {
       <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "2vw", marginBottom: "6vw" }}>
         <div className="flex flex-col" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
           {[
-            { rows: BRANDS_TOP, dir: "is-left" },
-            { rows: BRANDS_MID, dir: "is-right" },
-            { rows: BRANDS_BOTTOM, dir: "is-left" },
+            { rows: BRANDS_TOP, dir: "is-left", mobileOnly: false },
+            { rows: BRANDS_MID, dir: "is-right", mobileOnly: false },
+            { rows: BRANDS_BOTTOM, dir: "is-left", mobileOnly: false },
+            // 4. Reihe nur Mobile (rechts→links), Wolfram 22.07.
+            { rows: BRANDS_MOBILE4, dir: "is-right", mobileOnly: true },
           ].map((row, ri) => (
-            <div key={ri} className={`ip-brands-track flex ${row.dir}`} style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+            <div key={ri} className={`ip-brands-track flex ${row.dir} ${row.mobileOnly ? "hidden max-[767px]:flex" : ""}`} style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
               {/* DREI Kopien (Wolfram 16.07.): seit die Reihen nur noch 9–10 Motive
                   tragen, ist EINE Kopie schmaler als ein breiter Screen — mit nur zwei
                   Kopien risse am Loop-Punkt eine Lücke auf. Passend dazu läuft das
@@ -327,7 +344,9 @@ export function AlgarveEditorial() {
                   {row.rows.map((brand) => (
                     <div
                       key={`${dup}-${brand.slug}`}
-                      className="relative shrink-0 overflow-hidden"
+                      // Mobil 25 % größer (Wolfram 22.07.): auf Mobile greift ohnehin der
+                      // clamp-Mindestwert 108px → fest auf 135px (= +25 %) angehoben.
+                      className="relative shrink-0 overflow-hidden max-[767px]:!h-[135px]"
                       style={{ height: "clamp(108px, 13.5vw, 208px)" }}
                     >
                       <img
