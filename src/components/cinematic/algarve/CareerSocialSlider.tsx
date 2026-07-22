@@ -235,15 +235,13 @@ export function AlgarveCareerSocialSlider({
 
   useGSAP(
     () => {
-      // Gepinnter Horizontal-Slider (Scroll-Stop → Karten-Slide bis durch) — NUR DESKTOP.
-      // Mobile (Wolfram 22.07.): KEIN Pin mehr — der gepinnte Scrub verursachte dort einen
-      // Ruck beim Einrasten, unsauberes Swipe-Timing und einen Footer, der schon hochlief,
-      // bevor der Slide durch war. Mobile nutzt jetzt nativen horizontalen Swipe (Track-
-      // Wrapper mit overflow-x-auto + scroll-snap), die Section bleibt normal im Fluss.
+      // Gepinnter Horizontal-Slider (Scroll-Stop → Karten-Slide bis durch) — Desktop UND
+      // Mobile: die Section rastet ein, der vertikale Scroll wird zum horizontalen Durchsliden
+      // der Karten; erst wenn alle durch sind, löst der Pin und der Footer kommt hoch.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (window.matchMedia("(max-width: 767px)").matches) return;
       const tr = track.current;
       if (!tr) return;
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
       // Horizontale Distanz = Track-Überhang. Beim Scrollen wird die Section gepinnt
       // und der Track von links nach rechts durchgescrubbt, bis alle Cards da waren.
@@ -255,7 +253,11 @@ export function AlgarveCareerSocialSlider({
           trigger: root.current,
           start: "top top",
           end: () => "+=" + distance(),
-          scrub: 1,
+          // Mobile: scrub DIREKT an den Scroll koppeln (true statt 1). Mit scrub:1 lief der
+          // Karten-Slide dem Scroll ~1s hinterher → der Pin löste schon, während die Karten
+          // noch glitten, und der Footer schob sich hoch, BEVOR der Slide durch war (Wolfram
+          // 22.07.). Mit scrub:true endet der Slide exakt am Pin-Ende → Footer kommt erst danach.
+          scrub: isMobile ? true : 1,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -266,7 +268,7 @@ export function AlgarveCareerSocialSlider({
   );
 
   return (
-    <section ref={root} className="relative overflow-clip max-[767px]:!pt-[18vw]" style={{ background: dark ? "transparent" : "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
+    <section ref={root} className="relative overflow-clip max-[767px]:!pt-[18vw] max-[767px]:min-h-[100svh]" style={{ background: dark ? "transparent" : "#f8f7f3", paddingTop: "7vw", paddingBottom: "5.56vw" }}>
       {/* Sternenstaub im Hintergrund (Wolfram 14.07.) — nur im moody-dark-Modus */}
       {dark && (
         <div
@@ -289,20 +291,17 @@ export function AlgarveCareerSocialSlider({
         </div>
       </div>
 
-      {/* Track: Desktop wird gepinnt horizontal gescrubbt; Mobile = NATIVER Swipe
-          (Wrapper mit overflow-x-auto + scroll-snap, kein Pin — s. useGSAP oben). */}
-      <div className="max-[767px]:overflow-x-auto max-[767px]:snap-x max-[767px]:snap-mandatory max-[767px]:[scrollbar-width:none] max-[767px]:[-webkit-overflow-scrolling:touch]">
-        <div
-          ref={track}
-          className="flex w-max"
-          style={{ gap: "1.4vw", paddingLeft: "2vw", paddingRight: "2vw" }}
-        >
-          {posts.map((post, i) => (
-            <div key={`${post.url}-${i}`} className="max-[767px]:snap-start">
-              <Card post={post} showText={showText} />
-            </div>
-          ))}
-        </div>
+      {/* Track: Desktop UND Mobile werden gepinnt horizontal gescrubbt (s. useGSAP). */}
+      <div
+        ref={track}
+        className="flex w-max"
+        style={{ gap: "1.4vw", paddingLeft: "2vw", paddingRight: "2vw" }}
+      >
+        {posts.map((post, i) => (
+          <div key={`${post.url}-${i}`}>
+            <Card post={post} showText={showText} />
+          </div>
+        ))}
       </div>
     </section>
   );
