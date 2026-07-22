@@ -261,7 +261,7 @@ export function EditorialStickyScene() {
                 // Mobile (Wolfram 19.07.): breitere Laufweite (90 % statt 64 %) → der
                 // Quote-Text bricht auf weniger Zeilen um und ragt nicht mehr so hoch ins Bild.
                 className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw] max-[767px]:!max-w-[90%]"
-                style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(52rem, 72%)", color: "#f8f7f3" }}
+                style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(62rem, 86%)", color: "#f8f7f3" }}
               >
                 <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
                   „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht.

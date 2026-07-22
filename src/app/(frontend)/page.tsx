@@ -8,7 +8,7 @@ import { IntroOverlay } from "@/components/cinematic/algarve/IntroOverlay";
 import { AlgarveFoundersSnap } from "@/components/cinematic/algarve/FoundersSnap";
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
-import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
+import { ElfsightFeed } from "@/components/cinematic/ElfsightFeed";
 
 // Home — Design-first: das Gerüst sind die echten Algarve-Sections (Hero, Grid,
 // About-Intro-Wordreveal, Works-Deck, Animated-Heading, Services-Stack,
@@ -82,11 +82,9 @@ export default function HomePage() {
       {/* Latest news als Stapel-Tiles (section_blog-home) — auf Magenta */}
       <AlgarveNewsStack />
 
-      {/* Social-Feed — dieselbe Juicer-/LinkedIn-Section wie auf Career & News,
-          hier als abschließender „live aus der Banijay-Welt"-Block vor dem Footer. */}
-      <AlgarveCareerSocialFeed
-        dark
-        showText={false}
+      {/* Social-Feed (Wolfram 22.07.) — Instagram @banijaygermany über das von Banijay
+          eingerichtete Elfsight-Widget (Token via Linda). Löst hier den Juicer-Block ab. */}
+      <ElfsightFeed
         headline="#BanijayGermany"
         subline="Neuigkeiten, Menschen und Momente — direkt aus unseren Kanälen."
       />
