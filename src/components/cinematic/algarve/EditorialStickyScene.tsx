@@ -83,12 +83,11 @@ const FACTS: Fact[] = [
     copy: "Unsere selbstauferlegte Währung bei Banijay: die Primetime Hitrate. Seit 2023 analysieren wir monatlich die On-Air-Performance aller Banijay-Formate – mit dem Ziel einer transparenten und vergleichbaren Erfolgsmessung. Unsere Währung: die Primetime Hitrate. Wie viele unserer Shows lagen über dem jeweiligen Senderschnitt und fanden damit ihr Publikum? Für uns in der Banijay-Gruppe bedeutet das: eine Hitrate von 90 Prozent! Das ist nicht nur eine starke Performance unserer Teams, sondern auch ein Signal für die Unterhaltung in Deutschland: Starke Entertainment-Marken mit klarer Haltung und Wiedererkennbarkeit liefern in einem umkämpften Markt ab.",
   },
   {
-    // 1.300+ → 1.400+ (Heike 17.07.): Ihre Überschrift UND ihr Fließtext nennen beide
-    // 1400 — die alte 1.300 hätte der eigenen Copy widersprochen. site.ts mitgezogen.
-    value: 1400,
+    // 1.400+ → 1.500+ (Wolfram 22.07.): Zahl + Fließtext auf 1500 aktualisiert.
+    value: 1500,
     suffix: "+",
     label: "Mitarbeiterinnen & Mitarbeiter",
-    copy: "Die rund 1400 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 451 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Schlag den Star“, „Die Höhle der Löwen“, „Wer wird Millionär?“, „Promi Big Brother“, „Berlin – Tag & Nacht“, „Temptation Island“ oder „Tatort Dresden“ sowie zahllose namhafte Künstlerinnen und Künstler.",
+    copy: "Die rund 1500 Mitarbeiterinnen und Mitarbeiter der Banijay Germany produzieren jährlich über 450 Prime-Time Erstausstrahlungen. Banijay Germany erreicht täglich digital und im linearen TV ein Millionenpublikum und mehr Zuschauerinnen und Zuschauer als jedes andere deutsche Unterhaltungsunternehmen. Zu den bekanntesten Marken gehören Sendungen wie „The Masked Singer“, „TV total“, „Wer wird Millionär?“, „Berlin – Tag & Nacht“, „Temptation Island“, „Schlag den Star“, „Die Höhle der Löwen“, „Promi Big Brother“ oder „Tatort“ sowie zahllose namhafte Künstlerinnen und Künstler.",
   },
   {
     value: 4,
@@ -265,7 +264,10 @@ export function EditorialStickyScene() {
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(46rem, 64%)", color: "#f8f7f3" }}
               >
                 <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
-                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht.&ldquo;
+                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht.
+                </p>
+                <p className="m-0 mt-[0.7em] max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
+                  Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[3.2vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
                   Marcus Wolter, Founder &amp; CEO Banijay Germany

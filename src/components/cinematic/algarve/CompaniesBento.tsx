@@ -198,8 +198,8 @@ REEL["doc-banijay"] = "/company-media/doc-banijay.mp4";
 // EndemolShine Germany → „ESG - Trailer 2023" (Quelle 187s). Ausschnitt 1–11s, endet
 // vor der Schwarzblende bei 11,52s.
 REEL["endemolshine-germany"] = "/company-media/endemolshine-germany.mp4";
-// B&B Endemol Shine Switzerland (Wolfram 20.07.) — Showreel der Schweizer Formate,
-// Quelle 28s, Ausschnitt 2–12s. Trägt in einigen Einstellungen ein SRF-Logo.
+// B&B Endemol Shine (Wolfram 22.07.) — neues „BBES Web Sizzle 2026" (111s). Montage aus
+// fünf Sequenzen quer durch den Sizzle, 960×540, ohne Ton.
 REEL["bb-endemol-shine"] = "/company-media/bb-endemol-shine.mp4";
 // Lucky Pics (Wolfram 20.07.) — „CATCH!"-Trampolin-Show. Quelle war eine MXF
 // (DV, 1440×1080 anamorph, SAR 4:3 / DAR 16:9); ffmpeg entzerrt beim Skalieren auf

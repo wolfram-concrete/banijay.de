@@ -35,9 +35,9 @@ export interface Stat {
 /** Zahlenmodule. Auf Home max. 5 (Konzept Section 4). */
 export const STATS: Stat[] = [
   // Wording + Einheiten-Suffixe wie in der Editorial-Fact-Section (Wolfram 15.07.).
-  // 1.300+ → 1.400+ (Heike 17.07.) — muss mit der Editorial-Fact-Section auf der Home
+  // 1.400+ → 1.500+ (Wolfram 22.07.) — muss mit der Editorial-Fact-Section auf der Home
   // übereinstimmen (EditorialStickyScene.tsx).
-  { value: "1.400+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
+  { value: "1.500+", label: "Mitarbeiterinnen und Mitarbeiter", note: "Kreative, Produzent:innen, Teams und Spezialist:innen." },
   // Schreibweise exakt wie die Editorial-Facts (Wolfram 20.07.): kaufmännisches „&".
   { value: "40+", label: "Companies & Labels", note: "Produktionshäuser, Live-Einheiten, Managements und Plattformen." },
   { value: "4 Mrd.", label: "Views & Zuschauer jährlich", note: "Reichweite über lineare, digitale und weitere Ausspielwege." },
