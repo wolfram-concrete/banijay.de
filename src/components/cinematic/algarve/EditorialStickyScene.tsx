@@ -40,7 +40,10 @@ const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 // Kachel 94–131px unter dem Foto.)
 // min(87px, 5.4vw, …): 87px war die ursprüngliche Maximalgröße; 5.4vw deckelt schmale,
 // hohe Fenster. max(2.1rem, …) ist der Boden für Mobile, wo 5.4vw winzig würde.
-const DIGIT = "max(2.1rem, min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 64px)))";
+// Angeglichen an die „170+ Companies weltweit"-Referenzleiste (Wolfram 22.07.): identische
+// Ziffernformel, damit alle Fact-Kacheln so groß sind wie „170+". Die Kacheln füllen per
+// flex-grow die Bühnenhöhe → größere Ziffern bleiben desktop-pin-stabil.
+const DIGIT = "clamp(3.4rem, 7vw, 7rem)";
 // Einheit relativ zur Ziffer (0.54em ≈ das bisherige Verhältnis 30/56) — so skaliert
 // sie automatisch mit und die Grundlinie bleibt stabil.
 const UNIT = "0.54em";
@@ -160,9 +163,9 @@ export function EditorialStickyScene() {
         if (!reduce && !desktop && section.current) {
           gsap.fromTo(
             wrapEl,
-            { height: "104vw" },
+            { height: "135vw" },
             {
-              height: "62vw",
+              height: "80vw",
               ease: "none",
               scrollTrigger: {
                 trigger: section.current,
@@ -239,7 +242,7 @@ export function EditorialStickyScene() {
               // Höhe OHNE !important (h-[104vw] mobil, md:h-full Desktop), damit der
               // Mobile-Zoom-Scrub sie per Inline-Style animieren kann (!important ließe sich
               // von GSAP nicht überschreiben). Position/Top/z bleiben mobil per !override.
-              className="absolute left-0 top-0 h-[104vw] w-full overflow-hidden md:h-full max-md:!sticky max-md:!top-[72px] max-md:!z-[3] max-md:!w-full"
+              className="absolute left-0 top-0 h-[135vw] w-full overflow-hidden md:h-full max-md:!sticky max-md:!top-[72px] max-md:!z-[3] max-md:!w-full"
             >
               <img
                 src="/editorial/marcus-wolter.jpg"
@@ -263,10 +266,12 @@ export function EditorialStickyScene() {
                 className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw] max-[767px]:!max-w-[90%]"
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(62rem, 86%)", color: "#f8f7f3" }}
               >
-                <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
+                {/* Mobile-Quote kleiner (Wolfram 22.07.): 4vw war für den langen Text nicht
+                    lesbar → 3.1vw + etwas engere Zeile. Container ist dafür 30 % höher. */}
+                <p className="m-0 max-[767px]:!text-[3.1vw] max-[767px]:!leading-[130%]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
                   „Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
                 </p>
-                <span className="mt-3 block max-[767px]:!text-[3.2vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
+                <span className="mt-3 block max-[767px]:!text-[2.7vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
                   Marcus Wolter, Founder &amp; CEO Banijay Germany
                 </span>
               </blockquote>
@@ -381,7 +386,7 @@ export function EditorialStickyScene() {
                           fluchtet also exakt mit der Unterlänge von Ziffer und Einheit. */}
                       <span
                         className="min-w-0 flex-1 md:whitespace-nowrap"
-                        style={{ fontSize: "clamp(0.85rem, 0.95vw, 1.05rem)", lineHeight: "124%", color: tone.label, fontWeight: 500 }}
+                        style={{ fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", lineHeight: "124%", color: tone.label, fontWeight: 500 }}
                       >
                         {f.label}
                       </span>
