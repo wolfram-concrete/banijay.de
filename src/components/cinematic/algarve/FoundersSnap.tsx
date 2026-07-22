@@ -14,13 +14,13 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 
 // TEAM-VARIANTE „SNAP" (Wolfram 22.07., finale Fassung) — kein Ein-Viewport-Snap mehr:
-// Reihen 3 / 4 / 5 (oben Marcus, Knut, Michael Laegel), man scrollt durch die drei Reihen,
+// Reihen 3 / 5 / 4 (oben Marcus, Knut, Michael Laegel; Mitte inkl. Michael Gaul), man scrollt durch die drei Reihen,
 // und ERST UNTERHALB der dritten Reihe rastet die Section ein (Pin „bottom bottom") und gibt
 // dann die LogoReveal-Videoblende frei. Karten kantig, ohne Kontur, wachsen mit.
 
 const ROW1 = LEADERSHIP.slice(0, 3); // Marcus, Knut, Michael Laegel
-const ROW2 = LEADERSHIP.slice(3, 7); // vier
-const ROW3 = LEADERSHIP.slice(7, 12); // fünf
+const ROW2 = LEADERSHIP.slice(3, 8); // fünf (Simone, Heike, Natali, Janine, Michael Gaul)
+const ROW3 = LEADERSHIP.slice(8, 12); // vier (Elena, Sebastian, Matthaeus, Aylin)
 
 // Milchglas-Namenskarte — OHNE weiße Kontur, wächst mit (kein whitespace-nowrap auf Rolle).
 export function GlassCard({ name, role }: { name: string; role: string }) {

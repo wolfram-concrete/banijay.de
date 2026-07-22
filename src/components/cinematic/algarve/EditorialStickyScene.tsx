@@ -264,10 +264,7 @@ export function EditorialStickyScene() {
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(62rem, 86%)", color: "#f8f7f3" }}
               >
                 <p className="m-0 max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
-                  „Wir bei Banijay sind ein Verbund der besten unabhängigen Entertainment-Produzenten und Unternehmer. Wir bieten Unterhaltung, über die ganz Deutschland spricht.
-                </p>
-                <p className="m-0 mt-[0.7em] max-[767px]:!text-[4vw]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
-                  Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
+                  „Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[3.2vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
                   Marcus Wolter, Founder &amp; CEO Banijay Germany
