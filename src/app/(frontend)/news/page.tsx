@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { NewsSections } from "@/components/cinematic/algarve/NewsSections";
-import { fetchSocialPosts } from "@/components/cinematic/algarve/CareerSocialFeed";
+import { fetchCombinedSocialPosts } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { mergeFeed } from "@/data/feed";
 import { NEWS } from "@/data/news";
 
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default async function NewsPage() {
-  // News-Beiträge + Social-Posts (Juicer) zu einer datums­sortierten Liste mischen.
-  const social = await fetchSocialPosts(30);
+  // News-Beiträge + Social-Posts (LinkedIn via Juicer + Instagram via Elfsight,
+  // kanalübergreifend dublettenbereinigt) zu einer datumssortierten Liste mischen.
+  const social = await fetchCombinedSocialPosts(30);
   const feed = mergeFeed(NEWS, social);
 
   return (

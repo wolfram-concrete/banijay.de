@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import { AlgarveCareerSocialSlider, type SocialPost } from "./CareerSocialSlider";
+import { fetchElfsightPosts } from "@/components/cinematic/ElfsightFeed";
 
 // #workatBanijay — Social-Feed-Section für die Career-Seite. Zieht die Posts
 // server-seitig aus dem Juicer-JSON (derselbe Feed wie die bestehende Live-
@@ -188,6 +189,65 @@ export async function fetchSocialPosts(limit = 12): Promise<SocialPost[]> {
   }
 }
 
+/** "DD.MM.YYYY" → sortierbarer Timestamp (0 bei unparsbar). */
+function dateMs(d: string): number {
+  const m = d.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+  return m ? Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1])) : 0;
+}
+
+// GEMISCHTER Social-Feed (Wolfram 22.07.): LinkedIn (Juicer) + Instagram (Elfsight) in EINER
+// datumssortierten Liste. Banijay postet vieles PARALLEL auf beiden Kanälen — damit dasselbe
+// Motiv nicht doppelt erscheint, wird KANALÜBERGREIFEND dedupliziert.
+//
+// WARUM TEXT ZUERST: Anders als bei der Juicer-internen Prüfung taugt der Bild-Hash hier NICHT
+// als Hauptsignal — Instagram und LinkedIn croppen dieselbe Grafik unterschiedlich (Hochformat
+// vs. Landscape), der Average-Hash weicht dann > IMG_MAX_DISTANCE ab. Die CAPTION ist bei
+// Reposts dagegen praktisch identisch. Darum: Dublette, wenn der Text stark überlappt
+// (Jaccard ≥ CROSS_TEXT_MIN) ODER dieselbe Grafik + ähnlicher Text (Bild ≤ IMG_MAX_DISTANCE
+// UND Text ≥ TEXT_MIN_SIMILARITY, fängt umgetextete Reposts desselben Motivs). Bei einem
+// Treffer bleibt die PRÄFERIERTE Quelle stehen, der Zwilling fliegt raus.
+const PREFER: "instagram" | "linkedin" = "instagram";
+const CROSS_TEXT_MIN = 0.5; // Text-Ähnlichkeit, ab der zwei Posts als derselbe gelten
+
+export async function fetchCombinedSocialPosts(limit = 12): Promise<SocialPost[]> {
+  const [linkedin, instagram] = await Promise.all([fetchSocialPosts(50), fetchElfsightPosts(50)]);
+  const preferred = PREFER === "instagram" ? instagram : linkedin;
+  const secondary = PREFER === "instagram" ? linkedin : instagram;
+
+  // Keine Präferenz-Posts (z. B. Elfsight down) → nur die andere Quelle, sortiert.
+  if (preferred.length === 0) {
+    return [...secondary].sort((a, b) => dateMs(b.date) - dateMs(a.date)).slice(0, limit);
+  }
+
+  // Normalisierte Anfangszeile (Reposts teilen oft denselben Aufhänger, danach umgetextet →
+  // Jaccard rutscht unter die Schwelle). 28 Zeichen sind spezifisch genug, um NICHT bei
+  // generischen Openings verschiedener Posts zu kollidieren.
+  const prefixKey = (t: string) => t.toLowerCase().replace(/[^a-z0-9äöüß]/gi, "").slice(0, 28);
+
+  const prefHashes = await Promise.all(preferred.map((p) => imageHash(p.image)));
+  const prefWords = preferred.map((p) => words(p.text));
+  const prefKeys = preferred.map((p) => prefixKey(p.text));
+  const secHashes = await Promise.all(secondary.map((p) => imageHash(p.image)));
+
+  const merged: SocialPost[] = [...preferred];
+  secondary.forEach((p, i) => {
+    const h = secHashes[i];
+    const w = words(p.text);
+    const pk = prefixKey(p.text);
+    const isDuplicate = preferred.some((_, j) => {
+      const textSim = textSimilarity(w, prefWords[j]);
+      const sameImage = h !== null && prefHashes[j] !== null && hashDistance(h, prefHashes[j] as string) <= IMG_MAX_DISTANCE;
+      const samePrefix = pk.length >= 24 && prefKeys[j] === pk; // gleiche Anfangszeile
+      // Gleicher Aufhänger ODER stark überlappender Text → derselbe Post; ODER dasselbe Motiv
+      // mit nur ähnlichem Text (fängt umgetextete Reposts desselben Bildes).
+      return samePrefix || textSim >= CROSS_TEXT_MIN || (sameImage && textSim >= TEXT_MIN_SIMILARITY);
+    });
+    if (!isDuplicate) merged.push(p);
+  });
+
+  return merged.sort((a, b) => dateMs(b.date) - dateMs(a.date)).slice(0, limit);
+}
+
 export async function AlgarveCareerSocialFeed({
   headline,
   subline,
@@ -201,7 +261,7 @@ export async function AlgarveCareerSocialFeed({
   /** Post-Caption auf der Karte zeigen (Default an = Career; Home schaltet sie aus). */
   showText?: boolean;
 } = {}) {
-  const posts = await fetchSocialPosts();
+  const posts = await fetchCombinedSocialPosts(); // LinkedIn + Instagram, dublettenbereinigt
   if (posts.length === 0) return null; // Feed nicht verfügbar → Section ausblenden
   return (
     <AlgarveCareerSocialSlider posts={posts} headline={headline} subline={subline} dark={dark} showText={showText} />
