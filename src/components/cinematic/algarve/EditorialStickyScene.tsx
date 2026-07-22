@@ -40,10 +40,7 @@ const ASIDE_W = 540; // etwas breiter (Wolfram 14.07.)
 // Kachel 94–131px unter dem Foto.)
 // min(87px, 5.4vw, …): 87px war die ursprüngliche Maximalgröße; 5.4vw deckelt schmale,
 // hohe Fenster. max(2.1rem, …) ist der Boden für Mobile, wo 5.4vw winzig würde.
-// Angeglichen an die „170+ Companies weltweit"-Referenzleiste (Wolfram 22.07.): identische
-// Ziffernformel, damit alle Fact-Kacheln so groß sind wie „170+". Die Kacheln füllen per
-// flex-grow die Bühnenhöhe → größere Ziffern bleiben desktop-pin-stabil.
-const DIGIT = "clamp(3.4rem, 7vw, 7rem)";
+const DIGIT = "max(2.1rem, min(87px, 5.4vw, calc(clamp(97.14px, 11.714vh, 142.86px) - 64px)))";
 // Einheit relativ zur Ziffer (0.54em ≈ das bisherige Verhältnis 30/56) — so skaliert
 // sie automatisch mit und die Grundlinie bleibt stabil.
 const UNIT = "0.54em";
@@ -386,7 +383,9 @@ export function EditorialStickyScene() {
                           fluchtet also exakt mit der Unterlänge von Ziffer und Einheit. */}
                       <span
                         className="min-w-0 flex-1 md:whitespace-nowrap"
-                        style={{ fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", lineHeight: "124%", color: tone.label, fontWeight: 500 }}
+                        // Titelfarbe = Zifferfarbe (Wolfram 22.07.): tone.fg statt der gedämpften
+                        // tone.label — der Titel steht damit in derselben Farbe wie Ziffer/Einheit.
+                        style={{ fontSize: "clamp(0.85rem, 0.95vw, 1.05rem)", lineHeight: "124%", color: tone.fg, fontWeight: 500 }}
                       >
                         {f.label}
                       </span>
