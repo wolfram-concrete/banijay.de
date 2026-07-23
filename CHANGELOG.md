@@ -5,6 +5,41 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Bild-Assets auf WebP, Cleanup & Layout-/CTA-Feinschliff (23.07.)
+- **Hero-Motive → komprimierte WebP:** alle Hero-Bilder (Desktop **und** Mobile, alle Seiten)
+  gegen die vom Kunden gelieferten, bereits komprimierten WebP getauscht — gleiche Ausschnitte
+  (Aspekt identisch), höher aufgelöst, keine erneute Kompression. Deutlicher Gewicht­gewinn
+  (z. B. `frame-2` 604 KB → 178 KB). Referenzen in `AlgarveHome`/`career`/`news` und
+  `mobileVariante()` auf `.webp`.
+- **Team- + Marcus-Quote-Bilder → WebP-Master:** die neuen WebP sind volle Master-Fotos, kein
+  1:1-Tausch möglich. Da die Pixelmaße identisch zu den Originalen sind, wurden die bisherigen
+  **Bildausschnitte pixelgenau aus den neuen Mastern reproduziert** (Grauwert-Match Crop↔Master,
+  MAE 3–7), `object-position` unverändert. `leadership.ts`/`teamFocus.ts`/`EditorialStickyScene`
+  auf `.webp`. Michael Laegel aus dem Master-Foto (tonwert-normalisiertes Matching, da hart S/W
+  vs. Farb-Master).
+- **Only Good Party People:** weißes Hochformat-Logo (mit Untertitel) über den Video-Container
+  gelegt (per `logoClass` höher, wie NightWash) — das letzte fehlende Company-Logo.
+- **Cleanup (~85 MB):** tote Layout-Reste entfernt (per Netzwerk-Check verifiziert, dass nichts
+  davon geladen wird): 9 alte `/video/*.mp4`, `brand/stage-portrait.png` (16 MB),
+  `grid/g02–g12` (außer g01/g09), `career/c5–c6`, `hero-v2/b-*.jpg`, alte `marcus-*`/`lead-*`-
+  Varianten, `news/n1–n9`, plus die durch WebP ersetzten Alt-JPGs. Dynamisch referenzierte
+  Dateien (`reel-1..6`, `about-drift/clip-01..10`) erkannt und behalten.
+- **Career „Banijay Tomorrow":** Bild von der Text-Höhe **entkoppelt** — feste native Ratio
+  (2560/1312), oben an der Headline angesetzt statt vollhoher `self-stretch`-Turm; Grid
+  1.05/0.95 → 1.18/0.82 (`items-start`), Copy `max-w` 38vw → 46vw (breiter).
+- **News – Aaron Troschke:** Beitragsbild aus dem hochauflösenden Title-Original (4096×2731) neu
+  gerendert (war aus einer 385px-Mini hochskaliert → unscharf), 1600×901 mozjpeg q84.
+- **Home Hero→Statement (Desktop):** Magenta-Veil (`DustStage`) hält länger (Timeline 0.5 → 0.72)
+  und blendet weicher aus; `invalidateOnRefresh` gegen den First-Load-Fehlstand (Magenta soll
+  länger hinter dem Statement bleiben, kein harter Cut auf den Sternenstaub).
+- **CTAs vereinheitlicht:** „Alle Jobs ansehen" (Jobs-Listing) und „Nachricht senden"
+  (Formular-Master) an die Referenz „BANIJAY TOMORROW Login" angeglichen — border `1px solid
+  #f8f7f3`, Padding/Größe (vw), rounded-6px, Magenta-Fill-Hover; der Formular-Button bekam die
+  Border per Inline-Style, da eine globale Form-Regel sie auf 16 %-Weiß gedimmt hatte.
+- **Offen (Live-Tuning nötig):** Logo-Invert-Timing rechts oben (Theme müsste innerhalb einer
+  Section magenta→dunkel wechseln) und die LogoReveal-Mobile-Choreografie (b→Fond→News) —
+  beide im automatisierten Preview nicht reproduzierbar.
+
 ### Mobile-QA-Runde: Headlines, Video-Karten, Slider, Footer (22.07., Nacht)
 - **Zwischenüberschriften (mobil) vereinheitlicht:** ABOUT BANIJAY, ICONIC IP, UNSER TEAM und
   „40+ COMPANIES & LABELS" jetzt alle 13vw (Referenzgröße ICONIC IP), Abstände an der

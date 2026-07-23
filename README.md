@@ -16,7 +16,8 @@ ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden 
 Alle Subpages (Career/News/Contact) teilen sich denselben **Home-Hero**
 (`AlgarveHome`): die „We Are Banijay"-Frame-Sequenz + auffächernde Satellitenringe auf
 dunklem Sternenstaub, darunter das seiteneigene Statement mittelachsig. Frame 3 ist je
-Seite passend (`/hero-v2/frame-3-<page>.jpg`, z. B. „ABOUT"/„CAREER"). Ein globaler
+Seite passend (`/hero-v2/frame-3-<page>.webp`, z. B. „ABOUT"/„CAREER"; alle Hero-Motive
+sind kundenseitig komprimierte WebP). Ein globaler
 `MoodBackdrop` mit ambient Sternenstaub liegt fix hinter allen Seiten.
 
 **Redesign V2 (Branch `redesign-v2`):** die Site ist auf einen durchgehenden dark/moody
@@ -369,20 +370,25 @@ Große Videos und Marken-Rohmaterial sowie `design-source/`, `assets/` und
 `scraped_content/` sind **bewusst gitignored** — zu groß für GitHub und nur lokal
 als Quellmaterial vorhanden. `.env.local` wird nie committet.
 
-**Wichtig für Deploy/Clone:** Diese in `public/video/` genutzten, gitignorten
-Videos müssen separat bereitgestellt werden (weboptimierte Kopien liegen in
-`assets/Videos/weboptimiert/`):
+**Wichtig für Deploy/Clone:** Weboptimierte Kopien der genutzten Videos liegen in
+`assets/Videos/weboptimiert/`. Aktuell in `public/video/` tatsächlich referenziert
+(Stand 23.07., alter/ungenutzter Ballast wurde entfernt):
 
 | Datei                     | Verwendung                                  |
 |---------------------------|---------------------------------------------|
-| `hero-bg.mp4`             | Home-Hero (Glas-„b")                        |
-| `team-fullscreen.mp4`     | Team-→-News-Übergang (LogoReveal)           |
+| `team-all3media.mp4`      | Team-→-News-Übergang (LogoReveal)           |
 | `b-glass.mp4`             | About – Statement-Video (ProofVideo)        |
 | `grid-loop1–3.mp4`        | 3 Loop-Cutouts in der Home-Grid-Section     |
-| `showreel.mp4`, `banijay-teaser.mp4` | Showreel / Teaser (im Repo)      |
+| `preloader-bg.mp4`        | Intro/Preloader-Hintergrund                 |
+| `banijay-brand.mp4`       | Brand-Sequenz                               |
+| `showreel.mp4`            | Showreel                                    |
+| `company-media/reel-1–6.mp4` | Company-Video-Karten (Auto-Zuordnung)    |
 
-Ältere Platzhalter (`hero.mp4`, `hero-cinematic.mp4`, `kompetenz-reel.mp4`,
-`preloader.png`, `stage-portrait.png`) ebenfalls gitignored.
+Am 23.07. wurden ~85 MB tote Layout-Reste entfernt (alte `hero-bg.mp4`,
+`hero-cinematic.mp4`, `hero-design.mp4`, `kompetenz-reel.mp4`, `team-fullscreen.mp4`,
+`banijay-teaser.mp4`, `companies-hero.mp4`, `hero-mobile/reel.mp4`,
+`brand/stage-portrait.png`, ungenutzte `grid/`-, `career/`-, `news/`-Bilder u. a.) —
+per Netzwerk-Check verifiziert, dass nichts davon geladen wird.
 
 **Hero-Poster:** Die `poster`-Bilder der gepinnten Video-Heroes werden aus dem ERSTEN
 Videoframe erzeugt (z. B. `public/career/career-hero-poster.jpg` via ffmpeg) — so
