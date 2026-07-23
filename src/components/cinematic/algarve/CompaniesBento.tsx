@@ -241,7 +241,7 @@ REEL["potatohead-pictures"] = "/company-media/potatohead-pictures.mp4";
 // SR Management (Wolfram 21.07.): aus „GiovanniZ2.mp4" (Giovanni Zarrella, 720×1280 hochkant,
 // 69 s) — die meisten Shots sind Totalen; der Anfang (2–12 s) zeigt ihn nah. 16:9-Band
 // (crop 720×405 @ y219) → 960×540, ohne Ton.
-REEL["sr-management"] = "/company-media/sr-management.mp4";
+REEL["sr-management"] = "/company-media/sr-management.mp4?v=2"; // ?v=2: Cache-Bust, Reel jetzt Hochformat (Wolfram 23.07.)
 // MyShow (Wolfram 21.07.): Scroll-Screencast der myshow.de (1440×920, 25 fps). Der Anfang
 // (~3–7 s) zeigt ein Cookie-Banner-Modal — deshalb erst AB 8 s geschnitten (Banner weg,
 // sauberer Scroll durch Hero → Show-Kacheln). Der Screencast scrollte stufig/ruckartig →
@@ -269,6 +269,9 @@ REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp
 // Fälle ein echter Frame aus dem jeweiligen Video als Poster.
 const POSTER: Record<string, string> = {};
 POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg";
+// SR Management (Wolfram 23.07.): echter Frame aus dem neuen Hochformat-Reel statt des
+// alten Landscape-Posters; ?v=2 bustet den Browser-Cache (alte Datei hing fest).
+POSTER["sr-management"] = "/companies/sr-management.jpg?v=2";
 
 // ShowdownTV (Wolfram 22.07.): Live-Event-Mitschnitt (Boxring/Kampfsport-Arena, „SOCIETY"-
 // Crowd) — Hochformat 464×832 aus WhatsApp, weboptimiert (CRF 28, ohne Ton, faststart).
@@ -528,7 +531,11 @@ export function AlgarveCompaniesBento() {
                 {/* Scrim für Lesbarkeit. `-inset-px` (1px über jede Kante, vom overflow-hidden
                     geclippt) statt inset-0 — sonst blitzt bei Subpixel-Rundung links/rechts eine
                     unverdunkelte 1px-Bildkante durch (Wolfram 22.07.). */}
-                <div className="pointer-events-none absolute -inset-px" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.88) 100%)" }} />
+                {/* Scrim endet unten VOLL deckend (Wolfram 23.07.): vorher 0.88 an der
+                    Unterkante → das (helle) Video schien dort 12 % durch = feine Blitzer-
+                    kante zum Videorand. Jetzt ab 96 % rgba …,1) + 2px Bottom-Overscan
+                    (statt 1px), damit die Kante bündig dunkel abschließt. */}
+                <div className="pointer-events-none absolute -left-px -right-px -top-px -bottom-[2px]" style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 38%, rgba(10,10,10,0.35) 62%, rgba(10,10,10,0.85) 88%, rgba(10,10,10,1) 96%)" }} />
 
                 {/* ARBEITSMARKER: Magenta-Layer auf Companies, für die noch kein eigenes
                     Video/Foto vorliegt (siehe hasOwnMedia oben). Vor Livegang entfernen. */}
