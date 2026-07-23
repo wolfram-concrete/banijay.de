@@ -464,9 +464,14 @@ export function AlgarveHome({
                 Ein „\n" im Statement erzwingt einen Umbruch (Wolfram 20.07., Career-
                 Text: Zuruf auf eigener Zeile, darunter der Fließtext). Der Umbruch
                 zählt NICHT als Wort, die Reveal-Reihenfolge bleibt also lückenlos. */}
-            {statement.split(/(\n)/).map((chunk, ci) =>
+            {statement.split(/(\n|\|\|)/).map((chunk, ci) =>
               chunk === "\n" ? (
                 <br key={`br-${ci}`} />
+              ) : chunk === "||" ? (
+                // MOBILE-ONLY-Umbruch (Wolfram 23.07.): ` ` bricht NUR mobil um (br
+                // inline), auf Desktop kein Umbruch (hidden). So bleibt „neuesten Stand" auf
+                // Desktop in der oberen Zeile, mobil steht es sauber allein.
+                <br key={`mbr-${ci}`} className="hidden max-[767px]:inline" />
               ) : (
                 chunk.split(" ").map((w, i, arr) => [
                   <span
