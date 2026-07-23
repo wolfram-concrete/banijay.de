@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -46,11 +47,12 @@ function SubmitButton() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ fontFamily: SHARP }}
-      className={`cursor-pointer rounded-[6px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:gap-[2vw] max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
         hovered ? "bg-[#f8f7f3] text-[#0a0208]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >
       Nachricht senden
+      <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />
     </button>
   );
 }
