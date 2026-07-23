@@ -135,7 +135,7 @@ export const COMPANIES_DIRECTORY: DirectoryCompany[] = [
   // bewusster Verweis auf die verwandte Company, bis ein eigener Auftritt vorliegt.
   // Logo (Wolfram 23.07.) — Hochformat-Wortmarke mit Untertitel, darum wie NightWash
   // per logoClass höher gesetzt, sonst im Standard-Slot zu klein. Liegt über dem Video.
-  { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], logo: L("only-good-party-people.png"), logoClass: "h-[3.4rem] md:h-[4rem]", url: "https://ogp.rocks/", tags: ["Artists"], placeholder: true },
+  { id: "only-good-party-people", name: "Only Good Party People", ecoKeys: ["artists"], logo: L("only-good-party-people.png"), logoClass: "h-[2.72rem] md:h-[3.2rem]", url: "https://ogp.rocks/", tags: ["Artists"], placeholder: true },
   // ShowdownTV (Wolfram 21.07.) — neue Plattform von Banijay Media Germany. Logo geliefert
   // (Wolfram 21.07.): weißes Hochformat-Logo (V-Mark über Wortmarke) → wie NightWash mehr
   // Höhe per logoClass, sonst wäre die Wortmarke im Standard-Slot zu klein. Video folgt noch.
