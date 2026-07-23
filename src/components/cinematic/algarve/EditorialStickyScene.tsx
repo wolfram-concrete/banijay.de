@@ -103,7 +103,7 @@ const FACTS: Fact[] = [
     value: 1500,
     suffix: "+",
     label: "Live-Veranstaltungen",
-    copy: "Banijay Germany ist die Adresse, wenn es um Live-Brands, Tour-Booking und die Entwicklung und Inszenierung innovativer Live-Shows geht.\nZu unserem Live Portfolio gehören die etablierten Brands wie das COLOGNE COMEDY FESTIVAL, Die besten Comedians Deutschlands, NightWash und die 1LIVE Comedy-Nacht XXL sowie der neue NightWash Club in Köln. Wir kümmern uns um Künstler-Bookings, wie beispielsweise von Atze Schröder oder Michael Mittermeier und wir bringen immersive Events an den Start - mit der dritten Ausgabe der erfolgreichen immersive Show Luminiscence in den Kathedralen des Landes.",
+    copy: "Banijay Germany ist die Adresse, wenn es um Live-Brands, Tour-Booking und die Entwicklung und Inszenierung innovativer Live-Shows geht. Zu unserem Live Portfolio gehören die etablierten Brands wie das Cologne Comedy Festival, die besten Comedians Deutschlands, NightWash und die 1LIVE Comedy-Nacht XXL sowie der neue NightWash Club in Köln. Wir kümmern uns um Künstler-Bookings, wie beispielsweise von Atze Schröder oder Michael Mittermeier und wir bringen immersive Events an den Start - mit der dritten Ausgabe der erfolgreichen immersive Show Luminiscence in den Kathedralen des Landes.",
   },
   {
     // ERSETZT am 21.07. (Wolfram): die Kachel „170+ Companies weltweit" ist raus — die
