@@ -468,9 +468,6 @@ export function AlgarveHome({
               chunk === "\n" ? (
                 <br key={`br-${ci}`} />
               ) : chunk === "||" ? (
-                // MOBILE-ONLY-Umbruch (Wolfram 23.07.): ` ` bricht NUR mobil um (br
-                // inline), auf Desktop kein Umbruch (hidden). So bleibt „neuesten Stand" auf
-                // Desktop in der oberen Zeile, mobil steht es sauber allein.
                 <br key={`mbr-${ci}`} className="hidden max-[767px]:inline" />
               ) : (
                 chunk.split(" ").map((w, i, arr) => [

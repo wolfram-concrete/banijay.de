@@ -66,8 +66,15 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
         scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 1 },
       });
 
-      // 1) „WE ARE BANIJAY" steht (Beat 0–1.2) und blendet dann aus.
-      tl.to("[data-coc-claim]", { opacity: 0, scale: 0.94, ease: "power2.in", duration: 1 }, 1.2);
+      // 0) „WE ARE BANIJAY" KONVERGIERT herein wie die ICONIC-IP/About-Zwischenheadline
+      // (Wolfram 23.07.): obere Zeile von oben, untere von unten, gescrubbt.
+      const vh = window.innerHeight;
+      gsap.set(["[data-coc-claim-first]", "[data-coc-claim-last]"], { willChange: "transform" });
+      tl.from("[data-coc-claim-first]", { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
+        .from("[data-coc-claim-last]", { y: 0.15 * vh, ease: "none", duration: 1 }, 0);
+
+      // 1) „WE ARE BANIJAY" steht (Beat 1–1.6) und blendet dann aus.
+      tl.to("[data-coc-claim]", { opacity: 0, scale: 0.94, ease: "power2.in", duration: 1 }, 1.6);
 
       // 2) Erst danach enthüllt sich das Statement Wort für Wort.
       tl.from(wordEls, { opacity: 0, yPercent: 30, ease: "none", stagger: { amount: 1, from: "start" }, duration: 1.4 }, 2.5);
@@ -114,8 +121,12 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
           className="absolute z-10 m-0 w-full text-center uppercase max-[767px]:!leading-[1.06]"
           style={{ ...CLAIM_STYLE, willChange: "transform, opacity" }}
         >
-          {CLAIM_LINES.map((line) => (
-            <span key={line} className="block max-[767px]:!text-[13vw]">
+          {CLAIM_LINES.map((line, li) => (
+            <span
+              key={line}
+              {...(li === 0 ? { "data-coc-claim-first": "" } : { "data-coc-claim-last": "" })}
+              className="block max-[767px]:!text-[13vw]"
+            >
               {line}
             </span>
           ))}
