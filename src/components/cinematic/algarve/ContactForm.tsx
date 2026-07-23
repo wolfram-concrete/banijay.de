@@ -46,9 +46,11 @@ function SubmitButton() {
       type="submit"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ fontFamily: SHARP }}
-      className={`inline-flex cursor-pointer items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-[1.53vw] py-[0.83vw] text-[1.15vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:gap-[2vw] max-[767px]:px-[7vw] max-[767px]:py-[3.6vw] max-[767px]:text-[3.8vw] ${
-        hovered ? "bg-[#f8f7f3] text-[#0a0208]" : "bg-transparent text-[#f8f7f3]"
+      // Border als Inline-Style wie die Referenz (BANIJAY TOMORROW Login) — die
+      // Klassen-Border wird sonst von einer globalen Form-Regel auf 16%-Weiss gedimmt.
+      style={{ fontFamily: SHARP, border: "1px solid #f8f7f3" }}
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-[1.9vw] py-[0.95vw] text-[1.05vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:gap-[2vw] max-[767px]:px-[6vw] max-[767px]:py-[3vw] max-[767px]:text-[3.6vw] ${
+        hovered ? "bg-[#ff4370] text-[#f8f7f3]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >
       Nachricht senden

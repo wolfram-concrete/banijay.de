@@ -49,9 +49,11 @@ export function AlgarveCareerJobsPreview() {
             href={CAREER.jobs.cta.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2 rounded-[6px] border border-[#f8f7f3] bg-transparent px-6 py-3 text-sm font-medium text-[#f8f7f3] transition-colors hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!hidden"
+            className="inline-flex w-fit shrink-0 items-center gap-2 rounded-[6px] bg-transparent text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!hidden"
+            style={{ border: "1px solid #f8f7f3", padding: "0.95vw 1.9vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
           >
-            {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
+            {CAREER.jobs.cta.text}
+            <ArrowUpRight className="h-[1.05vw] w-[1.05vw]" />
           </a>
         </div>
 
@@ -100,9 +102,10 @@ export function AlgarveCareerJobsPreview() {
           href={CAREER.jobs.cta.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center justify-center gap-2 rounded-[6px] border border-[#f8f7f3] bg-transparent font-medium text-[#f8f7f3] transition-colors hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3.8vw] max-[767px]:!text-[3.8vw]"
+          className="hidden items-center justify-center gap-2 rounded-[6px] border border-[#f8f7f3] bg-transparent font-medium text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
         >
-          {CAREER.jobs.cta.text} <ArrowUpRight size={16} />
+          {CAREER.jobs.cta.text}
+          <ArrowUpRight className="h-[3.6vw] w-[3.6vw]" />
         </a>
       </div>
     </section>
