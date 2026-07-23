@@ -5,6 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Company-Videos, Logo-Banderole & Card-Feinschliff (23.07., 2. Runde)
+- **SR Management — gemischtes Star-Reel:** aus vier Quellclips (GiovanniZ2, Janaina, Janin,
+  Laura) ein Reel zusammengeschnitten (je ~2,5 s, In-Points je Person dort gewählt, wo sie klar
+  im Bild ist). **Hochformat 720×1080** (die Card ist hochkant, `row-span-2`) → jede Person füllt
+  den Container formatfüllend, KEINE verschwommenen Blur-Blenden mehr. Neues Poster + `?v=2`
+  Cache-Bust (der Browser hing an der alten Landscape-Datei).
+- **MyShow — Screencast neu aufbereitet:** aus dem Original statt der ~3×-beschleunigten
+  Web-Version (die ruckelte). Die sticky **weiße Nav-Leiste oben ist weggecroppt** (crop top 150),
+  Original-Scrolltempo (smoother), sauberer 18 s-Loop 960×540.
+- **Scrim-Blitzerkante (alle Video-Karten):** der Abdunkel-Gradient endete unten bei 0.88
+  Deckkraft → das helle Video schien an der Unterkante ~12 % durch (feine Blitzerkante). Jetzt
+  **voll deckend zur Unterkante** (rgba …,1 ab 96 %) + 2 px statt 1 px Bottom-Overscan → schließt
+  bündig mit dem Videorand ab.
+- **Company-Logo-Banderole auf der Home:** dieselbe endlose Ticker-Banderole wie auf Career,
+  jetzt zusätzlich **unter der Social-Section, über dem Footer** (läuft parallel, während die
+  Social-Section durchscrollt/-slidet).
+- **Only Good Party People:** Logo-Wortmarke auf der Card 20 % kleiner (h 3.4/4rem → 2.72/3.2rem).
+- **Facts „1.500+ Live-Veranstaltungen":** „COLOGNE COMEDY FESTIVAL" → gemischt „Cologne Comedy
+  Festival", Absatzumbruch entfernt (läuft als Fließtext weiter), „Die besten" → „die besten".
+- **Michael Laegel:** aus dem WebP-Master reproduziert und ~15 % rausgezoomt (Kopf wieder auf
+  Größe von Marcus/Knut).
+
 ### Bild-Assets auf WebP, Cleanup & Layout-/CTA-Feinschliff (23.07.)
 - **Hero-Motive → komprimierte WebP:** alle Hero-Bilder (Desktop **und** Mobile, alle Seiten)
   gegen die vom Kunden gelieferten, bereits komprimierten WebP getauscht — gleiche Ausschnitte

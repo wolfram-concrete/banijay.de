@@ -141,9 +141,13 @@ src/
                          ausgewertet, Listenbilder lokal in public/news/scraped/)
 public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
-  company-logos/         Weiße Company-Wortmarken (speisen den LogoTicker)
+  company-logos/         Weiße Company-Wortmarken (speisen den LogoTicker — der läuft auf
+                         der Career-Seite UND auf der Home unter der Social-Section)
   company-media/<slug>/  Hochauflösende, lokal optimierte Company-Poster (poster.jpg,
-                         1400px, siehe banijay-company-media-recherche.md)
+                         1400px, siehe banijay-company-media-recherche.md). Einige Karten
+                         zeigen lokal komponierte Reels (z. B. sr-management.mp4 =
+                         Hochformat-Zusammenschnitt der vier Topstars; myshow.mp4 =
+                         Website-Screencast, weiße Nav-Leiste weggecroppt).
   people/quotes/         Fotos der Zitat-Geschäftsführer:innen (von banijay.de,
                          transparente Ränder getrimmt + auf Panel-Farbe gelegt)
   video/  companies/  people/  grid/   Bild- und Videomaterial
