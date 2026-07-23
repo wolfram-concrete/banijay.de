@@ -2,18 +2,18 @@
 // Leader-Reihe (Marcus/Knut/Michael Laegel, 900×1200) sitzt etwas tiefer (14 %), die
 // Standard-Porträts (900×1353) sind oben/seitlich bündig (0 %). Fallback 50% 20%.
 export const FOCUS: Record<string, string> = {
-  "/people/marcus-wolter.jpg": "50% 14%",
-  "/people/knut-kremling.jpg": "50% 14%",
-  "/people/michael-laegel.jpg": "50% 14%",
-  "/people/simone-lenzen.jpg": "50% 0%",
-  "/people/heike-lutzer.jpg": "50% 0%",
-  "/people/natali-naso.jpg": "50% 0%",
-  "/people/janine-berns.jpg": "50% 0%",
-  "/people/michael-gaul.jpg": "50% 0%",
-  "/people/elena-kats.jpg": "50% 0%",
-  "/people/sebastian-menge.jpg": "50% 0%",
-  "/people/matthaeus-jaworek.jpg": "50% 0%",
-  "/people/aylin-firat.jpg": "50% 0%",
+  "/people/marcus-wolter.webp": "50% 14%",
+  "/people/knut-kremling.webp": "50% 14%",
+  "/people/michael-laegel.webp": "50% 14%",
+  "/people/simone-lenzen.webp": "50% 0%",
+  "/people/heike-lutzer.webp": "50% 0%",
+  "/people/natali-naso.webp": "50% 0%",
+  "/people/janine-berns.webp": "50% 0%",
+  "/people/michael-gaul.webp": "50% 0%",
+  "/people/elena-kats.webp": "50% 0%",
+  "/people/sebastian-menge.webp": "50% 0%",
+  "/people/matthaeus-jaworek.webp": "50% 0%",
+  "/people/aylin-firat.webp": "50% 0%",
 };
 
 export const focus = (img: string) => FOCUS[img] ?? "50% 20%";

@@ -63,22 +63,23 @@ const RING_EXTRA = [RING_GAP, RING_GAP * 3, RING_GAP * 6]; // = [3, 9, 18] vw
 // auf Mobile umgeschaltet wird (max-[767px]) — hier als Media-Attribut statt als
 // Tailwind-Klasse, weil <source> eine echte Media-Query braucht.
 const MOBILE_MQ = "(max-width: 767px)";
-/** „/hero-v2/frame-3-career.jpg" → „/hero-v2/frame-3-career-mobile.jpg".
+/** „/hero-v2/frame-3-career.webp" → „/hero-v2/frame-3-career-mobile.webp".
  *  Konvention statt Konfiguration: Zu JEDEM Hero-Motiv liegt die Hochformat-Fassung
- *  unter demselben Namen mit Suffix „-mobile". Gilt auch für den Default frame-3.jpg. */
-const mobileVariante = (pfad: string) => pfad.replace(/\.jpg$/, "-mobile.jpg");
+ *  unter demselben Namen mit Suffix „-mobile". Gilt auch für den Default frame-3.webp.
+ *  (Wolfram 23.07.: Hero-Motive gegen komprimierte WebP getauscht, gleiche Ausschnitte.) */
+const mobileVariante = (pfad: string) => pfad.replace(/\.webp$/, "-mobile.webp");
 
 export function AlgarveHome({
   variant = "home",
   statement,
-  frame3 = "/hero-v2/frame-3.jpg",
+  frame3 = "/hero-v2/frame-3.webp",
   parallaxExit = false,
 }: {
   /** "home" = Magenta-Übergangszone; "companies" = dunkler moody Staub + Statement */
   variant?: "home" | "companies";
   /** Mittelachsiges Statement, das NACH den Satellitenringen einanimiert (companies) */
   statement?: string;
-  /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.jpg" */
+  /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.webp" */
   frame3?: string;
   /** News-Page: das Statement driftet beim Verlassen als Parallax nach unten (lag)
    *  → weicher, tiefengestaffelter Übergang in den darunterliegenden News-Feed. */
@@ -315,10 +316,10 @@ export function AlgarveHome({
             keine eigene Box erzeugt und die absolute Positionierung der <img> exakt so
             aufgeht wie vorher. */}
         <picture className="contents">
-          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-1-mobile.jpg" />
+          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-1-mobile.webp" />
           <img
             ref={heroImg}
-            src="/hero-v2/frame-1.jpg"
+            src="/hero-v2/frame-1.webp"
             alt=""
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
@@ -328,10 +329,10 @@ export function AlgarveHome({
           />
         </picture>
         <picture className="contents">
-          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-2-mobile.jpg" />
+          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-2-mobile.webp" />
           <img
             ref={heroImgB}
-            src="/hero-v2/frame-2.jpg"
+            src="/hero-v2/frame-2.webp"
             alt=""
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"

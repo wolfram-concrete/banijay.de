@@ -50,8 +50,8 @@ export const LEADERSHIP: Leader[] = [
   // LEADER-Kachel (1.207 Querformat) beschnitten. Fokuswert 14 % (s. Founders FOCUS).
   // Nachskaliert (Wolfram 21.07., 2. Runde): Kopf +15 % (aus dem vorigen 900×1200-Crop
   // um den Kinnpunkt gezoomt) → näher an Knut.
-  { name: "Marcus Wolter", role: "CEO & Founder", img: "/people/marcus-wolter.jpg" },
-  { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.jpg" },
+  { name: "Marcus Wolter", role: "CEO & Founder", img: "/people/marcus-wolter.webp" },
+  { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.webp" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-3.jpg ab.
   // ACHTUNG, ANDERE ZAHL ALS UNTEN: Michael Laegel steht in der LEADER-Reihe, deren
   // Kacheln 248×182 (1.36) messen — nicht 142×138 (1.03) wie die Reihen darunter. Von
@@ -64,7 +64,7 @@ export const LEADERSHIP: Leader[] = [
   // HORIZONTAL ZENTRIERT (Wolfram 21.07., 4. Runde): saß zu weit rechts (~68 %), links war
   // zu viel weiße Wand zu sehen. Fenster nach rechts geschoben → Gesicht ~51 %, Wand nur
   // noch schmaler Streifen. extract(1240,1320,2250,3000).
-  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.jpg" },
+  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.webp" },
 
   // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
   // KOPF-NORMALISIERUNG DER MITTLEREN REIHE + Aylin (Wolfram 21.07., 2. Fassung):
@@ -77,17 +77,17 @@ export const LEADERSHIP: Leader[] = [
   // Simone (assets/People/Simone Lenzen.jpg, 4024×6048): extract(0,79,4024,5365). Ihr
   // Original ist ein enger Close-up (Kopf füllt die volle Bildbreite) → breitenbegrenzt,
   // Kopf bleibt bei ~40 % (kleiner geht physikalisch nicht), sitzt jetzt aber höher.
-  { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.jpg" },
+  { name: "Simone Lenzen", role: "Director Communications", img: "/people/simone-lenzen.webp" },
   // POSITIONEN GETAUSCHT (Wolfram 21.07.): Heike vor Natali.
   // heike-lutzer.jpg: höher gerückt, dann Kopf +20 % (Wolfram 21.07., 2. Runde — um den
   // Kinnpunkt aus dem vorigen 900×1200-Crop gezoomt).
-  { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.jpg" },
+  { name: "Heike Lutzer", role: "Director Marketing & Design", img: "/people/heike-lutzer.webp" },
   // natali-naso.jpg: aus dem vorigen Crop höher + größer nachgeschärft (~31 %, war ~28 %).
-  { name: "Natali Naso", role: "Director Human Resources", img: "/people/natali-naso.jpg" },
+  { name: "Natali Naso", role: "Director Human Resources", img: "/people/natali-naso.webp" },
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab. Quelle
   // assets/People/Janine.jpg (4912×7360), nach der Reihen-Norm beschnitten: Kopf ~33 %,
   // Kinn auf Output-Zeile 508, höher gerückt. extract(411,143,3378,4505).
-  { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/janine-berns.jpg" },
+  { name: "Janine Berns", role: "Director Accounting & Tax", img: "/people/janine-berns.webp" },
   // Elena Kats (Wolfram 17.07.) — neue, zwölfte Person, „als Letzte von den Frauen"
   // eingefügt; die Männer rücken dadurch einen Index nach hinten. Dadurch ist die
   // mittlere Reihe weiter mit den 5 bisherigen Frauen voll, Elena eröffnet die untere
@@ -96,7 +96,7 @@ export const LEADERSHIP: Leader[] = [
   // Kinn auf der Linie). Basis war der Crop aus assets/People/Elena.jpg (4912×7360).
   // POSITION GETAUSCHT (Wolfram 21.07.): Michael Gaul steht jetzt hier (vormals Elena Kats),
   // Elena rückt dafür in die untere Reihe an Gauls alte Stelle.
-  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.jpg" },
+  { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.webp" },
 
   // ── Untere Reihe (Index 9–11) ─────────────────────────────────────────────
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.
@@ -107,7 +107,7 @@ export const LEADERSHIP: Leader[] = [
   // left auf 0 geklemmt, weil der rechnerische Wert negativ war — das Gesicht sitzt
   // dadurch bei 48,5 % statt exakt mittig, was optisch nicht auffällt.
   // POSITION GETAUSCHT (Wolfram 21.07.): Hier steht jetzt Elena Kats (vormals Michael Gaul).
-  { name: "Elena Kats", role: "Director Finance Projects & Business Systems", img: "/people/elena-kats.jpg" },
+  { name: "Elena Kats", role: "Director Finance Projects & Business Systems", img: "/people/elena-kats.webp" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-7.jpg ab.
   // Beschnitten nach derselben Regel wie Aylin/Michael Gaul: Kopf = 32 % der
   // Ausschnitthöhe. Ausschnitt 2759×3678 ab 1639,737 (Kopf oben 1178, Kinn 2355,
@@ -115,7 +115,7 @@ export const LEADERSHIP: Leader[] = [
   // Die Quelldatei heißt „Sebastian lege.jpg" — das ist ein Benennungsfehler, von Wolfram
   // am 17.07. bestätigt: Es IST Sebastian Menge. (Nicht zu verwechseln mit Sebastian Lege,
   // dem Food-Experten hinter Pausenclown Media, siehe companyCards.ts.)
-  { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/sebastian-menge.jpg" },
+  { name: "Sebastian Menge", role: "Director Information Technology", img: "/people/sebastian-menge.webp" },
   {
     // Neues Portrait (Wolfram 21.07.) — löst die vorige Fassung ab. Quelle
     // assets/People/Matthaeus.jpg (4912×7360, Ganzkörper an Industrie-Wand). Beschnitten
@@ -124,7 +124,7 @@ export const LEADERSHIP: Leader[] = [
     // (um den Kinnpunkt aus dem vorigen 900×1200-Crop gezoomt).
     name: "Matthaeus Jaworek",
     role: "Director Financial Planning, Reporting & Controlling",
-    img: "/people/matthaeus-jaworek.jpg",
+    img: "/people/matthaeus-jaworek.webp",
   },
   // AYLIN STEHT GANZ HINTEN (Wolfram 20.07.) — vorher Index 7 (Ende der mittleren
   // Reihe), jetzt als letzte Kachel des Grids. Dadurch rücken Elena und die drei
@@ -134,5 +134,5 @@ export const LEADERSHIP: Leader[] = [
   // Kopf-Normalisierung 21.07.: verkleinert, höher gerückt. Nachjustiert (Wolfram 21.07.,
   // 2. Runde): Kopf +10 % UND nochmal höher gesetzt (um den Kinnpunkt gezoomt + Fenster
   // nach unten verschoben, sodass mehr Körper unten steht).
-  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.jpg" },
+  { name: "Aylin Firat", role: "Personal Assistant to CEO", img: "/people/aylin-firat.webp" },
 ];

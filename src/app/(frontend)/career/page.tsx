@@ -30,7 +30,7 @@ export default function CareerPage() {
           nur an EINER Stelle gepflegt wird. */}
       <AlgarveHome
         variant="companies"
-        frame3="/hero-v2/frame-3-career.jpg"
+        frame3="/hero-v2/frame-3-career.webp"
         statement={CAREER.roleIntro.text}
       />
 
