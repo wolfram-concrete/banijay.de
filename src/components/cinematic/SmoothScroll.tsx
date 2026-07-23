@@ -16,7 +16,12 @@ export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    // syncTouch (Wolfram 23.07.): Touch-Scroll läuft jetzt durch dieselbe Lenis-Smooth-
+    // Pipeline wie das Mausrad. Vorher war Touch NATIV → die gepinnten Sektionen (Team-Snap,
+    // #BanijayGermany-Slider, LogoReveal-Blende) rasteten mobil unsauber ein: man überscrollte
+    // den Trigger, dann sprang der Pin zurück. Mit syncTouch verhält sich Mobile wie Desktop,
+    // wo die Pins „optimal" sitzen. touchInertiaMultiplier etwas gezähmt gegen Overshoot.
+    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: true, touchInertiaMultiplier: 20 });
     lenis.on("scroll", ScrollTrigger.update);
     // Dev-Hook: erlaubt exaktes Positionieren aus der Preview (Lenis-eigene API).
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;

@@ -546,10 +546,9 @@ html[data-intro="1"] .site-header-root {
   color: var(--mood-paper);
 }
 
-/* V2-Typo (10.07.): ALLE H1 in Anton (Display, condensed) — überschreibt auch
-   Inline-fontFamily der Module (!important im Stylesheet schlägt Inline-Styles). */
+/* Alle H1 in Sharp Grotesk (Wolfram 23.07.): der Anton-Display-Font war ein Rest aus
+   einer Prüfungsphase — auf den News-Detailseiten fiel die h1 dadurch aus dem Typo-System.
+   Nur die Schriftfamilie wird erzwungen; Gewicht/Laufweite kommen aus den Modul-Inline-Styles. */
 h1 {
-  font-family: var(--font-anton), var(--font-sharp), sans-serif !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.01em;
+  font-family: var(--font-sharp), sans-serif !important;
 }

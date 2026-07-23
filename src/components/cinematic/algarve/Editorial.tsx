@@ -118,7 +118,11 @@ export function AlgarveEditorial() {
         const hDust = dustSel ? root.current?.querySelector<HTMLElement>(dustSel) : null;
         if (!hFirst || !hLast) return;
         const htl = gsap.timeline({
-          scrollTrigger: { trigger: headSel, start: "top bottom", end: "bottom 90%", scrub: 0.8 },
+          // Konvergenz FRÜHER fertig (Wolfram 23.07.): vorher „bottom 90%" — da war die
+          // Headline erst aufgebaut, wenn sie schon fast oben rausgescrollt war (mobil bei
+          // der 46vh-Höhe deutlich spürbar). „center center" = fertig, sobald die Headline
+          // mittig im Viewport steht → man sieht den fertigen Zustand, während sie da ist.
+          scrollTrigger: { trigger: headSel, start: "top bottom", end: "center center", scrub: 0.8 },
         });
         htl
           .from(hFirst, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)

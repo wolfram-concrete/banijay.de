@@ -263,9 +263,9 @@ export function EditorialStickyScene() {
                 className="absolute bottom-0 left-0 m-0 max-[767px]:!p-[5vw] max-[767px]:!max-w-[90%]"
                 style={{ padding: "clamp(1.5rem, 2.4vw, 2.8rem)", maxWidth: "min(62rem, 86%)", color: "#f8f7f3" }}
               >
-                {/* Mobile-Quote kleiner (Wolfram 22.07.): 4vw war für den langen Text nicht
-                    lesbar → 3.1vw + etwas engere Zeile. Container ist dafür 30 % höher. */}
-                <p className="m-0 max-[767px]:!text-[3.1vw] max-[767px]:!leading-[130%]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
+                {/* Mobile-Quote (Wolfram 23.07.): 3.1vw war zu klein → auf 3.7vw hoch und mehr
+                    Zeilenabstand (145 %). Container ist 30 % höher, sodass die lange Quote passt. */}
+                <p className="m-0 max-[767px]:!text-[3.7vw] max-[767px]:!leading-[145%]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
                   „Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[2.7vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
