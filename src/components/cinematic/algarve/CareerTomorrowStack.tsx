@@ -73,7 +73,7 @@ export function AlgarveCareerTomorrowStack() {
   return (
     <section ref={root} className="overflow-clip" style={{ background: "transparent", paddingTop: "8vw", paddingBottom: "8vw" }}>
       <div className="mx-auto max-[767px]:!px-[5vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
-        <div className="grid items-center md:grid-cols-[1.05fr_0.95fr] max-[767px]:!grid-cols-1" style={{ columnGap: "5vw", rowGap: "8vw" }}>
+        <div className="grid md:items-start md:grid-cols-[1.18fr_0.82fr] max-[767px]:!grid-cols-1" style={{ columnGap: "5vw", rowGap: "8vw" }}>
           {/* ── Text-Spalte ────────────────────────────────────────────────── */}
           <div data-tm-text className="flex flex-col items-start" style={{ gap: "2vw" }}>
             <span
@@ -102,7 +102,7 @@ export function AlgarveCareerTomorrowStack() {
             </div>
             <p
               data-tm-item
-              className="m-0 max-w-[38vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
+              className="m-0 max-w-[46vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
               style={{ fontSize: "1.25vw", lineHeight: "150%", color: "rgba(248,247,243,0.66)" }}
             >
               {tomorrow.text}
@@ -129,8 +129,8 @@ export function AlgarveCareerTomorrowStack() {
               Textspalte (oben bei der Headline, unten bündig mit der Copy/CTA) statt der
               früheren fixen 1,951:1-Box. object-cover übernimmt den nun höheren Ausschnitt. */}
           <div
-            className="relative self-stretch overflow-clip max-[767px]:!hidden"
-            style={{ marginRight: "calc(min(720px, 50vw) - 50vw - 2vw)" }}
+            className="relative self-start overflow-clip max-[767px]:!hidden"
+            style={{ aspectRatio: String(tomorrow.imageAspect), marginRight: "calc(min(720px, 50vw) - 50vw - 2vw)" }}
           >
             <img
               ref={img}
