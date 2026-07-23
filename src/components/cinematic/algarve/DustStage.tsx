@@ -37,17 +37,24 @@ export function DustStage() {
           start: "top top",
           end: "+=175%",
           scrub: 0.6,
+          // First-Load-Cut (Wolfram 23.07.): Positionen bei jedem Refresh neu messen —
+          // sonst sitzt der Veil beim ersten Laden vor Layout-Settle falsch und man sieht
+          // kurz den Sternenstaub durch.
+          invalidateOnRefresh: true,
         },
       });
       // ⓪ MAGENTA-VEIL (radialer Glow direkt im Veil, hinter der Schrift — kein
       //    separates Element, verankert im Sticky). Hält, dann Übergang zum Ökosystem.
-      tl.to({}, { duration: 0.5 })
-        .to(veil.current, { autoAlpha: 0, duration: 0.34, ease: "power1.inOut" }, 0.5)
+      // Wolfram 23.07.: Magenta MUSS LÄNGER hinter der Statement-Section bleiben — der
+      //    Veil hielt bisher nur bis 0.5 und blendete dann aus (Staub schien zu früh
+      //    durch). Halt bis 0.72, weicherer/längerer Crossfade, Staub erst danach.
+      tl.to({}, { duration: 0.72 })
+        .to(veil.current, { autoAlpha: 0, duration: 0.42, ease: "power1.inOut" }, 0.72)
         .fromTo(
           inner.current,
           { scale: 0.5, autoAlpha: 0 },
-          { scale: 1, autoAlpha: 0.8, duration: 0.5, ease: "power2.out" },
-          0.55,
+          { scale: 1, autoAlpha: 0.8, duration: 0.52, ease: "power2.out" },
+          0.8,
         );
     },
     { scope: root },
