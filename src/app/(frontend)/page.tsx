@@ -9,6 +9,7 @@ import { AlgarveFoundersSnap } from "@/components/cinematic/algarve/FoundersSnap
 import { AlgarveLogoReveal } from "@/components/cinematic/algarve/LogoReveal";
 import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
 import { ElfsightFeed } from "@/components/cinematic/ElfsightFeed";
+import { AlgarveLogoTicker } from "@/components/cinematic/algarve/LogoTicker";
 
 // Home — Design-first: das Gerüst sind die echten Algarve-Sections (Hero, Grid,
 // About-Intro-Wordreveal, Works-Deck, Animated-Heading, Services-Stack,
@@ -88,6 +89,11 @@ export default function HomePage() {
         headline="#BanijayGermany"
         subline="Neuigkeiten, Menschen und Momente — direkt aus unseren Kanälen."
       />
+
+      {/* Company-Logo-Banderole (Wolfram 23.07.) — dieselbe endlose Ticker-Banderole wie
+          auf der Career-Seite, hier UNTER der Social-Section und ÜBER dem Footer: während
+          die Social-Section durchscrollt/-slidet, läuft parallel darunter die Logo-Reihe. */}
+      <AlgarveLogoTicker />
     </>
   );
 }
