@@ -62,7 +62,6 @@ export function TeamTile({ img, name, role }: { img: string; name: string; role:
 export function AlgarveFoundersSnap() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
-  const mobileGrid = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -80,18 +79,8 @@ export function AlgarveFoundersSnap() {
       // Viewport — man scrollt durch die drei Reihen, und sobald die Unterkante den Viewport-
       // Boden erreicht, wird gepinnt (start „bottom bottom"). ~90vh reiner Halt, dann steigt
       // die LogoReveal-Blende auf. Kein direktes Snapping der ganzen Fläche mehr.
-      if (window.matchMedia("(min-width: 768px)").matches) {
-        if (grid.current) ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
-      } else if (mobileGrid.current) {
-        // Mobile (Wolfram 24.07.): dieselbe Mechanik wie Desktop — das 2-Spalten-Raster
-        // pinnt, sobald seine Unterkante am Viewport-Boden liegt (untere Reihe Matthäus/
-        // Aylin steht dann VOLL). In der Pin-Haltephase steigt dann die LogoReveal-Blende
-        // (marginTop -100vh) von unten über das gepinnte Team auf.
-        // anticipatePin 3 (Wolfram 24.07., 2. Runde): Beim ersten Reinscrollen trug der
-        // Lenis-Schwung über „bottom bottom" hinaus, dann sprang es zurück. Höhere
-        // Anticipation greift den Pin geschwindigkeitsabhängig FRÜHER ab → stoppt sofort
-        // an der Unterkante, kein Hoch-dann-Runter-Sprung mehr.
-        ScrollTrigger.create({ trigger: mobileGrid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 3 });
+      if (grid.current && window.matchMedia("(min-width: 768px)").matches) {
+        ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
       }
     },
     { scope: root },
@@ -130,7 +119,7 @@ export function AlgarveFoundersSnap() {
       </div>
 
       {/* ── Mobile: 2 Spalten, Leader zuerst; durchgängig hochformatig. ─────────────────── */}
-      <div ref={mobileGrid} className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
+      <div className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
         {LEADERSHIP.map((p) => (
           <div key={p.img} style={{ aspectRatio: "4 / 5" }}>
             <TeamTile img={p.img} name={p.name} role={p.role} />
