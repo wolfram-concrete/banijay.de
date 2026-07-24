@@ -197,6 +197,10 @@ export function IntroOverlay() {
                 fontWeight: 500,
                 letterSpacing: "-0.02em",
                 color: "#f8f7f3",
+                // Startet UNSICHTBAR im Markup (Wolfram 24.07.): sonst blitzt „Welcome to a
+                // new Era" auf Mobile kurz auf, bevor GSAP (autoAlpha:0) greift. GSAP blendet
+                // es dann sauber ein.
+                opacity: 0,
               }}
             >
               {i === 1 ? (
