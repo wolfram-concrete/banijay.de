@@ -351,19 +351,11 @@ export function AlgarveHome({
           />
         </picture>
 
-        {/* Fokus: das Bild softet nach unten ab (Übergang in die Kurve).
-            Home (Wolfram 24.07.): softet nach MAGENTA (#ff4370) statt nach Schwarz —
-            so fließt der Hero-Boden bruchlos in die Magenta-Zone darunter (Orbit + Veil),
-            keine harte Kante mehr. Companies/News/Career (dark) weiter nach Dunkel. */}
+        {/* Fokus: das Bild softet nach unten dunkel ab (Übergang in die Kurve) */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
-          style={{
-            zIndex: 1,
-            background: dark
-              ? "linear-gradient(180deg, rgba(10,2,8,0) 46%, rgba(10,2,8,0.5) 74%, rgba(10,2,8,0.9) 100%)"
-              : "linear-gradient(180deg, rgba(255,67,112,0) 46%, rgba(255,67,112,0.55) 74%, #ff4370 100%)",
-          }}
+          style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(10,2,8,0) 46%, rgba(10,2,8,0.5) 74%, rgba(10,2,8,0.9) 100%)" }}
         />
 
         {/* (Zirkel-Kontur entfernt, Wolfram 14.07.: die weiße Inset-Linie erzeugte
@@ -377,10 +369,7 @@ export function AlgarveHome({
         data-nav-theme={dark ? "dark" : "magenta"}
         aria-hidden
         className="pointer-events-none relative z-[1]"
-        // Home (Wolfram 24.07.): Orbit-Zone solide #ff4370. Der Hero-Scrim softet jetzt
-        // selbst nach #ff4370 aus (s.o.) → Hero-Boden und Orbit sind dieselbe Magenta-
-        // Fläche, kein Übergang. Companies/News/Career (dark) bleiben transparent.
-        style={{ height: "52vh", background: dark ? "transparent" : "#ff4370", overflow: "visible" }}
+        style={{ height: "52vh", background: "transparent", overflow: "visible" }}
       >
         {dark && (
           <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
