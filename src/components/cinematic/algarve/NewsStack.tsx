@@ -25,7 +25,7 @@ export function AlgarveNewsStack() {
   return (
     <section
       data-nav-theme="magenta"
-      className="relative max-[767px]:!mt-0 max-[767px]:!pt-[16vw]"
+      className="relative"
       style={{
         // Desktop: der Content überlappt die LogoReveal um 100vh (marginTop -100vh)
         // und liegt dahinter. Damit die „Latest news"-Headline NICHT von der
