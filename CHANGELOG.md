@@ -5,6 +5,25 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile-PageSpeed-Optimierung, Schritt für Schritt (24.07.)
+Der Mobile-PageSpeed-Score war katastrophal (~30). In kleinen, einzeln pushbaren
+Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
+- **#1 Preloader mobil ~3,5 s** (statt ~6,85 s wie Desktop): die Intro-Timeline wird auf
+  Mobile per `timeScale` gestrafft, der BG-Zoom entsprechend angepasst → deutlich früherer
+  LCP/Speed-Index. Desktop unverändert.
+- **Hero-Frames mobil auf 1400px** (3009×4000 → 1400×1861, 12 MP → 2,6 MP): die riesigen
+  WebP dekodierten zu ~48 MB Bitmap **je Bild** und ließen den Mobile-Lighthouse-Lauf mit
+  **OOM** abstürzen. Nach dem Downscale läuft der Test durch, Score 30 → 52.
+- **#4 WebGL/Canvas-Partikel mobil reduziert:** DustLayer (`ATTEMPTS` 160k → 42k, DPR-Cap
+  2 → 1,5) und PreloaderParticles (1300 → 520) — beide laufen dauerhaft im RAF und waren
+  direkte TBT-/Ruckel-Treiber. Desktop unverändert.
+- **#3 Company-Videos `preload="metadata"` → `"none"`:** die Bento-Videos zogen schon vor
+  Sichtbarkeit Daten und konkurrierten mit dem LCP ums Netzwerk. Sie laden ohnehin erst per
+  IntersectionObserver beim Reinscrollen — bis dahin steht das Poster.
+- **Preloader-Headline-Flash (FOUC):** die „Welcome to a new Era"-Zeilen starteten im Markup
+  sichtbar und wurden erst per GSAP (`autoAlpha:0`) versteckt → auf Mobile blitzten sie eine
+  Millisekunde auf. Jetzt starten sie schon im Markup mit `opacity:0`; GSAP blendet sie ein.
+
 ### Build-Fix (Production), Marcus-Bild & Hero-Revert (24.07.)
 - **KRITISCH — Vercel-Production-Build repariert:** In `SmoothScroll.tsx` stand eine
   ungültige Lenis-Option (`touchInertiaMultiplier`). `next dev` (lokal) type-checkt nicht

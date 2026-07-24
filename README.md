@@ -74,6 +74,13 @@ Leader über die volle Breite, darunter durchgehend zweispaltig mit einheitlich 
 Während des **Preloaders** ist Scrollen hart gesperrt (Lenis startet gestoppt, zusätzlich
 `wheel`/`touchmove`/Scroll-Tasten abgefangen) — man landet immer im Hero.
 
+**Mobile-Performance.** Der Mobile-PageSpeed wird schrittweise optimiert (Ausgangswert ~30).
+Wichtigste Hebel, alle nur mobil gegated (Desktop unberührt): Preloader auf ~3,5 s gestrafft,
+Hero-Frames mobil auf 1400px (die 12-MP-WebP dekodierten zu ~48 MB Bitmap je Bild → Lighthouse
+lief in OOM), Canvas-Partikel reduziert (DustLayer/PreloaderParticles laufen dauerhaft im RAF)
+und Company-Videos auf `preload="none"` (sie laden per IntersectionObserver erst beim
+Reinscrollen). Details je Schritt im Changelog 24.07.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript**
