@@ -61,6 +61,8 @@ export function IntroOverlay() {
         finish();
         delete document.documentElement.dataset.intro;
         document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.documentElement.style.touchAction = "";
         unlockScroll();
         // Immer im Hero starten: während der Sperre kann sich nichts verschoben haben,
         // aber wir setzen hart auf 0, bevor Lenis wieder übernimmt.
@@ -90,6 +92,11 @@ export function IntroOverlay() {
 
       document.documentElement.dataset.intro = "1";
       document.documentElement.style.overflow = "hidden";
+      // Belt-and-suspenders (Wolfram 24.07.): zusätzlich body-overflow + touch-action:none,
+      // damit auch mobiles Touch-Scrollen während des Preloaders sicher blockiert ist
+      // (overflow:hidden allein blockte Touch auf manchen Mobile-Browsern nicht zuverlässig).
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.touchAction = "none";
       lockScroll();
       // Lenis kann hier noch nicht existieren (SmoothScroll mountet ggf. später) — darum
       // liest SmoothScroll zusätzlich das data-intro-Flag und startet erst auf „introdone".
@@ -134,6 +141,8 @@ export function IntroOverlay() {
         unlockScroll();
         delete document.documentElement.dataset.intro;
         document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.documentElement.style.touchAction = "";
       };
     },
     { scope: root },
