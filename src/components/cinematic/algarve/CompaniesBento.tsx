@@ -527,7 +527,11 @@ export function AlgarveCompaniesBento() {
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    // preload="none" (Wolfram 24.07., #3): keine Vorab-Requests der 39 Videos
+                    // beim Seitenaufruf (die verdrängten den Hero = 34s LCP). Der
+                    // IntersectionObserver spielt jedes Video eh erst beim Reinscrollen (lädt
+                    // es dann). Optik unveraendert — bis dahin zeigt der Poster. Reversibel.
+                    preload="none"
                     // Fallback-Poster (Wolfram 24.07.): Karten ohne eigenes card.image
                     // (Placeholder-Companies) zeigten sonst ein SCHWARZES Video-Element,
                     // bis das Video lud. Der dunkle Brand-Poster matcht die Card-Fläche →
