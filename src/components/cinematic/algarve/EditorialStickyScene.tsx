@@ -242,7 +242,7 @@ export function EditorialStickyScene() {
               className="absolute left-0 top-0 h-[135vw] w-full overflow-hidden md:h-full max-md:!sticky max-md:!top-[72px] max-md:!z-[3] max-md:!w-full"
             >
               <img
-                src="/editorial/marcus-wolter.webp"
+                src="/editorial/marcus-wolter.webp?v=2"
                 alt="Marcus Wolter, Founder & CEO Banijay Germany"
                 className="h-full w-full object-cover"
                 // Neues Hochformat-Porträt (Wolfram 22.07., photo.jpeg 2326×2908 → 1500×1875):
