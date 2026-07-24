@@ -87,7 +87,11 @@ export function AlgarveFoundersSnap() {
         // pinnt, sobald seine Unterkante am Viewport-Boden liegt (untere Reihe Matthäus/
         // Aylin steht dann VOLL). In der Pin-Haltephase steigt dann die LogoReveal-Blende
         // (marginTop -100vh) von unten über das gepinnte Team auf.
-        ScrollTrigger.create({ trigger: mobileGrid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
+        // anticipatePin 3 (Wolfram 24.07., 2. Runde): Beim ersten Reinscrollen trug der
+        // Lenis-Schwung über „bottom bottom" hinaus, dann sprang es zurück. Höhere
+        // Anticipation greift den Pin geschwindigkeitsabhängig FRÜHER ab → stoppt sofort
+        // an der Unterkante, kein Hoch-dann-Runter-Sprung mehr.
+        ScrollTrigger.create({ trigger: mobileGrid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 3 });
       }
     },
     { scope: root },
