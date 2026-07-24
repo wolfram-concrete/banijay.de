@@ -397,8 +397,14 @@ export function AlgarveCompaniesBento() {
     { scope: root },
   );
 
-  // Kachel-Videos: nur sichtbare spielen (40 parallele Decodes vermeiden).
+  // Kachel-Videos: nur sichtbare spielen (parallele Decodes vermeiden).
+  // Mobile-Optimierung (Wolfram 24.07.): Beim Scrollen über die Video-Grid ruckelte es,
+  // weil im 2-Spalten-Grid mehrere Videos GLEICHZEITIG dekodierten. Auf Mobile spielen
+  // jetzt nur noch die Videos im VIEWPORT-ZENTRUM (rootMargin -34% oben/unten → aktives
+  // Band ≈ 32% der Höhe), sodass zu jedem Zeitpunkt nur ~1–2 Videos laufen. Off-Center-
+  // Kacheln werden pausiert (Poster bleibt sichtbar). Desktop unverändert (threshold 0.15).
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const vids = Array.from(root.current?.querySelectorAll<HTMLVideoElement>("[data-bento-video]") ?? []);
     const io = new IntersectionObserver(
       (entries) => {
@@ -408,7 +414,7 @@ export function AlgarveCompaniesBento() {
           else v.pause();
         });
       },
-      { threshold: 0.15 },
+      isMobile ? { threshold: 0.01, rootMargin: "-34% 0px -34% 0px" } : { threshold: 0.15 },
     );
     vids.forEach((v) => io.observe(v));
     return () => io.disconnect();
