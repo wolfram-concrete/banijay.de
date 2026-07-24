@@ -135,6 +135,16 @@ export function IntroOverlay() {
         // Overlay komplett weg ist (Wolfram 15.07.).
         .to(bg.current, { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 6.15);
 
+      // MOBILE-PERFORMANCE (Wolfram 24.07.): Preloader mobil auf ~3,5s straffen (Desktop
+      // bleibt ~6,85s). Der volle 7s-Preloader blockte auf Mobile den Hero → schlechter
+      // LCP/Speed-Index. timeScale skaliert die GESAMTE Choreografie proportional schneller,
+      // alle Beats bleiben erhalten. Auch den Hintergrund-Zoom mitziehen.
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        const factor = tl.duration() / 3.5;
+        tl.timeScale(factor);
+        gsap.to(bgImg.current, { scale: 1.2, duration: 7.5 / factor, ease: "none", overwrite: "auto" });
+      }
+
       // Sicherheitsnetz: wird die Komponente mitten im Intro unmountet (Routenwechsel),
       // darf die Scroll-Sperre nicht hängen bleiben.
       return () => {
