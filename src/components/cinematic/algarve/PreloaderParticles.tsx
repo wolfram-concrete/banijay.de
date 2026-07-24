@@ -22,7 +22,8 @@ export interface PreloaderParticlesHandle {
   setWarp: (v: number) => void;
 }
 
-const N = 1300;
+// Mobile-Performance (Wolfram 24.07.): weniger Preloader-Partikel auf Mobile (TBT/Ruckeln).
+const N = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches ? 520 : 1300;
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 const easeIn = (t: number) => t * t;
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);

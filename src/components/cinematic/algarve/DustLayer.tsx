@@ -33,6 +33,10 @@ export function DustLayer({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Mobile-Performance (Wolfram 24.07.): der Staub läuft dauerhaft im RAF und jeder Punkt
+    // wird pro Frame gezeichnet → direkter TBT-/Ruckel-Treiber. Mobil deutlich weniger
+    // Partikel + geringere Canvas-DPR. Desktop unverändert.
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
     // MAKRO (Agent\c-Referenz) + KAMERASCHWENK: der Staub liegt in DREI Tiefen-
     // Ebenen (fern/mittel/nah), jeweils einmalig offscreen gerendert mit Überstand
@@ -56,7 +60,7 @@ export function DustLayer({
     };
 
     const build = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, isMobile ? 1.5 : 2);
       // LAYOUT-Maße (offsetWidth/Height) statt getBoundingClientRect: Bühnen wie
       // DustStage/IntroOverlay skalieren den Container fürs Aufwachsen (scale<1,
       // GSAP-Layout-Effekt läuft VOR diesem Effect) — die visuellen Maße wären
@@ -75,7 +79,7 @@ export function DustLayer({
         { depth: 0.62, share: 0.3, size: 0.7, alpha: 1 },
         { depth: 1.0, share: 0.12, size: 1.15, alpha: 1 },
       ];
-      const ATTEMPTS = Math.min(160000, Math.round((LW * LH) / 20));
+      const ATTEMPTS = Math.min(isMobile ? 42000 : 160000, Math.round((LW * LH) / (isMobile ? 55 : 20)));
       layers = spec.map((sp) => {
         const cv = document.createElement("canvas");
         cv.width = LW;
@@ -118,7 +122,7 @@ export function DustLayer({
 
     const draw = (t: number) => {
       ctx.clearRect(0, 0, W, H);
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, isMobile ? 1.5 : 2);
       // Kameraschwenk: Lissajous-Drift (zwei inkommensurable Perioden ≈ 47s/71s)
       // + Maus-Parallaxe, beides mit der Tiefe skaliert.
       const margin = (W * (OVER - 1)) / 2;
