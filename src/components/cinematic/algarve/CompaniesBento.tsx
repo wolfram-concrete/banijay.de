@@ -522,7 +522,11 @@ export function AlgarveCompaniesBento() {
                     loop
                     playsInline
                     preload="metadata"
-                    poster={POSTER[card.id] ?? card.image}
+                    // Fallback-Poster (Wolfram 24.07.): Karten ohne eigenes card.image
+                    // (Placeholder-Companies) zeigten sonst ein SCHWARZES Video-Element,
+                    // bis das Video lud. Der dunkle Brand-Poster matcht die Card-Fläche →
+                    // kein schwarzer Blitzer mehr, weicher Übergang ins Video.
+                    poster={POSTER[card.id] ?? card.image ?? "/company-media/_poster-fallback.jpg"}
                     className="absolute -inset-px h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
                   >
                     <source src={REEL[card.id]} type="video/mp4" />
