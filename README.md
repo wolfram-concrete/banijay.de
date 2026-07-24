@@ -91,6 +91,12 @@ npm run start   # Produktions-Server
 npm run lint    # ESLint
 ```
 
+> **Vor jedem Push auf `main` (= Vercel-Production) einmal `npm run build` fahren.**
+> `next dev` type-checkt NICHT streng, `next build` schon — ungültiger TS-Code (z. B. eine
+> nicht existierende Library-Option) läuft lokal im Dev-Server, lässt aber den Vercel-Build
+> abbrechen. Ein grüner Dev-Server ist KEINE Garantie für einen grünen Deploy (siehe
+> Changelog 24.07.).
+
 ## Projektstruktur
 
 ```

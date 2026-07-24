@@ -5,6 +5,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Build-Fix (Production), Marcus-Bild & Hero-Revert (24.07.)
+- **KRITISCH — Vercel-Production-Build repariert:** In `SmoothScroll.tsx` stand eine
+  ungültige Lenis-Option (`touchInertiaMultiplier`). `next dev` (lokal) type-checkt nicht
+  streng, **`next build` (Vercel) schon** → der Production-Build brach seit dem Einbau (23.07.)
+  bei JEDEM Deploy ab. Folge: Vercel schickte Fehlermails UND **keiner der neuen Stände ging
+  live** (Production lief auf dem letzten grünen Build). Option entfernt (wurde zur Laufzeit
+  ignoriert), `next build` lokal verifiziert → grün, alle aufgelaufenen Änderungen sind live.
+  Merkregel: vor jedem main-Push lokal `next build` fahren.
+- **Marcus-Quote-Bild:** gegen das richtige Master `macus zitat.webp` getauscht (Farbe, volle
+  Rahmung) + `?v=2` Cache-Bust.
+- **Hero-Magenta-Kante (zurückgenommen):** Versuch, den Übergang Hero→Statement zu glätten
+  (Orbit-Zone/Hero-Scrim nach Magenta) legte einen Magenta-Layer über den Hero und
+  verschlechterte ihn → **komplett auf den Originalzustand zurückgesetzt** (Scrim nach Dunkel,
+  Orbit transparent). Der Hero bleibt wie zuvor; der ursprüngliche Übergang wird separat/behutsam
+  angegangen.
+
 ### Company-Videos, Logo-Banderole & Card-Feinschliff (23.07., 2. Runde)
 - **SR Management — gemischtes Star-Reel:** aus vier Quellclips (GiovanniZ2, Janaina, Janin,
   Laura) ein Reel zusammengeschnitten (je ~2,5 s, In-Points je Person dort gewählt, wo sie klar
