@@ -23,6 +23,13 @@ Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
 - **Preloader-Headline-Flash (FOUC):** die „Welcome to a new Era"-Zeilen starteten im Markup
   sichtbar und wurden erst per GSAP (`autoAlpha:0`) versteckt → auf Mobile blitzten sie eine
   Millisekunde auf. Jetzt starten sie schon im Markup mit `opacity:0`; GSAP blendet sie ein.
+- **Social-Slider (#BanijayGermany) — Pin-Überschießen auf der Home:** der gepinnte Slider lief
+  mobil beim Reinscrollen über den Pin-Start hinaus und snapte zurück. Ursache: `anticipatePin`
+  rastet den Pin geschwindigkeitsbasiert früher ein — bei Touch-Momentum (syncTouch/Lenis)
+  überschießt das. Auf Career fällt es nicht auf, weil dort keine sticky Section darüber liegt
+  (auf der Home die NewsStack). Slider-Code ist auf beiden Seiten identisch, der Unterschied ist
+  nur das Umfeld → `anticipatePin` mobil aus (Desktop unverändert, Geometrie dort verifiziert
+  stabil), der Pin rastet jetzt exakt am Trigger ein.
 
 ### Build-Fix (Production), Marcus-Bild & Hero-Revert (24.07.)
 - **KRITISCH — Vercel-Production-Build repariert:** In `SmoothScroll.tsx` stand eine
