@@ -369,12 +369,13 @@ export function AlgarveHome({
         data-nav-theme={dark ? "dark" : "magenta"}
         aria-hidden
         className="pointer-events-none relative z-[1]"
-        // Home (Wolfram 23.07.): Orbit-Zone bekommt eine durchgehende Magenta-Fläche
-        // (#ff4370 = Hero-Gradient-Unterkante). Vorher `transparent` → hier schien der
-        // dunkle MoodBackdrop durch = harte Kante zwischen Hero-Magenta und dem
-        // Statement-/DustStage-Veil-Magenta. Jetzt lückenlos Magenta bis zum Veil.
-        // Companies/News/Career (dark) bleiben transparent auf dem moody Backdrop.
-        style={{ height: "52vh", background: dark ? "transparent" : "#ff4370", overflow: "visible" }}
+        // Home (Wolfram 24.07.): Orbit-Zone als WEICHER Verlauf oben transparent → unten
+        // Magenta. Oben transparent blendet in den (mobil dunklen, per Foto+Scrim
+        // abgedunkelten) Hero-Boden → KEINE harte Kante; unten #ff4370 schließt lückenlos
+        // an den DustStage-Veil-Magenta an. So ist der untere Bereich durchgehend magenta,
+        // ohne sichtbaren Übergang. (Solid Magenta erzeugte mobil eine harte Kante zum
+        // dunklen Hero-Boden.) Companies/News/Career (dark) bleiben transparent.
+        style={{ height: "52vh", background: dark ? "transparent" : "linear-gradient(180deg, rgba(255,67,112,0) 0%, #ff4370 42%)", overflow: "visible" }}
       >
         {dark && (
           <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
