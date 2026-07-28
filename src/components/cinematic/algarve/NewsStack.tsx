@@ -84,7 +84,9 @@ export function AlgarveNewsStack() {
               <Link
                 key={item.title}
                 href={`/news/${item.slug}`}
-                className="group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!border-t-0 max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw]"
+                // Mobile (Wolfram 24.07.): nur die 3 aktuellsten Beiträge zeigen — Items ab
+                // Index 3 mobil ausblenden (Desktop weiter alle 5).
+                className={`group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!border-t-0 max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw] ${i >= 3 ? "max-[767px]:!hidden" : ""}`}
                 style={{
                   paddingTop: "2.22vw",
                   paddingBottom: "2.22vw",

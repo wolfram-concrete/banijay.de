@@ -6,6 +6,11 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
 ### Content-Feedback, Company-Videos & Mobile-Layouts (24.07., 2. Runde)
+- **„Latest news" mobil auf 3 Beiträge:** auf schmalen Viewports zeigt der News-Stapel nur noch die
+  3 aktuellsten Beiträge (Items ab Index 3 mobil ausgeblendet); Desktop weiter alle 5.
+- **Ökosystem-B geprüft (Wolfram-Frage „sitzt es mittig?"):** per Messung bestätigt — das zentrale
+  B liegt exakt auf der Orbit-Mitte (ΔY = 0), Desktop UND Mobile. Kein Ausrichtungs-Bug; eine evtl.
+  Höhen-Verschiebung der GESAMTEN Grafik bleibt als separate Feinjustage offen.
 - **Company-Videos getauscht:** Podcast Bande (neues natives Hochformat-Loop „260727", 720×1280)
   und Elevate (neuer Clip „Sandra Hesch", 1280×720, inkl. frisch gezogenem Poster) — beide
   weboptimiert, mit `?v=2`-Cache-Bust. Podcast Bande bekommt im Bento eine Hochformat-Kachel.
