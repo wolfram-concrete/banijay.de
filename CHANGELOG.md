@@ -20,9 +20,10 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   Bild-Alt) und im Teambild-Untertitel („CEO & Co-Founder").
 - **Primetime-Hitrate entfernt:** die About-Fakten-Kachel (Wert 90 %) UND der komplette
   Primetime-Abschnitt auf der News-Seite (Blöcke jetzt: Presse · Podcast · Marcus Wolter · Social).
-- **Companies & Labels → 170+:** die About-Kennzahl steht jetzt für die weltweite Banijay-Gruppe
-  (Copy von „In Deutschland … 40+" auf „Weltweit … über 170 Companies und Labels" umgestellt).
-  Die Home-Zwischenheadline bleibt bei „40+" (= die sichtbaren deutschen Companies).
+- **Companies & Labels:** die About-Fakten-Kennzahl bleibt bei **40+** (der 170+-Versuch vom 24.07.
+  wurde auf Wolframs Wunsch komplett zurückgenommen). Stattdessen trägt die **Magenta-Leiste im
+  Editorial** die weltweite Zahl — Label dort von „170+ Companies weltweit" auf **„170+ Companies &
+  Labels weltweit"** ergänzt.
 - **Team mobil — drei Geschäftsführer vollbreit:** Marcus, Knut und Michael Laegel stehen mobil je
   in einer VOLLBREITEN Zeile (über beide Spalten, Container +40 % Höhe = Aspect 8/7), darunter läuft
   das Team wieder zweispaltig. Desktop unverändert.

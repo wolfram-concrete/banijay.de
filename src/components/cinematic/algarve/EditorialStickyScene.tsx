@@ -67,14 +67,12 @@ type Fact = { value: number; suffix: string; label: string; copy: string };
 //   Erstausstrahlungen"), bleiben unberührt.
 const FACTS: Fact[] = [
   {
-    // 40+ → 170+ (Wolfram 24.07.): die „Companies & Labels"-Kennzahl steht jetzt für die
-    // gesamte Banijay-Gruppe (weltweit 170+), nicht mehr nur den deutschen Verbund.
-    value: 170,
+    value: 40,
     suffix: "+",
     // „und" → „&" (Wolfram 20.07.). Gilt NUR hier; „Mitarbeiterinnen und Mitarbeiter"
     // bleibt ausgeschrieben, das ist eine Paarformel und kein Aufzählungs-und.
     label: "Companies & Labels",
-    copy: "Weltweit vereint die Banijay-Gruppe über 170 Companies und Labels. In Deutschland gehören dazu viele der bekanntesten Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
+    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
   },
   // ENTFERNT am 24.07. (Wolfram): die Kachel „Primetime Hitrate" (Wert 90 %) — sowohl hier
   // in den About-Fakten als auch der ganze Primetime-Abschnitt auf der News-Seite.

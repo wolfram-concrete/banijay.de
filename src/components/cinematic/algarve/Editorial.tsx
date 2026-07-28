@@ -282,7 +282,7 @@ export function AlgarveEditorial() {
                 <span style={{ fontSize: "0.54em", marginLeft: "0.04em", position: "relative", top: "0.14em" }}>+</span>
               </span>
               <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", letterSpacing: "0.01em" }}>
-                Companies weltweit
+                Companies & Labels weltweit
               </span>
             </div>
 
