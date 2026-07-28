@@ -5,6 +5,27 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Content-Feedback, Company-Videos & Mobile-Layouts (24.07., 2. Runde)
+- **Company-Videos getauscht:** Podcast Bande (neues natives Hochformat-Loop „260727", 720×1280)
+  und Elevate (neuer Clip „Sandra Hesch", 1280×720, inkl. frisch gezogenem Poster) — beide
+  weboptimiert, mit `?v=2`-Cache-Bust. Podcast Bande bekommt im Bento eine Hochformat-Kachel.
+- **Title-Tag:** „— Die Entertainment-Welt hinter den Momenten" aus dem Home-Default entfernt →
+  Browser-Tab zeigt nur noch „Banijay Germany" (Unterseiten laufen unverändert über das Template).
+- **Marcus Wolter „Co-Founder":** im Editorial-Zitat („Co-Founder & CEO Banijay Germany", inkl.
+  Bild-Alt) und im Teambild-Untertitel („CEO & Co-Founder").
+- **Primetime-Hitrate entfernt:** die About-Fakten-Kachel (Wert 90 %) UND der komplette
+  Primetime-Abschnitt auf der News-Seite (Blöcke jetzt: Presse · Podcast · Marcus Wolter · Social).
+- **Companies & Labels → 170+:** die About-Kennzahl steht jetzt für die weltweite Banijay-Gruppe
+  (Copy von „In Deutschland … 40+" auf „Weltweit … über 170 Companies und Labels" umgestellt).
+  Die Home-Zwischenheadline bleibt bei „40+" (= die sichtbaren deutschen Companies).
+- **Team mobil — drei Geschäftsführer vollbreit:** Marcus, Knut und Michael Laegel stehen mobil je
+  in einer VOLLBREITEN Zeile (über beide Spalten, Container +40 % Höhe = Aspect 8/7), darunter läuft
+  das Team wieder zweispaltig. Desktop unverändert.
+- **Company-Video-Bento mobil divers proportioniert:** statt uniformer 2-Spalten jetzt eigenes
+  `grid-auto-rows` + Dense-Flow mit breiten (col-span-2) und hohen (row-span-2) Kacheln — die
+  nativen Hochformat-Reels (Podcast Bande, Only Good People, SR, Pausenclown) laufen hoch. Desktop
+  unverändert (Span-Klassen mobil via `max-[767px]:`, Desktop via `md:`).
+
 ### Mobile-PageSpeed-Optimierung, Schritt für Schritt (24.07.)
 Der Mobile-PageSpeed-Score war katastrophal (~30). In kleinen, einzeln pushbaren
 Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:

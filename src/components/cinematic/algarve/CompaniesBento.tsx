@@ -63,7 +63,25 @@ const FORCE_SPAN: Record<string, string> = {
   // HOCHFORMAT (Wolfram 21.07.): Only Good People bekommt eine hohe Kachel (zwei Zeilen) —
   // ihr Reel ist nativ Hochformat (720×1280) und läuft dort als Portrait ohne Beschneidung.
   "only-good-people": "md:row-span-2",
+  // HOCHFORMAT (Wolfram 24.07.): Podcast Bande hat ein neues natives Hochformat-Loop
+  // (720×1280) → hohe Kachel, Portrait ohne Beschneidung.
+  "podcast-bande": "md:row-span-2",
 };
+// MOBILE-DIVERSITÄT (Wolfram 24.07.): im 2-Spalten-Raster einzelne Kacheln breit/hoch.
+// Companies mit nativem HOCHFORMAT-Reel werden mobil hoch (row-span-2 = 1×2, Portrait ohne
+// Beschneidung); ein Index-Rhythmus streut zusätzlich breite (col-span-2) und hohe Kacheln.
+const PORTRAIT_M = new Set<string>(["podcast-bande", "only-good-people", "sr-management", "pausenclown-media"]);
+const spanForMobile = (i: number, id?: string) =>
+  id && SMALL_ONLY.has(id)
+    ? ""
+    : id && PORTRAIT_M.has(id)
+      ? "max-[767px]:row-span-2"
+      : i % 6 === 2
+        ? "max-[767px]:col-span-2"
+        : i % 6 === 4
+          ? "max-[767px]:row-span-2"
+          : "";
+
 const spanFor = (i: number, total: number, id?: string) =>
   id && SMALL_ONLY.has(id)
     ? ""
@@ -212,7 +230,7 @@ REEL["lucky-pics"] = "/company-media/lucky-pics.mp4";
 REEL["only-good-party-people"] = "/company-media/only-good-party-people.mp4";
 // Podcast Bande (Wolfram 20.07.) — Trailer „Tutto Bene" mit Giovanni & Stefano Zarrella.
 // Quelle 1280×720/16:9/30s, Ausschnitt 3–13s. Eingebrannte Untertitel (kein Ausschluss).
-REEL["podcast-bande"] = "/company-media/podcast-bande.mp4";
+REEL["podcast-bande"] = "/company-media/podcast-bande.mp4?v=2"; // ?v=2: Cache-Bust, neues Hochformat-Loop (Wolfram 24.07.)
 REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
@@ -261,14 +279,14 @@ REEL["brainpool"] = "/company-media/brainpool.mp4";
 // Sandra Hesch, Football-Content im Trikot auf dem Platz, 1280×720 echtes 16:9, 25 fps,
 // 148 s). 10-s-Ausschnitt (24–34 s: Ballkontrolle nah, Gesicht sichtbar) → 960×540, ohne
 // Ton. Textfrei.
-REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4";
+REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4?v=2"; // ?v=2: Cache-Bust, neuer Clip „Sandra Hesch" (Wolfram 24.07.)
 
 // POSTER-Override (Wolfram 22.07.): Standard-Poster einer Video-Karte ist `card.image` —
 // das ist bei manchen Companies aber ein QUADRATISCHES LOGO, das als formatfüllender
 // Video-Poster verzerrt beim ersten Laden aufblitzt (Elevate: 270×270-Logo). Für diese
 // Fälle ein echter Frame aus dem jeweiligen Video als Poster.
 const POSTER: Record<string, string> = {};
-POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg";
+POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg?v=2"; // ?v=2: Cache-Bust, neues Poster aus dem Sandra-Hesch-Clip (Wolfram 24.07.)
 // SR Management (Wolfram 23.07.): echter Frame aus dem neuen Hochformat-Reel statt des
 // alten Landscape-Posters; ?v=2 bustet den Browser-Cache (alte Datei hing fest).
 POSTER["sr-management"] = "/companies/sr-management.jpg?v=2";
@@ -506,7 +524,10 @@ export function AlgarveCompaniesBento() {
         {/* Zeilenhöhe (Wolfram 16.07.): war 11.5vw → bei 4 Spalten (Kachel ≈ 23vw breit)
             ergab das flache 2:1-Kacheln, breite (col-span-2) sogar 4:1 — die Videos wurden
             zu niedrig. 17vw bringt die Normalkachel auf ≈ 4:3. */}
-        <div key={rubrik} className="grid grid-cols-2 gap-1.5 md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:17vw]">
+        {/* Mobile (Wolfram 24.07.): auch mobil DIVERS proportioniert statt uniform — eigenes
+            grid-auto-rows (40vw) + dense-Flow im 2-Spalten-Raster; die Span-Klassen unten setzen
+            einzelne Kacheln breit (col-span-2) oder hoch (row-span-2). Desktop unverändert (md:). */}
+        <div key={rubrik} className="grid grid-cols-2 gap-1.5 [grid-auto-flow:dense] [grid-auto-rows:40vw] md:grid-cols-4 md:gap-2 md:[grid-auto-flow:dense] md:[grid-auto-rows:17vw]">
           {cards.map((card, i) => {
             const still = STILL[card.id];
             const inner = (
@@ -610,7 +631,7 @@ export function AlgarveCompaniesBento() {
                 : i === cards.length - 1
                 ? LAST_FILL[4 - (cards.slice(0, -1).reduce((n, c, k) => n + areaOf(spanFor(k, cards.length, c.id)), 0) % 4)] ?? ""
                 : spanFor(i, cards.length, card.id);
-            const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${span}`;
+            const cls = `group relative flex min-h-[32vw] flex-col justify-end overflow-hidden text-left md:min-h-0 ${spanForMobile(i, card.id)} ${span}`;
             return card.url ? (
               <a
                 key={card.id}

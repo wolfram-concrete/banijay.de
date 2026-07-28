@@ -67,21 +67,17 @@ type Fact = { value: number; suffix: string; label: string; copy: string };
 //   Erstausstrahlungen"), bleiben unberührt.
 const FACTS: Fact[] = [
   {
-    value: 40,
+    // 40+ → 170+ (Wolfram 24.07.): die „Companies & Labels"-Kennzahl steht jetzt für die
+    // gesamte Banijay-Gruppe (weltweit 170+), nicht mehr nur den deutschen Verbund.
+    value: 170,
     suffix: "+",
     // „und" → „&" (Wolfram 20.07.). Gilt NUR hier; „Mitarbeiterinnen und Mitarbeiter"
     // bleibt ausgeschrieben, das ist eine Paarformel und kein Aufzählungs-und.
     label: "Companies & Labels",
-    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
+    copy: "Weltweit vereint die Banijay-Gruppe über 170 Companies und Labels. In Deutschland gehören dazu viele der bekanntesten Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
   },
-  {
-    value: 90,
-    suffix: " %",
-    label: "Primetime Hitrate",
-    // Finaler Text (Wolfram 21.07.); Bold-Auszeichnungen der Vorlage in normalen Fließtext
-    // überführt, zwei Deklinations-Tippfehler korrigiert („vergleichbaren", „unserer Shows").
-    copy: "Unsere selbstauferlegte Währung bei Banijay: die Primetime Hitrate. Seit 2023 analysieren wir monatlich die On-Air-Performance aller Banijay-Formate – mit dem Ziel einer transparenten und vergleichbaren Erfolgsmessung. Unsere Währung: die Primetime Hitrate. Wie viele unserer Shows lagen über dem jeweiligen Senderschnitt und fanden damit ihr Publikum? Für uns in der Banijay-Gruppe bedeutet das: eine Hitrate von 90 Prozent! Das ist nicht nur eine starke Performance unserer Teams, sondern auch ein Signal für die Unterhaltung in Deutschland: Starke Entertainment-Marken mit klarer Haltung und Wiedererkennbarkeit liefern in einem umkämpften Markt ab.",
-  },
+  // ENTFERNT am 24.07. (Wolfram): die Kachel „Primetime Hitrate" (Wert 90 %) — sowohl hier
+  // in den About-Fakten als auch der ganze Primetime-Abschnitt auf der News-Seite.
   {
     // 1.400+ → 1.500+ (Wolfram 22.07.): Zahl + Fließtext auf 1500 aktualisiert.
     value: 1500,
@@ -243,7 +239,7 @@ export function EditorialStickyScene() {
             >
               <img
                 src="/editorial/marcus-wolter.webp?v=2"
-                alt="Marcus Wolter, Founder & CEO Banijay Germany"
+                alt="Marcus Wolter, Co-Founder & CEO Banijay Germany"
                 className="h-full w-full object-cover"
                 // Neues Hochformat-Porträt (Wolfram 22.07., photo.jpeg 2326×2908 → 1500×1875):
                 // Gesicht sitzt im oberen Drittel → Fokus hoch (32 %→15 %), damit Kopf/Oberkörper
@@ -269,7 +265,7 @@ export function EditorialStickyScene() {
                   „Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[2.7vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
-                  Marcus Wolter, Founder &amp; CEO Banijay Germany
+                  Marcus Wolter, Co-Founder &amp; CEO Banijay Germany
                 </span>
               </blockquote>
             </div>

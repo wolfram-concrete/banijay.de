@@ -27,7 +27,7 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   title: {
-    default: "Banijay Germany — Die Entertainment-Welt hinter den Momenten",
+    default: "Banijay Germany",
     template: "%s — Banijay Germany",
   },
   description:

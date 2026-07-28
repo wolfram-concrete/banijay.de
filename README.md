@@ -69,8 +69,12 @@ die kompakten, farbkodierten Fakten-Akkordeons frei (Magenta/transparent wie auf
 die „Banijay Story" steht dort ohne Parallax, damit sie vollständig im Screen liegt. Im
 **Companies-Bento** ersetzt eine eigene Zwischenheadline „40+ / Companies & / Labels" (gescrubbte
 Konvergenz + Staub, wie „About Banijay") die Desktop-Swap-Phase, und der Kategoriefilter läuft
-als zweizeilige, unterstrichene Textlinks statt als Chip-Buttons. Im **Team-Grid** stehen die drei
-Leader über die volle Breite, darunter durchgehend zweispaltig mit einheitlich 4/5-Kacheln.
+als zweizeilige, unterstrichene Textlinks statt als Chip-Buttons. Das Bento ist auch mobil **divers
+proportioniert** (eigenes `grid-auto-rows` + Dense-Flow mit breiten `col-span-2`- und hohen
+`row-span-2`-Kacheln; native Hochformat-Reels laufen hoch) statt uniformer Kacheln. Im **Team-Grid**
+stehen die drei Geschäftsführer mobil je in einer **vollbreiten Zeile** (über beide Spalten, Container
++40 % Höhe), darunter läuft das Team zweispaltig weiter; Desktop zeigt die Leader-Reihe über die
+volle Breite.
 Während des **Preloaders** ist Scrollen hart gesperrt (Lenis startet gestoppt, zusätzlich
 `wheel`/`touchmove`/Scroll-Tasten abgefangen) — man landet immer im Hero.
 

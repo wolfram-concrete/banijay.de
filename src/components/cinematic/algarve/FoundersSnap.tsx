@@ -118,10 +118,19 @@ export function AlgarveFoundersSnap() {
         </div>
       </div>
 
-      {/* ── Mobile: 2 Spalten, Leader zuerst; durchgängig hochformatig. ─────────────────── */}
+      {/* ── Mobile (Wolfram 24.07.): die DREI Geschäftsführer (Marcus, Knut, Michael Laegel)
+             stehen jeweils in einer VOLLBREITEN Zeile (über beide Spalten), gestapelt. Erst
+             DARUNTER läuft das Team zweispaltig weiter. ────────────────────────────────── */}
       <div className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
-        {LEADERSHIP.map((p) => (
-          <div key={p.img} style={{ aspectRatio: "4 / 5" }}>
+        {LEADERSHIP.map((p, i) => (
+          <div
+            key={p.img}
+            style={
+              i < 3
+                ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // GF: volle Breite, Höhe +40% (Wolfram 24.07., war 16/10)
+                : { aspectRatio: "4 / 5" } // restliches Team: zweispaltig, hochformat
+            }
+          >
             <TeamTile img={p.img} name={p.name} role={p.role} />
           </div>
         ))}

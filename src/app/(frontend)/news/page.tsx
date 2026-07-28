@@ -27,7 +27,7 @@ export default async function NewsPage() {
       />
 
       {/* Rubrik-BLÖCKE statt einer gemischten Gesamtliste mit Chip-Filter (Wolfram
-          16.07.): Presse · Podcast · Primetime-Hitrate · Marcus Wolter · Social —
+          16.07., Primetime-Hitrate raus 24.07.): Presse · Podcast · Marcus Wolter · Social —
           je Block eine linksbündige Headline, eine Trennlinie und die Posts als
           Slider. mergeFeed sortiert weiterhin nach Datum, das gilt jetzt innerhalb
           jedes Blocks. */}

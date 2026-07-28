@@ -130,7 +130,10 @@ export function AlgarveCareerTomorrowStack() {
               früheren fixen 1,951:1-Box. object-cover übernimmt den nun höheren Ausschnitt. */}
           <div
             className="relative self-start overflow-clip max-[767px]:!hidden"
-            style={{ aspectRatio: String(tomorrow.imageAspect), marginRight: "calc(min(720px, 50vw) - 50vw - 2vw)" }}
+            // marginTop (Wolfram 24.07.): der Bildcontainer sitzt nicht mehr oben auf
+            // Höhe der Headline, sondern deutlich tiefer — startet erst unterhalb der
+            // Headline (etwa auf Höhe des Copytexts).
+            style={{ aspectRatio: String(tomorrow.imageAspect), marginRight: "calc(min(720px, 50vw) - 50vw - 2vw)", marginTop: "7vw" }}
           >
             <img
               ref={img}

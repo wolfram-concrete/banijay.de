@@ -50,7 +50,7 @@ export const LEADERSHIP: Leader[] = [
   // LEADER-Kachel (1.207 Querformat) beschnitten. Fokuswert 14 % (s. Founders FOCUS).
   // Nachskaliert (Wolfram 21.07., 2. Runde): Kopf +15 % (aus dem vorigen 900×1200-Crop
   // um den Kinnpunkt gezoomt) → näher an Knut.
-  { name: "Marcus Wolter", role: "CEO & Founder", img: "/people/marcus-wolter.webp" },
+  { name: "Marcus Wolter", role: "CEO & Co-Founder", img: "/people/marcus-wolter.webp" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.webp" },
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-3.jpg ab.
   // ACHTUNG, ANDERE ZAHL ALS UNTEN: Michael Laegel steht in der LEADER-Reihe, deren

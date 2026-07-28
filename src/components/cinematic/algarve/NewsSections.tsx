@@ -37,14 +37,13 @@ type Block = {
   ratio: string;
 };
 
-// Reihenfolge exakt nach Wolfram (16.07.): Presse → Podcast → Primetime-Hitrate →
-// Marcus Wolter → Social.
+// Reihenfolge (Wolfram 24.07.): Presse → Podcast → Marcus Wolter → Social.
+// Der Primetime-Hitrate-Abschnitt ist auf Wolframs Wunsch (24.07.) komplett raus
+// (die Beiträge liegen weiter in den Daten unter category „Primetime", werden hier
+// aber nicht mehr als eigener Block ausgespielt).
 const BLOECKE: Block[] = [
   { rubrik: "Presse", label: "Presse", note: "Meldungen aus der Banijay-Welt.", ratio: "4 / 3" },
   { rubrik: "Podcast", label: "Podcast", note: "WOLTER TALKS — der Banijay-Podcast.", ratio: "4 / 3" },
-  // Die Rubrik heißt in den Daten „Primetime"; die Beiträge sind aber durchweg die
-  // Hitrate-Meldungen („88% Primetime-Hitrate im März!“) — daher das genauere Label.
-  { rubrik: "Primetime", label: "Primetime-Hitrate", note: "Monat für Monat unter den Marktführern.", ratio: "4 / 3" },
   { rubrik: "Marcus Wolter", label: "Marcus Wolter", note: "Interviews und Auftritte in externen Medien.", ratio: "4 / 3" },
   { rubrik: "Social", label: "Social", note: "Direkt aus unseren Kanälen.", ratio: "4 / 5" },
 ];
