@@ -58,6 +58,12 @@ Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
   nur das Umfeld → `anticipatePin` mobil aus (Desktop unverändert, Geometrie dort verifiziert
   stabil), der Pin rastet jetzt exakt am Trigger ein.
 
+### Aylin-Foto getauscht (24.07.)
+- **Aylin Firat — neues Team-Foto:** aus dem neuen Master (`Aylin neu.webp`, 3800×5712) auf ein
+  Kopf-Schulter-Porträt zugeschnitten (2:3, Gesicht ~30 %) und auf 900×1353 gerechnet — analog
+  gerahmt zu den übrigen Karten der Reihe (statt des weiten Sitz-Shots des Originals). `focus()`
+  („50% 0%") und Zielformat unverändert.
+
 ### Build-Fix (Production), Marcus-Bild & Hero-Revert (24.07.)
 - **KRITISCH — Vercel-Production-Build repariert:** In `SmoothScroll.tsx` stand eine
   ungültige Lenis-Option (`touchInertiaMultiplier`). `next dev` (lokal) type-checkt nicht
