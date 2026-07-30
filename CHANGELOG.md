@@ -58,6 +58,12 @@ Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
   nur das Umfeld → `anticipatePin` mobil aus (Desktop unverändert, Geometrie dort verifiziert
   stabil), der Pin rastet jetzt exakt am Trigger ein.
 
+### Doc.Banijay-Video zurückgetauscht (24.07.)
+- **Doc.Banijay — Company-Video:** zurück auf den **FC-Köln-Banijay-Trailer**
+  (`FcKoeln_fuer_BanijayTrailer_Part1.mov`, ProRes 4K, 1,44 GB). Wie die übrigen Reels
+  weboptimiert runtergerechnet: 1280×720, H.264 crf30, ohne Ton, faststart → **~2,2 MB**
+  (statt 1,44 GB), damit die Performance nicht leidet. `?v=2` Cache-Bust.
+
 ### Aylin-Foto getauscht (24.07.)
 - **Aylin Firat — neues Team-Foto:** aus dem neuen Master (`Aylin neu.webp`, 3800×5712) auf ein
   Kopf-Schulter-Porträt zugeschnitten (2:3, Gesicht ~30 %) und auf 900×1353 gerechnet — analog
