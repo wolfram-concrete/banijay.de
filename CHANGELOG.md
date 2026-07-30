@@ -58,6 +58,17 @@ Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
   nur das Umfeld → `anticipatePin` mobil aus (Desktop unverändert, Geometrie dort verifiziert
   stabil), der Pin rastet jetzt exakt am Trigger ein.
 
+### Mobile Team→Video-Blende wieder eingebaut (24.07.)
+- **Home, mobil:** die Team→Video→News-Choreografie läuft jetzt auch mobil wie auf Desktop —
+  das mobile Team-Raster pinnt an der Unterkante (Aylins Bild-Unterkante = Viewport-Boden),
+  dann steigt die LogoReveal-Video-Fläche via `-100vh`-Overlap von unten über das gepinnte Team
+  auf, danach wächst das Magenta-„b". Zuvor war das mobil abgeschaltet (nur angedockt, kein Pin).
+- **Ruckel-Ursache adressiert:** der frühere mobile Snap „lief weiter und sprang zurück" — Ursache
+  war `anticipatePin` (geschwindigkeitsbasiertes Vor-Einrasten überschießt beim Touch-Momentum,
+  dieselbe Falle wie beim Social-Slider). Auf Mobile daher `anticipatePin: 0`. Desktop unverändert.
+- Noch auf dem Gerät zu justieren: Pin-Halte-Dauer (mobil `end +=160%`) und die Pausen-/Aufstiegs-
+  Länge — im Preview nicht verlässlich prüfbar (Lenis/Touch).
+
 ### Doc.Banijay-Video zurückgetauscht (24.07.)
 - **Doc.Banijay — Company-Video:** zurück auf den **FC-Köln-Banijay-Trailer**
   (`FcKoeln_fuer_BanijayTrailer_Part1.mov`, ProRes 4K, 1,44 GB). Wie die übrigen Reels

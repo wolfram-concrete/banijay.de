@@ -62,6 +62,7 @@ export function TeamTile({ img, name, role }: { img: string; name: string; role:
 export function AlgarveFoundersSnap() {
   const root = useRef<HTMLElement>(null);
   const grid = useRef<HTMLDivElement>(null);
+  const mgrid = useRef<HTMLDivElement>(null); // mobiles Raster (eigenes Pin-Target)
 
   useGSAP(
     () => {
@@ -75,12 +76,25 @@ export function AlgarveFoundersSnap() {
         onEnter: (b) => gsap.to(b, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out", stagger: 0.04 }),
       });
 
-      // EINRASTEN ERST UNTERHALB DER 3. REIHE (Wolfram 22.07.): Das Raster ist höher als ein
-      // Viewport — man scrollt durch die drei Reihen, und sobald die Unterkante den Viewport-
-      // Boden erreicht, wird gepinnt (start „bottom bottom"). ~90vh reiner Halt, dann steigt
-      // die LogoReveal-Blende auf. Kein direktes Snapping der ganzen Fläche mehr.
-      if (grid.current && window.matchMedia("(min-width: 768px)").matches) {
-        ScrollTrigger.create({ trigger: grid.current, start: "bottom bottom", end: "+=190%", pin: true, pinSpacing: true, anticipatePin: 1 });
+      // EINRASTEN ERST UNTERHALB DER LETZTEN REIHE (Wolfram 22.07.): Das Raster ist höher als ein
+      // Viewport — man scrollt durch die Reihen, und sobald die Unterkante (Aylins Bild-Unterkante)
+      // den Viewport-Boden erreicht, wird gepinnt (start „bottom bottom"). Reiner Halt, dann steigt
+      // die LogoReveal-Blende von unten auf und das Magenta-„b" wächst.
+      // Mobile (Wolfram 24.07., WIEDER EINGEBAUT): dieselbe Choreografie jetzt AUCH mobil — gepinnt
+      // wird das mobile Raster (mgrid). WICHTIG: anticipatePin auf Mobile AUS — das
+      // geschwindigkeitsbasierte Vor-Einrasten überschoss beim Touch-Momentum und snapte zurück
+      // (das war die frühere Ruckel-Ursache, dieselbe Falle wie beim #BanijayGermany-Slider).
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const activeGrid = isMobile ? mgrid.current : grid.current;
+      if (activeGrid) {
+        ScrollTrigger.create({
+          trigger: activeGrid,
+          start: "bottom bottom",
+          end: isMobile ? "+=160%" : "+=190%",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: isMobile ? 0 : 1,
+        });
       }
     },
     { scope: root },
@@ -121,7 +135,7 @@ export function AlgarveFoundersSnap() {
       {/* ── Mobile (Wolfram 24.07.): die DREI Geschäftsführer (Marcus, Knut, Michael Laegel)
              stehen jeweils in einer VOLLBREITEN Zeile (über beide Spalten), gestapelt. Erst
              DARUNTER läuft das Team zweispaltig weiter. ────────────────────────────────── */}
-      <div className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
+      <div ref={mgrid} className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
         {LEADERSHIP.map((p, i) => (
           <div
             key={p.img}
