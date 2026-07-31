@@ -552,3 +552,60 @@ html[data-intro="1"] .site-header-root {
 h1 {
   font-family: var(--font-sharp), sans-serif !important;
 }
+
+/* ============================================================
+   WARTUNGSSEITE (/wartung)
+   Eigene, sehr leichte Bühne: kein GSAP, kein Lenis, kein Video —
+   nur die V2-Mood-Token und CSS-Animationen. Die atmende Aura nutzt
+   die bestehende Klasse .mood-breathe (s. o.).
+   ============================================================ */
+.wartung-stage {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--mood-ink);
+}
+
+/* Zwei überlagerte Radials: Magenta als warmes Licht oben, Indigo als
+   kaltes Gegenlicht unten links, Brombeere als Bindeglied. */
+.wartung-aura {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(48% 42% at 62% 24%, rgba(255, 67, 112, 0.42) 0%, rgba(255, 67, 112, 0) 68%),
+    radial-gradient(52% 46% at 22% 78%, rgba(20, 9, 74, 0.85) 0%, rgba(20, 9, 74, 0) 70%),
+    radial-gradient(70% 60% at 50% 50%, rgba(46, 11, 32, 0.75) 0%, rgba(46, 11, 32, 0) 78%);
+  filter: blur(10px);
+}
+
+/* Feines Korn über der Aura — nimmt dem Verlauf das Banding. */
+.wartung-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(rgba(248, 247, 243, 0.9) 0.5px, transparent 0.5px);
+  background-size: 3px 3px;
+}
+
+/* Magenta-Glow hinter dem B-Sign. */
+.wartung-sign-glow {
+  filter: drop-shadow(0 0 26px rgba(255, 67, 112, 0.55));
+}
+
+/* Laufband analog .love-brands-track (Track trägt die Reihe ZWEIMAL,
+   -50% translate loopt nahtlos). Bewusst langsam: 60s. */
+@keyframes wartungMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.wartung-marquee-track {
+  display: inline-flex;
+  width: max-content;
+  animation: wartungMarquee 60s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wartung-marquee-track { animation: none; }
+}
