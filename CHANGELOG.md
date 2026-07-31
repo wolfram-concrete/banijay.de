@@ -3,6 +3,36 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-07-31
+
+### Wartungsmodus über Vercel Edge Config
+
+- **Zentraler Runtime-Schalter:** `src/proxy.ts` liest das Boolean-Flag
+  `maintenance` aus dem Store `banijay-flags`. Bei aktivem Flag werden alle
+  Seiten per Rewrite auf `/wartung` gelegt; die Browser-URL bleibt erhalten.
+- **Korrektes Wartungsverhalten:** Antworten liefern HTTP 503,
+  `Retry-After: 86400`, `X-Robots-Tag: noindex` und No-Store-Caching. Benötigte
+  Next.js-, Font- und Brand-Assets bleiben erreichbar.
+- **Fail-open:** fehlt `EDGE_CONFIG` oder schlägt der Store-Read fehl, wird die
+  reguläre Website ausgeliefert. `MAINTENANCE_MODE=1` steht als lokaler
+  Test-/Notfall-Override zur Verfügung.
+- **Geschützte Vorschau:** `?preview=<TOKEN>` setzt das sieben Tage gültige
+  HttpOnly-/SameSite-Lax-Bypass-Cookie `bj-bypass`; danach kann die reguläre
+  Site im selben Deployment angesehen werden.
+- **Eigene Wartungsroute:** `src/app/wartung` liegt außerhalb von `(frontend)`
+  und lädt damit keinen Site-Header/-Footer, Lenis oder GSAP. Die visuelle Bühne
+  nutzt ausschließlich das globale Brand-Font-Setup und CSS-Animationen.
+- **Vercel eingerichtet:** `EDGE_CONFIG` für Production/Preview/Development,
+  sensitives `MAINTENANCE_BYPASS_TOKEN` für Production, Production-Deployment
+  erfolgreich. Das Flag wurde anschließend operativ auf `true` gesetzt.
+- **Verifiziert:** Production-Build, TypeScript, gezielter ESLint-Lauf,
+  Edge-Config-Read, 503-Rewrite, Asset-Ausnahmen, falscher/korrekter Token,
+  Bypass-Cookie und Desktop-/Mobile-Rendering.
+- **Dokumentation:** vollständiges Runbook unter
+  [`docs/maintenance-mode.md`](docs/maintenance-mode.md). Hinweis: Die
+  öffentliche Domain zeigt zum Zeitpunkt der Einführung noch auf den bisherigen
+  Apache/PHP-Server; die externe DNS-Umstellung ist separat erforderlich.
+
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
 ### Content-Feedback, Company-Videos & Mobile-Layouts (24.07., 2. Runde)

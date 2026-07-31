@@ -108,6 +108,12 @@ npm run lint    # ESLint
 > abbrechen. Ein grüner Dev-Server ist KEINE Garantie für einen grünen Deploy (siehe
 > Changelog 24.07.).
 
+## Dokumentation
+
+- [Dokumentationsübersicht](docs/README.md)
+- [Wartungsmodus: Architektur und Betrieb](docs/maintenance-mode.md)
+- [Changelog](CHANGELOG.md)
+
 ## Projektstruktur
 
 ```
