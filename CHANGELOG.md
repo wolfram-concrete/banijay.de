@@ -63,9 +63,10 @@ Schritten optimiert, damit sich jeder Effekt am Gerät nachmessen lässt:
   das mobile Team-Raster pinnt an der Unterkante (Aylins Bild-Unterkante = Viewport-Boden),
   dann steigt die LogoReveal-Video-Fläche via `-100vh`-Overlap von unten über das gepinnte Team
   auf, danach wächst das Magenta-„b". Zuvor war das mobil abgeschaltet (nur angedockt, kein Pin).
-- **Ruckel-Ursache adressiert:** der frühere mobile Snap „lief weiter und sprang zurück" — Ursache
-  war `anticipatePin` (geschwindigkeitsbasiertes Vor-Einrasten überschießt beim Touch-Momentum,
-  dieselbe Falle wie beim Social-Slider). Auf Mobile daher `anticipatePin: 0`. Desktop unverändert.
+- **Pin-Start ohne Rücksprung:** der Stopp muss exakt an Aylins Bild-Unterkante sitzen. Mit
+  `anticipatePin: 0` glitt der Scroll bei Touch-Momentum über den Trigger hinaus und snapte zurück
+  („springt zum unteren Bildschirmrand", Wolfram 24.07.) → auf `anticipatePin: 1` (wie Desktop),
+  das geschwindigkeitsbasierte Vor-Einrasten setzt den Stopp sauber ohne Sprung. Desktop unverändert.
 - Noch auf dem Gerät zu justieren: Pin-Halte-Dauer (mobil `end +=160%`) und die Pausen-/Aufstiegs-
   Länge — im Preview nicht verlässlich prüfbar (Lenis/Touch).
 
