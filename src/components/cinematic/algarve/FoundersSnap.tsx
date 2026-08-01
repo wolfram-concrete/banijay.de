@@ -81,9 +81,11 @@ export function AlgarveFoundersSnap() {
       // den Viewport-Boden erreicht, wird gepinnt (start „bottom bottom"). Reiner Halt, dann steigt
       // die LogoReveal-Blende von unten auf und das Magenta-„b" wächst.
       // Mobile (Wolfram 24.07., WIEDER EINGEBAUT): dieselbe Choreografie jetzt AUCH mobil — gepinnt
-      // wird das mobile Raster (mgrid). WICHTIG: anticipatePin auf Mobile AUS — das
-      // geschwindigkeitsbasierte Vor-Einrasten überschoss beim Touch-Momentum und snapte zurück
-      // (das war die frühere Ruckel-Ursache, dieselbe Falle wie beim #BanijayGermany-Slider).
+      // wird das mobile Raster (mgrid). anticipatePin: 1 (wie Desktop) — verhindert den Rücksprung
+      // am Pin-Start: bei Lenis-Touch-Momentum gleitet der Scroll sonst über den Trigger („bottom
+      // bottom" = Aylins Bild-Unterkante am Viewport-Boden) hinaus und wird dann zurückgesnappt
+      // („springt zum unteren Bildschirmrand", Wolfram 24.07.). anticipatePin pinnt einen Tick
+      // früher → sauberer Stopp genau an der Unterkante, ohne Sprung.
       const isMobile = window.matchMedia("(max-width: 767px)").matches;
       const activeGrid = isMobile ? mgrid.current : grid.current;
       if (activeGrid) {
@@ -93,7 +95,7 @@ export function AlgarveFoundersSnap() {
           end: isMobile ? "+=160%" : "+=190%",
           pin: true,
           pinSpacing: true,
-          anticipatePin: isMobile ? 0 : 1,
+          anticipatePin: 1,
         });
       }
     },
