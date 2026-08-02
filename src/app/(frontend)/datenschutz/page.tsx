@@ -4,6 +4,7 @@ import { AlgarveLegalPage } from "@/components/cinematic/algarve/LegalPage";
 export const metadata: Metadata = {
   title: "Datenschutz",
   description: "Datenschutzerklärung der Banijay Germany GmbH.",
+  alternates: { canonical: "/datenschutz", languages: { de: "/datenschutz", en: "/en/privacy", "x-default": "/datenschutz" } },
 };
 
 export default function DatenschutzPage() {

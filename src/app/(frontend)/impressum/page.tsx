@@ -4,6 +4,7 @@ import { AlgarveLegalPage } from "@/components/cinematic/algarve/LegalPage";
 export const metadata: Metadata = {
   title: "Impressum",
   description: "Impressum der Banijay Germany GmbH.",
+  alternates: { canonical: "/impressum", languages: { de: "/impressum", en: "/en/imprint", "x-default": "/impressum" } },
 };
 
 export default function ImpressumPage() {

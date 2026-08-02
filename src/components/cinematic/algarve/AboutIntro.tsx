@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { HOME } from "@/data/home";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -48,9 +50,10 @@ export function AlgarveAboutIntro({
       Love-Brands-Ticker, Wolfram 13.07.) — blendet mit dem Statement aus. */
   below?: React.ReactNode;
 }) {
+  const copy = copyFor(useLocale());
   const root = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
-  const words = (text ?? HOME.world.text).split(" ");
+  const words = (text ?? copy.home.intro ?? HOME.world.text).split(" ");
   const tallSection = magentaExit || tall || fadeExit;
 
   useGSAP(

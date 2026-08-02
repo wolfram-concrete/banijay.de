@@ -4,13 +4,14 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { NEWS } from "@/data/news";
+import { NEWS_EN } from "@/data/news.en";
+import { localizeHref, useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // section_blog-home: „Latest news" als 5fr/7fr-Grid. Links sticky (Heading +
 // Read-all). Rechts eine ruhige Liste von News-Beiträgen OHNE eigenen Kachel-
 // Background (nur feine Trennlinien) — jeweils mit „Mehr erfahren"-CTA auf die
 // Detailseite. Inhalt: die echten Banijay-News.
-
-const ITEMS = NEWS.slice(0, 5);
 
 const H2 = {
   fontFamily: "var(--font-sharp), sans-serif",
@@ -22,6 +23,9 @@ const H2 = {
 } as const;
 
 export function AlgarveNewsStack() {
+  const locale = useLocale();
+  const copy = copyFor(locale);
+  const items = (locale === "en" ? NEWS_EN : NEWS).slice(0, 5);
   return (
     <section
       data-nav-theme="magenta"
@@ -53,13 +57,13 @@ export function AlgarveNewsStack() {
             style={{ gap: "1.67vw", top: "10vw" }}
           >
             <h2 className="uppercase text-black max-[767px]:!text-[9.6vw]" style={H2}>
-              Latest news
+              {copy.home.latestNews}
             </h2>
             <p className="m-0 max-[767px]:!text-[3.8vw]" style={{ color: "#000000a3", fontSize: "1.39vw", lineHeight: "135%" }}>
-              Premieren, Podcasts, Interviews und Erfolge aus der Banijay-Welt.
+              {copy.home.latestNewsText}
             </p>
             <Link
-              href="/news"
+              href={localizeHref("/news", locale)}
               className="inline-flex items-center text-black max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.4vw]"
               style={{
                 padding: "0.83vw 1.39vw",
@@ -69,7 +73,7 @@ export function AlgarveNewsStack() {
                 fontSize: "1.1vw",
               }}
             >
-              Alle News
+              {copy.home.allNews}
             </Link>
           </div>
 
@@ -80,10 +84,10 @@ export function AlgarveNewsStack() {
               (= Section-Magenta) deckt die untere Ebene ab, getrennt nur durch eine
               feine dünne Linie oben. So gleiten die Karten smooth übereinander. */}
           <div className="relative flex flex-col">
-            {ITEMS.map((item, i) => (
+            {items.map((item, i) => (
               <Link
                 key={item.title}
-                href={`/news/${item.slug}`}
+                href={localizeHref(`/news/${item.slug}`, locale)}
                 // Mobile (Wolfram 24.07.): nur die 3 aktuellsten Beiträge zeigen — Items ab
                 // Index 3 mobil ausblenden (Desktop weiter alle 5).
                 className={`group sticky bottom-[10vw] flex flex-col bg-[#ff4370] no-underline max-[767px]:!border-t-0 max-[767px]:!bottom-[9vw] max-[767px]:!py-[6vw] ${i >= 3 ? "max-[767px]:!hidden" : ""}`}
@@ -95,7 +99,7 @@ export function AlgarveNewsStack() {
                   // Hairline. Erstes Item ohne Linie (kein Strich über der ersten News).
                   borderTop: i === 0 ? "none" : "1px solid #0e0d0b",
                   color: "#0e0d0b",
-                  zIndex: ITEMS.length - i,
+                  zIndex: items.length - i,
                 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>
@@ -133,7 +137,7 @@ export function AlgarveNewsStack() {
                       className="inline-flex items-center gap-[0.4vw] transition-transform duration-300 group-hover:translate-x-1 max-[767px]:!text-[3.4vw]"
                       style={{ fontFamily: "var(--font-sharp), sans-serif", fontSize: "1.05vw", fontWeight: 500 }}
                     >
-                      Mehr erfahren <ArrowUpRight size={16} />
+                      {copy.common.readArticle} <ArrowUpRight size={16} />
                     </span>
                   </div>
                 </div>

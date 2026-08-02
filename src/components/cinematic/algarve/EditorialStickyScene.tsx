@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useLocale } from "@/i18n/config";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -65,7 +66,7 @@ type Fact = { value: number; suffix: string; label: string; copy: string };
 //   Copytexte gegen die Ziffern prüfen (Zahlen im Text vs. `value` je Karte).
 //   Zahlen im Text, die KEINE Kachel-Ziffer sind (z. B. „451 Prime-Time
 //   Erstausstrahlungen"), bleiben unberührt.
-const FACTS: Fact[] = [
+const FACTS_DE: Fact[] = [
   {
     value: 40,
     suffix: "+",
@@ -112,6 +113,39 @@ const FACTS: Fact[] = [
   },
 ];
 
+const FACTS_EN: Fact[] = [
+  {
+    value: 40,
+    suffix: "+",
+    label: "Companies & labels",
+    copy: "Banijay brings together more than 40 companies and labels in Germany, including many of the country’s best-known production houses. EndemolShine, Banijay Productions, MadeFor and filmpool entertainment sit alongside Banijay Germany Live and technology specialist Cape Cross. Artist management, influencer expertise, brand partnerships and sales complete the portfolio.",
+  },
+  {
+    value: 1500,
+    suffix: "+",
+    label: "Employees",
+    copy: "Around 1,500 people at Banijay Germany produce more than 450 primetime premieres every year. Across linear television and digital platforms, the group reaches an audience of millions with brands including ‘The Masked Singer’, ‘TV total’, ‘Who Wants to Be a Millionaire?’, ‘Berlin – Tag & Nacht’, ‘Temptation Island’, ‘Schlag den Star’, ‘Die Höhle der Löwen’, ‘Promi Big Brother’ and ‘Tatort’.",
+  },
+  {
+    value: 4,
+    suffix: " bn",
+    label: "Views",
+    copy: "Banijay Germany is the country’s largest independent production group. Its entertainment reaches four billion viewers every year across television, online platforms and live stages. As part of Banijay Entertainment, the world’s leading content powerhouse, the group is ideally positioned for the continued transformation of the industry.",
+  },
+  {
+    value: 1500,
+    suffix: "+",
+    label: "Live events",
+    copy: "Banijay Germany develops and stages innovative live shows, books tours and builds enduring live brands. The portfolio includes Cologne Comedy Festival, Die besten Comedians Deutschlands, NightWash, 1LIVE Comedy-Nacht XXL and the NightWash club in Cologne, as well as artist bookings and immersive experiences such as Luminiscence.",
+  },
+  {
+    value: 4500,
+    suffix: " hrs.",
+    label: "Entertainment",
+    copy: "The entrepreneurial diversity of the group brings a broad range of entertainment expertise together under one roof. Artists and creatives jointly develop and produce around 4,500 hours of programming each year — from stage shows and live broadcasts to series, digital platforms and podcasts.",
+  },
+];
+
 // Abwechselnd Magenta / Schwarz — Typo IMMER WEISS (Wolfram 15.07.: keine schwarze
 // Typo auf Magenta mehr).
 // Wolfram 16.07.: die SCHWARZEN Kacheln funktionierten nicht — stattdessen die
@@ -122,9 +156,11 @@ const TONE = (i: number) =>
     ? { bg: "#ff4370", fg: "#f8f7f3", label: "rgba(248,247,243,0.82)", copy: "rgba(248,247,243,0.86)" }
     : { bg: "rgba(255,255,255,0.06)", fg: "#f8f7f3", label: "rgba(248,247,243,0.6)", copy: "rgba(248,247,243,0.74)" };
 
-const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
+const fmt = (n: number, locale: "de" | "en") => Math.round(n).toLocaleString(locale === "en" ? "en-GB" : "de-DE");
 
 export function EditorialStickyScene() {
+  const locale = useLocale();
+  const facts = locale === "en" ? FACTS_EN : FACTS_DE;
   const section = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const imgWrap = useRef<HTMLDivElement>(null);
@@ -153,7 +189,7 @@ export function EditorialStickyScene() {
         // und die Farbkodierung fehlte auf Mobile komplett (Wolfram 19.07.: „Farbkodierung
         // wie Desktop berücksichtigen").
         gsap.set([wrapEl, asideEl, cards], { clearProps: "opacity,visibility,transform,width,x,xPercent,y" });
-        nums.forEach((el, i) => (el.textContent = fmt(FACTS[i].value)));
+        nums.forEach((el, i) => (el.textContent = fmt(facts[i].value, locale)));
         // MOBILE (Wolfram 19.07.): das sticky Bild „zoomt zusammen" — seine Höhe schrumpft
         // gescrubbt beim Scrollen (104vw → 62vw), sobald es unter der Nav klebt. Dadurch
         // rücken die Akkordeons darunter ins Bild. Kein Pin (auf Mobile heikel), nur Sticky+Scrub.
@@ -182,7 +218,7 @@ export function EditorialStickyScene() {
       gsap.set(asideEl, { xPercent: 100, autoAlpha: 0 });
       gsap.set(cards, { autoAlpha: 0, y: 24 });
       nums.forEach((el) => (el.textContent = "0"));
-      const numProxy = FACTS.map(() => ({ v: 0 }));
+      const numProxy = facts.map(() => ({ v: 0 }));
 
       // PIN: Bühne bleibt stehen, der Scroll treibt die Fakten-Choreografie.
       const tl = gsap.timeline({
@@ -207,14 +243,14 @@ export function EditorialStickyScene() {
         tl.to(card, { autoAlpha: 1, y: 0, ease: "power2.out", duration: 0.14 }, 0.32 + i * 0.05);
         tl.to(
           numProxy[i],
-          { v: FACTS[i].value, duration: 0.2, onUpdate: () => (nums[i].textContent = fmt(numProxy[i].v)) },
+          { v: facts[i].value, duration: 0.2, onUpdate: () => (nums[i].textContent = fmt(numProxy[i].v, locale)) },
           0.32 + i * 0.05,
         );
       });
       // ④ Halt mit stehenden Fakten, BEVOR der Pin löst
       tl.to({}, { duration: 0.2 }, 0.85);
     },
-    { scope: section },
+    { scope: section, dependencies: [locale] },
   );
 
   return (
@@ -266,7 +302,9 @@ export function EditorialStickyScene() {
                 {/* Mobile-Quote (Wolfram 23.07.): 3.1vw war zu klein → auf 3.7vw hoch und mehr
                     Zeilenabstand (145 %). Container ist 30 % höher, sodass die lange Quote passt. */}
                 <p className="m-0 max-[767px]:!text-[3.7vw] max-[767px]:!leading-[145%]" style={{ fontFamily: SHARP, fontSize: "clamp(1.05rem, 1.5vw, 1.6rem)", lineHeight: "132%", fontWeight: 500 }}>
-                  „Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.&ldquo;
+                  {locale === "en"
+                    ? "Banijay Germany is an entertainment house and connected ecosystem that develops powerful brands, content and live experiences for broad audiences. Our ambition is to create platform-independent content that inspires people and shapes the cultural moment."
+                    : "„Banijay Germany ist ein Entertainment-Haus, das als ein vernetztes Ökosystem starke Marken, Inhalte und Live-Erlebnisse für ein großes Publikum entwickelt. Unser Anspruch ist es, Content plattformunabhängig zu schaffen, der Menschen begeistert und den Zeitgeist prägt.“"}
                 </p>
                 <span className="mt-3 block max-[767px]:!text-[2.7vw]" style={{ fontSize: "clamp(0.85rem, 1vw, 1.05rem)", fontWeight: 500, color: "rgba(248,247,243,0.74)" }}>
                   Marcus Wolter, Co-Founder &amp; CEO Banijay Germany
@@ -290,7 +328,7 @@ export function EditorialStickyScene() {
               className="absolute right-0 top-0 z-[2] flex h-full flex-col max-md:!static max-md:!mt-0 max-md:!h-auto max-md:!w-full"
               style={{ width: `${ASIDE_W}px` }}
             >
-              {FACTS.map((f, i) => {
+              {facts.map((f, i) => {
                 const isOpen = open === i;
                 const tone = TONE(i);
                 // „+" sitzt in Sharp Grotesk hoch im Glyphenkasten → auf die Grundlinie

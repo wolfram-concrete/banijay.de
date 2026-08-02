@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Let’s talk entertainment. Kontakt für Partner & Projekte, Presse, Career und allgemeine Anfragen an Banijay Germany.",
+  alternates: {
+    canonical: "/contact",
+    languages: { de: "/contact", en: "/en/contact", "x-default": "/contact" },
+  },
 };
 
 export default function ContactPage() {

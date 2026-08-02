@@ -9,6 +9,8 @@ import { useGSAP } from "@gsap/react";
 import { COMPANIES_DIRECTORY } from "@/data/companiesDirectory";
 import { ECO_CATEGORIES } from "@/data/ecosystem";
 import { DustLayer } from "./DustLayer";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -349,6 +351,7 @@ const hasOwnMedia = (id: string) =>
 const NO_MARKER = new Set<string>(["dynamic-ally-pictures"]);
 
 export function AlgarveCompaniesBento() {
+  const copy = copyFor(useLocale());
   const root = useRef<HTMLElement>(null);
   const [rubrik, setRubrik] = useState<string>("alle");
 
@@ -498,7 +501,7 @@ export function AlgarveCompaniesBento() {
             unterstrichene Text-Hyperlinks sauber nebeneinander (aktiv magenta+unterstrichen),
             damit die 8 Rubriken in ~2 Zeilen passen. */}
         <div className="mb-8 flex flex-wrap justify-center gap-2.5 md:gap-3 max-[767px]:!mb-6 max-[767px]:!gap-x-4 max-[767px]:!gap-y-1">
-          {[{ key: "alle", label: "Alle" }, ...ECO_CATEGORIES.map((c) => ({ key: c.key, label: c.label }))].map((r) => {
+          {[{ key: "alle", label: copy.home.all }, ...ECO_CATEGORIES.map((c) => ({ key: c.key, label: c.label }))].map((r) => {
             const isActive = r.key === rubrik;
             return (
               <button
@@ -612,7 +615,7 @@ export function AlgarveCompaniesBento() {
                   </h3>
                   {card.url && (
                     <span className="inline-flex w-fit items-center gap-1.5 text-white/85 transition-colors group-hover:text-white" style={{ fontFamily: SHARP, fontSize: "clamp(0.72rem, 0.9vw, 0.9rem)", fontWeight: 500 }}>
-                      <span className="underline underline-offset-[5px]">Zur Website</span>
+                      <span className="underline underline-offset-[5px]">{copy.common.website}</span>
                       <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>
                   )}

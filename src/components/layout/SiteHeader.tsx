@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, LEGAL_ITEMS, CONTACT, SOCIAL } from "@/data/site";
 import { NEWS } from "@/data/news";
+import { NEWS_EN } from "@/data/news.en";
+import { alternateLocaleHref, localizeHref, useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // Brand-Glyphen als Inline-SVG (lucide führt keine Marken-Icons mehr).
 function IconInstagram() {
@@ -28,6 +31,9 @@ function IconLinkedin() {
 // News-Slider im Overlay: horizontale Artikel-Gallery, die von links einschiebt.
 // Öffnet unterhalb von „News"; die darunterliegenden Nav-Punkte rutschen runter.
 function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => void }) {
+  const locale = useLocale();
+  const copy = copyFor(locale);
+  const news = locale === "en" ? NEWS_EN : NEWS;
   const SHARP = "var(--font-sharp), sans-serif";
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -70,10 +76,10 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
         className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{ gap: "1vw", paddingBottom: "1vw" }}
       >
-        {NEWS.map((n, i) => (
+        {news.map((n, i) => (
           <Link
             key={n.slug}
-            href={`/news/${n.slug}`}
+            href={localizeHref(`/news/${n.slug}`, locale)}
             onClick={onNavigate}
             className="group shrink-0 text-left no-underline max-[767px]:!w-[60vw]"
             style={{
@@ -124,12 +130,12 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
 
       {/* CTA (Wolfram 14.07.): unterstrichener Text + Pfeil → alle Beiträge (kein Button) */}
       <Link
-        href="/news"
+        href={localizeHref("/news", locale)}
         onClick={onNavigate}
         className="group mt-[1.4vw] flex w-fit items-center gap-1.5 no-underline max-[767px]:!mt-5 max-[767px]:!text-[3.8vw]"
         style={{ color: INK, fontFamily: SHARP, fontSize: "0.95vw", fontWeight: 500 }}
       >
-        <span className="underline underline-offset-[5px]">Zu allen Beiträgen</span>
+        <span className="underline underline-offset-[5px]">{copy.nav.allPosts}</span>
         <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
       </Link>
     </div>
@@ -157,8 +163,10 @@ const PAGE_LABEL: Record<string, string> = {
   // langen Wörter ragten mobil unter dem B-Logo aus dem Screen. Auf diesen Rechtsseiten
   // zeigen wir nur das B — welche Seite es ist, ist ohnehin klar.
 };
-const labelForPath = (path: string): string | undefined =>
-  PAGE_LABEL[path] ?? (path.startsWith("/news/") ? "News" : undefined);
+const labelForPath = (path: string): string | undefined => {
+  const localized = path.replace(/^\/en(?=\/|$)/, "") || "/";
+  return PAGE_LABEL[localized] ?? (localized.startsWith("/news/") ? "News" : undefined);
+};
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -173,6 +181,8 @@ export function SiteHeader() {
   const [newsOpen, setNewsOpen] = useState(false); // News-Slider im Overlay
   const [scrolled, setScrolled] = useState(false); // steuert das eingerastete Seiten-Label
   const pathname = usePathname();
+  const locale = useLocale();
+  const copy = copyFor(locale);
   const previousPathname = useRef(pathname);
   const pageLabel = labelForPath(pathname);
 
@@ -315,11 +325,11 @@ export function SiteHeader() {
             exakt dem Abstand Nav-Wort→rechts entspricht. Desktop 2vw. */}
         <div className="flex items-center justify-between px-[2vw] max-[767px]:!px-[6vw]">
           <Link
-            href="/"
+            href={localizeHref("/", locale)}
             onClick={() => {
               setOpen(false);
               // Auf der Home direkt nach oben in den Hero scrollen.
-              if (pathname === "/") {
+              if (pathname === "/" || pathname === "/en") {
                 const lenis = (
                   window as unknown as { __lenis?: { scrollTo?: (t: number, o?: Record<string, unknown>) => void } }
                 ).__lenis;
@@ -327,7 +337,7 @@ export function SiteHeader() {
                 else window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
-            aria-label="Banijay Germany — Startseite"
+            aria-label={copy.nav.homeAria}
             className="flex items-center"
             // Logo-Regel (Wolfram 13.07.): das Banijay-Germany-Logo ist auf ALLEN
             // Seiten ausgeblendet — NUR bei geöffneter Navi steht es (schwarz)
@@ -345,12 +355,13 @@ export function SiteHeader() {
             />
           </Link>
 
-          <div className="relative flex flex-col items-end">
+          <div className="flex items-start gap-4 max-[767px]:gap-3">
+            <div className="relative flex flex-col items-end">
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
-              aria-label={open ? "Menü schließen" : "Menü öffnen"}
+              aria-label={open ? copy.nav.closeMenu : copy.nav.openMenu}
               // Mobile: 25 % kleiner (3.5rem → 2.625rem) — auf schmalen Screens
               // war die Wortmarke zu groß.
               className="appearance-none border-0 bg-transparent uppercase transition-colors max-[767px]:!text-[9vw]"
@@ -369,7 +380,7 @@ export function SiteHeader() {
               }}
             >
               {open ? (
-                "Close"
+                copy.nav.close
               ) : (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
@@ -409,6 +420,7 @@ export function SiteHeader() {
                 {pageLabel}
               </span>
             )}
+            </div>
           </div>
         </div>
       </nav>
@@ -435,7 +447,7 @@ export function SiteHeader() {
               style={{ gap: "0.4vh", color: INK }}
             >
               {NAV_ITEMS.map((item, i) => {
-                const labelText = item.label === "Banijay" ? "Home" : item.label;
+                const labelText = item.href === "/" ? copy.nav.home : item.href === "/career" ? copy.nav.career : copy.nav.news;
                 const inner = (
                   <span
                     className="block uppercase max-[767px]:!text-[12vw]"
@@ -476,7 +488,7 @@ export function SiteHeader() {
                 return (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={localizeHref(item.href, locale)}
                     onClick={() => setOpen(false)}
                     className="block overflow-hidden transition-colors duration-300 hover:text-white"
                   >
@@ -484,6 +496,40 @@ export function SiteHeader() {
                   </Link>
                 );
               })}
+
+              {/* Sprache ist eine Utility-Funktion und steht bewusst unter der primären
+                  Navigation. So bleibt der geschlossene Header ruhig und im Overlay
+                  kollidiert der Schalter nicht mit dem separaten Close-Button. */}
+              <div
+                className="mt-[2.5vh] flex min-h-11 items-center gap-2 text-[0.82rem] font-bold uppercase tracking-[0.14em] max-[767px]:mt-[2vh] max-[767px]:text-[3.2vw]"
+                style={{
+                  transform: linksVisible ? "translateY(0)" : "translateY(120%)",
+                  opacity: linksVisible ? 1 : 0,
+                  pointerEvents: open ? "auto" : "none",
+                  transition: "transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease",
+                  transitionDelay: "180ms",
+                }}
+                aria-label={locale === "de" ? "Sprache wählen" : "Choose language"}
+                aria-hidden={!open}
+              >
+                {(["de", "en"] as const).map((target, index) => (
+                  <span key={target} className="flex items-center gap-2">
+                    {index > 0 && <span aria-hidden className="opacity-35">/</span>}
+                    <Link
+                      href={alternateLocaleHref(pathname, target)}
+                      hrefLang={target}
+                      lang={target}
+                      tabIndex={open ? 0 : -1}
+                      aria-current={locale === target ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className="flex min-h-11 min-w-8 items-center justify-center transition-opacity hover:opacity-60"
+                      style={{ opacity: locale === target ? 1 : 0.45, textDecoration: locale === target ? "underline" : "none", textUnderlineOffset: "0.4em" }}
+                    >
+                      {target.toUpperCase()}
+                    </Link>
+                  </span>
+                ))}
+              </div>
             </nav>
 
             {/* Info-Block — linksbündig; Spotify-Widget rechts daneben, unten bündig.
@@ -509,7 +555,7 @@ export function SiteHeader() {
               />
               {/* Folgen (Instagram/LinkedIn) — auf Mobile ÜBER dem Spotify-Widget. */}
               <div className="flex flex-col gap-3 max-[767px]:order-1">
-                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Folgen</div>
+                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">{copy.nav.follow}</div>
                 <div className="flex flex-wrap gap-3">
                   <a
                     href={SOCIAL.instagram.url}
@@ -540,7 +586,7 @@ export function SiteHeader() {
               </div>
               {/* Büro + Kontakt nur Desktop — auf Mobile steht alles im Footer. */}
               <div className="flex flex-col gap-3 max-[767px]:!hidden">
-                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Büro</div>
+                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">{copy.nav.office}</div>
                 <div className="text-xl leading-relaxed">
                   {CONTACT.street}
                   <br />
@@ -548,7 +594,7 @@ export function SiteHeader() {
                 </div>
               </div>
               <div className="flex flex-col gap-3 max-[767px]:!hidden">
-                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">Kontakt</div>
+                <div className="text-xs font-bold uppercase tracking-[0.14em] opacity-50">{copy.nav.contact}</div>
                 <a href={`mailto:${CONTACT.email}`} className="text-xl hover:underline">
                   {CONTACT.email}
                 </a>
@@ -566,11 +612,11 @@ export function SiteHeader() {
           {LEGAL_ITEMS.map((l) => (
             <Link
               key={l.href}
-              href={l.href}
+              href={localizeHref(l.href, locale)}
               onClick={() => setOpen(false)}
               className="text-xs uppercase tracking-[0.14em] opacity-50 transition-opacity hover:opacity-100"
             >
-              {l.label}
+              {l.href === "/impressum" ? copy.footer.imprint : copy.footer.privacy}
             </Link>
           ))}
         </div>

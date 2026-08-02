@@ -5,6 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -39,7 +41,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function SubmitButton() {
+function SubmitButton({ label }: { label: string }) {
   const [hovered, setHovered] = useState(false);
   return (
     <button
@@ -53,7 +55,7 @@ function SubmitButton() {
         hovered ? "bg-[#ff4370] text-[#f8f7f3]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >
-      Nachricht senden
+      {label}
       <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />
     </button>
   );
@@ -70,6 +72,7 @@ export function AlgarveContactForm({
   headline,
   copy,
   topics = DEFAULT_TOPICS,
+  context,
 }: {
   /** Seitenkontextbezogene Überschrift. */
   headline: string;
@@ -77,7 +80,17 @@ export function AlgarveContactForm({
   copy?: string;
   /** „Worum geht’s?"-Auswahl je Seitenkontext (Career weicht ab). */
   topics?: { value: string; label: string }[];
+  /** Aktiviert sprachabhängige Standardtexte für den jeweiligen Seitenkontext. */
+  context?: "career";
 }) {
+  const locale = useLocale();
+  const ui = copyFor(locale).form;
+  const careerCopy = copyFor(locale).career;
+  const localizedHeadline = context === "career" ? careerCopy.formHeadline : headline;
+  const localizedCopy = context === "career" ? careerCopy.formCopy : copy;
+  const localizedTopics = context === "career"
+    ? topics.map((topic, index) => ({ ...topic, label: careerCopy.topics[index] ?? topic.label }))
+    : topics;
   const root = useRef<HTMLElement>(null);
   const [sent, setSent] = useState(false);
 
@@ -125,19 +138,19 @@ export function AlgarveContactForm({
               className="m-0 flex flex-wrap max-[767px]:!text-[9vw]"
               style={{ fontFamily: SHARP, fontSize: "3.33vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.1vw", color: "#f8f7f3", columnGap: "0.4ch" }}
             >
-              {headline.split(" ").map((w, i) => (
+              {localizedHeadline.split(" ").map((w, i) => (
                 <span key={i} data-cf-word className="inline-block" style={{ willChange: "transform, opacity" }}>
                   {w}
                 </span>
               ))}
             </h2>
-            {copy && (
+            {localizedCopy && (
               <p
                 data-cf-fade
                 className="m-0 max-w-[30vw] max-[767px]:!mt-[2vw] max-[767px]:!max-w-full max-[767px]:!text-[4.4vw]"
                 style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "142%", color: "rgba(248,247,243,0.58)" }}
               >
-                {copy}
+                {localizedCopy}
               </p>
             )}
           </div>
@@ -149,32 +162,32 @@ export function AlgarveContactForm({
                 role="status"
                 className="glass-panel p-6 text-center text-[#f8f7f3] max-[767px]:p-[6vw] max-[767px]:text-[4vw]"
               >
-                Danke! Deine Nachricht ist eingegangen — wir melden uns.
+                {ui.success}
               </div>
             ) : (
               <form onSubmit={onSubmit} className="flex flex-col items-start gap-[2.22vw] max-[767px]:gap-[6vw]">
                 {/* Reihe 1: Name + Unternehmen (Halbspalten, mobil gestapelt) */}
                 <div className="grid w-full grid-cols-2 gap-[1vw] max-[767px]:!grid-cols-1 max-[767px]:!gap-[6vw]">
-                  <Field label="Name">
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Name" type="text" placeholder="Dein Name" maxLength={256} />
+                  <Field label={ui.name}>
+                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Name" type="text" placeholder={ui.namePlaceholder} maxLength={256} />
                   </Field>
-                  <Field label="Unternehmen">
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Company" type="text" placeholder="Firma" maxLength={256} />
+                  <Field label={ui.company}>
+                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Company" type="text" placeholder={ui.companyPlaceholder} maxLength={256} />
                   </Field>
                 </div>
 
                 {/* Reihe 2: E-Mail + Telefon (Halbspalten, mobil gestapelt) */}
                 <div className="grid w-full grid-cols-2 gap-[1vw] max-[767px]:!grid-cols-1 max-[767px]:!gap-[6vw]">
-                  <Field label="E-Mail">
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Email" type="email" placeholder="Deine geschäftliche E-Mail" maxLength={256} required />
+                  <Field label={ui.email}>
+                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Email" type="email" placeholder={ui.emailPlaceholder} maxLength={256} required />
                   </Field>
-                  <Field label="Telefon">
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Phone" type="tel" placeholder="Telefonnummer" maxLength={256} />
+                  <Field label={ui.phone}>
+                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Phone" type="tel" placeholder={ui.phonePlaceholder} maxLength={256} />
                   </Field>
                 </div>
 
                 {/* Anliegen (3 Optionen) */}
-                <Field label="Worum geht’s?">
+                <Field label={ui.topic}>
                   {/* colorScheme dark: das native Dropdown rendert dunkel statt
                       weiß-auf-weiß; Options-BG als Fallback für Browser, die
                       option-Styles erlauben. */}
@@ -184,8 +197,8 @@ export function AlgarveContactForm({
                     name="Topic"
                     defaultValue=""
                   >
-                    <option value="" style={{ background: "#1a0612", color: "#f8f7f3" }}>Bitte wählen …</option>
-                    {topics.map((t) => (
+                    <option value="" style={{ background: "#1a0612", color: "#f8f7f3" }}>{ui.select}</option>
+                    {localizedTopics.map((t) => (
                       <option key={t.value} value={t.value} style={{ background: "#1a0612", color: "#f8f7f3" }}>
                         {t.label}
                       </option>
@@ -194,13 +207,13 @@ export function AlgarveContactForm({
                 </Field>
 
                 {/* Nachricht */}
-                <Field label="Deine Nachricht">
-                  <textarea className={TEXTAREA} style={{ fontFamily: SHARP }} name="Message" placeholder="Erzähl uns mehr" maxLength={5000} />
+                <Field label={ui.message}>
+                  <textarea className={TEXTAREA} style={{ fontFamily: SHARP }} name="Message" placeholder={ui.messagePlaceholder} maxLength={5000} />
                 </Field>
 
                 {/* Submit */}
                 <div className="mt-[0.5vw] flex w-full flex-col items-start">
-                  <SubmitButton />
+                  <SubmitButton label={ui.send} />
                 </div>
               </form>
             )}

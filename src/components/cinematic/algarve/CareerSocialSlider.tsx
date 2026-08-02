@@ -7,6 +7,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -149,6 +151,7 @@ function VideoMedia({ post }: { post: SocialPost }) {
 }
 
 function Card({ post, showText }: { post: SocialPost; showText: boolean }) {
+  const copy = copyFor(useLocale());
   return (
     <a
       href={post.url}
@@ -204,7 +207,7 @@ function Card({ post, showText }: { post: SocialPost; showText: boolean }) {
             className="inline-flex items-center gap-[0.3vw] transition-transform duration-300 group-hover:translate-x-1 max-[767px]:!text-[3.2vw]"
             style={{ fontFamily: SHARP, fontSize: "0.7vw", fontWeight: 700, color: MAGENTA }}
           >
-            Ansehen <ArrowUpRight className="h-[0.7vw] w-[0.7vw] max-[767px]:!h-[3.2vw] max-[767px]:!w-[3.2vw]" />
+            {copy.common.view} <ArrowUpRight className="h-[0.7vw] w-[0.7vw] max-[767px]:!h-[3.2vw] max-[767px]:!w-[3.2vw]" />
           </span>
         </div>
       </div>
@@ -230,6 +233,11 @@ export function AlgarveCareerSocialSlider({
    *  aus (Wolfram 16.07.) — dort trägt allein das Motiv. */
   showText?: boolean;
 }) {
+  const locale = useLocale();
+  const copy = copyFor(locale);
+  const localizedSubline = locale === "en"
+    ? (headline === "#BanijayGermany" ? copy.home.socialSubline : "A look at the people, roles and moments that shape the Banijay world — straight from our channels.")
+    : subline;
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -293,7 +301,7 @@ export function AlgarveCareerSocialSlider({
             {headline}
           </h2>
           <p className="m-0 max-w-[34vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]" style={{ fontSize: "1.25vw", lineHeight: "145%", color: dark ? "rgba(248,247,243,0.6)" : "rgba(14,13,11,0.6)" }}>
-            {subline}
+            {localizedSubline}
           </p>
         </div>
       </div>

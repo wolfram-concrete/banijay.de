@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { CAREER } from "@/data/career";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // Career – Standorte als eigenständige Magenta-Modulbox (gerundete Karte auf Off-
 // White). Köln als Hauptstandort + weitere Companies-Städte, jeweils mit Jobzahl
@@ -15,6 +17,7 @@ const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
 
 export function AlgarveCareerLocations() {
+  const copy = copyFor(useLocale());
   const { locations } = CAREER;
   const root = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
@@ -64,7 +67,7 @@ export function AlgarveCareerLocations() {
           className="max-w-[47vw] max-[767px]:!max-w-full max-[767px]:!text-[5.5vw]"
           style={{ fontFamily: SHARP, fontSize: "1.9vw", lineHeight: "120%", fontWeight: 500, letterSpacing: "-0.07vw", marginBottom: "2.2vw" }}
         >
-          {locations.text}
+          {copy.career.locationText}
         </p>
         <div className="flex flex-col">
           {locations.items.map((loc) => {
@@ -75,7 +78,7 @@ export function AlgarveCareerLocations() {
                 href={loc.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Jobs in ${loc.name} ansehen — in neuem Tab öffnen`}
+                aria-label={copy.career.locationAria(loc.name)}
                 className="group flex items-center justify-between no-underline max-[767px]:!py-[3vw]"
                 style={{ color: INK, paddingTop: "0.9vw", paddingBottom: "0.9vw", borderTop: "0.08vw solid rgba(14,13,11,0.18)", opacity: has ? 1 : 0.55 }}
               >
@@ -93,7 +96,7 @@ export function AlgarveCareerLocations() {
                   className="shrink-0 text-right max-[767px]:!text-[3vw]"
                   style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.052vw", textTransform: "uppercase", color: has ? INK : "rgba(14,13,11,0.6)" }}
                 >
-                  {has ? `${loc.count} offene Stellen` : "Initiativbewerbung"}
+                  {has ? copy.career.openPositions(loc.count) : copy.career.speculative}
                 </span>
               </a>
             );

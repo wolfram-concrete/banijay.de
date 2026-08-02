@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { NAV_ITEMS, CONTACT, SOCIAL } from "@/data/site";
+import { localizeHref, useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // Footer — großes Rounded-Panel mit Nav-Links, Kontakt + Social-Buttons, darunter
 // BANIJAY als großes Lettering-Marquee (auf die Card geclippt), zuletzt Legal-Zeile
@@ -32,6 +34,8 @@ function IconLinkedin() {
 }
 
 export function SiteFooter() {
+  const locale = useLocale();
+  const copy = copyFor(locale);
   // V2-Mood (10.07.): Footer ÜBERALL invertiert — auf dem dunklen Backdrop hätte
   // die Ink-Card zu wenig Kontrast (Home war zuvor die Ausnahme).
   const inverted = true;
@@ -79,7 +83,7 @@ export function SiteFooter() {
               <div className="flex flex-col gap-10 max-[767px]:order-2">
                 <div className="flex flex-col gap-3">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
-                    Folgen
+                    {copy.footer.follow}
                   </span>
                   {/* Social-Buttons: Farbe/Border über die CSS-Vars (--fg/--bg), damit
                       der Hover Text + Icon zuverlässig invertiert. */}
@@ -110,7 +114,7 @@ export function SiteFooter() {
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <span className="text-xs font-bold uppercase tracking-[0.14em]" style={{ opacity: 0.5 }}>
-                    Kontakt
+                    {copy.footer.contact}
                   </span>
                   <div style={{ lineHeight: "1.6", fontSize: "1.05rem" }}>
                     {CONTACT.street}
@@ -124,11 +128,11 @@ export function SiteFooter() {
                     className="grid gap-x-2 gap-y-1"
                     style={{ gridTemplateColumns: "max-content 1fr", fontSize: "1.05rem", lineHeight: "1.6" }}
                   >
-                    <span style={{ opacity: 0.5 }}>Mail:</span>
+                    <span style={{ opacity: 0.5 }}>{copy.footer.mail}:</span>
                     <a href={`mailto:${CONTACT.email}`} className="hover:opacity-70">
                       {CONTACT.email}
                     </a>
-                    <span style={{ opacity: 0.5 }}>Tel:</span>
+                    <span style={{ opacity: 0.5 }}>{copy.footer.phone}:</span>
                     <a href={`tel:${CONTACT.phone.replace(/[^+\d]/g, "")}`} className="hover:opacity-70">
                       {CONTACT.phone}
                     </a>
@@ -142,7 +146,7 @@ export function SiteFooter() {
                     {/* „Pressekontakt:" wie Mail/Tel formatiert (Wolfram 22.07.): gedämpfte
                         Label-Farbe (opacity 0.5) + Doppelpunkt, Name in Normalfarbe daneben. */}
                     <div>
-                      <span style={{ opacity: 0.5 }}>Pressekontakt:</span> {CONTACT.pressContact}
+                      <span style={{ opacity: 0.5 }}>{copy.footer.press}:</span> {CONTACT.pressContact}
                     </div>
                     <a href={`mailto:${CONTACT.pressEmail}`} className="underline underline-offset-2 hover:opacity-70">
                       {CONTACT.pressEmail}
@@ -157,7 +161,7 @@ export function SiteFooter() {
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={localizeHref(item.href, locale)}
                     className="uppercase transition-opacity hover:opacity-60"
                     style={{
                       fontFamily: "var(--font-sharp), sans-serif",
@@ -168,7 +172,7 @@ export function SiteFooter() {
                       color: FG,
                     }}
                   >
-                    {item.label === "Banijay" ? "Home" : item.label}
+                    {item.href === "/" ? copy.nav.home : item.href === "/career" ? copy.nav.career : copy.nav.news}
                   </Link>
                 ))}
               </nav>
@@ -206,11 +210,11 @@ export function SiteFooter() {
           {/* Legal */}
           <div style={{ paddingLeft: "4.44vw", paddingRight: "4.44vw" }}>
             <div className="flex gap-6 text-xs tracking-[0.02em]" style={{ opacity: 0.5 }}>
-              <Link href="/impressum" className="hover:opacity-100">
-                Impressum
+              <Link href={localizeHref("/impressum", locale)} className="hover:opacity-100">
+                {copy.footer.imprint}
               </Link>
-              <Link href="/datenschutz" className="hover:opacity-100">
-                Datenschutz
+              <Link href={localizeHref("/datenschutz", locale)} className="hover:opacity-100">
+                {copy.footer.privacy}
               </Link>
             </div>
           </div>

@@ -1,6 +1,9 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
-import { CAREER } from "@/data/career";
 import { CAREER_JOBS } from "@/data/careerJobs";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // Jobvorschau (Algarve WorksB-nah): große Headline + Intro, darunter eine ruhige
 // vertikale Liste aktueller Stellen. Jede Zeile ist ein externer
@@ -16,12 +19,31 @@ const META = {
 } as const;
 
 export function AlgarveCareerJobsPreview() {
+  const locale = useLocale();
+  const copy = copyFor(locale);
   // Kuratierte Vorschau: Desktop zeigt ~2/3, Mobile etwa die Hälfte der Einträge.
   // Die über den Mobile-Count hinausgehenden Zeilen werden mobil ausgeblendet.
   const total = CAREER_JOBS.length;
   const desktopCount = Math.max(3, Math.ceil((total * 2) / 3));
   const mobileCount = Math.max(3, Math.ceil(total / 2));
-  const jobs = CAREER_JOBS.slice(0, desktopCount);
+  const titleEn: Record<string, string> = {
+    "(Senior) Artist Manager (w/m/d)": "(Senior) Artist Manager (all genders)",
+    "Eventmanager (w/m/d)": "Event Manager (all genders)",
+    "Jungredakteur (w/m/d)": "Junior Editor (all genders)",
+    "Werkstudent Video Content Creation / Video Editing (w/m/d)": "Working Student — Video Content Creation / Editing (all genders)",
+    "Lead Technical Facility & Studio Service (m/w/d)": "Lead Technical Facility & Studio Service (all genders)",
+    "Freelancer Licht / Ton / Rigging – Veranstaltungstechnik (m/w/d)": "Freelance Lighting / Sound / Rigging Technician (all genders)",
+    "Business Unit Lead Sales & Brand Partnerships (w/m/d)": "Business Unit Lead Sales & Brand Partnerships (all genders)",
+    "Werkstudent Social Media Redaktion (w/m/d)": "Working Student — Social Media Editorial (all genders)",
+    "Ausbildung zur Fachkraft für Veranstaltungstechnik": "Apprenticeship — Event Technology Specialist",
+  };
+  const workTimeEn: Record<string, string> = { Vollzeit: "Full-time", Werkstudent: "Working student", "Freie Mitarbeit": "Freelance", Ausbildung: "Apprenticeship" };
+  const jobs = CAREER_JOBS.slice(0, desktopCount).map((job) => locale === "en" ? {
+    ...job,
+    title: titleEn[job.title] ?? job.title,
+    location: job.location === "Köln" ? "Cologne" : job.location,
+    workTime: workTimeEn[job.workTime] ?? job.workTime,
+  } : job);
   return (
     <section id="jobs" style={{ background: "transparent", paddingTop: "5.56vw", paddingBottom: "5.56vw" }}>
       <div className="mx-auto max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw", maxWidth: "1440px" }}>
@@ -35,13 +57,13 @@ export function AlgarveCareerJobsPreview() {
               className="m-0 uppercase max-[767px]:!text-[8vw]"
               style={{ fontFamily: SHARP, fontSize: "3.4vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.12vw", color: "#f8f7f3" }}
             >
-              {CAREER.jobs.headline}
+              {copy.career.jobsHeadline}
             </h2>
             <p
               className="max-[767px]:!text-[4vw]"
               style={{ marginTop: "1.11vw", fontSize: "1.25vw", lineHeight: "145%", color: "rgba(248,247,243,0.64)" }}
             >
-              {CAREER.jobs.text}
+              {copy.career.jobsText}
             </p>
           </div>
         </div>
@@ -54,7 +76,7 @@ export function AlgarveCareerJobsPreview() {
               href={job.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${job.title} bei ${job.company} — in neuem Tab öffnen`}
+              aria-label={copy.career.jobAria(job.title, job.company)}
               className={`group flex items-center justify-between text-[#f8f7f3] no-underline transition-colors hover:text-[#ff4370] max-[767px]:!flex-col max-[767px]:!items-start max-[767px]:!gap-3 ${i >= mobileCount ? "max-[767px]:!hidden" : ""}`}
               style={{
                 gap: "2vw",

@@ -6,8 +6,10 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ECOSYSTEM, ECO_CATEGORIES } from "@/data/ecosystem";
+import { ECO_CATEGORIES } from "@/data/ecosystem";
 import { DustLayer } from "./DustLayer";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -181,6 +183,7 @@ function withHeadlinePlus(text: string) {
  * stehen und der Pin löst früher.
  */
 export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {}) {
+  const copy = copyFor(useLocale());
   const root = useRef<HTMLElement>(null);
   // Keine geöffnete Card beim Eintritt (Wolfram 13.07.): Cards erst auf Klick.
   const [active, setActive] = useState<string | null>(null);
@@ -483,7 +486,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
       {/* Headline pur, mittelachsig — kein Eyebrow, keine Copy (Wording: Heike #58) */}
       <div data-eco-reveal className="relative mx-auto max-w-[900px] px-6 text-center">
         <h2 className="m-0 text-[3.4rem] leading-[1.02] max-[767px]:text-[2.2rem]" style={{ fontFamily: SHARP, fontWeight: 500, color: PAPER }}>
-          {ECOSYSTEM.title}
+          {copy.home.ecosystem}
         </h2>
       </div>
 

@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./algarve/DustLayer";
 
@@ -72,6 +74,7 @@ const mobileVariante = (pfad: string) => pfad.replace(/\.webp$/, "-mobile.webp")
 export function AlgarveHome({
   variant = "home",
   statement,
+  statementKey,
   frame3 = "/hero-v2/frame-3.webp",
   parallaxExit = false,
 }: {
@@ -79,12 +82,16 @@ export function AlgarveHome({
   variant?: "home" | "companies";
   /** Mittelachsiges Statement, das NACH den Satellitenringen einanimiert (companies) */
   statement?: string;
+  /** Sprachabhängiges Standard-Statement einer Unterseite. */
+  statementKey?: "career" | "news";
   /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.webp" */
   frame3?: string;
   /** News-Page: das Statement driftet beim Verlassen als Parallax nach unten (lag)
    *  → weicher, tiefengestaffelter Übergang in den darunterliegenden News-Feed. */
   parallaxExit?: boolean;
 } = {}) {
+  const copy = copyFor(useLocale());
+  const localizedStatement = statementKey === "career" ? copy.career.statement : statementKey === "news" ? copy.news.statement : statement;
   const dark = variant === "companies";
   const root = useRef<HTMLDivElement>(null);
   const heroImg = useRef<HTMLImageElement>(null); // Frame 1 (dunkel)
@@ -435,7 +442,7 @@ export function AlgarveHome({
       {/* MITTELACHSIGES STATEMENT (companies, Wolfram 14.07.): animiert ein, sobald
           es nach den Satellitenringen in den Viewport kommt — auf dem globalen
           moody Sternenstaub-Backdrop. */}
-      {statement && (
+      {localizedStatement && (
         <section
           data-nav-theme="dark"
           className="relative z-[1] flex items-center justify-center overflow-clip max-[767px]:!px-[6vw]"
@@ -465,7 +472,7 @@ export function AlgarveHome({
                 Ein „\n" im Statement erzwingt einen Umbruch (Wolfram 20.07., Career-
                 Text: Zuruf auf eigener Zeile, darunter der Fließtext). Der Umbruch
                 zählt NICHT als Wort, die Reveal-Reihenfolge bleibt also lückenlos. */}
-            {statement.split(/(\n|\|\|)/).map((chunk, ci) =>
+            {localizedStatement.split(/(\n|\|\|)/).map((chunk, ci) =>
               chunk === "\n" ? (
                 <br key={`br-${ci}`} />
               ) : chunk === "||" ? (

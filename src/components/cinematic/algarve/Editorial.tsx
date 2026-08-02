@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
 import { EditorialStickyScene } from "./EditorialStickyScene";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -95,6 +97,7 @@ const BRANDS_MOBILE4: Brand[] = [
 
 
 export function AlgarveEditorial() {
+  const copy = copyFor(useLocale());
   const root = useRef<HTMLElement>(null);
 
   // ENTRANCE-CHOREOGRAFIE (Wolfram 13.07., „spektakulärer"):
@@ -306,7 +309,7 @@ export function AlgarveEditorial() {
                 <span style={{ fontSize: "0.54em", marginLeft: "0.04em", position: "relative", top: "0.14em" }}>+</span>
               </span>
               <span style={{ fontFamily: SHARP, fontWeight: 500, fontSize: "clamp(1.15rem, 1.7vw, 1.8rem)", letterSpacing: "0.01em" }}>
-                Companies & Labels weltweit
+                {copy.home.companiesWorldwide}
               </span>
             </div>
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 // BACK-TO-TOP (Wolfram 14.07.): subtiles Widget unten rechts, das ERST nach dem
 // Scroll durch ~3 Sektionen (≈ 2.4 Viewport-Höhen) einblendet. Klick scrollt
@@ -8,6 +10,7 @@ import { useEffect, useState } from "react";
 // Glas-Chip. HOVER (14.07.): kippt ins Magenta, hebt sich leicht an, Pfeil rückt
 // nach oben — als klare Klick-Affordanz (inline-Styles → via Hover-State).
 export function BackToTop() {
+  const copy = copyFor(useLocale());
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
 
@@ -38,7 +41,7 @@ export function BackToTop() {
       onClick={toTop}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      aria-label="Nach oben"
+      aria-label={copy.common.backToTop}
       className="back-to-top fixed bottom-[2vw] right-[2vw] z-[90] flex h-11 w-11 items-center justify-center max-[767px]:!bottom-[5vw] max-[767px]:!right-[5vw]"
       style={{
         borderRadius: "6px",

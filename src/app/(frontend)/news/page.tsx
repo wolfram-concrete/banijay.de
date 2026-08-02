@@ -8,6 +8,10 @@ import { NEWS } from "@/data/news";
 export const metadata: Metadata = {
   title: "News",
   description: "Neuigkeiten, Pressemeldungen und Stories aus der Banijay-Welt.",
+  alternates: {
+    canonical: "/news",
+    languages: { de: "/news", en: "/en/news", "x-default": "/news" },
+  },
 };
 
 export default async function NewsPage() {
@@ -22,7 +26,7 @@ export default async function NewsPage() {
       <AlgarveHome
         variant="companies"
         frame3="/hero-v2/frame-3-news.webp"
-        statement={"Immer auf dem||neuesten Stand:\nEntdecke aktuelle Meldungen, Projekte und Erfolgsgeschichten aus dem Banijay-Netzwerk."}
+        statementKey="news"
         parallaxExit
       />
 

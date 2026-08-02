@@ -11,6 +11,12 @@ import { AlgarveNewsStack } from "@/components/cinematic/algarve/NewsStack";
 import { ElfsightFeed } from "@/components/cinematic/ElfsightFeed";
 import { AlgarveLogoTicker } from "@/components/cinematic/algarve/LogoTicker";
 
+export const metadata: Metadata = {
+  title: "Banijay Germany",
+  description: "Banijay Germany vereint führende Produktionsunternehmen, kreative Unternehmer:innen und bekannte Entertainment-Marken.",
+  alternates: { canonical: "/", languages: { de: "/", en: "/en", "x-default": "/" } },
+};
+
 // Home — Design-first: das Gerüst sind die echten Algarve-Sections (Hero, Grid,
 // About-Intro-Wordreveal, Works-Deck, Animated-Heading, Services-Stack,
 // Testimonials, Founder, Blog). In jede Section fließt der knapp gehaltene,
@@ -46,7 +52,6 @@ export default function HomePage() {
             // „einige der bekanntesten" → „die bekanntesten", „Live-Erlebnisse" →
             // „außergewöhnlichsten Live-Erlebnisse". Davor stand „Unser Antrieb ist
             // Entertainment …", das wiederum den Lorem-ipsum-Platzhalter abgelöst hatte.
-            text="Das weltweit führende Zuhause für Kreative – ein globales Medien- und Entertainment Powerhouse, in dem kreative Freiheit, Unternehmergeist und Innovation zusammenkommen, um die bekanntesten Brands und außergewöhnlichsten Live-Erlebnisse der Welt zu erschaffen."
           />
         </div>
 
@@ -85,10 +90,7 @@ export default function HomePage() {
 
       {/* Social-Feed (Wolfram 22.07.) — Instagram @banijaygermany über das von Banijay
           eingerichtete Elfsight-Widget (Token via Linda). Löst hier den Juicer-Block ab. */}
-      <ElfsightFeed
-        headline="#BanijayGermany"
-        subline="Neuigkeiten, Menschen und Momente — direkt aus unseren Kanälen."
-      />
+      <ElfsightFeed headline="#BanijayGermany" />
 
       {/* Company-Logo-Banderole (Wolfram 23.07.) — dieselbe endlose Ticker-Banderole wie
           auf der Career-Seite, hier UNTER der Social-Section und ÜBER dem Footer: während
@@ -97,3 +99,4 @@ export default function HomePage() {
     </>
   );
 }
+import type { Metadata } from "next";

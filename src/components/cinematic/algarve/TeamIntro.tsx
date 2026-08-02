@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DustLayer } from "./DustLayer";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -16,6 +18,7 @@ const SHARP = "var(--font-sharp), sans-serif";
 // untere von unten), dahinter blendet der zentrale Sternenstaub gescrubbt auf und
 // skaliert aus 0.55. Von Raster/Snap/Editorial genutzt (data-mo-intro bleibt als Marke).
 export function TeamIntro() {
+  const copy = copyFor(useLocale());
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -63,8 +66,8 @@ export function TeamIntro() {
         style={{ fontFamily: SHARP, fontSize: "7vw", lineHeight: "112%", fontWeight: 500, textTransform: "uppercase", letterSpacing: "-0.02em" }}
       >
         {/* kein per-Zeilen-overflow-hidden — der Translate wird vom overflow-clip gefasst (wie About) */}
-        <span data-ti-first className="block">Unser</span>
-        <span data-ti-last className="block">Team</span>
+        <span data-ti-first className="block">{copy.home.team[0]}</span>
+        <span data-ti-last className="block">{copy.home.team[1]}</span>
       </h2>
     </div>
   );

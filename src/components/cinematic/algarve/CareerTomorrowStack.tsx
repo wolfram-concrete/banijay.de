@@ -7,6 +7,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CAREER } from "@/data/career";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -21,6 +23,7 @@ const PAPER = "#f8f7f3";
 const MAGENTA = "#ff4370";
 
 export function AlgarveCareerTomorrowStack() {
+  const copy = copyFor(useLocale());
   const { tomorrow } = CAREER;
   const root = useRef<HTMLElement>(null);
   const img = useRef<HTMLImageElement>(null);
@@ -81,14 +84,14 @@ export function AlgarveCareerTomorrowStack() {
               className="max-[767px]:!text-[3vw]"
               style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.12vw", textTransform: "uppercase", color: MAGENTA }}
             >
-              {tomorrow.eyebrow}
+              {copy.career.tomorrowEyebrow}
             </span>
             <h2
               data-tm-item
               className="m-0 max-[767px]:!text-[8vw]"
               style={{ fontFamily: SHARP, fontSize: "3.2vw", lineHeight: "106%", fontWeight: 500, letterSpacing: "-0.1vw", color: PAPER }}
             >
-              {tomorrow.headline}
+              {copy.career.tomorrowHeadline}
             </h2>
             {/* Mobil: Bild oberhalb der Copy (Desktop nutzt das Bild in der rechten
                 Spalte). Ratio = native Visual-Ratio statt der früheren 4:3 — sonst
@@ -98,14 +101,14 @@ export function AlgarveCareerTomorrowStack() {
               className="hidden w-full overflow-clip max-[767px]:!my-[2vw] max-[767px]:!block"
               style={{ aspectRatio: String(tomorrow.imageAspect) }}
             >
-              <img src={tomorrow.image} alt={tomorrow.headline} className="h-full w-full object-cover" />
+              <img src={tomorrow.image} alt={copy.career.tomorrowHeadline} className="h-full w-full object-cover" />
             </div>
             <p
               data-tm-item
               className="m-0 max-w-[46vw] max-[767px]:!max-w-full max-[767px]:!text-[4vw]"
               style={{ fontSize: "1.25vw", lineHeight: "150%", color: "rgba(248,247,243,0.66)" }}
             >
-              {tomorrow.text}
+              {copy.career.tomorrowText}
             </p>
             <a
               data-tm-item
@@ -115,7 +118,7 @@ export function AlgarveCareerTomorrowStack() {
               className="inline-flex w-fit items-center gap-2 rounded-[6px] bg-transparent text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!mt-[2vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
               style={{ border: "1px solid #f8f7f3", padding: "0.95vw 1.9vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500, marginTop: "0.8vw" }}
             >
-              {tomorrow.cta.text}
+              {copy.career.tomorrowCta}
               <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />
             </a>
           </div>
@@ -138,7 +141,7 @@ export function AlgarveCareerTomorrowStack() {
             <img
               ref={img}
               src={tomorrow.image}
-              alt={tomorrow.headline}
+              alt={copy.career.tomorrowHeadline}
               className="absolute inset-0 h-full w-full object-cover"
               style={{ transform: "scale(1.12)", willChange: "transform" }}
             />

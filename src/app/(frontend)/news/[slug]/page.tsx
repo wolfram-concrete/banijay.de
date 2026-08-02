@@ -32,7 +32,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const item = getNewsBySlug(slug);
   if (!item) return { title: "News" };
-  return { title: item.title, description: item.lead };
+  return {
+    title: item.title,
+    description: item.lead,
+    alternates: {
+      canonical: `/news/${slug}`,
+      languages: { de: `/news/${slug}`, en: `/en/news/${slug}`, "x-default": `/news/${slug}` },
+    },
+  };
 }
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {

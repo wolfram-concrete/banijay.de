@@ -8,6 +8,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import type { FeedItem, FeedRubrik } from "@/data/feed";
+import { localizeHref, useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -49,6 +51,8 @@ const BLOECKE: Block[] = [
 ];
 
 function Card({ item, ratio }: { item: FeedItem; ratio: string }) {
+  const locale = useLocale();
+  const copy = copyFor(locale);
   const inner = (
     <>
       <div className="relative overflow-hidden" style={{ aspectRatio: ratio, background: "rgba(255,255,255,0.08)" }}>
@@ -82,7 +86,7 @@ function Card({ item, ratio }: { item: FeedItem; ratio: string }) {
       </h3>
       <span className="mt-2.5 inline-flex items-center gap-1 text-[0.82rem] font-medium text-accent" style={{ fontFamily: SHARP }}>
         <span className="relative">
-          {item.external ? "Ansehen" : "Zum Beitrag"}
+          {item.external ? copy.common.view : copy.common.openPost}
           <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 ease-out group-hover:scale-x-100" />
         </span>
         <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -99,13 +103,14 @@ function Card({ item, ratio }: { item: FeedItem; ratio: string }) {
       {inner}
     </a>
   ) : (
-    <Link data-news-card href={item.href} className={cls}>
+    <Link data-news-card href={localizeHref(item.href, locale)} className={cls}>
       {inner}
     </Link>
   );
 }
 
 function RubrikBlock({ block, items }: { block: Block; items: FeedItem[] }) {
+  const locale = useLocale();
   const track = useRef<HTMLDivElement>(null);
   const root = useRef<HTMLElement>(null);
 
@@ -162,7 +167,7 @@ function RubrikBlock({ block, items }: { block: Block; items: FeedItem[] }) {
               key={dir}
               type="button"
               onClick={() => nudge(dir)}
-              aria-label={dir === -1 ? `${block.label}: zurück` : `${block.label}: weiter`}
+              aria-label={dir === -1 ? `${block.label}: ${locale === "en" ? "previous" : "zurück"}` : `${block.label}: ${locale === "en" ? "next" : "weiter"}`}
               className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(248,247,243,0.22)] text-[#f8f7f3] transition-colors duration-200 hover:border-[#ff4370] hover:bg-[#ff4370]"
             >
               {dir === -1 ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
@@ -201,11 +206,22 @@ function RubrikBlock({ block, items }: { block: Block; items: FeedItem[] }) {
 }
 
 export function NewsSections({ items }: { items: FeedItem[] }) {
+  const locale = useLocale();
+  const copy = copyFor(locale);
+  const blocks = BLOECKE.map((block) => ({
+    ...block,
+    label: locale === "en" && block.rubrik === "Presse" ? "Press" : block.label,
+    note:
+      block.rubrik === "Presse" ? copy.news.pressNote
+      : block.rubrik === "Podcast" ? copy.news.podcastNote
+      : block.rubrik === "Marcus Wolter" ? copy.news.marcusNote
+      : copy.news.socialNote,
+  }));
   return (
     <>
       <style>{`.news-track::-webkit-scrollbar{display:none}`}</style>
       <div className="flex flex-col" style={{ gap: "6vw" }}>
-        {BLOECKE.map((block) => (
+        {blocks.map((block) => (
           <RubrikBlock key={block.rubrik} block={block} items={items.filter((it) => it.rubrik === block.rubrik)} />
         ))}
       </div>

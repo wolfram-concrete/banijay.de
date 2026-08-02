@@ -13,12 +13,15 @@ import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfC
 import { AlgarveAboutDrift } from "@/components/cinematic/algarve/AboutDrift";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
-import { CAREER } from "@/data/career";
 
 export const metadata: Metadata = {
   title: "Career",
   description:
     "Arbeite dort, wo Unterhaltung entsteht. Rollen, offene Stellen und Entwicklung in der Banijay-Welt — plus BANIJAY TOMORROW.",
+  alternates: {
+    canonical: "/career",
+    languages: { de: "/career", en: "/en/career", "x-default": "/career" },
+  },
 };
 
 export default function CareerPage() {
@@ -31,7 +34,7 @@ export default function CareerPage() {
       <AlgarveHome
         variant="companies"
         frame3="/hero-v2/frame-3-career.webp"
-        statement={CAREER.roleIntro.text}
+        statementKey="career"
       />
 
       {/* 02 Rollenwelt „Unser Angebot" — ARCHIVIERT (Wolfram 21.07.): vorerst entfernt,
@@ -64,6 +67,7 @@ export default function CareerPage() {
       <AlgarveContactForm
         headline={"Kein passender Job\ndabei?"}
         copy="Erzähl uns, was du mitbringst — wir freuen uns über deine Initiativbewerbung und melden uns bei dir."
+        context="career"
         // Career-spezifische Anliegen (Wolfram 22.07.).
         topics={[
           { value: "initiativbewerbung", label: "Initiativbewerbung" },

@@ -32,6 +32,15 @@ const EXTERNAL_RAW: Omit<FeedItem, "dateMs">[] = [
 ];
 export const EXTERNAL_PRESS: FeedItem[] = EXTERNAL_RAW.map((it) => ({ ...it, dateMs: parseDE(it.date) }));
 
+const EXTERNAL_PRESS_TITLES_EN: Record<string, string> = {
+  "p-dwdl-livegeschaeft": "From churches to combat sports: Banijay expands its live business",
+  "mw-handelsblatt": "How a production company benefits from the competition for exclusive content",
+  "mw-dwdl-visionaer": "Marcus Wolter: ‘An idea alone is not enough in any business’",
+  "mw-brandeins": "Marcus Wolter on the brand eins Podcast",
+  "mw-deadline": "Banijay Germany’s Marcus Wolter on the future of entertainment",
+  "mw-abendblatt": "Marcus Wolter: It all started with the lottery and Stefan Raab",
+};
+
 export type FeedItem = {
   id: string;
   kind: "news" | "social";
@@ -62,7 +71,7 @@ function newsRubrik(category: string): Exclude<FeedRubrik, "Social"> {
   return "Presse";
 }
 
-export function mergeFeed(news: NewsItem[], social: SocialPost[]): FeedItem[] {
+export function mergeFeed(news: NewsItem[], social: SocialPost[], locale: "de" | "en" = "de"): FeedItem[] {
   const newsItems: FeedItem[] = news.map((n) => ({
     id: `n-${n.slug}`,
     kind: "news",
@@ -86,5 +95,8 @@ export function mergeFeed(news: NewsItem[], social: SocialPost[]): FeedItem[] {
     external: true,
     source: p.source,
   }));
-  return [...newsItems, ...socialItems, ...EXTERNAL_PRESS].sort((a, b) => b.dateMs - a.dateMs);
+  const pressItems = locale === "en"
+    ? EXTERNAL_PRESS.map((item) => ({ ...item, title: EXTERNAL_PRESS_TITLES_EN[item.id] ?? item.title }))
+    : EXTERNAL_PRESS;
+  return [...newsItems, ...socialItems, ...pressItems].sort((a, b) => b.dateMs - a.dateMs);
 }

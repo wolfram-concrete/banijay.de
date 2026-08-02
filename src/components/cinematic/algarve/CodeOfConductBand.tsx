@@ -6,6 +6,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CAREER } from "@/data/career";
+import { useLocale } from "@/i18n/config";
+import { copyFor } from "@/i18n/copy";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -46,8 +48,10 @@ const CLAIM_STYLE = {
 } as const;
 
 export function AlgarveCodeOfConductBand({ background }: { background?: React.ReactNode } = {}) {
+  const locale = useLocale();
+  const copy = copyFor(locale);
   const root = useRef<HTMLDivElement>(null);
-  const words = CAREER.codeOfConduct.text.split(" ");
+  const words = copy.career.conductText.split(" ");
 
   useGSAP(
     () => {
@@ -139,7 +143,7 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
           >
             {words.map((word, i) => {
               const clean = word.replace(/[.,]/g, "");
-              const isAccent = clean === ACCENT_WORD;
+              const isAccent = clean === (locale === "en" ? "creative" : ACCENT_WORD);
               return (
                 <span key={i} data-coc-word className="inline-block" style={{ color: isAccent ? MAGENTA : PAPER }}>
                   {word}
@@ -156,7 +160,7 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
             className="inline-flex w-fit items-center gap-2 rounded-[6px] text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#f8f7f3] hover:text-[#0a0208] max-[767px]:!mt-[6vw] max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
             style={{ marginTop: "2.4vw", border: "1px solid #f8f7f3", padding: "0.83vw 1.67vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
           >
-            {CAREER.codeOfConduct.cta.text}
+            {copy.career.conductCta}
             <ArrowUpRight className="h-[1.05vw] w-[1.05vw] max-[767px]:!h-[3.6vw] max-[767px]:!w-[3.6vw]" />
           </a>
         </div>
