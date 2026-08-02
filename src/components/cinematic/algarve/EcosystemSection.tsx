@@ -107,7 +107,7 @@ const CHIP_XY_M: Record<string, { x: number; y: number }> = {
   artists: { x: 0.81, y: 0.31 }, // oben rechts
   audio: { x: 0.13, y: 0.57 }, // links
   tech: { x: 0.87, y: 0.57 }, // rechts
-  entertainment: { x: 0.28, y: 0.87 }, // unten links (langes Label, weit weg von Fiction)
+  entertainment: { x: 0.2, y: 0.87 }, // unten links, weit weg von Fiction (Wolfram 24.07.)
   fiction: { x: 0.82, y: 0.88 }, // unten rechts (deutlicher Abstand zu Entertainment)
 };
 const VIEWBOX_M = "0 0 800 800";
