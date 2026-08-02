@@ -70,7 +70,6 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // Beide ohne eigenen Web-Auftritt → Verweis auf die jeweilige Mutter
       // (Wolfram 20.07.): Rainer Laux → EndemolShine, Lucky Pics → Brainpool.
       { name: "Rainer Laux Productions", url: "https://endemolshine.de/" },
-      { name: "Lucky Pics", url: "https://brainpool.de/" },
       // Verweise auf die jeweilige Mutter-Company (Wolfram 20.07.), bis eigener Auftritt.
       { name: "Minestrone TV", url: "https://brainpool.de/" },
       { name: "Ladykracher", url: "https://brainpool.de/" },
@@ -79,6 +78,8 @@ export const ECO_CATEGORIES: EcoCategory[] = [
       // URL nachgetragen (Wolfram 17.07.): war unverlinkt, obwohl in companyCards.ts als
       // „Endemol Shine Polska" belegt. endemolshine.pl gibt 200.
       { name: "EndemolShine Poland", url: "https://www.endemolshine.pl/" },
+      // GANZ UNTEN (Wolfram 24.07.): Lucky Pics ans Ende der Entertainment-Liste (Desktop + Mobile).
+      { name: "Lucky Pics", url: "https://brainpool.de/" },
     ],
   },
   {

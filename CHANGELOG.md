@@ -35,6 +35,21 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [redesign-v2] — Branch (Preview) — 2026-07-16
 
+### Mobile-Feinschliff & Ökosystem-Umbau (24.07., 3. Runde)
+- **Mobiles Ökosystem — Option ①:** die Rubriken sind mobil wieder **klickbare Reiter direkt an
+  der Grafik** (wie Desktop) statt Akkordeon; Tap → der Content öffnet an **fixer Position darunter**
+  (kein Layer über der Grafik). Atom größer skaliert (94vw), Chip-Verteilung daumenfreundlich
+  handgesetzt (lange Labels oben/unten mit Platz), Chips **transparent wie die Desktop-Optik**
+  (Magenta-Ankerpunkte scheinen durch) + „+"-Indikator. Entertainment/Fiction klar getrennt.
+- **Lucky Pics** in der Entertainment-Liste **ganz nach unten** (Desktop + Mobile).
+- **Elevate-Video** als **echtes 9:16-Hochformat** neu kodiert (Quelle war `rotation=-90`; alt ins
+  Querformat gestaucht) + Kachel-Swap: Elevate hochkant, **Pausenclown klein/quer**.
+- **Aylin Firat** — Team-Foto neu aus dem Master (schärfer, Scheitel auf Reihen-Höhe).
+- **ICONIC IP mobil:** eigene, **horizontale** Konvergenz-Animation (Wörter laufen von links/rechts
+  auf einer Achse zusammen) und deutlich kürzer. Desktop unverändert.
+- **About-Fakten mobil:** 3px-Cut zwischen „4.500 hrs" und der „170+"-Leiste (zwei getrennte Kacheln).
+- **#BanijayGermany-Slider mobil:** `anticipatePin: 1` → Pin stoppt sauber am Fixpunkt (kein Rücksprung).
+
 ### Content-Feedback, Company-Videos & Mobile-Layouts (24.07., 2. Runde)
 - **„Latest news" mobil auf 3 Beiträge:** auf schmalen Viewports zeigt der News-Stapel nur noch die
   3 aktuellsten Beiträge (Items ab Index 3 mobil ausgeblendet); Desktop weiter alle 5.

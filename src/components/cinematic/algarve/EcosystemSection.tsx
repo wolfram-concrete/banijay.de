@@ -96,6 +96,20 @@ const CHIP_POS_M: Record<string, { orbit: number; deg: number }> = {
   fiction: { orbit: 1, deg: 47 },
   audio: { orbit: 0, deg: 90 },
 };
+// MOBILE-CHIPS (Wolfram 24.07., Option ①): die Rubriken sind mobil wieder KLICKBARE Reiter
+// direkt an der Grafik (wie Desktop) statt als Liste. Handgesetzte Verteilung als Fraktionen
+// (0..1) der quadratischen Atom-Box — daumenfreundlich, ohne Überlappung: lange Labels
+// (Distribution & Brand oben, Entertainment unten) sitzen mittig mit horizontalem Platz,
+// die kurzen ringsum an den Seiten. Anker-Punkte + Chips teilen sich diese Positionen.
+const CHIP_XY_M: Record<string, { x: number; y: number }> = {
+  distribution: { x: 0.5, y: 0.11 }, // oben Mitte (langes Label)
+  live: { x: 0.19, y: 0.31 }, // oben links
+  artists: { x: 0.81, y: 0.31 }, // oben rechts
+  audio: { x: 0.13, y: 0.57 }, // links
+  tech: { x: 0.87, y: 0.57 }, // rechts
+  entertainment: { x: 0.28, y: 0.87 }, // unten links (langes Label, weit weg von Fiction)
+  fiction: { x: 0.82, y: 0.88 }, // unten rechts (deutlicher Abstand zu Entertainment)
+};
 const VIEWBOX_M = "0 0 800 800";
 const ASPECT_M = "800 / 800";
 
@@ -311,7 +325,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
         gsap.set("[data-eco-reveal]", { autoAlpha: 0, y: 22 });
         gsap.set("[data-eco-orbit]", { autoAlpha: 0, scale: 0.62, transformOrigin: "50% 50%" });
         gsap.set("[data-eco-dot], [data-eco-anchor], [data-eco-b]", { autoAlpha: 0 });
-        gsap.set("[data-eco-acc-row]", { autoAlpha: 0, y: 14 });
+        gsap.set("[data-eco-chip-m]", { autoAlpha: 0, y: 14 });
         // EINMALIG (Wolfram 17.07., 5. Runde): once statt toggleActions. Vorher blendete
         // das Reveal beim Zurück-/Weiterscrollen wieder aus (reverse) → wirkte „geblockt",
         // Grafik verschwand, Sprünge. Jetzt spielt es genau EINMAL beim Reinscrollen und
@@ -324,7 +338,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
           .to("[data-eco-b]", { autoAlpha: 1, duration: 0.3 }, 0.36)
           .to("[data-eco-dot], [data-eco-anchor]", { autoAlpha: 1, duration: 0.35 }, 0.42)
           // die Rubriken kommen einzeln nach (sukzessive „zum Vorschein")
-          .to("[data-eco-acc-row]", { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.1, ease: "power2.out" }, 0.55);
+          .to("[data-eco-chip-m]", { autoAlpha: 1, y: 0, duration: 0.42, stagger: 0.1, ease: "power2.out" }, 0.55);
 
         // PARALLAX (Wolfram 19.07.): die Section wirkte nach dem Wegfall des Pins sehr
         // still. Die Grafik driftet jetzt gescrubbt gegen den Scroll (eigener Wrapper,
@@ -491,7 +505,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
           // gedeckelt, dass die Höhe max. ~60vh bleibt → alles passt in den Viewport.
           // Mobile (symmetrisches, quadratisches Atom, steht für sich oben): über die
           // BREITE (~74vw) deckeln, auf niedrigen Screens zusätzlich über die Höhe (40vh).
-          width: isMobile ? "min(74vw, 40vh)" : "min(100%, 2000px, calc(60vh * 1300 / 640))",
+          width: isMobile ? "min(94vw, 62vh)" : "min(100%, 2000px, calc(60vh * 1300 / 640))",
         }}
       >
         {/* VERDICHTETER STERNENSTAUB im Zentrum (Wolfram 14.07.): eigene, eng um
@@ -524,10 +538,12 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
           ))}
           {/* Anker-Satelliten der Kategorie-Karten (globale Koordinaten) */}
           {ECO_CATEGORIES.map((cat) => {
-            const pos = CP[cat.key];
-            const p = pt(pos.orbit, pos.deg);
+            // Mobile: Anker sitzt auf der handgesetzten Chip-Position (CHIP_XY_M), damit
+            // Punkt und tippbarer Reiter deckungsgleich sind. Desktop: auf der Bahn (pt).
+            const xy = CHIP_XY_M[cat.key];
+            const p = isMobile ? { x: xy.x * VBW, y: xy.y * VBH } : pt(CP[cat.key].orbit, CP[cat.key].deg);
             return (
-              <circle key={`anchor-${cat.key}`} data-eco-anchor cx={+p.x.toFixed(2)} cy={+p.y.toFixed(2)} r={isMobile ? 4.6 : 3.4} fill={MAGENTA} style={{ filter: `drop-shadow(0 0 7px ${MAGENTA})` }} />
+              <circle key={`anchor-${cat.key}`} data-eco-anchor cx={+p.x.toFixed(2)} cy={+p.y.toFixed(2)} r={isMobile ? 5.5 : 3.4} fill={MAGENTA} style={{ filter: `drop-shadow(0 0 7px ${MAGENTA})` }} />
             );
           })}
         </svg>
@@ -695,80 +711,113 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
             </div>
           );
         })}
+
+        {/* MOBILE: tippbare REITER direkt an der Grafik (Wolfram 24.07., Option ①) —
+            an den handgesetzten Chip-Positionen. Tap → der Content öffnet UNTEN an fixer
+            Position (nicht als Layer über der Grafik). Randnahe Chips ankern nach innen. */}
+        {isMobile && ECO_CATEGORIES.map((cat) => {
+          const xy = CHIP_XY_M[cat.key];
+          const isActive = cat.key === active;
+          const anchorX = xy.x > 0.7 ? "-86%" : xy.x < 0.3 ? "-14%" : "-50%";
+          return (
+            <button
+              key={cat.key}
+              type="button"
+              data-eco-chip-m
+              onClick={() => setActive(isActive ? null : cat.key)}
+              aria-expanded={isActive}
+              className="absolute inline-flex items-center gap-1.5 whitespace-nowrap"
+              style={{
+                left: `${(xy.x * 100).toFixed(2)}%`,
+                top: `${(xy.y * 100).toFixed(2)}%`,
+                transform: `translate(${anchorX}, -50%)`,
+                zIndex: isActive ? 30 : 12,
+                borderRadius: 6,
+                padding: "0.55em 0.72em",
+                fontFamily: SHARP,
+                fontSize: "3.3vw",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+                lineHeight: 1,
+                // Schrift bleibt voll lesbar (Wolfram 24.07.: „nicht die Schrift, nur die Felder");
+                // ein feiner Schatten trägt sie über der helleren Grafik.
+                color: isActive ? PAPER : "rgba(248,247,243,0.96)",
+                textShadow: isActive ? "none" : "0 1px 7px rgba(10,2,8,0.78)",
+                // FELDER TRANSPARENT wie in der Desktop-Optik → die Magenta-Ankerpunkte
+                // dahinter bleiben sichtbar; aktiv wird das Feld magenta gefüllt.
+                background: isActive
+                  ? "linear-gradient(165deg, rgba(255,67,112,0.7) 0%, rgba(255,67,112,0.48) 100%)"
+                  : "rgba(14,13,11,0.14)",
+                backdropFilter: isActive ? "blur(16px) saturate(1.5)" : "blur(2px)",
+                WebkitBackdropFilter: isActive ? "blur(16px) saturate(1.5)" : "blur(2px)",
+                boxShadow: isActive
+                  ? "inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 26px -14px rgba(255,67,112,0.45)"
+                  : "inset 0 0 0 1px rgba(255,255,255,0.13)",
+                transition: "background .25s ease, box-shadow .25s ease, color .25s ease",
+                cursor: "pointer",
+              }}
+            >
+              {cat.label}
+              <span aria-hidden style={{ opacity: 0.5, fontSize: "0.9em", transform: isActive ? "rotate(45deg)" : "none", transition: "transform .3s" }}>
+                +
+              </span>
+            </button>
+          );
+        })}
       </div>
       </div>
 
       {/* MOBILE-AKKORDEON (Wolfram 17.07., 2. Runde): unter der Satellitengrafik
           erscheinen die Rubriken als Liste, jede Zeile per Tap aufklappbar. Zeilen
-          kommen beim Scrollen sukzessive herein (data-eco-acc-row · Stagger im
+          kommen beim Scrollen sukzessive herein (data-eco-chip-m · Stagger im
           Mobile-Timeline). Heike: keine runden Ecken. Trennlinien zwischen den Zeilen
           bleiben (Wolfram 17.07.: helfen beim Unterscheiden der Rubriken). */}
       {isMobile && (
-        <div className="mx-auto mt-7 w-full max-w-[560px] px-[6vw]">
-          {ECO_CATEGORIES.map((cat) => {
-            const isActive = cat.key === active;
+        <div className="mx-auto mt-6 w-full max-w-[560px] px-[6vw]">
+          {(() => {
+            const cat = ECO_CATEGORIES.find((c) => c.key === active);
+            if (!cat) {
+              return (
+                <p className="text-center" style={{ fontFamily: SHARP, fontSize: "3.6vw", color: "rgba(248,247,243,0.5)", letterSpacing: "0.02em" }}>
+                  Tippe einen Bereich in der Grafik an.
+                </p>
+              );
+            }
             return (
-              <div
-                key={cat.key}
-                data-eco-acc-row
-                className="border-t last:border-b"
-                style={{ borderColor: "rgba(248,247,243,0.16)" }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActive(isActive ? null : cat.key)}
-                  aria-expanded={isActive}
-                  className="flex w-full items-center gap-3 py-3.5 text-left text-[1.15rem] font-semibold uppercase tracking-[0.12em]"
-                  style={{ fontFamily: SHARP, color: isActive ? MAGENTA : "rgba(248,247,243,0.92)", cursor: "pointer", background: "transparent" }}
-                >
-                  {cat.label}
-                  <span
-                    aria-hidden
-                    className="ml-auto text-[1.2em]"
-                    style={{ opacity: 0.6, color: isActive ? MAGENTA : PAPER, transform: isActive ? "rotate(45deg)" : "none", transition: "transform .3s, color .3s" }}
-                  >
-                    +
+              <div>
+                <div className="mb-3 flex items-baseline gap-2 border-b pb-2" style={{ borderColor: "rgba(255,67,112,0.55)" }}>
+                  <span style={{ fontFamily: SHARP, fontSize: "5vw", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.03em", color: MAGENTA }}>
+                    {cat.label}
                   </span>
-                </button>
-                {/* Companies als CTAs (echte Website-Links, sonst Text) */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateRows: isActive ? "1fr" : "0fr",
-                    transition: "grid-template-rows .42s cubic-bezier(.2,.8,.2,1)",
-                  }}
-                >
-                  <ul className="m-0 min-h-0 list-none overflow-hidden p-0">
-                    <div className="flex flex-col gap-0.5 pb-4 pt-0.5">
-                      {cat.companies.map((c) => (
-                        <li key={c.name} className="leading-tight">
-                          {c.url ? (
-                            <a
-                              href={c.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group inline-flex items-center gap-1 py-[3px] text-[1rem] no-underline"
-                              style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500 }}
-                            >
-                              <span className="relative">
-                                {c.name}
-                                <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" style={{ background: PAPER }} />
-                              </span>
-                              <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
-                            </a>
-                          ) : (
-                            <span className="inline-block py-[3px] text-[1rem]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
-                              {c.name}
-                            </span>
-                          )}
-                        </li>
-                      ))}
-                    </div>
-                  </ul>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {cat.companies.map((c) =>
+                    c.url ? (
+                      <a
+                        key={c.name}
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1 py-[3px] text-[4vw] no-underline"
+                        style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500 }}
+                      >
+                        <span className="relative">
+                          {c.name}
+                          <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" style={{ background: PAPER }} />
+                        </span>
+                        <ArrowUpRight className="h-4 w-4 opacity-60" />
+                      </a>
+                    ) : (
+                      <span key={c.name} className="inline-block py-[3px] text-[4vw]" style={{ color: PAPER, fontFamily: SHARP, fontWeight: 500, opacity: 0.78 }}>
+                        {c.name}
+                      </span>
+                    ),
+                  )}
                 </div>
               </div>
             );
-          })}
+          })()}
         </div>
       )}
     </section>

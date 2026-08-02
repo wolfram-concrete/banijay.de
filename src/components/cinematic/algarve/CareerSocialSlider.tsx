@@ -259,13 +259,14 @@ export function AlgarveCareerSocialSlider({
           // 22.07.). Mit scrub:true endet der Slide exakt am Pin-Ende → Footer kommt erst danach.
           scrub: isMobile ? true : 1,
           pin: true,
-          // anticipatePin rastet den Pin GESCHWINDIGKEITSBASIERT etwas früher ein (gegen
-          // Flash bei schnellem Mausrad). Auf Mobile (syncTouch/Lenis-Momentum) überschießt
-          // das beim Fling: der Slider läuft über den Pin-Start hinaus und snapt zurück
-          // („erst hoch, dann springt's runter" — Wolfram 24.07., nur auf der Home, weil
-          // darüber die sticky NewsStack Schwung erzeugt). Mobil deshalb aus → Pin rastet
-          // exakt am Trigger ein. Desktop unverändert (Geometrie dort verifiziert sauber).
-          anticipatePin: isMobile ? 0 : 1,
+          // anticipatePin rastet den Pin GESCHWINDIGKEITSBASIERT etwas früher ein und
+          // VERHINDERT damit das Überschießen am Pin-Start: bei Lenis-Touch-Momentum
+          // (auf der Home zusätzlich befeuert durch die sticky NewsStack darüber) gleitet
+          // der Scroll sonst über den Fixpunkt hinaus (Headline verschwindet) und snapt
+          // zurück, bevor der Swipe startet (Wolfram 24.07.). `0` verhindert das NICHT —
+          // deshalb wie auf Career/Team-Pin fest auf `1`, dann stoppt die Section sofort
+          // am Fixpunkt und der Swipe rastet sauber ein.
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });

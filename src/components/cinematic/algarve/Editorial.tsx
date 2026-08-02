@@ -112,7 +112,8 @@ export function AlgarveEditorial() {
       // gescrubbt (obere von oben, untere von unten). Als Helper → mehrfach nutzbar
       // (About Banijay + ICONIC IP über dem IP-Slider, Wolfram 15.07.).
       const vh = window.innerHeight;
-      const animHead = (headSel: string, firstSel: string, lastSel: string, dustSel?: string) => {
+      const isMobileHead = window.matchMedia("(max-width: 767px)").matches;
+      const animHead = (headSel: string, firstSel: string, lastSel: string, dustSel?: string, endStr = "center center", axis: "x" | "y" = "y") => {
         const hFirst = root.current?.querySelector<HTMLElement>(firstSel);
         const hLast = root.current?.querySelector<HTMLElement>(lastSel);
         const hDust = dustSel ? root.current?.querySelector<HTMLElement>(dustSel) : null;
@@ -122,11 +123,21 @@ export function AlgarveEditorial() {
           // Headline erst aufgebaut, wenn sie schon fast oben rausgescrollt war (mobil bei
           // der 46vh-Höhe deutlich spürbar). „center center" = fertig, sobald die Headline
           // mittig im Viewport steht → man sieht den fertigen Zustand, während sie da ist.
-          scrollTrigger: { trigger: headSel, start: "top bottom", end: "center center", scrub: 0.8 },
+          scrollTrigger: { trigger: headSel, start: "top bottom", end: endStr, scrub: 0.8 },
         });
-        htl
-          .from(hFirst, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
-          .from(hLast, { y: 0.15 * vh, ease: "none", duration: 1 }, 0);
+        if (axis === "x") {
+          // HORIZONTAL (Wolfram 24.07., nur ICONIC IP mobil): beide Wörter kommen auf DERSELBEN
+          // Achse aus dem Off — „Iconic" von links, „IP" von rechts — und laufen zusammen. Kein
+          // Höhenversatz. Der Container ist overflow-clip → sie starten unsichtbar außerhalb.
+          const off = 0.62 * window.innerWidth;
+          htl
+            .from(hFirst, { x: -off, ease: "none", duration: 1 }, 0)
+            .from(hLast, { x: off, ease: "none", duration: 1 }, 0);
+        } else {
+          htl
+            .from(hFirst, { y: -0.15 * vh, ease: "none", duration: 1 }, 0)
+            .from(hLast, { y: 0.15 * vh, ease: "none", duration: 1 }, 0);
+        }
         if (hDust) {
           htl.fromTo(
             hDust,
@@ -137,7 +148,18 @@ export function AlgarveEditorial() {
         }
       };
       animHead("[data-ed-head]", "[data-ed-hl-first]", "[data-ed-hl-last]", "[data-ed-head-dust]");
-      animHead("[data-ed-head2]", "[data-ed-hl2-first]", "[data-ed-hl2-last]");
+      // ICONIC IP mobil (Wolfram 24.07.): eigene, KÜRZERE + HORIZONTALE Animation — „Iconic"/„IP"
+      // laufen auf derselben Achse von links/rechts zusammen (kein Höhenversatz), und deutlich
+      // früher fertig (Ende bei „top 45%"), damit man den fertigen Zustand sieht, bevor die
+      // Swipe-Galerie darunter kommt. Desktop unverändert (vertikal, center center).
+      animHead(
+        "[data-ed-head2]",
+        "[data-ed-hl2-first]",
+        "[data-ed-hl2-last]",
+        undefined,
+        isMobileHead ? "top 45%" : "center center",
+        isMobileHead ? "x" : "y",
+      );
 
       // Das Bild-Modul lebt jetzt in <EditorialStickyScene /> (eigene Sticky-
       // Scroll-Interaktion nach stateofaidesign.com — Wolfram 14.07.).
@@ -254,9 +276,11 @@ export function AlgarveEditorial() {
         <div
           data-ed-story-mask
           // Andock-marginTop (Andocken an die 100vh-Bühne) NUR Desktop (md:) — auf Mobile
-          // ist die Sticky-Scene content-hoch. Mobil KEIN Abstand (mt-0): Die Leiste kommt
-          // direkt aus der letzten Akkordeon-Kachel („4.500 hrs. Entertainment") heraus.
-          className="mx-auto mt-0 w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
+          // ist die Sticky-Scene content-hoch. Mobil ein WINZIGER Cut (3px, Wolfram 24.07.):
+          // die 170+-Leiste und die letzte Fakten-Kachel („4.500 hrs. Entertainment") sind
+          // beide magenta und verschmolzen sonst — 3px Spalt (dunkler Grund scheint durch)
+          // macht klar, dass es zwei getrennte Kacheln sind.
+          className="mx-auto mt-[3px] w-full overflow-hidden md:!mt-[calc((clamp(680px,82vh,1000px)_-_100vh)_/_2)]"
           style={{
             maxWidth: "1920px",
             paddingLeft: "16px",

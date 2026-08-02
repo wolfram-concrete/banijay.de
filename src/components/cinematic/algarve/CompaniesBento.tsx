@@ -50,13 +50,15 @@ const TAIL_UNIFORM = 8;
 // großes Format.
 // MyShow ergänzt (Wolfram 21.07.): war als col-span-2 (Index 9) die breite Box — soll nur
 // noch EIN Element sein. Der Ausgleich läuft über cologne-comedy-festival (FORCE_SPAN unten).
-const SMALL_ONLY = new Set<string>(["lucky-pics", "myshow"]);
+// Pausenclown (Wolfram 24.07.): NICHT mehr hochformatig — soll ein kleiner QUERformatiger
+// Container sein (1×1), das Elevate-Hochformat übernimmt dafür seine hohe Kachel.
+const SMALL_ONLY = new Set<string>(["lucky-pics", "myshow", "pausenclown-media"]);
 // FESTES FORMAT (Wolfram 16.07.): diese Companies bekommen IMMER denselben Span,
 // unabhängig von ihrer Position — ihr Motiv verträgt kein anderes Format.
-// Pausenclown: Hochformat-Porträt (Sebastian Lege) → nie breit, sondern eine
-// einspaltige Box über zwei Zeilen.
 const FORCE_SPAN: Record<string, string> = {
-  "pausenclown-media": "md:row-span-2",
+  // Elevate (Wolfram 24.07.): HOCHFORMAT — der Sandra-Hesch-Clip (stehende Sängerin, vertikales
+  // Motiv) sitzt im Portrait besser als in der flachen Querkachel; übernimmt Pausenclowns Slot.
+  "elevate-talent-management": "md:row-span-2",
   // AUSGLEICH FÜR MYSHOW (Wolfram 21.07.): Cologne Comedy Festival (eigenes Video) wird
   // dafür breit — es übernimmt das col-span-2, das MyShow abgegeben hat.
   "cologne-comedy-festival": "md:col-span-2",
@@ -70,7 +72,7 @@ const FORCE_SPAN: Record<string, string> = {
 // MOBILE-DIVERSITÄT (Wolfram 24.07.): im 2-Spalten-Raster einzelne Kacheln breit/hoch.
 // Companies mit nativem HOCHFORMAT-Reel werden mobil hoch (row-span-2 = 1×2, Portrait ohne
 // Beschneidung); ein Index-Rhythmus streut zusätzlich breite (col-span-2) und hohe Kacheln.
-const PORTRAIT_M = new Set<string>(["podcast-bande", "only-good-people", "sr-management", "pausenclown-media"]);
+const PORTRAIT_M = new Set<string>(["podcast-bande", "only-good-people", "sr-management", "elevate-talent-management"]);
 const spanForMobile = (i: number, id?: string) =>
   id && SMALL_ONLY.has(id)
     ? ""
@@ -279,14 +281,14 @@ REEL["brainpool"] = "/company-media/brainpool.mp4";
 // Sandra Hesch, Football-Content im Trikot auf dem Platz, 1280×720 echtes 16:9, 25 fps,
 // 148 s). 10-s-Ausschnitt (24–34 s: Ballkontrolle nah, Gesicht sichtbar) → 960×540, ohne
 // Ton. Textfrei.
-REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4?v=2"; // ?v=2: Cache-Bust, neuer Clip „Sandra Hesch" (Wolfram 24.07.)
+REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4?v=3"; // ?v=2: Cache-Bust, neuer Clip „Sandra Hesch" (Wolfram 24.07.)
 
 // POSTER-Override (Wolfram 22.07.): Standard-Poster einer Video-Karte ist `card.image` —
 // das ist bei manchen Companies aber ein QUADRATISCHES LOGO, das als formatfüllender
 // Video-Poster verzerrt beim ersten Laden aufblitzt (Elevate: 270×270-Logo). Für diese
 // Fälle ein echter Frame aus dem jeweiligen Video als Poster.
 const POSTER: Record<string, string> = {};
-POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg?v=2"; // ?v=2: Cache-Bust, neues Poster aus dem Sandra-Hesch-Clip (Wolfram 24.07.)
+POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg?v=3"; // ?v=2: Cache-Bust, neues Poster aus dem Sandra-Hesch-Clip (Wolfram 24.07.)
 // SR Management (Wolfram 23.07.): echter Frame aus dem neuen Hochformat-Reel statt des
 // alten Landscape-Posters; ?v=2 bustet den Browser-Cache (alte Datei hing fest).
 POSTER["sr-management"] = "/companies/sr-management.jpg?v=2";
