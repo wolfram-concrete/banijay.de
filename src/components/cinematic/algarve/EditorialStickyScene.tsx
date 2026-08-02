@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -131,6 +131,12 @@ export function EditorialStickyScene() {
   const aside = useRef<HTMLDivElement>(null);
   // Accordion: erste Kennzahl offen; Klick toggelt (Single-Open).
   const [open, setOpen] = useState<number | null>(0);
+  // Mobile (Wolfram 24.07.): NICHT vorab geöffnet — der „Companies & Labels"-Balken (Fakt 0)
+  // stand mobil immer offen. Nach Mount schließen (SSR bleibt bei 0 → kein Hydration-Mismatch;
+  // die Section liegt weit unten, das Zu-Setzen passiert lange bevor man hinscrollt).
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 767px)").matches) setOpen(null);
+  }, []);
 
   useGSAP(
     () => {
