@@ -59,3 +59,6 @@ banijay-website-uebersicht.pdf
 
 # Font-Testseite (Lizenzen ungeklärt — nicht committen)
 public/fonts-test/
+
+# Lokale Vorschau-Helferdatei (Wolfram 24.07.) — nicht deployen
+/index.html
