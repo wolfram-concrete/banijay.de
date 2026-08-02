@@ -86,10 +86,10 @@ export function AlgarveLogoReveal() {
     // Ink-Flash. (Während der Video-Phase deckt das Video den Grund ohnehin voll.)
     <section
       ref={root}
-      className="relative -mt-[100vh] h-[200vh] overflow-clip max-[767px]:-mt-[100svh] max-[767px]:h-[200svh]"
+      className="relative -mt-[100vh] h-[200vh] overflow-clip max-[767px]:mt-[var(--team-video-mobile-margin,-100svh)] max-[767px]:h-[var(--team-video-mobile-height,200svh)]"
       style={{ zIndex: 2, background: "#ff4370" }}
     >
-      <div className="sticky top-0 h-screen w-screen overflow-clip max-[767px]:h-[100svh]">
+      <div className="sticky top-0 h-screen w-screen overflow-clip max-[767px]:h-[var(--team-video-mobile-distance,100svh)]">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">
           <video

@@ -66,7 +66,7 @@ export function AlgarveFoundersSnap() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       // MOBILE ADRESSLEISTE (Wolfram 24.07.): Auf echten Handys blendet die Adressleiste beim
       // Scrollen aus → der Viewport wächst, ScrollTrigger refresht mitten im Scroll und verschiebt
@@ -76,8 +76,28 @@ export function AlgarveFoundersSnap() {
       ScrollTrigger.config({ ignoreMobileResize: true });
 
       const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      // Desktop bleibt unverändert: Bei reduzierter Bewegung gibt es dort weiterhin
+      // weder Reveal noch Pin. Mobile braucht den Pin jedoch als funktionale Layout-
+      // Sperre, damit die Video-Section nicht in den normalen Dokumentfluss zurückfällt.
+      if (reduceMotion && !isMobile) return;
+
       const activeGrid = isMobile ? mgrid.current : grid.current;
       const tiles = activeGrid ? gsap.utils.toArray<HTMLElement>(activeGrid.querySelectorAll("[data-mo-tile]")) : [];
+
+      // Der mobile Pin und der negative Overlap der folgenden Video-Section müssen
+      // exakt gleich lang sein. Eine gemeinsame, gemessene Strecke verhindert, dass
+      // Android-Chrome mit ein-/ausblendender Adressleiste die Team-Section hochschiebt.
+      const syncMobileOverlayDistance = () => {
+        const distance = Math.round(window.visualViewport?.height ?? window.innerHeight);
+        document.documentElement.style.setProperty("--team-video-mobile-distance", `${distance}px`);
+        document.documentElement.style.setProperty("--team-video-mobile-height", `${distance * 2}px`);
+        document.documentElement.style.setProperty("--team-video-mobile-margin", `${-distance}px`);
+        return distance;
+      };
+
+      const pinDistance = () => (isMobile ? syncMobileOverlayDistance() : Math.round(window.innerHeight * 1.9));
+
+      if (isMobile) syncMobileOverlayDistance();
 
       // Mobile: Die Portraits bleiben ohne eigenen Reveal dauerhaft sichtbar. Bei schnellem
       // Touch-/Lenis-Scroll konnte ScrollTrigger.batch mehrere noch unsichtbare Kacheln
@@ -106,15 +126,46 @@ export function AlgarveFoundersSnap() {
       // („springt zum unteren Bildschirmrand", Wolfram 24.07.). anticipatePin pinnt einen Tick
       // früher → sauberer Stopp genau an der Unterkante, ohne Sprung.
       if (activeGrid) {
-        ScrollTrigger.create({
+        const pinTrigger = ScrollTrigger.create({
+          id: isMobile ? "mobile-team-video-pin" : "desktop-team-video-pin",
           trigger: activeGrid,
           start: "bottom bottom",
-          end: isMobile ? "+=160%" : "+=190%",
+          end: () => `+=${pinDistance()}`,
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         });
+
+        const calibrationTarget = activeGrid.querySelector<HTMLElement>(
+          isMobile ? '[data-mobile-team-end="true"]' : '[data-desktop-team-end="true"]',
+        );
+        if (calibrationTarget) {
+          const calibratePin = () => {
+            const distance = pinDistance();
+            const measuredStart = window.scrollY + activeGrid.getBoundingClientRect().bottom - window.innerHeight;
+            (
+              pinTrigger as typeof pinTrigger & {
+                setPositions: (start: number, end: number, keepClamp?: boolean) => void;
+              }
+            ).setPositions(measuredStart, measuredStart + distance, true);
+          };
+
+          ScrollTrigger.create({
+            trigger: calibrationTarget,
+            start: "top bottom",
+            onEnter: calibratePin,
+            onEnterBack: calibratePin,
+          });
+        }
       }
+
+      return () => {
+        if (!isMobile) return;
+        document.documentElement.style.removeProperty("--team-video-mobile-distance");
+        document.documentElement.style.removeProperty("--team-video-mobile-height");
+        document.documentElement.style.removeProperty("--team-video-mobile-margin");
+      };
     },
     { scope: root },
   );
@@ -142,7 +193,7 @@ export function AlgarveFoundersSnap() {
             </div>
           ))}
         </div>
-        <div className="flex w-full" style={{ gap: 0, height: "48vh" }}>
+        <div data-desktop-team-end="true" className="flex w-full" style={{ gap: 0, height: "48vh" }}>
           {ROW3.map((p) => (
             <div key={p.img} style={{ flex: "1 1 0", minWidth: 0 }}>
               <TeamTile img={p.img} name={p.name} role={p.role} />
@@ -160,6 +211,7 @@ export function AlgarveFoundersSnap() {
         {LEADERSHIP.map((p, i) => (
           <div
             key={p.img}
+            data-mobile-team-end={i === LEADERSHIP.length - 1 ? "true" : undefined}
             style={
               i < 3
                 ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // GF: volle Breite, Höhe +40% (Wolfram 24.07., war 16/10)
