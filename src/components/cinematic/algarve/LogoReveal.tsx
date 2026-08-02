@@ -84,8 +84,12 @@ export function AlgarveLogoReveal() {
     // gedeckt hat und der Sticky-Container am Section-Ende hochscrollt, zeigt sich
     // darunter derselbe Magenta-Grund → nahtlos in die (magenta) News, kein Video-/
     // Ink-Flash. (Während der Video-Phase deckt das Video den Grund ohnehin voll.)
-    <section ref={root} className="relative overflow-clip" style={{ height: "200vh", marginTop: "-100vh", zIndex: 2, background: "#ff4370" }}>
-      <div className="sticky top-0 h-screen w-screen overflow-clip">
+    <section
+      ref={root}
+      className="relative -mt-[100vh] h-[200vh] overflow-clip max-[767px]:-mt-[100svh] max-[767px]:h-[200svh]"
+      style={{ zIndex: 2, background: "#ff4370" }}
+    >
+      <div className="sticky top-0 h-screen w-screen overflow-clip max-[767px]:h-[100svh]">
         {/* Full-bleed Video-Container (rastet oben ein) */}
         <div className="absolute inset-0 overflow-clip">
           <video

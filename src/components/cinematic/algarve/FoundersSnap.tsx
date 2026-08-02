@@ -152,9 +152,10 @@ export function AlgarveFoundersSnap() {
       </div>
 
       {/* ── Mobile: Die drei Geschäftsführer stehen jeweils vollbreit. Danach läuft das
-             Team zweispaltig weiter; Aylin schließt das ungerade Raster wieder vollbreit
-             ab. So bleibt rechts neben ihrer letzten Kachel kein transparentes Loch, durch
-             das die um -100vh überlappende Video-Section vor dem Pin sichtbar würde. ─── */}
+             Team zweispaltig weiter. Aylin bleibt in der letzten Reihe bewusst einspaltig;
+             die zweite Zelle ist blickdicht, damit die Video-Section nicht vor dem Pin durch
+             das ungerade Raster scheint. Ihr Container folgt dem 2:3-Quellformat, sodass das
+             Portrait vollständig endet, bevor der Video-Übergang beginnt. ─── */}
       <div ref={mgrid} className="hidden w-full max-[767px]:grid" style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 0 }}>
         {LEADERSHIP.map((p, i) => (
           <div
@@ -163,13 +164,14 @@ export function AlgarveFoundersSnap() {
               i < 3
                 ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // GF: volle Breite, Höhe +40% (Wolfram 24.07., war 16/10)
                 : i === LEADERSHIP.length - 1
-                  ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // Aylin: vollständiger Abschluss vor dem Video-Pin
+                  ? { aspectRatio: "902 / 1353" } // Aylin: eine Spalte, unbeschnitten im exakten Bildformat
                 : { aspectRatio: "4 / 5" } // restliches Team: zweispaltig, hochformat
             }
           >
             <TeamTile img={p.img} name={p.name} role={p.role} />
           </div>
         ))}
+        <div aria-hidden="true" style={{ background: "#f0f0ee" }} />
       </div>
     </section>
   );

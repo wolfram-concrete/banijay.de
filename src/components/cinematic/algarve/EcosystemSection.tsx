@@ -783,7 +783,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
             if (!cat) {
               return (
                 <p className="text-center" style={{ fontFamily: SHARP, fontSize: "3.6vw", color: "rgba(248,247,243,0.5)", letterSpacing: "0.02em" }}>
-                  Tippe einen Bereich in der Grafik an.
+                  {copy.home.ecosystemHint}
                 </p>
               );
             }
