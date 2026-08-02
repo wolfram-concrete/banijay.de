@@ -68,6 +68,13 @@ export function AlgarveFoundersSnap() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      // MOBILE ADRESSLEISTE (Wolfram 24.07.): Auf echten Handys blendet die Adressleiste beim
+      // Scrollen aus → der Viewport wächst, ScrollTrigger refresht mitten im Scroll und verschiebt
+      // den Pin → das Team-Raster schneidet Aylins Bild an (im Preview ohne Adressleiste korrekt).
+      // ignoreMobileResize hält die Pin-Messung stabil → der Stop bleibt unter Aylins Container.
+      // Global (idempotent) → gilt auch für die übrigen mobilen Pins (Slider, LogoReveal).
+      ScrollTrigger.config({ ignoreMobileResize: true });
+
       const tiles = gsap.utils.toArray<HTMLElement>("[data-mo-tile]");
       gsap.set(tiles, { autoAlpha: 0, scale: 1.03 });
       ScrollTrigger.batch(tiles, {
