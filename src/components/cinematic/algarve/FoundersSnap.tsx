@@ -75,13 +75,25 @@ export function AlgarveFoundersSnap() {
       // Global (idempotent) → gilt auch für die übrigen mobilen Pins (Slider, LogoReveal).
       ScrollTrigger.config({ ignoreMobileResize: true });
 
-      const tiles = gsap.utils.toArray<HTMLElement>("[data-mo-tile]");
-      gsap.set(tiles, { autoAlpha: 0, scale: 1.03 });
-      ScrollTrigger.batch(tiles, {
-        start: "top 98%",
-        once: true,
-        onEnter: (b) => gsap.to(b, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out", stagger: 0.04 }),
-      });
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const activeGrid = isMobile ? mgrid.current : grid.current;
+      const tiles = activeGrid ? gsap.utils.toArray<HTMLElement>(activeGrid.querySelectorAll("[data-mo-tile]")) : [];
+
+      // Mobile: Die Portraits bleiben ohne eigenen Reveal dauerhaft sichtbar. Bei schnellem
+      // Touch-/Lenis-Scroll konnte ScrollTrigger.batch mehrere noch unsichtbare Kacheln
+      // überspringen; statt der unteren Team-Reihen erschien dann nur der dunkle Hintergrund.
+      // Die eigentliche Mobile-Choreografie übernimmt der Pin unter Aylin + die Video-Blende.
+      // Desktop behält den gestaffelten Kachel-Reveal unverändert.
+      if (isMobile) {
+        gsap.set(tiles, { autoAlpha: 1, scale: 1 });
+      } else {
+        gsap.set(tiles, { autoAlpha: 0, scale: 1.03 });
+        ScrollTrigger.batch(tiles, {
+          start: "top 98%",
+          once: true,
+          onEnter: (b) => gsap.to(b, { autoAlpha: 1, scale: 1, duration: 0.7, ease: "power2.out", stagger: 0.04 }),
+        });
+      }
 
       // EINRASTEN ERST UNTERHALB DER LETZTEN REIHE (Wolfram 22.07.): Das Raster ist höher als ein
       // Viewport — man scrollt durch die Reihen, und sobald die Unterkante (Aylins Bild-Unterkante)
@@ -93,8 +105,6 @@ export function AlgarveFoundersSnap() {
       // bottom" = Aylins Bild-Unterkante am Viewport-Boden) hinaus und wird dann zurückgesnappt
       // („springt zum unteren Bildschirmrand", Wolfram 24.07.). anticipatePin pinnt einen Tick
       // früher → sauberer Stopp genau an der Unterkante, ohne Sprung.
-      const isMobile = window.matchMedia("(max-width: 767px)").matches;
-      const activeGrid = isMobile ? mgrid.current : grid.current;
       if (activeGrid) {
         ScrollTrigger.create({
           trigger: activeGrid,

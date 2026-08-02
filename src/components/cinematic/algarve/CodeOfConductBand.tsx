@@ -135,7 +135,7 @@ export function AlgarveCodeOfConductBand({ background }: { background?: React.Re
         <div className="relative z-10 flex flex-col items-center" style={{ padding: "2vw" }}>
           <p
             className="m-0 mx-auto flex flex-wrap justify-center text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[126%]"
-            style={{ ...H4, maxWidth: "55.28vw", columnGap: "0.6vw", rowGap: 0 }}
+            style={{ ...H4, maxWidth: "55.28vw", columnGap: "0.24em", rowGap: 0 }}
           >
             {words.map((word, i) => {
               const clean = word.replace(/[.,]/g, "");

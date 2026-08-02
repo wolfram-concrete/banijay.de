@@ -2,8 +2,8 @@ import { ArrowUpRight } from "lucide-react";
 import { CAREER } from "@/data/career";
 import { CAREER_JOBS } from "@/data/careerJobs";
 
-// Jobvorschau (Algarve WorksB-nah): große Headline + Intro + CTA, darunter eine
-// ruhige vertikale Liste aktueller Stellen. Jede Zeile ist ein externer
+// Jobvorschau (Algarve WorksB-nah): große Headline + Intro, darunter eine ruhige
+// vertikale Liste aktueller Stellen. Jede Zeile ist ein externer
 // Softgarden-Link (neuer Tab): Titel links, Company/Standort/Arbeitszeit rechts.
 
 const SHARP = "var(--font-sharp), sans-serif";
@@ -16,8 +16,8 @@ const META = {
 } as const;
 
 export function AlgarveCareerJobsPreview() {
-  // Liste kürzen: Desktop ~1/3 weniger, Mobile ~halbiert (Rest via „Alle Jobs
-  // ansehen"). Die über den Mobile-Count hinausgehenden Zeilen werden mobil geblendet.
+  // Kuratierte Vorschau: Desktop zeigt ~2/3, Mobile etwa die Hälfte der Einträge.
+  // Die über den Mobile-Count hinausgehenden Zeilen werden mobil ausgeblendet.
   const total = CAREER_JOBS.length;
   const desktopCount = Math.max(3, Math.ceil((total * 2) / 3));
   const mobileCount = Math.max(3, Math.ceil(total / 2));
@@ -44,17 +44,6 @@ export function AlgarveCareerJobsPreview() {
               {CAREER.jobs.text}
             </p>
           </div>
-          {/* Kopf-CTA nur Desktop/Tablet — auf Mobile sitzt der CTA UNTER der Liste. */}
-          <a
-            href={CAREER.jobs.cta.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-fit shrink-0 items-center gap-2 rounded-[6px] bg-transparent text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!hidden"
-            style={{ border: "1px solid #f8f7f3", padding: "0.95vw 1.9vw", fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
-          >
-            {CAREER.jobs.cta.text}
-            <ArrowUpRight className="h-[1.05vw] w-[1.05vw]" />
-          </a>
         </div>
 
         {/* Liste (gekürzt: Mobile ~halbiert via Blenden der Extra-Zeilen) */}
@@ -96,17 +85,6 @@ export function AlgarveCareerJobsPreview() {
             </a>
           ))}
         </div>
-
-        {/* Mobile-CTA — sitzt UNTER der (gekürzten) Liste, voll breit zentriert. */}
-        <a
-          href={CAREER.jobs.cta.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden items-center justify-center gap-2 rounded-[6px] border border-[#f8f7f3] bg-transparent font-medium text-[#f8f7f3] no-underline transition-colors duration-300 hover:bg-[#ff4370] hover:text-[#f8f7f3] max-[767px]:!mt-[8vw] max-[767px]:!flex max-[767px]:!px-[6vw] max-[767px]:!py-[3vw] max-[767px]:!text-[3.6vw]"
-        >
-          {CAREER.jobs.cta.text}
-          <ArrowUpRight className="h-[3.6vw] w-[3.6vw]" />
-        </a>
       </div>
     </section>
   );
