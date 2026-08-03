@@ -426,21 +426,63 @@ export function AlgarveCompaniesBento() {
   // jetzt nur noch die Videos im VIEWPORT-ZENTRUM (rootMargin -34% oben/unten → aktives
   // Band ≈ 32% der Höhe), sodass zu jedem Zeitpunkt nur ~1–2 Videos laufen. Off-Center-
   // Kacheln werden pausiert (Poster bleibt sichtbar). Desktop unverändert (threshold 0.15).
+  // Bereits vollständig nach oben aus dem mobilen Viewport gelaufene Videos werden
+  // zusätzlich entladen: src entfernen + load() gibt Netzwerk-, Puffer- und Decoder-
+  // Ressourcen frei. Beim Zurückscrollen wird die data-src wieder eingesetzt.
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const vids = Array.from(root.current?.querySelectorAll<HTMLVideoElement>("[data-bento-video]") ?? []);
-    const io = new IntersectionObserver(
+    const loadAndPlay = (video: HTMLVideoElement) => {
+      const src = video.dataset.src;
+      if (!video.getAttribute("src") && src) {
+        video.src = src;
+        video.load();
+      }
+      void video.play().catch(() => {});
+    };
+    const unload = (video: HTMLVideoElement) => {
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+    };
+
+    const playbackObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) void v.play().catch(() => {});
+          if (e.isIntersecting) loadAndPlay(v);
           else v.pause();
         });
       },
       isMobile ? { threshold: 0.01, rootMargin: "-34% 0px -34% 0px" } : { threshold: 0.15 },
     );
-    vids.forEach((v) => io.observe(v));
-    return () => io.disconnect();
+
+    // Ein separater Observer mit dem echten Viewport ist nötig: Der schmale
+    // Playback-Observer meldet eine Karte schon im oberen Drittel als inaktiv und
+    // feuert danach beim endgültigen Verlassen nicht noch einmal.
+    const unloadObserver = isMobile
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const viewportTop = entry.rootBounds?.top ?? 0;
+            if (!entry.isIntersecting && entry.boundingClientRect.bottom <= viewportTop) {
+              unload(entry.target as HTMLVideoElement);
+            }
+          });
+        })
+      : null;
+
+    vids.forEach((video) => {
+      playbackObserver.observe(video);
+      unloadObserver?.observe(video);
+    });
+    return () => {
+      playbackObserver.disconnect();
+      unloadObserver?.disconnect();
+      vids.forEach((video) => {
+        video.pause();
+        if (isMobile) unload(video);
+      });
+    };
   }, [rubrik]);
 
   return (
@@ -550,6 +592,7 @@ export function AlgarveCompaniesBento() {
                 ) : (
                   <video
                     data-bento-video
+                    data-src={REEL[card.id]}
                     muted
                     loop
                     playsInline
@@ -564,9 +607,7 @@ export function AlgarveCompaniesBento() {
                     // kein schwarzer Blitzer mehr, weicher Übergang ins Video.
                     poster={POSTER[card.id] ?? card.image ?? "/company-media/_poster-fallback.jpg"}
                     className="absolute -inset-px h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
-                  >
-                    <source src={REEL[card.id]} type="video/mp4" />
-                  </video>
+                  />
                 )}
                 {/* Scrim für Lesbarkeit. `-inset-px` (1px über jede Kante, vom overflow-hidden
                     geclippt) statt inset-0 — sonst blitzt bei Subpixel-Rundung links/rechts eine

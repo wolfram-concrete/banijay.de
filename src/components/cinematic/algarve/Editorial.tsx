@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -40,65 +40,96 @@ const MAGENTA = "#ff4370";
 // 10/9/9). Quelle nur 800×536 — auf Reihenhöhe 560 gebracht, also 4,5 % hochskaliert;
 // bei diesem Betrag optisch unauffällig. Der Quellordner heißt „Beaty and the nerd",
 // das ist ein Tippfehler im Ordnernamen, nicht der Sendungstitel.
-type Brand = { slug: string; name: string };
-const b = (slug: string, name: string): Brand => ({ slug, name });
+type Brand = { slug: string; name: string; width: number; height: number };
+const b = (slug: string, name: string, width: number, height = 560): Brand => ({ slug, name, width, height });
 const BRANDS_TOP: Brand[] = [
-  b("wer-wird-millionar", "Wer wird Millionär"),
-  b("tv-total", "TV total"),
-  b("die-hohle-der-lowen", "Die Höhle der Löwen"),
-  b("the-masked-singer", "The Masked Singer"),
-  b("kitchen-impossible", "Kitchen Impossible"),
-  b("schlag-den-star", "Schlag den Star"),
-  b("promi-big-brother", "Promi Big Brother"),
-  b("temptation-island", "Temptation Island"),
-  b("kampf-der-realitystars", "Kampf der Realitystars"),
-  b("stromberg", "Stromberg"),
+  b("wer-wird-millionar", "Wer wird Millionär", 384),
+  b("tv-total", "TV total", 695),
+  b("die-hohle-der-lowen", "Die Höhle der Löwen", 424),
+  b("the-masked-singer", "The Masked Singer", 650),
+  b("kitchen-impossible", "Kitchen Impossible", 610),
+  b("schlag-den-star", "Schlag den Star", 840),
+  b("promi-big-brother", "Promi Big Brother", 664),
+  b("temptation-island", "Temptation Island", 755),
+  b("kampf-der-realitystars", "Kampf der Realitystars", 460),
+  b("stromberg", "Stromberg", 664),
 ];
 const BRANDS_MID: Brand[] = [
-  b("nightwash", "NightWash"),
-  b("barbara-salesch", "Barbara Salesch"),
-  b("der-lehrer", "Der Lehrer"),
-  b("tatort-munster", "Tatort Münster"),
-  b("the-50", "The 50"),
-  b("beauty-and-the-nerd", "Beauty & the Nerd"),
-  b("die-verrater", "Die Verräter"),
-  b("villa-der-versuchung", "Villa der Versuchung"),
-  b("richter-alexander-hold", "Richter Alexander Hold"),
-  b("kommissar-dupin", "Kommissar Dupin"),
+  b("nightwash", "NightWash", 693),
+  b("barbara-salesch", "Barbara Salesch", 560),
+  b("der-lehrer", "Der Lehrer", 996),
+  b("tatort-munster", "Tatort Münster", 827),
+  b("the-50", "The 50", 996),
+  b("beauty-and-the-nerd", "Beauty & the Nerd", 836),
+  b("die-verrater", "Die Verräter", 1067),
+  b("villa-der-versuchung", "Villa der Versuchung", 642),
+  b("richter-alexander-hold", "Richter Alexander Hold", 860),
+  b("kommissar-dupin", "Kommissar Dupin", 996),
 ];
 const BRANDS_BOTTOM: Brand[] = [
-  b("die-landarztpraxis", "Die Landarztpraxis"),
-  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht"),
-  b("bitte-melde-dich", "Bitte melde dich"),
-  b("die-besten-comedians-deutschlands", "Die besten Comedians Deutschlands"),
-  b("dunentod", "Dünentod"),
-  b("rudi-voller-es-kann-nur-einen-geben", "Rudi Völler – Es kann nur einen geben"),
-  b("luminiscence", "Luminiscence"),
-  b("mcdonalds-stromberg-mockumentary", "Stromberg × McDonald's"),
-  b("tatort-nachtschatten", "Tatort Nachtschatten"),
+  b("die-landarztpraxis", "Die Landarztpraxis", 996),
+  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht", 866),
+  b("bitte-melde-dich", "Bitte melde dich", 887),
+  b("die-besten-comedians-deutschlands", "Die besten Comedians Deutschlands", 883),
+  b("dunentod", "Dünentod", 996),
+  b("rudi-voller-es-kann-nur-einen-geben", "Rudi Völler – Es kann nur einen geben", 1002),
+  b("luminiscence", "Luminiscence", 560),
+  b("mcdonalds-stromberg-mockumentary", "Stromberg × McDonald's", 733),
+  b("tatort-nachtschatten", "Tatort Nachtschatten", 365, 501),
   // Nachtrag 20.07. (Wolfram) — Verteilung damit 10/10/10, alle drei Reihen gleich lang.
-  b("das-grosse-promi-buessen", "Das große Promi Büßen"),
+  b("das-grosse-promi-buessen", "Das große Promi Büßen", 996),
 ];
 // VIERTE Reihe — NUR MOBILE (Wolfram 22.07.): läuft von rechts nach links. Kuratierter
 // Mix quer durch die drei Sets (dekorativer Marquee, Mehrfachnutzung einzelner Motive ok),
 // damit unter dem kürzeren Mobile-Viewport mehr IP-Fläche in Bewegung bleibt.
 const BRANDS_MOBILE4: Brand[] = [
-  b("the-masked-singer", "The Masked Singer"),
-  b("richter-alexander-hold", "Richter Alexander Hold"),
-  b("schlag-den-star", "Schlag den Star"),
-  b("wer-wird-millionar", "Wer wird Millionär"),
-  b("villa-der-versuchung", "Villa der Versuchung"),
-  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht"),
-  b("kitchen-impossible", "Kitchen Impossible"),
-  b("kommissar-dupin", "Kommissar Dupin"),
-  b("das-grosse-promi-buessen", "Das große Promi Büßen"),
-  b("tv-total", "TV total"),
+  b("the-masked-singer", "The Masked Singer", 650),
+  b("richter-alexander-hold", "Richter Alexander Hold", 860),
+  b("schlag-den-star", "Schlag den Star", 840),
+  b("wer-wird-millionar", "Wer wird Millionär", 384),
+  b("villa-der-versuchung", "Villa der Versuchung", 642),
+  b("berlin-tag-und-nacht", "Berlin – Tag und Nacht", 866),
+  b("kitchen-impossible", "Kitchen Impossible", 610),
+  b("kommissar-dupin", "Kommissar Dupin", 996),
+  b("das-grosse-promi-buessen", "Das große Promi Büßen", 996),
+  b("tv-total", "TV total", 695),
 ];
 
 
 export function AlgarveEditorial() {
   const copy = copyFor(useLocale());
   const root = useRef<HTMLElement>(null);
+  const ipSlider = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isIpSliderVisible, setIsIpSliderVisible] = useState(false);
+
+  // Mobile rendert nur zwei Kopien jeder IP-Reihe. Der Server und der erste
+  // Hydration-Pass bleiben bewusst bei der Desktop-Fassung, danach schaltet die
+  // Media Query ohne Hydration-Mismatch auf den leichteren 50%-Loop um.
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  // Auf Mobile läuft der IP-Loop nur, solange die Galerie sichtbar ist. Dadurch
+  // wird `will-change` ebenfalls nur in dieser Phase gesetzt und die Compositor-
+  // Ebene nach dem Vorbeiscrollen wieder freigegeben.
+  useEffect(() => {
+    if (!isMobile || !ipSlider.current) {
+      setIsIpSliderVisible(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsIpSliderVisible(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    observer.observe(ipSlider.current);
+    return () => observer.disconnect();
+  }, [isMobile]);
 
   // ENTRANCE-CHOREOGRAFIE (Wolfram 13.07., „spektakulärer"):
   //  ① Headline-Zeilen schieben sich aus Masken hoch (power4), das magenta
@@ -356,7 +387,12 @@ export function AlgarveEditorial() {
       {/* IP-BRANDS SLIDER full-width — DREI Reihen (links / rechts / links), kompaktes
           Raster, jeder Container in Original-Proportion (nichts beschnitten). Die dritte
           Reihe läuft wie die erste von rechts nach links (Wolfram 16.07.). */}
-      <div data-ed-reveal className="relative z-[1] w-full overflow-clip" style={{ marginTop: "2vw", marginBottom: "6vw" }}>
+      <div
+        ref={ipSlider}
+        data-ed-reveal
+        className={`ip-brands-loop relative z-[1] w-full overflow-clip${isIpSliderVisible ? " is-mobile-running" : ""}`}
+        style={{ marginTop: "2vw", marginBottom: "6vw" }}
+      >
         <div className="flex flex-col" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
           {[
             { rows: BRANDS_TOP, dir: "is-left", mobileOnly: false },
@@ -365,13 +401,20 @@ export function AlgarveEditorial() {
             // 4. Reihe nur Mobile (rechts→links), Wolfram 22.07.
             { rows: BRANDS_MOBILE4, dir: "is-right", mobileOnly: true },
           ].map((row, ri) => (
-            <div key={ri} className={`ip-brands-track flex ${row.dir} ${row.mobileOnly ? "hidden max-[767px]:flex" : ""}`} style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
-              {/* DREI Kopien (Wolfram 16.07.): seit die Reihen nur noch 9–10 Motive
-                  tragen, ist EINE Kopie schmaler als ein breiter Screen — mit nur zwei
-                  Kopien risse am Loop-Punkt eine Lücke auf. Passend dazu läuft das
-                  Keyframe auf -33,33 % (= exakt eine Kopie) statt -50 %. */}
-              {[0, 1, 2].map((dup) => (
-                <div key={dup} aria-hidden={dup !== 0} className="flex shrink-0" style={{ gap: "clamp(0.3rem, 0.5vw, 0.7rem)" }}>
+            <div
+              key={ri}
+              className={`ip-brands-track flex ${row.dir}${isMobile ? " is-mobile-loop" : ""} ${row.mobileOnly ? "hidden max-[767px]:flex" : ""}`}
+            >
+              {/* Desktop behält drei Kopien und den bewährten 33,333%-Loop. Mobile
+                  rendert nur zwei Kopien; jede Kopie trägt den Abschlussabstand selbst,
+                  sodass exakt -50% ohne sichtbare Naht geloopt werden kann. */}
+              {Array.from({ length: isMobile ? 2 : 3 }, (_, dup) => (
+                <div
+                  key={dup}
+                  aria-hidden={dup !== 0}
+                  className="flex shrink-0"
+                  style={{ gap: "var(--ip-brands-gap)", paddingRight: "var(--ip-brands-gap)" }}
+                >
                   {row.rows.map((brand) => (
                     <div
                       key={`${dup}-${brand.slug}`}
@@ -383,6 +426,8 @@ export function AlgarveEditorial() {
                       <img
                         src={`/ip-brands/${brand.slug}.webp`}
                         alt={dup === 0 ? brand.name : ""}
+                        width={brand.width}
+                        height={brand.height}
                         loading="lazy"
                         className="block h-full w-auto"
                       />

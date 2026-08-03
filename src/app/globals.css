@@ -489,22 +489,55 @@ html.lenis body { height: auto; }
    GEGENLÄUFIGE Reihen → kompaktes Raster, mehr Brands pro Screen. Jeder
    Bildcontainer behält die ORIGINAL-Proportion seines Brand-Visuals (feste
    Höhe, Breite = auto) → nichts wird beschnitten. Bilder bleiben farbig. */
-/* Die Tracks tragen DREI Kopien der Reihe (seit den 3 Reihen à 9–10 Motiven, 16.07.):
-   -33,333% = exakt eine Kopie → nahtloser Loop, ohne dass auf breiten Screens am
-   Umschlagpunkt eine Lücke aufreißt. */
+/* Desktop: drei Kopien und ein 33,333%-Loop. Mobile: zwei Kopien und ein eigener
+   50%-Loop. Der Abstand liegt am Ende JEDER Kopie, damit beide Prozentwerte exakt
+   einer vollständigen, gleich breiten Einheit entsprechen und nahtlos schließen. */
 @keyframes ipBrandsLeft {
   from { transform: translateX(0); }
-  to   { transform: translateX(calc(-33.3333% - 0.2vw)); }
+  to   { transform: translateX(-33.3333%); }
 }
 @keyframes ipBrandsRight {
-  from { transform: translateX(calc(-33.3333% - 0.2vw)); }
+  from { transform: translateX(-33.3333%); }
   to   { transform: translateX(0); }
 }
-.ip-brands-track { width: max-content; will-change: transform; }
+@keyframes ipBrandsMobileLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes ipBrandsMobileRight {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.ip-brands-track {
+  --ip-brands-gap: clamp(0.3rem, 0.5vw, 0.7rem);
+  width: max-content;
+  will-change: transform;
+}
 .ip-brands-track.is-left  { animation: ipBrandsLeft 64s linear infinite; }
 .ip-brands-track.is-right { animation: ipBrandsRight 58s linear infinite; }
+@media (max-width: 767px) {
+  /* Bis React nach der Hydration auf zwei Kopien umgeschaltet hat, bleibt der
+     Desktop-Loop aus. Offscreen gibt es weder Animation noch Compositor-Layer. */
+  .ip-brands-track {
+    animation: none;
+    will-change: auto;
+  }
+  .ip-brands-track.is-mobile-loop.is-left {
+    animation: ipBrandsMobileLeft 64s linear infinite paused;
+  }
+  .ip-brands-track.is-mobile-loop.is-right {
+    animation: ipBrandsMobileRight 58s linear infinite paused;
+  }
+  .ip-brands-loop.is-mobile-running .ip-brands-track.is-mobile-loop {
+    animation-play-state: running;
+    will-change: transform;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .ip-brands-track.is-left, .ip-brands-track.is-right { animation: none; }
+  .ip-brands-track.is-left, .ip-brands-track.is-right {
+    animation: none !important;
+    will-change: auto !important;
+  }
 }
 
 /* Intro-Choreografie (13.07.): solange das Intro läuft (html[data-intro]),

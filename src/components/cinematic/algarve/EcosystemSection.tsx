@@ -86,23 +86,11 @@ const ORBITS_M: Orbit[] = [
   { rx: 365, ry: 152, rot: 121, alpha: 0.24 },
   { rx: 356, ry: 158, rot: 150, alpha: 0.22 },
 ];
-// Auf Mobile trägt die Grafik KEINE Chips mehr (die Rubriken sind unten die Liste) —
-// CHIP_POS_M platziert nur noch die 7 statischen Magenta-Ankerpunkte als „ruhende
-// Satelliten" auf den Bahnen. Deko, keine Überlapp-Anforderung.
-const CHIP_POS_M: Record<string, { orbit: number; deg: number }> = {
-  entertainment: { orbit: 0, deg: -90 },
-  live: { orbit: 2, deg: -73 },
-  distribution: { orbit: 1, deg: -148 },
-  tech: { orbit: 3, deg: 12 },
-  artists: { orbit: 5, deg: 77 },
-  fiction: { orbit: 1, deg: 47 },
-  audio: { orbit: 0, deg: 90 },
-};
 // MOBILE-CHIPS (Wolfram 24.07., Option ①): die Rubriken sind mobil wieder KLICKBARE Reiter
 // direkt an der Grafik (wie Desktop) statt als Liste. Handgesetzte Verteilung als Fraktionen
 // (0..1) der quadratischen Atom-Box — daumenfreundlich, ohne Überlappung: lange Labels
 // (Distribution & Brand oben, Entertainment unten) sitzen mittig mit horizontalem Platz,
-// die kurzen ringsum an den Seiten. Anker-Punkte + Chips teilen sich diese Positionen.
+// die kurzen ringsum an den Seiten.
 const CHIP_XY_M: Record<string, { x: number; y: number }> = {
   distribution: { x: 0.5, y: 0.11 }, // oben Mitte (langes Label)
   live: { x: 0.19, y: 0.31 }, // oben links
@@ -111,6 +99,20 @@ const CHIP_XY_M: Record<string, { x: number; y: number }> = {
   tech: { x: 0.87, y: 0.57 }, // rechts
   entertainment: { x: 0.2, y: 0.87 }, // unten links, weit weg von Fiction (Wolfram 24.07.)
   fiction: { x: 0.82, y: 0.88 }, // unten rechts (deutlicher Abstand zu Entertainment)
+};
+// Die großen magentafarbenen Punkte gehören semantisch zu den Reitern, sind aber KEINE
+// frei schwebende Deko: Jeder Wert unten ist ein echter Schnittpunkt von zwei ORBITS_M-
+// Ellipsen (globale 800×800-viewBox-Koordinate). Die jeweils nächstgelegenen Knoten zu
+// den handgesetzten Labels halten die Zuordnung sichtbar, ohne die Chip-Abstände wieder
+// zu verschlechtern. Desktop nutzt weiterhin seine bahntreuen CHIP_POS-Anker.
+const ANCHOR_XY_M: Record<string, { x: number; y: number }> = {
+  distribution: { x: 407.1, y: 151.0 }, // Orbit 2 × Orbit 4
+  live: { x: 195.1, y: 263.3 }, // Orbit 0 × Orbit 2
+  artists: { x: 613.1, y: 290.0 }, // Orbit 0 × Orbit 4
+  audio: { x: 100.9, y: 469.8 }, // Orbit 0 × Orbit 5
+  tech: { x: 698.5, y: 504.9 }, // Orbit 0 × Orbit 1
+  entertainment: { x: 171.5, y: 622.4 }, // Orbit 4 × Orbit 5
+  fiction: { x: 612.9, y: 637.0 }, // Orbit 1 × Orbit 2
 };
 const VIEWBOX_M = "0 0 800 800";
 const ASPECT_M = "800 / 800";
@@ -269,7 +271,7 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
   const isMobile = useIsMobile();
   const ST = isMobile ? STAGE_M : STAGE;
   const ORB = isMobile ? ORBITS_M : ORBITS;
-  const CP = isMobile ? CHIP_POS_M : CHIP_POS;
+  const CP = CHIP_POS;
   const VIEWBOX = isMobile ? VIEWBOX_M : "-50 0 1300 640";
   const ASPECT = isMobile ? ASPECT_M : "1300 / 640";
   const STROKE_W = isMobile ? 3 : 1; // Ringe dicker auf Mobile (Wolfram 17.07.)
@@ -541,10 +543,9 @@ export function AlgarveEcosystem({ showSwap = true }: { showSwap?: boolean } = {
           ))}
           {/* Anker-Satelliten der Kategorie-Karten (globale Koordinaten) */}
           {ECO_CATEGORIES.map((cat) => {
-            // Mobile: Anker sitzt auf der handgesetzten Chip-Position (CHIP_XY_M), damit
-            // Punkt und tippbarer Reiter deckungsgleich sind. Desktop: auf der Bahn (pt).
-            const xy = CHIP_XY_M[cat.key];
-            const p = isMobile ? { x: xy.x * VBW, y: xy.y * VBH } : pt(CP[cat.key].orbit, CP[cat.key].deg);
+            // Mobile: jeder Anker sitzt auf einem echten Orbit-Schnittpunkt nahe seinem
+            // Reiter. Desktop: unverändert auf der über Orbit + Winkel definierten Bahn.
+            const p = isMobile ? ANCHOR_XY_M[cat.key] : pt(CP[cat.key].orbit, CP[cat.key].deg);
             return (
               <circle key={`anchor-${cat.key}`} data-eco-anchor cx={+p.x.toFixed(2)} cy={+p.y.toFixed(2)} r={isMobile ? 5.5 : 3.4} fill={MAGENTA} style={{ filter: `drop-shadow(0 0 7px ${MAGENTA})` }} />
             );
