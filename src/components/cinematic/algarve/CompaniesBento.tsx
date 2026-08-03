@@ -101,6 +101,13 @@ const areaOf = (s: string) => (s.includes("col-span-2") ? 2 : 1) * (s.includes("
 const REEL: Record<string, string> = Object.fromEntries(
   COMPANIES_DIRECTORY.map((c, i) => [c.id, `/company-media/reel-${(i % 6) + 1}.mp4`]),
 );
+
+// Das Poster wird immer aus derselben, aktuell zugeordneten MP4 abgeleitet. Damit kann
+// beim Austausch eines Reels kein altes `card.image` mehr als Ladebild aufblitzen.
+const posterFor = (videoSrc: string) => {
+  const filename = videoSrc.split("/").pop()?.split("?")[0] ?? "reel-1.mp4";
+  return `/company-media/posters/${filename.replace(/\.mp4$/i, ".jpg")}`;
+};
 // ECHTE COMPANY-VIDEOS (Wolfram 16.07.) — überschreiben das generische Reel.
 // Quellen: assets/Videos Companies/<Company>/ (gitignored). Aufbereitung je Clip:
 // 960px breit, 25 fps, ohne Tonspur (die Kacheln laufen stumm), ~1,6 Mbit/s — das ist
@@ -285,16 +292,6 @@ REEL["brainpool"] = "/company-media/brainpool.mp4";
 // Ton. Textfrei.
 REEL["elevate-talent-management"] = "/company-media/elevate-talent-management.mp4?v=3"; // ?v=2: Cache-Bust, neuer Clip „Sandra Hesch" (Wolfram 24.07.)
 
-// POSTER-Override (Wolfram 22.07.): Standard-Poster einer Video-Karte ist `card.image` —
-// das ist bei manchen Companies aber ein QUADRATISCHES LOGO, das als formatfüllender
-// Video-Poster verzerrt beim ersten Laden aufblitzt (Elevate: 270×270-Logo). Für diese
-// Fälle ein echter Frame aus dem jeweiligen Video als Poster.
-const POSTER: Record<string, string> = {};
-POSTER["elevate-talent-management"] = "/company-media/elevate-poster.jpg?v=3"; // ?v=2: Cache-Bust, neues Poster aus dem Sandra-Hesch-Clip (Wolfram 24.07.)
-// SR Management (Wolfram 23.07.): echter Frame aus dem neuen Hochformat-Reel statt des
-// alten Landscape-Posters; ?v=2 bustet den Browser-Cache (alte Datei hing fest).
-POSTER["sr-management"] = "/companies/sr-management.jpg?v=2";
-
 // ShowdownTV (Wolfram 22.07.): Live-Event-Mitschnitt (Boxring/Kampfsport-Arena, „SOCIETY"-
 // Crowd) — Hochformat 464×832 aus WhatsApp, weboptimiert (CRF 28, ohne Ton, faststart).
 REEL["showdown-tv"] = "/company-media/showdown-tv.mp4";
@@ -420,18 +417,32 @@ export function AlgarveCompaniesBento() {
     { scope: root },
   );
 
-  // Kachel-Videos: nur sichtbare spielen (parallele Decodes vermeiden).
+  // Kachel-Videos: nur die sichtbarsten Karten spielen (parallele Downloads/Decodes
+  // begrenzen). Ohne diese Priorisierung forderte Desktop alle sichtbaren MP4s zugleich
+  // an; bei langsamen Verbindungen blieb dadurch jede einzelne Karte lange im Poster.
   // Mobile-Optimierung (Wolfram 24.07.): Beim Scrollen über die Video-Grid ruckelte es,
   // weil im 2-Spalten-Grid mehrere Videos GLEICHZEITIG dekodierten. Auf Mobile spielen
   // jetzt nur noch die Videos im VIEWPORT-ZENTRUM (rootMargin -34% oben/unten → aktives
-  // Band ≈ 32% der Höhe), sodass zu jedem Zeitpunkt nur ~1–2 Videos laufen. Off-Center-
-  // Kacheln werden pausiert (Poster bleibt sichtbar). Desktop unverändert (threshold 0.15).
+  // Band ≈ 32% der Höhe). Bei langsamer Verbindung oder Datensparmodus läuft nur eine
+  // Karte, sonst maximal zwei auf Mobile bzw. drei auf Desktop.
   // Bereits vollständig nach oben aus dem mobilen Viewport gelaufene Videos werden
   // zusätzlich entladen: src entfernen + load() gibt Netzwerk-, Puffer- und Decoder-
   // Ressourcen frei. Beim Zurückscrollen wird die data-src wieder eingesetzt.
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const vids = Array.from(root.current?.querySelectorAll<HTMLVideoElement>("[data-bento-video]") ?? []);
+    const connection = (
+      navigator as Navigator & {
+        connection?: { downlink?: number; effectiveType?: string; saveData?: boolean };
+      }
+    ).connection;
+    const constrainedConnection =
+      connection?.saveData === true ||
+      ["slow-2g", "2g", "3g"].includes(connection?.effectiveType ?? "") ||
+      (typeof connection?.downlink === "number" && connection.downlink < 2);
+    const maxPlaying = constrainedConnection ? 1 : isMobile ? 2 : 3;
+    const visibility = new Map<HTMLVideoElement, number>();
+
     const loadAndPlay = (video: HTMLVideoElement) => {
       const src = video.dataset.src;
       if (!video.getAttribute("src") && src) {
@@ -446,15 +457,32 @@ export function AlgarveCompaniesBento() {
       video.load();
     };
 
+    const reconcilePlayback = () => {
+      const active = new Set(
+        [...visibility.entries()]
+          .filter(([, ratio]) => ratio > 0)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, maxPlaying)
+          .map(([video]) => video),
+      );
+
+      vids.forEach((video) => {
+        if (active.has(video)) loadAndPlay(video);
+        else video.pause();
+      });
+    };
+
     const playbackObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) loadAndPlay(v);
-          else v.pause();
+          visibility.set(v, e.isIntersecting ? e.intersectionRatio : 0);
         });
+        reconcilePlayback();
       },
-      isMobile ? { threshold: 0.01, rootMargin: "-34% 0px -34% 0px" } : { threshold: 0.15 },
+      isMobile
+        ? { threshold: [0, 0.01, 0.25, 0.5, 0.75], rootMargin: "-34% 0px -34% 0px" }
+        : { threshold: [0, 0.15, 0.35, 0.6, 0.85] },
     );
 
     // Ein separater Observer mit dem echten Viewport ist nötig: Der schmale
@@ -599,13 +627,10 @@ export function AlgarveCompaniesBento() {
                     // preload="none" (Wolfram 24.07., #3): keine Vorab-Requests der 39 Videos
                     // beim Seitenaufruf (die verdrängten den Hero = 34s LCP). Der
                     // IntersectionObserver spielt jedes Video eh erst beim Reinscrollen (lädt
-                    // es dann). Optik unveraendert — bis dahin zeigt der Poster. Reversibel.
+                    // es dann). Bis der erste echte Frame da ist, zeigt die Karte einen
+                    // aus genau diesem aktuellen Reel exportierten Frame.
                     preload="none"
-                    // Fallback-Poster (Wolfram 24.07.): Karten ohne eigenes card.image
-                    // (Placeholder-Companies) zeigten sonst ein SCHWARZES Video-Element,
-                    // bis das Video lud. Der dunkle Brand-Poster matcht die Card-Fläche →
-                    // kein schwarzer Blitzer mehr, weicher Übergang ins Video.
-                    poster={POSTER[card.id] ?? card.image ?? "/company-media/_poster-fallback.jpg"}
+                    poster={posterFor(REEL[card.id])}
                     className="absolute -inset-px h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
                   />
                 )}

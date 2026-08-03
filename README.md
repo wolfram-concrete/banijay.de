@@ -83,7 +83,9 @@ Wichtigste Hebel, alle nur mobil gegated (Desktop unberührt): Preloader auf ~3,
 Hero-Frames mobil auf 1400px (die 12-MP-WebP dekodierten zu ~48 MB Bitmap je Bild → Lighthouse
 lief in OOM), Canvas-Partikel reduziert (DustLayer/PreloaderParticles laufen dauerhaft im RAF)
 und Company-Videos auf `preload="none"` (sie laden per IntersectionObserver erst beim
-Reinscrollen). Details je Schritt im Changelog 24.07.
+Reinscrollen). Die Video-Karten zeigen währenddessen aktuelle, direkt aus den zugeordneten
+Reels exportierte Poster. Gleichzeitig laufen maximal drei Videos auf Desktop, zwei auf Mobile
+und bei langsamer Verbindung bzw. Datensparmodus nur eines. Details im Changelog.
 
 ## Stack
 
@@ -107,6 +109,22 @@ npm run lint    # ESLint
 > nicht existierende Library-Option) läuft lokal im Dev-Server, lässt aber den Vercel-Build
 > abbrechen. Ein grüner Dev-Server ist KEINE Garantie für einen grünen Deploy (siehe
 > Changelog 24.07.).
+
+### Company-Video-Poster aktualisieren
+
+Die Poster unter `public/company-media/posters/` stammen immer aus Sekunde 1 der
+gleichnamigen MP4-Datei. Nach einem Videoaustausch die Poster neu erzeugen, damit
+Pufferbild und Reel nicht auseinanderlaufen:
+
+```bash
+mkdir -p public/company-media/posters
+for video in public/company-media/*.mp4; do
+  name="$(basename "${video%.mp4}")"
+  ffmpeg -hide_banner -loglevel error -ss 1 -i "$video" -frames:v 1 \
+    -vf "scale='min(960,iw)':-2" -q:v 3 -y \
+    "public/company-media/posters/$name.jpg"
+done
+```
 
 ## Dokumentation
 
@@ -166,11 +184,12 @@ public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
   company-logos/         Weiße Company-Wortmarken (speisen den LogoTicker — der läuft auf
                          der Career-Seite UND auf der Home unter der Social-Section)
-  company-media/<slug>/  Hochauflösende, lokal optimierte Company-Poster (poster.jpg,
-                         1400px, siehe banijay-company-media-recherche.md). Einige Karten
-                         zeigen lokal komponierte Reels (z. B. sr-management.mp4 =
+  company-media/         Lokal komponierte Company-Reels (`*.mp4`) sowie
+                         `posters/*.jpg`: aktuelle Frames aus Sekunde 1 des jeweils
+                         gleichnamigen Reels. Die Bento-Karten leiten ihren Posterpfad
+                         automatisch vom Video ab. Beispiele: sr-management.mp4 =
                          Hochformat-Zusammenschnitt der vier Topstars; myshow.mp4 =
-                         Website-Screencast, weiße Nav-Leiste weggecroppt).
+                         Website-Screencast, weiße Nav-Leiste weggecroppt.
   people/quotes/         Fotos der Zitat-Geschäftsführer:innen (von banijay.de,
                          transparente Ränder getrimmt + auf Panel-Farbe gelegt)
   video/  companies/  people/  grid/   Bild- und Videomaterial
@@ -197,7 +216,7 @@ Vor dem Livegang abzuarbeiten:
 |---|---|---|
 | **Company-Videos neu enkodieren** | 22 Altclips aus der VLC-Ära, 67 MB, SSIM ~0,73 | Mit ffmpeg neu rechnen (CRF 28/30) — siehe „Video-Toolchain" |
 | **Company-Material vollständig** | 23 von 35 Kacheln haben eigenes Video/Foto | Restliche 12 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
-| **Video-Ladeverhalten** | 11,86 MB Video beim ersten Seitenaufruf, 35 Requests, 14 Kacheln ohne Poster | `preload="none"`, `src` erst nahe Viewport setzen, Poster ergänzen; große Hero-Files (28,5 MB) ggf. auf Video-CDN |
+| **Video-Ladeverhalten** | `preload="none"`, `src` erst im Viewport, alle 34 Video-Karten mit aktuellem Reel-Frame; maximal 3 parallel (Mobile 2, langsame Verbindung 1) | Auf realen Geräten weiter messen; große Hero-/Reel-Dateien bei Bedarf auf Video-CDN bzw. Adaptive Streaming umstellen |
 | **Social-Feed-Zugänge** | LinkedIn via Juicer-JSON + Instagram via Elfsight-Data-Service (beide undokumentiert/inoffiziell) | Vor Livegang gegen offizielle **Meta-/Instagram-Graph-API** + LinkedIn-API absichern; Elfsight-Endpoints können sich ändern |
 | **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |

@@ -3,6 +3,28 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-03
+
+### Brand-Metadaten und aktuelle Company-Video-Poster
+
+- **Favicon aktualisiert:** Das pinke Banijay-B-Signet liegt als echtes
+  Mehrgrößen-`favicon.ico` (16–256 px, transparenter Hintergrund) im Root-Segment
+  des App Routers.
+- **OpenGraph-Bild ergänzt:** Das aktuelle „We Are Banijay"-Hero-Visual wird als
+  globales Share-Bild unter `/opengraph-image.jpg` ausgeliefert. Der Social-Crop
+  ist auf 1200×630 px optimiert und besitzt einen eigenen Alt-Text.
+- **Company-Poster vollständig erneuert:** Für alle 39 vorhandenen MP4-Reels wurde
+  aus Sekunde 1 ein leichtgewichtiges JPG exportiert. Die 34 Video-Karten leiten
+  ihr Poster nun direkt vom jeweils zugeordneten Reel ab; alte `card.image`-Scrapes,
+  Logo-Platzhalter und Poster-Sonderfälle werden nicht mehr verwendet.
+- **Video-Pufferung priorisiert:** Statt alle sichtbaren MP4s gleichzeitig zu laden,
+  laufen maximal drei Videos auf Desktop und zwei auf Mobile. Bei 2G/3G, weniger als
+  2 Mbit/s oder aktiviertem Datensparmodus wird nur ein Video gleichzeitig geladen.
+  `preload="none"` bleibt erhalten, damit die Company-Section nicht mit dem Hero um
+  Bandbreite konkurriert.
+- **Verifiziert:** gezielter ESLint-Lauf, Browser-DOM-Prüfung (34 Video-Karten,
+  kein fehlendes oder altes Poster) und vollständiger Next.js-Production-Build.
+
 ## [main] — 2026-07-31
 
 ### Wartungsmodus über Vercel Edge Config
