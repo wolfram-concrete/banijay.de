@@ -2,8 +2,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { NEWS, getNewsBySlug } from "@/data/news";
+import { NewsArticleBody } from "@/components/news/NewsArticleBody";
+import { NewsHeroTitle } from "@/components/news/NewsHeroTitle";
 
 // section_blog-post (Algarve/ByQ cms-page-2, adaptiert): Hero-Bild mit Overlay +
 // Tags/Titel, darunter Content-Grid (sticky Info-Spalte + Fließtext), Divider und
@@ -48,6 +50,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   if (!item) notFound();
 
   const more = NEWS.filter((n) => n.slug !== slug).slice(0, 3);
+  const isWideImage = item.imageVariant === "wide";
 
   return (
     <div style={{ background: "transparent" }}>
@@ -56,9 +59,19 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
         <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div
             className="relative flex items-end overflow-clip max-[767px]:!p-[8vw]"
-            style={{ padding: "22vw 3.33vw 3.33vw", color: PAPER }}
+            style={{
+              padding: isWideImage ? "3.33vw" : "22vw 3.33vw 3.33vw",
+              aspectRatio: isWideImage ? "40 / 17" : undefined,
+              minHeight: isWideImage ? "min(40.8vw, 780px)" : undefined,
+              background: "#09060d",
+              color: PAPER,
+            }}
           >
-            <img src={item.img} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
+            <img
+              src={item.img}
+              alt={item.title}
+              className={`absolute inset-0 h-full w-full ${isWideImage ? "object-contain object-top" : "object-cover"}`}
+            />
             <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} />
             <div className="relative flex max-w-[74vw] flex-col items-start" style={{ gap: "1.11vw", zIndex: 3 }}>
               <div className="flex items-center" style={{ gap: "0.83vw" }}>
@@ -69,12 +82,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
                   {item.date}
                 </span>
               </div>
-              <h1
-                className="m-0 uppercase max-[767px]:!text-[9vw]"
-                style={{ fontFamily: SHARP, fontSize: "5.5vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.139vw" }}
-              >
-                {item.title}
-              </h1>
+              <NewsHeroTitle title={item.title} />
             </div>
           </div>
         </div>
@@ -109,6 +117,17 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
                   </div>
                 </div>
               ))}
+              {item.download && (
+                <a
+                  href={item.download.href}
+                  download={item.download.filename}
+                  className="inline-flex items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-4 py-3 text-[#f8f7f3] no-underline transition-colors duration-200 hover:border-[#ff4370] hover:bg-[#ff4370] max-[767px]:!text-[3.4vw]"
+                  style={{ fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}
+                >
+                  <Download className="h-4 w-4" />
+                  {item.download.label}
+                </a>
+              )}
             </div>
 
             {/* Fließtext */}
@@ -119,15 +138,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
               >
                 {item.lead}
               </p>
-              {item.body.map((para, i) => (
-                <p
-                  key={i}
-                  className="max-[767px]:!text-[3.8vw]"
-                  style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "150%", color: MEDIUM, marginTop: 0, marginBottom: "1.11vw" }}
-                >
-                  {para}
-                </p>
-              ))}
+              <NewsArticleBody blocks={item.body} />
             </div>
           </div>
         </div>

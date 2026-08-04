@@ -76,28 +76,33 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
         className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{ gap: "1vw", paddingBottom: "1vw" }}
       >
-        {news.map((n, i) => (
-          <Link
-            key={n.slug}
-            href={localizeHref(`/news/${n.slug}`, locale)}
-            onClick={onNavigate}
-            className="group shrink-0 text-left no-underline max-[767px]:!w-[60vw]"
-            style={{
-              width: "17vw",
-              color: INK,
-              transform: open ? "translateX(0)" : "translateX(-28px)",
-              opacity: open ? 1 : 0,
-              transition: `transform 0.6s cubic-bezier(0.22,1,0.36,1) ${120 + i * 55}ms, opacity 0.5s ease ${120 + i * 55}ms`,
-            }}
-          >
-            <div className="overflow-clip max-[767px]:!h-[40vw]" style={{ borderRadius: 0, height: "11vw" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={n.img}
-                alt={n.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-              />
-            </div>
+        {news.map((n, i) => {
+          const isWide = n.imageVariant === "wide";
+          return (
+            <Link
+              key={n.slug}
+              href={localizeHref(`/news/${n.slug}`, locale)}
+              onClick={onNavigate}
+              className={`group shrink-0 text-left no-underline ${isWide ? "max-[767px]:!w-[88vw]" : "max-[767px]:!w-[60vw]"}`}
+              style={{
+                width: isWide ? "26vw" : "17vw",
+                color: INK,
+                transform: open ? "translateX(0)" : "translateX(-28px)",
+                opacity: open ? 1 : 0,
+                transition: `transform 0.6s cubic-bezier(0.22,1,0.36,1) ${120 + i * 55}ms, opacity 0.5s ease ${120 + i * 55}ms`,
+              }}
+            >
+              <div
+                className={`overflow-clip ${isWide ? "max-[767px]:!h-auto" : "max-[767px]:!h-[40vw]"}`}
+                style={{ borderRadius: 0, height: isWide ? undefined : "11vw", aspectRatio: isWide ? "40 / 17" : undefined }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={n.img}
+                  alt={n.title}
+                  className={`h-full w-full transition-transform duration-700 group-hover:scale-[1.05] ${isWide ? "object-contain" : "object-cover"}`}
+                />
+              </div>
             <div className="mt-[0.7vw] flex flex-col max-[767px]:mt-2" style={{ gap: "0.4vw" }}>
               <span
                 className="uppercase max-[767px]:!text-[2.6vw]"
@@ -112,8 +117,9 @@ function NewsSlider({ open, onNavigate }: { open: boolean; onNavigate: () => voi
                 {n.title}
               </span>
             </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       {/* Feine Fortschritts-Leiste statt Scrollbar — schwarzer Strich wächst nach rechts */}

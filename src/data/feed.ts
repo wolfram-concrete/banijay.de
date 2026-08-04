@@ -51,6 +51,7 @@ export type FeedItem = {
   img: string;
   href: string;
   external: boolean;
+  imageVariant?: "wide";
   /** Nur Social: Quelle (LinkedIn / Instagram …) für das Badge. */
   source?: string;
 };
@@ -80,6 +81,7 @@ export function mergeFeed(news: NewsItem[], social: SocialPost[], locale: "de" |
     dateMs: parseDE(n.date),
     rubrik: newsRubrik(n.category),
     img: n.img,
+    imageVariant: n.imageVariant,
     href: `/news/${n.slug}`,
     external: false,
   }));

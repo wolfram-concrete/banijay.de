@@ -14,13 +14,13 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const SHARP = "var(--font-sharp), sans-serif";
 
 // TEAM-VARIANTE „SNAP" (Wolfram 22.07., finale Fassung) — kein Ein-Viewport-Snap mehr:
-// Reihen 3 / 5 / 4 (oben Marcus, Knut, Michael Laegel; Mitte inkl. Michael Gaul), man scrollt durch die drei Reihen,
+// Reihen 4 / 5 / 4 (oben Marcus, Knut, Michael Laegel, Arno Schneppenheim; Mitte inkl. Michael Gaul), man scrollt durch die drei Reihen,
 // und ERST UNTERHALB der dritten Reihe rastet die Section ein (Pin „bottom bottom") und gibt
 // dann die LogoReveal-Videoblende frei. Karten kantig, ohne Kontur, wachsen mit.
 
-const ROW1 = LEADERSHIP.slice(0, 3); // Marcus, Knut, Michael Laegel
-const ROW2 = LEADERSHIP.slice(3, 8); // fünf (Simone, Heike, Natali, Janine, Michael Gaul)
-const ROW3 = LEADERSHIP.slice(8, 12); // vier (Elena, Sebastian, Matthaeus, Aylin)
+const ROW1 = LEADERSHIP.slice(0, 4); // Marcus, Knut, Michael Laegel, Arno Schneppenheim
+const ROW2 = LEADERSHIP.slice(4, 9); // fünf (Simone, Heike, Natali, Janine, Michael Gaul)
+const ROW3 = LEADERSHIP.slice(9, 13); // vier (Elena, Sebastian, Matthaeus, Aylin)
 
 // Milchglas-Namenskarte — OHNE weiße Kontur, wächst mit (kein whitespace-nowrap auf Rolle).
 export function GlassCard({ name, role }: { name: string; role: string }) {
@@ -171,11 +171,11 @@ export function AlgarveFoundersSnap() {
   );
 
   return (
-    <section ref={root} className="relative w-full overflow-clip" style={{ background: "transparent" }}>
+    <section id="team" ref={root} className="relative w-full overflow-clip" style={{ background: "transparent" }}>
       {/* ── INTRO „UNSER TEAM" — exakt wie „ABOUT BANIJAY" formatiert/animiert. ─────────── */}
       <TeamIntro />
 
-      {/* ── Desktop: Reihen 3 / 5 / 4, keine Stege. Oben die Leader (höher/größer). Untere
+      {/* ── Desktop: Reihen 4 / 5 / 4, keine Stege. Oben die Leader (höher/größer). Untere
              Reihe gleich hoch wie die mittlere (48vh, Wolfram 22.07.), damit unten nichts
              angeschnitten wirkt. ──────────────────────────────────────────────────────── */}
       <div ref={grid} className="flex w-full flex-col max-[767px]:hidden" style={{ gap: 0 }}>
@@ -202,7 +202,7 @@ export function AlgarveFoundersSnap() {
         </div>
       </div>
 
-      {/* ── Mobile: Die drei Geschäftsführer stehen jeweils vollbreit. Danach läuft das
+      {/* ── Mobile: Die vier Board-Mitglieder stehen jeweils vollbreit. Danach läuft das
              Team zweispaltig weiter. Aylin bleibt in der letzten Reihe bewusst einspaltig;
              die zweite Zelle ist blickdicht, damit die Video-Section nicht vor dem Pin durch
              das ungerade Raster scheint. Ihr Container folgt dem 2:3-Quellformat, sodass das
@@ -213,8 +213,8 @@ export function AlgarveFoundersSnap() {
             key={p.img}
             data-mobile-team-end={i === LEADERSHIP.length - 1 ? "true" : undefined}
             style={
-              i < 3
-                ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // GF: volle Breite, Höhe +40% (Wolfram 24.07., war 16/10)
+              i < 4
+                ? { gridColumn: "1 / -1", aspectRatio: "8 / 7" } // Board: volle Breite, Höhe +40% (Wolfram 24.07., war 16/10)
                 : i === LEADERSHIP.length - 1
                   ? { aspectRatio: "902 / 1353" } // Aylin: eine Spalte, unbeschnitten im exakten Bildformat
                 : { aspectRatio: "4 / 5" } // restliches Team: zweispaltig, hochformat

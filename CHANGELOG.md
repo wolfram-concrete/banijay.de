@@ -3,6 +3,38 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-04
+
+### Neue Pressemitteilung, News-Darstellung und Board-Erweiterung
+
+- **Pressemitteilung veröffentlicht:** „Banijay Germany stellt Führungsmannschaft im
+  Board und die Label-Geschäftsführungen nach Merger mit All3Media neu auf" ist als
+  aktuellster Beitrag auf der Home, der News-Übersicht und der deutsch-/englischsprachigen
+  Detailseite hinterlegt. Der deutsche Volltext übernimmt Listen, Zwischenüberschriften,
+  Fettungen und Zitat-Hervorhebungen aus der gelieferten Pressefassung; „Joko
+  Winterscheidt" und „Mission Unknown" sind korrekt geschrieben.
+- **Bildmaterial und Download:** Das neue 2400×1020-Gruppenmotiv wird vollständig im
+  nativen 40:17-Format gezeigt. Die Pressemitteilung ist zusätzlich als dreiseitige PDF
+  downloadbar; der weiterführende Bildmaterial-Link führt zu PicDrop.
+- **Breite News-Variante:** Das Datenmodell kennt nun `imageVariant: "wide"`. Der heutige
+  Beitrag erhält auf Home, News-Page und im News-Menü einen breiteren Teaser mit
+  `object-contain`; alle bestehenden Standardkarten und deren Zuschnitte bleiben
+  unverändert.
+- **News-Hero global beruhigt:** Alle deutsch- und englischsprachigen Presse-/News-
+  Detailseiten verwenden eine gemeinsame, kleinere H1-Stufe. Lange Headlines lassen
+  dadurch mehr vom Aufmacherbild sichtbar und bleiben innerhalb des Hero-Containers.
+- **Strukturierte Artikelinhalte:** `NewsArticleBody` rendert weiterhin bestehende
+  Textabsätze und unterstützt zusätzlich Listen, Zwischenüberschriften, Zitate,
+  Hervorhebungen und externe Links. Optionale PDF-Downloads sind im News-Datenmodell
+  CMS-ready abbildbar.
+- **Arno Schneppenheim ergänzt:** Neues, auf die übrigen Board-Porträts abgestimmtes
+  900×1200-WebP direkt hinter Michael Laegel; Titel **CCO**. Die Team-Reihenfolge ist nun
+  4 / 5 / 4. Auf Mobile stehen alle vier Board-Mitglieder jeweils vollbreit, danach läuft
+  das zweispaltige Teamraster weiter.
+- **Verifiziert:** TypeScript ohne Fehler, gezielter ESLint-Lauf ohne neue Fehler,
+  `git diff --check` sowie visuelle Browser-Prüfung der Detailseite, Team-Section und
+  breiten News-Preview.
+
 ## [main] — 2026-08-03
 
 ### Brand-Metadaten und aktuelle Company-Video-Poster

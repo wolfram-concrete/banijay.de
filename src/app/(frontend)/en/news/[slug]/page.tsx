@@ -2,8 +2,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { NEWS_EN, getEnglishNewsBySlug } from "@/data/news.en";
+import { NewsArticleBody } from "@/components/news/NewsArticleBody";
+import { NewsHeroTitle } from "@/components/news/NewsHeroTitle";
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
@@ -33,20 +35,24 @@ export default async function NewsDetailPageEn({ params }: { params: Promise<{ s
   const item = getEnglishNewsBySlug(slug);
   if (!item) notFound();
   const more = NEWS_EN.filter((entry) => entry.slug !== slug).slice(0, 3);
+  const isWideImage = item.imageVariant === "wide";
 
   return (
     <div style={{ background: "transparent" }}>
       <section style={{ paddingTop: "7rem", paddingBottom: "2.22vw" }}>
         <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
-          <div className="relative flex items-end overflow-clip max-[767px]:!p-[8vw]" style={{ padding: "22vw 3.33vw 3.33vw", color: PAPER }}>
-            <img src={item.img} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
+          <div
+            className="relative flex items-end overflow-clip max-[767px]:!p-[8vw]"
+            style={{ padding: isWideImage ? "3.33vw" : "22vw 3.33vw 3.33vw", aspectRatio: isWideImage ? "40 / 17" : undefined, minHeight: isWideImage ? "min(40.8vw, 780px)" : undefined, background: "#09060d", color: PAPER }}
+          >
+            <img src={item.img} alt={item.title} className={`absolute inset-0 h-full w-full ${isWideImage ? "object-contain object-top" : "object-cover"}`} />
             <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} />
             <div className="relative flex max-w-[74vw] flex-col items-start" style={{ gap: "1.11vw", zIndex: 3 }}>
               <div className="flex items-center" style={{ gap: "0.83vw" }}>
                 <span style={{ ...LABEL, fontSize: "1vw" }} className="max-[767px]:!text-[2.9vw]">{item.category}</span>
                 <span style={{ ...LABEL, fontSize: "1vw", opacity: 0.7 }} className="max-[767px]:!text-[2.9vw]">{item.date}</span>
               </div>
-              <h1 className="m-0 uppercase max-[767px]:!text-[9vw]" style={{ fontFamily: SHARP, fontSize: "5.5vw", lineHeight: "108%", fontWeight: 500, letterSpacing: "-0.139vw" }}>{item.title}</h1>
+              <NewsHeroTitle title={item.title} />
             </div>
           </div>
         </div>
@@ -66,10 +72,16 @@ export default async function NewsDetailPageEn({ params }: { params: Promise<{ s
                   <div className="max-[767px]:!text-[3.6vw]" style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "135%", color: INK }}>{row.value}</div>
                 </div>
               ))}
+              {item.download && (
+                <a href={item.download.href} download={item.download.filename} className="inline-flex items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-4 py-3 text-[#f8f7f3] no-underline transition-colors duration-200 hover:border-[#ff4370] hover:bg-[#ff4370] max-[767px]:!text-[3.4vw]" style={{ fontFamily: SHARP, fontSize: "1.05vw", fontWeight: 500 }}>
+                  <Download className="h-4 w-4" />
+                  Download press release (PDF)
+                </a>
+              )}
             </div>
             <div style={{ maxWidth: "47.22vw" }} className="max-[767px]:!max-w-full">
               <p className="m-0 max-[767px]:!text-[4.4vw]" style={{ fontFamily: SHARP, fontSize: "1.94vw", lineHeight: "132%", fontWeight: 500, color: INK, marginBottom: "1.67vw" }}>{item.lead}</p>
-              {item.body.map((paragraph, index) => <p key={index} className="max-[767px]:!text-[3.8vw]" style={{ fontFamily: SHARP, fontSize: "1.39vw", lineHeight: "150%", color: MEDIUM, marginTop: 0, marginBottom: "1.11vw" }}>{paragraph}</p>)}
+              <NewsArticleBody blocks={item.body} />
             </div>
           </div>
         </div>

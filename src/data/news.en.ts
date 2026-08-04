@@ -6,6 +6,17 @@ type EnglishNewsCopy = Pick<NewsItem, "title" | "lead" | "body">;
 // Dates, slugs and imagery remain identical so the language switch can preserve
 // the article context and future CMS migration can use the slug as shared ID.
 const ENGLISH_COPY: Record<string, EnglishNewsCopy> = {
+  "n-banijay-germany-stellt-fuehrungsmannschaft-nach-merger-neu-auf": {
+    title: "Banijay Germany reshapes Board and label leadership following the All3Media merger",
+    lead: "Following the merger of Banijay Entertainment and All3Media, a new chapter begins in Germany. The combined media company will operate under the Banijay Germany name.",
+    body: [
+      "Arno Schneppenheim joins the Banijay Board as Chief Creative Officer and will also become Managing Director of EndemolShine Germany on 1 September, alongside co-Managing Director Ute März. Katrin Stefanović becomes sole Managing Director of Banijay Productions.",
+      "Vittorio Valente will lead the former German All3Media labels filmpool entertainment, filmpool fiction, south&browse and Magic Connection as CEO under the filmpool united brand. The label Managing Directors will continue to report to him, while Valente reports to Banijay Germany CEO Marcus Wolter.",
+      "As CCO, Schneppenheim will work alongside COO Knut Kremling and CFO Michael Laegel under Marcus Wolter’s leadership. The new CCO function will strategically steer cross-platform development, the international exploitation of local IP and the targeted use of the group’s format catalogue.",
+      "The combined company represents the world’s largest format catalogue and produces more than 4,500 hours of entertainment each year across reality, entertainment, fiction, live, factual, scripted reality, branded entertainment, vertical drama and social-media content.",
+      "Marcus Wolter describes strong brands and excellent teams as the foundations of the combined company. He thanked Fabian Tobias for twelve successful years and confirmed that Ute März will continue to contribute her longstanding management experience at EndemolShine Germany.",
+    ],
+  },
   "n-christian-franckenstein-im-banijay-podcast-wolter-talks": {
     title: "Christian Franckenstein joins the Banijay podcast WOLTER TALKS",
     lead: "What lies ahead for Germany’s media industry? Banijay Germany CEO Marcus Wolter discusses the market’s future with Bavaria Film CEO Dr Christian Franckenstein in the latest WOLTER TALKS episode.",

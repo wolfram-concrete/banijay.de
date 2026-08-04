@@ -53,14 +53,15 @@ const BLOECKE: Block[] = [
 function Card({ item, ratio }: { item: FeedItem; ratio: string }) {
   const locale = useLocale();
   const copy = copyFor(locale);
+  const isWide = item.imageVariant === "wide";
   const inner = (
     <>
-      <div className="relative overflow-hidden" style={{ aspectRatio: ratio, background: "rgba(255,255,255,0.08)" }}>
+      <div className="relative overflow-hidden" style={{ aspectRatio: isWide ? "40 / 17" : ratio, background: "rgba(255,255,255,0.08)" }}>
         <img
           src={item.img}
           alt=""
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+          className={`absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.05] ${isWide ? "object-contain" : "object-cover"}`}
         />
         {item.source && (
           <span
@@ -96,7 +97,9 @@ function Card({ item, ratio }: { item: FeedItem; ratio: string }) {
 
   // shrink-0 + feste Breite: im Flex-Track dürfen die Karten NICHT schrumpfen, sonst
   // quetscht der Browser alle nebeneinander statt zu scrollen.
-  const cls = "group block shrink-0 snap-start no-underline w-[19.5vw] max-[1199px]:!w-[30vw] max-[767px]:!w-[64vw]";
+  const cls = isWide
+    ? "group block w-[34vw] shrink-0 snap-start no-underline max-[1199px]:!w-[48vw] max-[767px]:!w-[88vw]"
+    : "group block w-[19.5vw] shrink-0 snap-start no-underline max-[1199px]:!w-[30vw] max-[767px]:!w-[64vw]";
 
   return item.external ? (
     <a data-news-card href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>

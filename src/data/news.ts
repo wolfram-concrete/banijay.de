@@ -2,6 +2,14 @@
 // Bilder lokal weboptimiert in public/news/scraped/). Lead/Body aus dem
 // Original-Fließtext. CMS-ready austauschbar.
 
+export type NewsBodyBlock =
+  | string
+  | { type: "paragraph"; text: string; highlights?: string[] }
+  | { type: "list"; items: string[]; highlights?: string[] }
+  | { type: "heading"; text: string }
+  | { type: "quote"; attribution: string; attributionHighlight?: string; paragraphs: string[] }
+  | { type: "link"; label: string; href: string };
+
 export interface NewsItem {
   slug: string;
   title: string;
@@ -11,11 +19,157 @@ export interface NewsItem {
   img: string;
   /** Anreißer (Grid + Detail-Lead). */
   lead: string;
-  /** Fließtext als Absätze. */
-  body: string[];
+  /** Fließtext als Absätze; neue Meldungen können zusätzlich strukturierte Blöcke nutzen. */
+  body: NewsBodyBlock[];
+  /** Breites 40:17-Motiv: Karte und Detail-Hero zeigen das vollständige Bild. */
+  imageVariant?: "wide";
+  /** Optionaler Original-Download, z. B. die Pressemitteilung als PDF. */
+  download?: { href: string; label: string; filename: string };
 }
 
 export const NEWS: NewsItem[] = [
+  {
+    slug: "n-banijay-germany-stellt-fuehrungsmannschaft-nach-merger-neu-auf",
+    title: "Banijay Germany stellt Führungsmannschaft im Board und die Label-Geschäftsführungen nach Merger mit All3Media neu auf",
+    date: "04.08.2026",
+    category: "Pressemitteilung",
+    author: "Redaktion",
+    img: "/news/banijay-fuehrungsmannschaft-2026.webp",
+    imageVariant: "wide",
+    download: {
+      href: "/downloads/banijay-germany-pressemitteilung-fuehrungsmannschaft-2026-08-04.pdf",
+      label: "Pressemitteilung als PDF herunterladen",
+      filename: "Banijay-Germany-Pressemitteilung-04-08-2026.pdf",
+    },
+    lead: "Für Banijay Germany startet nach dem Merger von Banijay Entertainment und All3Media auch in Deutschland ein neues Kapitel in der Firmengeschichte. Das zusammengeführte Medienunternehmen wird in Zukunft unter dem Namen Banijay Germany agieren.",
+    body: [
+      {
+        type: "paragraph",
+        text: "In dieser neuen Ära stellt Banijay Germany das Banijay Board sowie die Führungsteams der Produktionsunternehmen EndemolShine und Banijay Productions für die Zukunft wie folgt auf:",
+      },
+      {
+        type: "list",
+        highlights: ["Arno Schneppenheim", "Katrin Stefanović", "Vittorio Valente", "filmpool united", "Fabian Tobias"],
+        items: [
+          "Arno Schneppenheim steigt als Chief Creative Officer ins Banijay Board auf und übernimmt zusätzlich die EndemolShine Germany Geschäftsführung / Ute März bleibt Co-Geschäftsführerin",
+          "Katrin Stefanović wird alleinige Geschäftsführerin bei Banijay Productions",
+          "Vittorio Valente führt als CEO unter dem Brand filmpool united die bisherigen deutschen All3Media-Labels filmpool entertainment, filmpool fiction und south&browse sowie Magic Connection. Die Geschäftsführer der Labels berichten weiterhin an ihn. Valente berichtet an Marcus Wolter, CEO von Banijay Germany.",
+          "Fabian Tobias verlässt die Geschäftsführung von EndemolShine, um sich neuen beruflichen Herausforderungen zu widmen",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Arno Schneppenheim wird ab dem 1. September Geschäftsführer bei EndemolShine Germany, der Produktionsfirma hinter Formaten wie Wer wird Millionär?, Die Höhle der Löwen oder The 50. Für Schneppenheim ist EndemolShine kein Neuland - von 2009 bis 2018 leitete er dort die Unit Comedy & Light Entertainment und war Gründungsgeschäftsführer der 2012 gemeinsam mit Joko Winterscheidt, Klaas Heufer-Umlauf und EndemolShine gegründeten Florida TV.",
+        highlights: ["Arno Schneppenheim", "Wer wird Millionär?", "Die Höhle der Löwen", "The 50"],
+      },
+      {
+        type: "paragraph",
+        text: "Im März 2018 wurde er Geschäftsführer und Co-Shareholder der neu gegründeten Banijay Productions GmbH, die neben den Produktionsfirmen EndemolShine, Brainpool und MadeFor Teil der Banijay Gruppe in Deutschland ist.",
+      },
+      {
+        type: "paragraph",
+        text: "Innerhalb kürzester Zeit baute Schneppenheim die Banijay Productions zu einem relevanten Player im Produktionsgeschäft auf, mit Formaten wie Kampf der Realitystars, Temptation Island, Villa der Versuchung oder dem Creator-Format Mission Unknown.",
+        highlights: ["Kampf der Realitystars", "Temptation Island", "Villa der Versuchung", "Mission Unknown"],
+      },
+      {
+        type: "paragraph",
+        text: "Als Board-Mitglied wird Schneppenheim zukünftig als CCO (Chief Creative Officer) neben Knut Kremling (Chief Operating Officer) und Michael Laegel (Chief Financial Officer) unter der Führung von Banijay CEO und Co-Gesellschafter Marcus Wolter das weitere Wachstum der Banijay Germany gestalten. Aufgabe des neuen CCO-Bereichs ist es, die Zielgenauigkeit der Entwicklungen plattformübergreifend und strategisch zu steuern. Dazu gehört auch die internationale Vermarktung lokaler Eigenentwicklungen sowie die zielgerichtete Auswertung des Formatkataloges.",
+      },
+      {
+        type: "paragraph",
+        text: "Katrin Stefanović wird im Zuge dieser Veränderung alleinige Geschäftsführerin der Banijay Productions. Von Gründung an als Creative Director der Banijay Productions mit dabei, ernannte Schneppenheim sie bereits 2025 zur Co-Geschäftsführerin.",
+        highlights: ["Katrin Stefanović"],
+      },
+      {
+        type: "paragraph",
+        text: "Gemeinsam steht das fusionierte Unternehmen auf einem starken Fundament: Banijay Germany vertritt den größten Format-Katalog der Welt und produziert über alle Plattformen im Jahr über 4.500 Stunden Entertainment.",
+      },
+      {
+        type: "paragraph",
+        text: "Dazu zählen Reality-Marken wie Promi Big Brother, The 50, Die Verräter, Villa der Versuchung, Kampf der Realitystars, Bad Boyfriends oder Temptation Island, Entertainment-Brands wie Schlag den Star, TV total, Die Höhle der Löwen, The Masked Singer oder Kitchen Impossible, Fiction-Marken wie Tatort, Stromberg, Der Lehrer, Kommissar Dupin, Dünentod oder Die Landarztpraxis sowie Live-Formate wie NightWash, Die besten Comedians Deutschlands oder Luminiscence.",
+        highlights: [
+          "Promi Big Brother",
+          "The 50",
+          "Die Verräter",
+          "Villa der Versuchung",
+          "Kampf der Realitystars",
+          "Bad Boyfriends",
+          "Temptation Island",
+          "Schlag den Star",
+          "TV total",
+          "Die Höhle der Löwen",
+          "The Masked Singer",
+          "Kitchen Impossible",
+          "Tatort",
+          "Stromberg",
+          "Der Lehrer",
+          "Kommissar Dupin",
+          "Dünentod",
+          "Die Landarztpraxis",
+          "NightWash",
+          "Die besten Comedians Deutschlands",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Zum Portfolio gehören außerdem Dokumentationen, Factual Entertainment wie Julia Leischik sucht: Bitte melde dich, Undercover Boss, Roadtrip Japan - 3 Spitzenköche auf vier Rädern oder Notruf, Scripted Reality wie Berlin – Tag & Nacht, Köln 50667, Barbara Salesch – Das Strafgericht oder Richter Alexander Hold, Branded Entertainment wie die McDonalds Stromberg Mockumentary sowie Vertical Drama und Social Media Content.",
+        highlights: [
+          "Julia Leischik sucht: Bitte melde dich",
+          "Undercover Boss",
+          "Roadtrip Japan - 3 Spitzenköche auf vier Rädern",
+          "Notruf",
+          "Berlin – Tag & Nacht",
+          "Köln 50667",
+          "Barbara Salesch – Das Strafgericht",
+          "Richter Alexander Hold",
+        ],
+      },
+      {
+        type: "quote",
+        attribution: "Marcus Wolter, CEO Banijay Germany und Co-Gesellschafter",
+        attributionHighlight: "Marcus Wolter",
+        paragraphs: [
+          "Die beiden Grundpfeiler unserer gemeinsamen Firma sind: Starke Marken, die zu Love Brands unserer Zuschauerinnen und Zuschauer geworden sind, sowie die Exzellenz unserer Teams, auch die Brands der Zukunft und die kommenden großen Marken aufzubauen und zu produzieren. Sowohl Banijay als auch All3Media stehen dafür, Firmen mit eigener DNA, eigenem Spirit und eigenständiger Positionierung über starke Produzenten-Persönlichkeiten aufzubauen und zum Wachstum zu führen. Der Star sind die Firmen der Gruppe - nicht die Gruppe. Jetzt stellen wir die Weichen für die nächste Evolutionsstufe der Banijay mit einem außerordentlichen neuen Führungsteam:",
+          "Arno Schneppenheim vereint unternehmerisches Denken mit einer ansteckenden ‚Macher-Mentalität‘. Mit seinem Gespür für Inhalte, Marken und Märkte hat er in den vergangenen Jahren entscheidend zum Erfolg beigetragen. Mit ihm im Board werden wir den konsequenten Ausbau unseres Entertainment-Ökosystems vorantreiben und die Transformation der Entertainmentbranche progressiv gestalten.",
+          "Katrin Stefanović ist eine exzellente Produzentin, mit dem richtigen Gespür für zeitgemäßes, plattformübergreifendes Storytelling. Sie hat insbesondere das Reality-Genre in den letzten Jahren maßgeblich weiterentwickelt.",
+          "Mit Vito Valente gewinnen wir eine Unternehmer- und Produzentenpersönlichkeit erster Klasse, die den Markt durch Erfindungen ganzer Genres geprägt hat. Ich freue mich sehr auf die Zusammenarbeit mit ihm und dem gesamten Team der All3Media.",
+          "Gemeinsam werden wir weiter Geschichte(n) schreiben, mit unseren Shows und als Gruppe. Ich freue mich darauf und blicke voller Zuversicht auf unsere gemeinsame Reise.",
+          "Bei Fabian bedanke ich mich für starke 12 Jahre und eine erfolgreiche und vertrauensvolle gemeinsame Reise in verschiedenen Positionen innerhalb unserer Gruppe. Fabian ist ein leidenschaftlicher Fernsehmacher, der in seiner Zeit bei EndemolShine die Firma mit seinen Werten geprägt hat. Ich wünsche Fabian von Herzen alles Gute für die Zukunft, wir werden freundschaftlich verbunden bleiben. Ich freue mich, dass Ute März als Co-Geschäftsführerin und starke Managerin ihren langjährigen Erfahrungsschatz weiterhin bei EndemolShine einbringen wird.",
+        ],
+      },
+      {
+        type: "quote",
+        attribution: "Arno Schneppenheim",
+        attributionHighlight: "Arno Schneppenheim",
+        paragraphs: [
+          "Ich freue mich sehr auf meine neuen Aufgaben als CCO im Board, sowie als Geschäftsführer der EndemolShine, mit der ich eine äußerst positive Geschichte verbinde. Dass ich die Geschäfte der von mir gegründeten Banijay Productions Germany nun in die alleinigen Hände von Katrin Stefanović geben kann, rundet das Bild hervorragend ab – sie hat den Aufbau der Banijay Productions von Beginn an begleitet und wird die Erfolgsgeschichte weiterschreiben.",
+        ],
+      },
+      {
+        type: "quote",
+        attribution: "Vittorio Valente",
+        attributionHighlight: "Vittorio Valente",
+        paragraphs: [
+          "Banijay Deutschland ist eine starke Organisation, und ich freue mich sehr, dass unsere Gruppe künftig dazugehört. Marcus Wolter ist für mich ein großartiger Unternehmer, der unsere Branche seit Jahrzehnten maßgeblich prägt. Gemeinsam mit unseren kreativen Machern wollen wir die besonderen Profile und Stärken unserer Labels einbringen und diese Erfolgsgeschichte weiterschreiben.",
+        ],
+      },
+      {
+        type: "link",
+        label: "Weiterführendes Bildmaterial erhalten Sie hier.",
+        href: "https://www.picdrop.com/banijaygermany/XqmQxejMk5",
+      },
+      { type: "heading", text: "Über Banijay Germany" },
+      {
+        type: "paragraph",
+        text: "Im Jahr 2018 von Marcus Wolter und der Banijay Group gegründet, ist die Banijay Germany GmbH mittlerweile das führende Entertainment-Haus Deutschlands. Banijay Germany ist ein Verbund von unabhängigen Entertainment-Produzenten und Unternehmen. Zur Gruppe gehören unter anderem die Produktionshäuser Brainpool, Banijay Productions, EndemolShine, MadeFor, filmpool fiction, filmpool entertainment, south&browse, die Live-Company Banijay Germany Live, Künstler-Managements wie SR Management, Only Good People oder MTS, die Vermarktungs-Agentur Banijay Media Germany, Magic Connection, die Influencer-Marketing Agentur influence.vision sowie die Full Service Technik Company Cape Cross.",
+      },
+      { type: "heading", text: "Presse-Kontakt" },
+      {
+        type: "paragraph",
+        text: "Simone Lenzen\nDirector Communications\nBanijay Germany\nsimone.lenzen@banijay.de\nT +49 221 65095600",
+      },
+    ],
+  },
   // NEU (Crawl 22.07.2026 von banijay.de/news — zwei Meldungen seit dem letzten Stand 03.06.).
   {
     slug: "n-christian-franckenstein-im-banijay-podcast-wolter-talks",

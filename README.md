@@ -49,13 +49,15 @@ bauen sich global wortweise aus einer Maske auf; das Team-Grid ist auf sehr brei
 auf `max 1680px` gedeckelt und zentriert, damit die Porträt-Kacheln nicht bis an die Ränder
 laufen und weniger vom Gesicht beschnitten wird. Die **Team-Section** ist über ein
 Umschalt-Widget (`TeamSwitcher`) in fünf Layout-Varianten erlebbar — **Raster** (gepinntes
-Spiral-Grid), **Snap** (alle 12 in einem Viewport), **Editorial** (variables Feinraster mit
+Spiral-Grid), **Snap** (13 Personen in Reihen 4 / 5 / 4), **Editorial** (variables Feinraster mit
 größeren Leader-Kacheln), **Clean** (helles Corporate-Raster) und **Masonry** (full-bleed
 gap-0-Masonry, 3 Large versetzt + 9 Standard); allen vorangestellt die animierte „UNSER TEAM"-
 Intro, alle rasten beim Erreichen ein, bevor die LogoReveal-Videoblende aufsteigt. Die About-Facts stehen auf großen Screens
 zweispaltig (Copy links, Fakten-Block rechts), das Ökosystem-Verzeichnis in **4 Spalten**
 (CSS-columns). Die Home-News-Section stapelt ihre Beiträge als Sticky-Cards, getrennt durch schwarze
-Hairlines zwischen den Einträgen. Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
+Hairlines zwischen den Einträgen. News-Motive können zusätzlich als breite 40:17-Variante
+gekennzeichnet werden; diese Teaser wachsen auf Home, News-Page und im Menü nach rechts und zeigen
+das vollständige Motiv ohne Beschnitt. Die News-Page überblendet ihr Statement per Parallax-Exit in den Feed, und die
 Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
 Film-Snippets ragen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
@@ -72,7 +74,7 @@ Konvergenz + Staub, wie „About Banijay") die Desktop-Swap-Phase, und der Kateg
 als zweizeilige, unterstrichene Textlinks statt als Chip-Buttons. Das Bento ist auch mobil **divers
 proportioniert** (eigenes `grid-auto-rows` + Dense-Flow mit breiten `col-span-2`- und hohen
 `row-span-2`-Kacheln; native Hochformat-Reels laufen hoch) statt uniformer Kacheln. Im **Team-Grid**
-stehen die drei Geschäftsführer mobil je in einer **vollbreiten Zeile** (über beide Spalten, Container
+stehen die vier Board-Mitglieder mobil je in einer **vollbreiten Zeile** (über beide Spalten, Container
 +40 % Höhe), darunter läuft das Team zweispaltig weiter; Desktop zeigt die Leader-Reihe über die
 volle Breite.
 Während des **Preloaders** ist Scrollen hart gesperrt (Lenis startet gestoppt, zusätzlich
@@ -86,6 +88,14 @@ und Company-Videos auf `preload="none"` (sie laden per IntersectionObserver erst
 Reinscrollen). Die Video-Karten zeigen währenddessen aktuelle, direkt aus den zugeordneten
 Reels exportierte Poster. Gleichzeitig laufen maximal drei Videos auf Desktop, zwei auf Mobile
 und bei langsamer Verbindung bzw. Datensparmodus nur eines. Details im Changelog.
+
+**Redaktioneller Stand 04.08.2026.** Die aktuelle Pressemitteilung zur neuen
+Führungsmannschaft nach dem All3Media-Merger ist auf Home und News-Page sowie als deutsche
+Volltext- und englische Kurzfassung hinterlegt. Ihr breites Gruppenmotiv wird nativ in 40:17
+ausgespielt; der Artikel bietet strukturierte Hervorhebungen, den PicDrop-Link und die
+Original-PDF als Download. News-Detailseiten nutzen global eine kompaktere H1, damit lange
+Headlines das Hero-Motiv nicht verdecken. In der Team-Section ergänzt Arno Schneppenheim als
+CCO die Board-Reihe direkt hinter Michael Laegel.
 
 ## Stack
 
@@ -178,8 +188,9 @@ src/
                          SiteFooter (Mail/Tel/Presse)
   data/                  CMS-fähige Datenschicht (companiesDirectory, companyCards,
                          about, career, home, leadership, feed …);
-                         news.ts = 30 reale banijay.de-Meldungen (aus scraped_content
-                         ausgewertet, Listenbilder lokal in public/news/scraped/)
+                         news.ts = 31 reale banijay.de-Meldungen (aus scraped_content
+                         ausgewertet bzw. redaktionell geliefert; Listenbilder lokal in
+                         public/news/, strukturierte Body-Blöcke + optionale PDF-Downloads)
 public/
   brand/                 Logo-/Marken-Assets (banijay-sign.svg …)
   company-logos/         Weiße Company-Wortmarken (speisen den LogoTicker — der läuft auf
@@ -192,6 +203,7 @@ public/
                          Website-Screencast, weiße Nav-Leiste weggecroppt.
   people/quotes/         Fotos der Zitat-Geschäftsführer:innen (von banijay.de,
                          transparente Ränder getrimmt + auf Panel-Farbe gelegt)
+  downloads/             Downloadbare Originaldokumente der News-Beiträge (PDF)
   video/  companies/  people/  grid/   Bild- und Videomaterial
 ```
 
@@ -218,7 +230,7 @@ Vor dem Livegang abzuarbeiten:
 | **Company-Material vollständig** | 23 von 35 Kacheln haben eigenes Video/Foto | Restliche 12 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
 | **Video-Ladeverhalten** | `preload="none"`, `src` erst im Viewport, alle 34 Video-Karten mit aktuellem Reel-Frame; maximal 3 parallel (Mobile 2, langsame Verbindung 1) | Auf realen Geräten weiter messen; große Hero-/Reel-Dateien bei Bedarf auf Video-CDN bzw. Adaptive Streaming umstellen |
 | **Social-Feed-Zugänge** | LinkedIn via Juicer-JSON + Instagram via Elfsight-Data-Service (beide undokumentiert/inoffiziell) | Vor Livegang gegen offizielle **Meta-/Instagram-Graph-API** + LinkedIn-API absichern; Elfsight-Endpoints können sich ändern |
-| **Leadership-/People-Bilder** | 9 von 12 echt — noch Platzhalter: Marcus Wolter, Natali Naso, Janine Berns; `lead-1.jpg` doppelt (Marcus + Janine) | Echte Portraits nachliefern (siehe unten) |
+| **Leadership-/People-Bilder** | 13 von 13 echt; Arno Schneppenheim seit 04.08. als CCO ergänzt | Kopfgrößen und Fokuspunkte bei künftigen Neuzugängen nach der dokumentierten Beschnitt-Regel angleichen |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |
 | **News-Hero-Statement** | `Lorem ipsum` | Echten Text (siehe `src/app/(frontend)/news/page.tsx`) |
@@ -297,8 +309,9 @@ braucht dafür nur ein anderes `img`.
 
 ### Team-Portraits: Beschnitt-Regel
 
-**12 von 12 echt (Stand 21.07.)** — alle Platzhalter sind abgelöst, `lead-1.jpg` läuft
-nicht mehr doppelt. Zuletzt: Marcus Wolter, Matthaeus Jaworek, Janine Berns, Natali Naso.
+**13 von 13 echt (Stand 04.08.)** — alle Platzhalter sind abgelöst, `lead-1.jpg` läuft
+nicht mehr doppelt. Neu hinzugekommen: Arno Schneppenheim als CCO, direkt hinter Michael
+Laegel in der Board-Reihe.
 
 **Kopf-Normalisierung (21.07.).** Die mittlere Reihe + Aylin wurden auf **Matthäus als
 Referenz** vereinheitlicht: Gesichter höher (mehr Körper unten), Kopf ~33 % der Kachel,
@@ -321,7 +334,7 @@ viel kompakter — ohne Beschnitt wäre der Kopf winzig. Vorgehen:
 
   | Reihe | Kachel | sichtbar von 0,75 | Kopf im Ausschnitt | `FOCUS` |
   |---|---|---|---|---|
-  | Leader (Index 0–2) | 248×182 (1.36) | 55 % der Höhe | **24 %** | `"50% 14%"` |
+  | Leader (Index 0–3) | 248×182 (1.36) | 55 % der Höhe | **24 %** | `"50% 14%"` |
   | Reihe 2 + 3 | 142×138 (1.03) | 73 % der Höhe | **32 %** | `"50% 18%"` |
 
   Beide ergeben ~43 % Kopfhöhe in der Kachel — das ist der Zielwert, abgeleitet aus Knut.
@@ -336,7 +349,7 @@ verwechseln mit Sebastian Lege, dem Food-Experten hinter Pausenclown Media
 ### Team-Reihenfolge: mittlere Reihe
 
 Die Reihenfolge in `src/data/leadership.ts` **ist** das Layout — `Founders.tsx` rendert
-stur nach Index (0–2 Leader-Reihe, 3–7 Mitte, ab 8 unten). Wolframs Regel: in der
+stur nach Index (0–3 Board-Reihe, 4–8 Mitte, ab 9 unten). Wolframs Regel: in der
 mittleren Reihe stehen die Frauen des Teams.
 
 **Diese Zuordnung ist nicht belegt.** Es gibt kein Geschlechtsfeld in den Daten; einsortiert
@@ -440,4 +453,5 @@ per Netzwerk-Check verifiziert, dass nichts davon geladen wird.
 Videoframe erzeugt (z. B. `public/career/career-hero-poster.jpg` via ffmpeg) — so
 blitzt vor dem Autoplay kein abweichendes (Schwarz-Weiß-)Platzhalterbild auf.
 
-Die Leadership-/People-Bilder sind aktuell **Platzhalter**.
+Die Leadership-/People-Bilder sind vollständig durch echte Porträts ersetzt (13 von 13,
+Stand 04.08.2026).

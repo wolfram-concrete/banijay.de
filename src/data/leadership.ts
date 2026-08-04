@@ -4,9 +4,9 @@
 //
 // DIE REIHENFOLGE IST DAS LAYOUT (Wolfram 17.07.) — Founders.tsx rendert stur nach
 // Index, es gibt kein Zeilen-Feld:
-//   Index 0–2   → Leader-Reihe oben, größere Kacheln (Marcus, Knut, Michael Laegel)
-//   Index 3–6   → mittlere Reihe (Simone, Natali, Heike, Janine)
-//   Index 7–11  → untere Reihe (Elena, die drei Männer, Aylin als Letzte)
+//   Index 0–3   → Leader-Reihe oben, größere Kacheln (Marcus, Knut, Michael, Arno)
+//   Index 4–8   → mittlere Reihe (Simone, Heike, Natali, Janine, Michael Gaul)
+//   Index 9–12  → untere Reihe (Elena, die drei Männer, Aylin als Letzte)
 // Aylin Firat steht seit 20.07. GANZ HINTEN (Wolfram) — vorher Index 7.
 // Wolframs Regel für die mittlere Reihe: dort stehen die Frauen des Teams. Die
 // Zuordnung ist NICHT aus den Daten belegbar — es gibt kein Geschlechtsfeld, und die
@@ -44,7 +44,7 @@ export interface Leader {
 //     • Sebastian: extract(972,454,2692,3589) „Sebastian lege.jpg" (war weit rechts → mittig)
 //     • Aylin:     extract(748,903,2687,3582) „Aylin.jpg" (größer, Gesicht ~52 %)
 export const LEADERSHIP: Leader[] = [
-  // ── Leader-Reihe (Index 0–2) ──────────────────────────────────────────────
+  // ── Leader-Reihe (Index 0–3) ──────────────────────────────────────────────
   // Echtes Portrait (Wolfram 21.07.) — löst den Platzhalter lead-1.jpg ab (den Janine
   // Berns weiter trägt). Quelle assets/People/Marcus.JPG (3804×5706, Ganzkörper), auf die
   // LEADER-Kachel (1.207 Querformat) beschnitten. Fokuswert 14 % (s. Founders FOCUS).
@@ -65,8 +65,13 @@ export const LEADERSHIP: Leader[] = [
   // zu viel weiße Wand zu sehen. Fenster nach rechts geschoben → Gesicht ~51 %, Wand nur
   // noch schmaler Streifen. extract(1240,1320,2250,3000).
   { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.webp" },
+  // Neu im Board (Wolfram 04.08.): direkt hinter Michael Laegel. Quelle
+  // assets/People/weboptimiert/Arno.webp (3800×5712). Für die Leader-Reihe auf
+  // 900×1200 beschnitten: extract(663,200,2475,3300). Dadurch sitzt der Scheitel bei
+  // rund 5 % und die Kopfhöhe bei rund 39 % — synchron zu Knut und Michael.
+  { name: "Arno Schneppenheim", role: "CCO", img: "/people/arno-schneppenheim.webp" },
 
-  // ── Mittlere Reihe (Index 3–7) ────────────────────────────────────────────
+  // ── Mittlere Reihe (Index 4–8) ────────────────────────────────────────────
   // KOPF-NORMALISIERUNG DER MITTLEREN REIHE + Aylin (Wolfram 21.07., 2. Fassung):
   // Gesichter höher gerückt (mehr Körper unten) + Kopfgrößen an MATTHÄUS (Referenz)
   // angeglichen. Methode: Kachel = object-fit cover 0.891 @ object-position 50% 18% →
@@ -98,7 +103,7 @@ export const LEADERSHIP: Leader[] = [
   // Elena rückt dafür in die untere Reihe an Gauls alte Stelle.
   { name: "Michael Gaul", role: "Director Legal / General Counsel", img: "/people/michael-gaul.webp" },
 
-  // ── Untere Reihe (Index 9–11) ─────────────────────────────────────────────
+  // ── Untere Reihe (Index 9–12) ─────────────────────────────────────────────
   // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-5.jpg ab.
   // Quelle assets/People/Michael Gaul.jpg, 3869×5815, wieder eine Ganzkörper-Aufnahme.
   // Beschnitten nach DERSELBEN Regel wie Aylin, damit die Proportionen in der Reihe

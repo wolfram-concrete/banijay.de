@@ -84,8 +84,10 @@ export function AlgarveNewsStack() {
               (= Section-Magenta) deckt die untere Ebene ab, getrennt nur durch eine
               feine dünne Linie oben. So gleiten die Karten smooth übereinander. */}
           <div className="relative flex flex-col">
-            {items.map((item, i) => (
-              <Link
+            {items.map((item, i) => {
+              const isWide = item.imageVariant === "wide";
+              return (
+                <Link
                 key={item.title}
                 href={localizeHref(`/news/${item.slug}`, locale)}
                 // Mobile (Wolfram 24.07.): nur die 3 aktuellsten Beiträge zeigen — Items ab
@@ -102,19 +104,22 @@ export function AlgarveNewsStack() {
                   zIndex: items.length - i,
                 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] max-[767px]:!gap-[4vw]" style={{ gap: "1vw" }}>
+                <div
+                  className={`grid grid-cols-1 max-[767px]:!gap-[4vw] ${isWide ? "md:grid-cols-[7fr_5fr]" : "md:grid-cols-[5fr_7fr]"}`}
+                  style={{ gap: "1vw" }}
+                >
                   {/* Bildcontainer ECKIG (Heike-Regel: keine abgerundeten Container) */}
                   <div
-                    className="overflow-clip max-[767px]:!h-[56vw]"
-                    style={{ height: "15vw" }}
+                    className={`overflow-clip ${isWide ? "max-[767px]:!h-auto" : "max-[767px]:!h-[56vw]"}`}
+                    style={{ height: isWide ? undefined : "15vw", aspectRatio: isWide ? "40 / 17" : undefined }}
                   >
                     <img
                       src={item.img}
                       alt={item.title}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      className={`h-full w-full transition-transform duration-700 group-hover:scale-[1.04] ${isWide ? "object-contain" : "object-cover"}`}
                     />
                   </div>
-                  <div className="flex flex-col justify-between max-[767px]:!max-w-full max-[767px]:!gap-[3vw]" style={{ maxWidth: "31.11vw", gap: "1.11vw" }}>
+                  <div className="flex flex-col justify-between max-[767px]:!max-w-full max-[767px]:!gap-[3vw]" style={{ maxWidth: isWide ? "22vw" : "31.11vw", gap: "1.11vw" }}>
                     <div className="flex flex-col items-start max-[767px]:!gap-[2vw]" style={{ gap: "0.83vw" }}>
                       <span
                         className="max-[767px]:!text-[2.8vw]"
@@ -141,8 +146,9 @@ export function AlgarveNewsStack() {
                     </span>
                   </div>
                 </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
