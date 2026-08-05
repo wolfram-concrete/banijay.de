@@ -41,8 +41,11 @@ gepinnte Atom-Orbit-Grafik.
 
 Die Editorial-Section der Home trägt ein CEO-Porträt im großen Sticky-Bildcontainer, „Die Story"
 auf hellem Paper-Feld, eine gepinnte Fakten-Accordion-Spalte (Kennzahlen zählen beim Scroll-in hoch,
-inkl. „90 % Primetime-Hitrate") und einen **IP-Brands-Doppelslider** (zwei gegenläufige Reihen der
-ikonischen Formate in Original-Proportion, weboptimiert aus `/public/ip-brands`). In allen Fact-Boxen
+inkl. „90 % Primetime-Hitrate") und einen **dreireihigen IP-Brands-Slider** (33 ikonische
+Formate, gleichmäßig 11 / 11 / 11 auf gegenläufige Reihen verteilt, in Originalproportion
+weboptimiert aus `/public/ip-brands`; mobil ergänzt eine vierte kuratierte Reihe). Seit
+05.08. gehören auch „Bad Boyfriends", „Roadtrip Australien – 3 Spitzenköche auf 4 Rädern"
+und „Undercover Boss" zum Slider. In allen Fact-Boxen
 sitzt das Einheiten-„+" grundlinienbündig an der Ziffer (Wrapper mit eigener `font-size` +
 Glyph-Offset), genau wie `%`/`Mrd.`/`hrs.`. Team-Headlines
 bauen sich global wortweise aus einer Maske auf; das Team-Grid ist auf sehr breiten Screens
@@ -201,6 +204,10 @@ public/
                          automatisch vom Video ab. Beispiele: sr-management.mp4 =
                          Hochformat-Zusammenschnitt der vier Topstars; myshow.mp4 =
                          Website-Screencast, weiße Nav-Leiste weggecroppt.
+  ip-brands/             33 weboptimierte Iconic-IP-Motive ohne Beschnitt in drei
+                         Desktop-Reihen (Assets überwiegend 560 px hoch, eine
+                         Bestandsausnahme mit 501 px); mobil auf 135 px sichtbarer
+                         Reihenhöhe plus vierter kuratierter Reihe.
   people/quotes/         Fotos der Zitat-Geschäftsführer:innen (von banijay.de,
                          transparente Ränder getrimmt + auf Panel-Farbe gelegt)
   downloads/             Downloadbare Originaldokumente der News-Beiträge (PDF)

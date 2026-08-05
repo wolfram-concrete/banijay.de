@@ -34,7 +34,7 @@ const MAGENTA = "#ff4370";
 // „TV total" führen die obere Reihe an → im ersten Screen garantiert sichtbar.
 // Assets: /public/ip-brands (weboptimiert aus assets/Bilder, Höhe 560).
 //
-// Die 30 vorhandenen Motive sind gleichmäßig auf 10/10/10 verteilt.
+// Die 33 vorhandenen Motive sind gleichmäßig auf 11/11/11 verteilt.
 // Kommen neue IP-Visuals dazu, einfach hier verteilen.
 // Nachtrag 20.07. (Wolfram): „Beauty & the Nerd" in die mittlere Reihe ergänzt (war
 // 10/9/9). Quelle nur 800×536 — auf Reihenhöhe 560 gebracht, also 4,5 % hochskaliert;
@@ -51,6 +51,7 @@ const BRANDS_TOP: Brand[] = [
   b("schlag-den-star", "Schlag den Star", 840),
   b("promi-big-brother", "Promi Big Brother", 664),
   b("temptation-island", "Temptation Island", 755),
+  b("bad-boyfriends", "Bad Boyfriends", 996),
   b("kampf-der-realitystars", "Kampf der Realitystars", 460),
   b("stromberg", "Stromberg", 664),
 ];
@@ -61,6 +62,7 @@ const BRANDS_MID: Brand[] = [
   b("tatort-munster", "Tatort Münster", 827),
   b("the-50", "The 50", 996),
   b("beauty-and-the-nerd", "Beauty & the Nerd", 836),
+  b("roadtrip-australien", "Roadtrip Australien – 3 Spitzenköche auf 4 Rädern", 840),
   b("die-verrater", "Die Verräter", 1067),
   b("villa-der-versuchung", "Villa der Versuchung", 642),
   b("richter-alexander-hold", "Richter Alexander Hold", 860),
@@ -70,6 +72,7 @@ const BRANDS_BOTTOM: Brand[] = [
   b("die-landarztpraxis", "Die Landarztpraxis", 996),
   b("berlin-tag-und-nacht", "Berlin – Tag und Nacht", 866),
   b("bitte-melde-dich", "Bitte melde dich", 887),
+  b("undercover-boss", "Undercover Boss", 996),
   b("die-besten-comedians-deutschlands", "Die besten Comedians Deutschlands", 883),
   b("dunentod", "Dünentod", 996),
   b("rudi-voller-es-kann-nur-einen-geben", "Rudi Völler – Es kann nur einen geben", 1002),

@@ -3,6 +3,24 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-05
+
+### Iconic-IP-Slider um drei Formate erweitert
+
+- **Drei neue IP-Motive:** „Bad Boyfriends", „Roadtrip Australien – 3 Spitzenköche
+  auf 4 Rädern" und „Undercover Boss" ergänzen den Iconic-IP-Slider der Home.
+- **Ausgewogene Verteilung:** Je ein Motiv wurde einer der drei Hauptreihen
+  zugeordnet. Damit laufen nun 33 Formate gleichmäßig als 11 / 11 / 11; die
+  bestehenden gegenläufigen Bewegungsrichtungen und die vierte kuratierte
+  Mobile-Reihe bleiben unverändert.
+- **Weboptimierte Assets:** Alle drei gelieferten JPGs wurden ohne Beschnitt und
+  unter Erhalt ihrer Originalproportion auf eine Exporthöhe von 560 px
+  als WebP exportiert (51–74 KB). Mobile werden sie automatisch mit der bestehenden
+  Reihenhöhe von 135 px dargestellt.
+- **Verifiziert:** TypeScript, gezielter ESLint-Lauf und `git diff --check` ohne
+  Fehler; Desktop- und Mobile-Preview visuell geprüft, alle drei Dateien vollständig
+  geladen und ohne Höhenversatz dargestellt.
+
 ## [main] — 2026-08-04
 
 ### Neue Pressemitteilung, News-Darstellung und Board-Erweiterung
