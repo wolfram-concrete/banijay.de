@@ -203,11 +203,10 @@ REEL["banijay-germany-live"] = "/company-media/banijay-germany-live.mp4";
 // influence.vision (Wolfram 20.07.) — Quelle „IVA - Final Cut - 6.0.mp4", 1920×1080,
 // Ausschnitt 3–13 s.
 REEL["influence-vision"] = "/company-media/influence-vision.mp4";
-// Cape Cross Postproduction (Wolfram 21.07.): jetzt „Container-Fun-Compilation.mp4"
-// (1920×1080 echtes 16:9, 30 s) — zwei Leute fahren in einem Müllcontainer die Straße
-// runter. 10-s-Ausschnitt (13–23 s) → 960×540, ohne Ton. (Löst das frühere CC_Website_3
-// ab; CC_Website_1 war defekt — 87 s Schwarzbild im Quellfile.)
-REEL["cape-cross-postproduction"] = "/company-media/cape-cross-postproduction.mp4";
+// Cape Cross Postproduction (Wolfram 07.08.): nutzt denselben Imagefilm wie Cape Cross
+// Entertainment, aber einen späteren, klar unterscheidbaren Backstage-Ausschnitt mit
+// Bildregie, Kameratechnik und Kran (40–45,6 s) → 960×540, ohne Ton.
+REEL["cape-cross-postproduction"] = "/company-media/cape-cross-postproduction.mp4?v=2";
 // MySpass (Wolfram 20.07.) — Bildschirmmitschnitt der MySpass-Website (scrollendes
 // Show-Raster), Quelle 50,7s, Ausschnitt 12–22s.
 // ERSTER CLIP MIT FFMPEG statt VLC (libx264 CRF 28, faststart): 0,52 MB bei SSIM 0,985.

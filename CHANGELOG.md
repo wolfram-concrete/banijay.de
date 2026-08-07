@@ -3,6 +3,22 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-07
+
+### Cape-Cross-Postproduction-Video aktualisiert
+
+- **Gemeinsamer Markenfilm:** Die Kachel „Cape Cross Postproduction" verwendet jetzt
+  denselben Cape-Cross-Imagefilm wie „Cape Cross Entertainment" statt der bisherigen
+  Container-Fun-Compilation.
+- **Eigenständiger späterer Ausschnitt:** Postproduction zeigt die Sequenz von
+  **40,0–45,6 s** mit Bildregie, Kameratechnik und Kamerakran. Der Entertainment-Loop
+  bleibt unverändert bei 29,6–35,2 s, sodass beide Kacheln klar unterscheidbar sind.
+- **Weboptimiert und cache-sicher:** Der neue 5,6-s-Loop liegt als 960×540-H.264 ohne
+  Audiospur vor. Das Poster wurde neu aus Sekunde 1 des Reels erzeugt; `?v=2` verhindert,
+  dass Browser die vorherige MP4 aus dem Cache anzeigen.
+- **Verifiziert:** TypeScript, gezielter ESLint-Lauf und `git diff --check` ohne Fehler;
+  Poster, Zuschnitt und Kachel-Darstellung zusätzlich in der lokalen Desktop-Preview geprüft.
+
 ## [main] — 2026-08-05
 
 ### Iconic-IP-Slider um drei Formate erweitert

@@ -90,7 +90,10 @@ lief in OOM), Canvas-Partikel reduziert (DustLayer/PreloaderParticles laufen dau
 und Company-Videos auf `preload="none"` (sie laden per IntersectionObserver erst beim
 Reinscrollen). Die Video-Karten zeigen währenddessen aktuelle, direkt aus den zugeordneten
 Reels exportierte Poster. Gleichzeitig laufen maximal drei Videos auf Desktop, zwei auf Mobile
-und bei langsamer Verbindung bzw. Datensparmodus nur eines. Details im Changelog.
+und bei langsamer Verbindung bzw. Datensparmodus nur eines. Cape Cross Entertainment und
+Cape Cross Postproduction nutzen denselben Imagefilm, aber zwei getrennte, jeweils 5,6 Sekunden
+lange Sequenzen: Entertainment zeigt die Arena ab 29,6 s, Postproduction die spätere
+Backstage- und Kameratechnik-Passage ab 40,0 s. Details im Changelog.
 
 **Redaktioneller Stand 04.08.2026.** Die aktuelle Pressemitteilung zur neuen
 Führungsmannschaft nach dem All3Media-Merger ist auf Home und News-Page sowie als deutsche
@@ -203,7 +206,9 @@ public/
                          gleichnamigen Reels. Die Bento-Karten leiten ihren Posterpfad
                          automatisch vom Video ab. Beispiele: sr-management.mp4 =
                          Hochformat-Zusammenschnitt der vier Topstars; myshow.mp4 =
-                         Website-Screencast, weiße Nav-Leiste weggecroppt.
+                         Website-Screencast, weiße Nav-Leiste weggecroppt;
+                         cape-cross.mp4 und cape-cross-postproduction.mp4 = zwei
+                         unterschiedliche Sequenzen desselben Cape-Cross-Imagefilms.
   ip-brands/             33 weboptimierte Iconic-IP-Motive ohne Beschnitt in drei
                          Desktop-Reihen (Assets überwiegend 560 px hoch, eine
                          Bestandsausnahme mit 501 px); mobil auf 135 px sichtbarer
