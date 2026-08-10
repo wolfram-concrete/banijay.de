@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import CareerPage from "../../career/page";
+import { CareerPageContent } from "../../career/page";
+
+export const revalidate = 900;
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -10,4 +12,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default CareerPage;
+export default function EnglishCareerPage() {
+  return <CareerPageContent locale="en" />;
+}

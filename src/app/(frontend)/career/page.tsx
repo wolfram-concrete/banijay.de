@@ -13,6 +13,12 @@ import { AlgarveCodeOfConductBand } from "@/components/cinematic/algarve/CodeOfC
 import { AlgarveAboutDrift } from "@/components/cinematic/algarve/AboutDrift";
 import { AlgarveCareerSocialFeed } from "@/components/cinematic/algarve/CareerSocialFeed";
 import { AlgarveContactForm } from "@/components/cinematic/algarve/ContactForm";
+import {
+  getSoftgardenJobs,
+  type CareerLocale,
+} from "@/lib/softgarden";
+
+export const revalidate = 900;
 
 export const metadata: Metadata = {
   title: "Career",
@@ -24,7 +30,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CareerPage() {
+export async function CareerPageContent({
+  locale,
+}: {
+  locale: CareerLocale;
+}) {
+  const jobs = await getSoftgardenJobs(locale);
+
   return (
     <>
       {/* 01 Hero — Home-Hero + seiteneigenes Statement. Der Text stand bis 16.07. als
@@ -43,7 +55,7 @@ export default function CareerPage() {
       {/* <AlgarveCareerRoleScroller /> */}
 
       {/* 03 Aktuelle Jobs */}
-      <AlgarveCareerJobsPreview />
+      <AlgarveCareerJobsPreview jobs={jobs} />
 
       {/* 04 Standorte — Magenta-Modulbox (Köln + weitere Companies-Städte) */}
       <AlgarveCareerLocations />
@@ -77,4 +89,8 @@ export default function CareerPage() {
       />
     </>
   );
+}
+
+export default function CareerPage() {
+  return <CareerPageContent locale="de" />;
 }

@@ -108,12 +108,20 @@ CCO die Board-Reihe direkt hinter Michael Laegel.
 
 **Karriere-Stand 10.08.2026.** Alle Karriere-CTAs und Standorte verweisen auf das
 gruppenweite Softgarden-Board `https://banijay.softgarden.io/de/vacancies`; die entfernte
-interne Route `/offene-stellen/` wird nicht mehr verwendet. Die Website zeigt neun aktuell
-kuratierte Vakanzen mit direkten Softgarden-Links. Statische Jobzahlen wurden entfernt, damit
-keine veralteten Bestände kommuniziert werden. Die englische Website öffnet die englische
-Softgarden-Fassung. Für eine vollständig automatische Synchronisierung wird künftig ein
-offizieller Read-only-API-Zugang oder ein freigegebener Stellen-Feed benötigt; bis dahin ist
-die Jobvorschau redaktionell zu pflegen.
+interne Route `/offene-stellen/` wird nicht mehr verwendet. Die Jobvorschau aggregiert die
+öffentlichen Softgarden-Frontend-APIs von Banijay Germany / Banijay Germany Live, BRAINPOOL
+TV, EndemolShine, Banijay Media und Banijay Productions serverseitig. Die Career-Routen werden
+alle 15 Minuten neu validiert; neue Stellen erscheinen automatisch und deaktivierte Anzeigen
+verschwinden ohne Deployment. Der Arbeitszeit-Katalog wird für Deutsch und Englisch direkt
+von Softgarden geladen. Statische Standortzahlen bleiben entfernt. Fällt ein einzelner
+Mandant aus, werden die übrigen Ergebnisse weiter ausgespielt; nur bei einem vollständigen
+API-Ausfall greift eine lokale Notfallliste.
+
+Die Client-IDs der Frontend API v3 sind laut Softgarden öffentlich und benötigen kein Secret.
+Sie sind serverseitig hinterlegt und können bei einer Rotation optional über
+`SOFTGARDEN_BANIJAY_GERMANY_CLIENT_ID`, `SOFTGARDEN_BRAINPOOL_CLIENT_ID`,
+`SOFTGARDEN_ENDEMOLSHINE_CLIENT_ID`, `SOFTGARDEN_BANIJAY_MEDIA_CLIENT_ID` und
+`SOFTGARDEN_BANIJAY_PRODUCTIONS_CLIENT_ID` überschrieben werden.
 
 ## Stack
 
@@ -254,7 +262,7 @@ Vor dem Livegang abzuarbeiten:
 | **Company-Material vollständig** | 23 von 35 Kacheln haben eigenes Video/Foto | Restliche 12 nachliefern — die tragen sichtbar einen **Magenta-Arbeitsmarker**, der vor Livegang raus muss |
 | **Video-Ladeverhalten** | `preload="none"`, `src` erst im Viewport, alle 34 Video-Karten mit aktuellem Reel-Frame; maximal 3 parallel (Mobile 2, langsame Verbindung 1) | Auf realen Geräten weiter messen; große Hero-/Reel-Dateien bei Bedarf auf Video-CDN bzw. Adaptive Streaming umstellen |
 | **Social-Feed-Zugänge** | LinkedIn via Juicer-JSON + Instagram via Elfsight-Data-Service (beide undokumentiert/inoffiziell) | Vor Livegang gegen offizielle **Meta-/Instagram-Graph-API** + LinkedIn-API absichern; Elfsight-Endpoints können sich ändern |
-| **Softgarden-Jobimport** | Zentrales Board korrekt verlinkt; neun Stellen manuell kuratiert, keine statischen Jobzahlen | Mit Softgarden-Ansprechpartner:in offiziellen Read-only-API-Zugang oder freigegebenen Stellen-Feed klären und automatische Synchronisierung umsetzen |
+| **Softgarden-Jobimport** | Fünf Frontend-API-v3-Mandanten serverseitig aggregiert; automatische Aktualisierung alle 15 Minuten, lokalisierter Arbeitszeit-Katalog und Notfall-Fallback | Bei weiteren Banijay-Gesellschaften zusätzliche öffentliche Client-ID ergänzen; bestehende IDs bei Rotation über die dokumentierten Umgebungsvariablen austauschen |
 | **Leadership-/People-Bilder** | 13 von 13 echt; Arno Schneppenheim seit 04.08. als CCO ergänzt | Kopfgrößen und Fokuspunkte bei künftigen Neuzugängen nach der dokumentierten Beschnitt-Regel angleichen |
 | **Team-Reihenfolge** | Mittlere Reihe = Frauen, nach Vornamen einsortiert | Zuordnung gegenprüfen (siehe unten) |
 | **Bilder der externen Presse** | og:image der Quellen liegt lokal in `public/news/` | Nutzungsrecht klären (siehe unten) |

@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { CAREER_JOBS } from "@/data/careerJobs";
+import type { CareerJob } from "@/data/careerJobs";
 import { useLocale } from "@/i18n/config";
 import { copyFor } from "@/i18n/copy";
 
@@ -18,31 +18,17 @@ const META = {
   textTransform: "uppercase",
 } as const;
 
-export function AlgarveCareerJobsPreview() {
+export function AlgarveCareerJobsPreview({ jobs }: { jobs: CareerJob[] }) {
   const locale = useLocale();
   const copy = copyFor(locale);
-  // Kuratierte Vorschau: Desktop zeigt ~2/3, Mobile etwa die Hälfte der Einträge.
+  // Automatische API-Vorschau: Desktop zeigt ~2/3, Mobile etwa die Hälfte.
   // Die über den Mobile-Count hinausgehenden Zeilen werden mobil ausgeblendet.
-  const total = CAREER_JOBS.length;
+  const total = jobs.length;
   const desktopCount = Math.max(3, Math.ceil((total * 2) / 3));
   const mobileCount = Math.max(3, Math.ceil(total / 2));
-  const titleEn: Record<string, string> = {
-    "Line Producer (m/w/d)": "Line Producer (all genders)",
-    "Leiter Technisches Facility Management (m/w/d)": "Head of Technical Facility Management (all genders)",
-    "Freelancer Licht / Ton / Rigging – Veranstaltungstechnik (m/w/d)": "Freelance Lighting / Sound / Rigging Technician (all genders)",
-    "Business Unit Lead Sales & Brand Partnerships (w/m/d)": "Business Unit Lead Sales & Brand Partnerships (all genders)",
-    "Studentische Aushilfe (m/w/d) – YouTube": "Student Assistant — YouTube (all genders)",
-    "Praktikum Social Media Redaktion (w/m/d)": "Social Media Editorial Intern (all genders)",
-    "Produktionsassistenz (w/m/d)": "Production Assistant (all genders)",
-    "Redakteur (w/m/d) oder Jungredakteur (w/m/d)": "Editor or Junior Editor (all genders)",
-    "Senior Sales Manager Brand Partnerships (w/m/d)": "Senior Sales Manager Brand Partnerships (all genders)",
-  };
-  const workTimeEn: Record<string, string> = { Vollzeit: "Full-time", "Freie Mitarbeit": "Freelance", "Studentische Aushilfe": "Student assistant", Praktikum: "Internship" };
-  const jobs = CAREER_JOBS.slice(0, desktopCount).map((job) => locale === "en" ? {
+  const visibleJobs = jobs.slice(0, desktopCount).map((job) => locale === "en" ? {
     ...job,
-    title: titleEn[job.title] ?? job.title,
     location: job.location === "Köln" ? "Cologne" : job.location,
-    workTime: workTimeEn[job.workTime] ?? job.workTime,
   } : job);
   return (
     <section id="jobs" style={{ background: "transparent", paddingTop: "5.56vw", paddingBottom: "5.56vw" }}>
@@ -70,10 +56,10 @@ export function AlgarveCareerJobsPreview() {
 
         {/* Liste (gekürzt: Mobile ~halbiert via Blenden der Extra-Zeilen) */}
         <div className="flex flex-col">
-          {jobs.map((job, i) => (
+          {visibleJobs.map((job, i) => (
             <a
               key={job.url}
-              href={locale === "en" ? job.url.replace("l=de", "l=en") : job.url}
+              href={job.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={copy.career.jobAria(job.title, job.company)}

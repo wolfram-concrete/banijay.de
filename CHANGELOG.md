@@ -10,17 +10,22 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **404-Fehler behoben:** Alle Karriere-CTAs und Standort-Verlinkungen führen nicht
   mehr auf die entfernte interne Route `/offene-stellen/`, sondern auf das zentrale
   Banijay-Softgarden-Board unter `banijay.softgarden.io/de/vacancies`.
-- **Jobvorschau aktualisiert:** Die kuratierte Vorschau enthält neun am 10.08.2026
-  aktive Vakanzen mit direkten Softgarden-Detailseiten und aktualisierten deutschen
-  sowie englischen Rollenbezeichnungen.
-- **Sprachumschaltung ergänzt:** In der englischen Ansicht öffnen die direkten
-  Stellenlinks automatisch die englische Softgarden-Fassung über `l=en`.
+- **Fünf Frontend-APIs angebunden:** Die öffentlichen Softgarden-Client-IDs von
+  Banijay Germany / Banijay Germany Live, BRAINPOOL TV, EndemolShine, Banijay Media
+  und Banijay Productions werden serverseitig aggregiert. Aktuell liefert die
+  Schnittstelle zusammen 21 aktive Einträge.
+- **Automatische Aktualisierung:** Next.js validiert externe Jobkanäle, Stellenlisten
+  und den lokalisierten Arbeitszeit-Katalog alle 15 Minuten neu. Neue Stellen erscheinen
+  damit ohne Deployment; deaktivierte Anzeigen verschwinden automatisch.
+- **Ausgewogene Vorschau:** Die je Mandant nach Aktualität sortierten Ergebnisse werden
+  reihum zusammengeführt, damit die Preview nicht von einer einzelnen Gesellschaft
+  dominiert wird. Deutsche und englische Seite erhalten den passenden Softgarden-Katalog.
 - **Keine veralteten Jobzahlen:** Die bislang statisch hinterlegten Standort-Zähler
   wurden durch den eindeutigen CTA „Jobbörse öffnen“ beziehungsweise „Open job board“
   ersetzt. So zeigt die Website keine überholten Bestandszahlen mehr an.
-- **Automatisierung vorbereitet:** Die aktuelle Lösung benötigt keine Softgarden-API.
-  Für eine automatische Synchronisierung neuer und abgelaufener Stellen ist künftig
-  ein offizieller Read-only-API-Zugang oder ein freigegebener Stellen-Feed erforderlich.
+- **Ausfallsicher:** Antwortet ein einzelner Mandant temporär nicht, bleiben die übrigen
+  Stellen sichtbar. Nur bei einem vollständigen API-Ausfall greift eine lokal geprüfte
+  Notfallliste mit offiziellen `short.sg`-Links.
 
 ### „Die Höhle der Löwen“-Motiv im Iconic-IP-Slider erneuert
 

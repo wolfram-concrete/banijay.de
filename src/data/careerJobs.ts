@@ -1,6 +1,7 @@
-// Kuratierte, aktuelle Jobvorschau (Quelle: gruppenweites Softgarden-Board,
-// Stand 2026-08-10). Direkte Softgarden-Links. Die vollständige Jobbörse mit
-// Filtern liegt extern — hier nur ein diverser Ausschnitt über die Companies.
+// Notfall-Fallback für die automatisch aggregierte Softgarden-Jobvorschau.
+// Im Normalbetrieb kommen die aktiven Stellen aus src/lib/softgarden.ts und
+// werden alle 15 Minuten neu validiert. Diese Liste wird nur bei einem
+// vollständigen API-Ausfall verwendet.
 
 export type CareerJob = {
   title: string;
@@ -12,68 +13,68 @@ export type CareerJob = {
 
 export const ALL_JOBS_URL = "https://banijay.softgarden.io/de/vacancies";
 
-export const CAREER_JOBS: CareerJob[] = [
+export const FALLBACK_CAREER_JOBS: CareerJob[] = [
   {
     title: "Line Producer (m/w/d)",
-    company: "MadeFor Film",
+    company: "Banijay Germany",
     location: "Berlin",
     workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/66566288?l=de",
+    url: "https://short.sg/j/66566293",
   },
   {
     title: "Leiter Technisches Facility Management (m/w/d)",
-    company: "Brainpool",
+    company: "BRAINPOOL TV GmbH",
     location: "Köln",
     workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/64291933?l=de",
+    url: "https://short.sg/j/64291938",
   },
   {
-    title: "Freelancer Licht / Ton / Rigging – Veranstaltungstechnik (m/w/d)",
-    company: "Cape Cross",
+    title: "Logger/Redaktionsassistent (w/m/d)",
+    company: "Endemol Shine Germany",
     location: "Köln",
-    workTime: "Freie Mitarbeit",
-    url: "https://banijay.softgarden.io/job/38465579?l=de",
+    workTime: "Vollzeit",
+    url: "https://short.sg/j/65176025",
   },
   {
     title: "Business Unit Lead Sales & Brand Partnerships (w/m/d)",
     company: "Banijay Media Germany",
     location: "Köln",
     workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/64514208?l=de",
+    url: "https://short.sg/j/64514213",
   },
   {
-    title: "Studentische Aushilfe (m/w/d) – YouTube",
-    company: "Endemol Shine Germany",
+    title: "Initiativbewerbung (w/m/d)",
+    company: "Banijay Productions Germany",
     location: "Köln",
-    workTime: "Studentische Aushilfe",
-    url: "https://banijay.softgarden.io/job/66246333?l=de",
-  },
-  {
-    title: "Praktikum Social Media Redaktion (w/m/d)",
-    company: "Banijay Media Germany",
-    location: "Köln",
-    workTime: "Praktikum",
-    url: "https://banijay.softgarden.io/job/61474772?l=de",
+    workTime: "Voll- oder Teilzeit",
+    url: "https://short.sg/j/17879394",
   },
   {
     title: "Produktionsassistenz (w/m/d)",
     company: "Endemol Shine Germany",
     location: "Köln",
     workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/65803756?l=de",
-  },
-  {
-    title: "Redakteur (w/m/d) oder Jungredakteur (w/m/d)",
-    company: "Endemol Shine Germany",
-    location: "Köln",
-    workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/66472813?l=de",
+    url: "https://short.sg/j/65803761",
   },
   {
     title: "Senior Sales Manager Brand Partnerships (w/m/d)",
     company: "Banijay Media Germany",
     location: "Köln",
     workTime: "Vollzeit",
-    url: "https://banijay.softgarden.io/job/64499433?l=de",
+    url: "https://short.sg/j/64499438",
+  },
+  {
+    title: "Studentische Aushilfe (m/w/d) – YouTube",
+    company: "Endemol Shine Germany",
+    location: "Köln",
+    workTime: "Vollzeit",
+    url: "https://short.sg/j/66246353",
+  },
+  {
+    title: "Initiativbewerbung (w/m/d)",
+    company: "BRAINPOOL TV GmbH",
+    location: "Köln",
+    workTime: "Voll- oder Teilzeit",
+    url: "https://short.sg/j/42342706",
   },
 ];
