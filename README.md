@@ -46,7 +46,8 @@ Formate, gleichmäßig 11 / 11 / 11 auf gegenläufige Reihen verteilt, in Origin
 weboptimiert aus `/public/ip-brands`; mobil ergänzt eine vierte kuratierte Reihe). Seit
 05.08. gehören auch „Bad Boyfriends", „Roadtrip Australien – 3 Spitzenköche auf 4 Rädern"
 und „Undercover Boss" zum Slider. Das Motiv von „Die Höhle der Löwen" zeigt seit
-10.08. das aktuelle Ensemble als vollständig sichtbares, weboptimiertes 16:9-Visual.
+10.08. das aktuelle Ensemble als vollständig sichtbares, weboptimiertes 16:9-Visual;
+ein versionssicherer Dateiname verhindert die Auslieferung der grauen Cache-Fassung.
 In allen Fact-Boxen
 sitzt das Einheiten-„+" grundlinienbündig an der Ziffer (Wrapper mit eigener `font-size` +
 Glyph-Offset), genau wie `%`/`Mrd.`/`hrs.`. Team-Headlines

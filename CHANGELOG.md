@@ -32,6 +32,9 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Weboptimiert:** Das gelieferte 2048×1152-WebP wurde auf 996×560 px und 66 KB
   optimiert. ESLint, TypeScript, `git diff --check` und der Produktions-Build sind
   ohne Fehler durchgelaufen.
+- **Cache-sicher ausgeliefert:** Nach dem ersten Austausch hielt der Browser/CDN noch
+  die graue Vorgängerdatei unter der unveränderten URL im Cache. Der neue eindeutige
+  Dateiname `die-hohle-der-lowen-2026.webp` erzwingt nun die aktuelle Bildfassung.
 
 ## [main] — 2026-08-07
 
