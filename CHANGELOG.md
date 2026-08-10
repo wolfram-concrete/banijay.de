@@ -3,6 +3,25 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-10
+
+### Karriere-Links auf das zentrale Softgarden-Board umgestellt
+
+- **404-Fehler behoben:** Alle Karriere-CTAs und Standort-Verlinkungen führen nicht
+  mehr auf die entfernte interne Route `/offene-stellen/`, sondern auf das zentrale
+  Banijay-Softgarden-Board unter `banijay.softgarden.io/de/vacancies`.
+- **Jobvorschau aktualisiert:** Die kuratierte Vorschau enthält neun am 10.08.2026
+  aktive Vakanzen mit direkten Softgarden-Detailseiten und aktualisierten deutschen
+  sowie englischen Rollenbezeichnungen.
+- **Sprachumschaltung ergänzt:** In der englischen Ansicht öffnen die direkten
+  Stellenlinks automatisch die englische Softgarden-Fassung über `l=en`.
+- **Keine veralteten Jobzahlen:** Die bislang statisch hinterlegten Standort-Zähler
+  wurden durch den eindeutigen CTA „Jobbörse öffnen“ beziehungsweise „Open job board“
+  ersetzt. So zeigt die Website keine überholten Bestandszahlen mehr an.
+- **Automatisierung vorbereitet:** Die aktuelle Lösung benötigt keine Softgarden-API.
+  Für eine automatische Synchronisierung neuer und abgelaufener Stellen ist künftig
+  ein offizieller Read-only-API-Zugang oder ein freigegebener Stellen-Feed erforderlich.
+
 ## [main] — 2026-08-07
 
 ### Cape-Cross-Postproduction-Video aktualisiert

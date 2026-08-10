@@ -1,3 +1,5 @@
+import { ALL_JOBS_URL } from "./careerJobs";
+
 // Career-Content (nach Career-Page-Briefing, Stand 2026-07-02).
 // Kuratierte Inhalte für die Banijay-Welt als Arbeitsort — Rollenwelt,
 // Jobvorschau, Standorte, BANIJAY TOMORROW, Code of Conduct.
@@ -56,19 +58,19 @@ export const CAREER = {
   jobs: {
     headline: "Aktuelle Einstiege",
     text: "Ein Ausschnitt aus den offenen Stellen der Banijay-Companies. Die komplette Übersicht mit Filtern nach Company, Standort und Arbeitszeit liegt in der Jobbörse.",
-    cta: { text: "Alle Jobs ansehen", href: "https://banijay.de/offene-stellen/" },
+    cta: { text: "Alle Jobs ansehen", href: ALL_JOBS_URL },
   },
 
-  // Standorte + Jobzahlen (Quelle: scraped_content/career_job_cards.json,
-  // Stand 2026-07-02). Köln ist der Hauptstandort.
+  // Standorte ohne statische Jobzahlen: Die aktuellen Vakanzen und Filter liegen
+  // im gruppenweiten Softgarden-Board. Köln ist der Hauptstandort.
   locations: {
     text: "Köln ist unsere Heimat. Dazu kommen Jobs und Companies in Berlin, Münster, Wien und Zürich.",
     items: [
-      { name: "Köln", count: 27, url: "https://banijay.de/offene-stellen/?ort=Köln" },
-      { name: "Berlin", count: 0, url: "https://banijay.de/offene-stellen/?ort=Berlin" },
-      { name: "Münster", count: 0, url: "https://banijay.de/offene-stellen/?ort=Münster" },
-      { name: "Wien", count: 0, url: "https://banijay.de/offene-stellen/?ort=Wien" },
-      { name: "Zürich", count: 0, url: "https://banijay.de/offene-stellen/?ort=Zürich" },
+      { name: "Köln", url: ALL_JOBS_URL },
+      { name: "Berlin", url: ALL_JOBS_URL },
+      { name: "Münster", url: ALL_JOBS_URL },
+      { name: "Wien", url: ALL_JOBS_URL },
+      { name: "Zürich", url: ALL_JOBS_URL },
     ],
   },
 

@@ -27,17 +27,17 @@ export function AlgarveCareerJobsPreview() {
   const desktopCount = Math.max(3, Math.ceil((total * 2) / 3));
   const mobileCount = Math.max(3, Math.ceil(total / 2));
   const titleEn: Record<string, string> = {
-    "(Senior) Artist Manager (w/m/d)": "(Senior) Artist Manager (all genders)",
-    "Eventmanager (w/m/d)": "Event Manager (all genders)",
-    "Jungredakteur (w/m/d)": "Junior Editor (all genders)",
-    "Werkstudent Video Content Creation / Video Editing (w/m/d)": "Working Student — Video Content Creation / Editing (all genders)",
-    "Lead Technical Facility & Studio Service (m/w/d)": "Lead Technical Facility & Studio Service (all genders)",
+    "Line Producer (m/w/d)": "Line Producer (all genders)",
+    "Leiter Technisches Facility Management (m/w/d)": "Head of Technical Facility Management (all genders)",
     "Freelancer Licht / Ton / Rigging – Veranstaltungstechnik (m/w/d)": "Freelance Lighting / Sound / Rigging Technician (all genders)",
     "Business Unit Lead Sales & Brand Partnerships (w/m/d)": "Business Unit Lead Sales & Brand Partnerships (all genders)",
-    "Werkstudent Social Media Redaktion (w/m/d)": "Working Student — Social Media Editorial (all genders)",
-    "Ausbildung zur Fachkraft für Veranstaltungstechnik": "Apprenticeship — Event Technology Specialist",
+    "Studentische Aushilfe (m/w/d) – YouTube": "Student Assistant — YouTube (all genders)",
+    "Praktikum Social Media Redaktion (w/m/d)": "Social Media Editorial Intern (all genders)",
+    "Produktionsassistenz (w/m/d)": "Production Assistant (all genders)",
+    "Redakteur (w/m/d) oder Jungredakteur (w/m/d)": "Editor or Junior Editor (all genders)",
+    "Senior Sales Manager Brand Partnerships (w/m/d)": "Senior Sales Manager Brand Partnerships (all genders)",
   };
-  const workTimeEn: Record<string, string> = { Vollzeit: "Full-time", Werkstudent: "Working student", "Freie Mitarbeit": "Freelance", Ausbildung: "Apprenticeship" };
+  const workTimeEn: Record<string, string> = { Vollzeit: "Full-time", "Freie Mitarbeit": "Freelance", "Studentische Aushilfe": "Student assistant", Praktikum: "Internship" };
   const jobs = CAREER_JOBS.slice(0, desktopCount).map((job) => locale === "en" ? {
     ...job,
     title: titleEn[job.title] ?? job.title,
@@ -73,7 +73,7 @@ export function AlgarveCareerJobsPreview() {
           {jobs.map((job, i) => (
             <a
               key={job.url}
-              href={job.url}
+              href={locale === "en" ? job.url.replace("l=de", "l=en") : job.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={copy.career.jobAria(job.title, job.company)}

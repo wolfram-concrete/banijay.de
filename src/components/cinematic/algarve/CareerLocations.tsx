@@ -17,7 +17,8 @@ const INK = "#0e0d0b";
 const MAGENTA = "#ff4370";
 
 export function AlgarveCareerLocations() {
-  const copy = copyFor(useLocale());
+  const locale = useLocale();
+  const copy = copyFor(locale);
   const { locations } = CAREER;
   const root = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
@@ -71,7 +72,6 @@ export function AlgarveCareerLocations() {
         </p>
         <div className="flex flex-col">
           {locations.items.map((loc) => {
-            const has = loc.count > 0;
             return (
               <a
                 key={loc.name}
@@ -80,7 +80,7 @@ export function AlgarveCareerLocations() {
                 rel="noopener noreferrer"
                 aria-label={copy.career.locationAria(loc.name)}
                 className="group flex items-center justify-between no-underline max-[767px]:!py-[3vw]"
-                style={{ color: INK, paddingTop: "0.9vw", paddingBottom: "0.9vw", borderTop: "0.08vw solid rgba(14,13,11,0.18)", opacity: has ? 1 : 0.55 }}
+                style={{ color: INK, paddingTop: "0.9vw", paddingBottom: "0.9vw", borderTop: "0.08vw solid rgba(14,13,11,0.18)" }}
               >
                 <span
                   className="flex items-center uppercase max-[767px]:!text-[9vw]"
@@ -94,9 +94,9 @@ export function AlgarveCareerLocations() {
                 </span>
                 <span
                   className="shrink-0 text-right max-[767px]:!text-[3vw]"
-                  style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.052vw", textTransform: "uppercase", color: has ? INK : "rgba(14,13,11,0.6)" }}
+                  style={{ fontFamily: SHARP, fontSize: "0.9vw", fontWeight: 700, letterSpacing: "0.052vw", textTransform: "uppercase", color: INK }}
                 >
-                  {has ? copy.career.openPositions(loc.count) : copy.career.speculative}
+                  {copy.career.locationJobs}
                 </span>
               </a>
             );
