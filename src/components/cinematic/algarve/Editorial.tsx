@@ -45,7 +45,7 @@ const b = (slug: string, name: string, width: number, height = 560): Brand => ({
 const BRANDS_TOP: Brand[] = [
   b("wer-wird-millionar", "Wer wird Millionär", 384),
   b("tv-total", "TV total", 695),
-  b("die-hohle-der-lowen", "Die Höhle der Löwen", 424),
+  b("die-hohle-der-lowen", "Die Höhle der Löwen", 996),
   b("the-masked-singer", "The Masked Singer", 650),
   b("kitchen-impossible", "Kitchen Impossible", 610),
   b("schlag-den-star", "Schlag den Star", 840),

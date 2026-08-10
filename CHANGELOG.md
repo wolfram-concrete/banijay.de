@@ -22,6 +22,17 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
   Für eine automatische Synchronisierung neuer und abgelaufener Stellen ist künftig
   ein offizieller Read-only-API-Zugang oder ein freigegebener Stellen-Feed erforderlich.
 
+### „Die Höhle der Löwen“-Motiv im Iconic-IP-Slider erneuert
+
+- **Aktuelles Ensemble:** Das bisherige hochformatige Motiv wurde durch das neue
+  Gruppenvisual von „Die Höhle der Löwen“ im 16:9-Format ersetzt.
+- **Originalproportion erhalten:** Die Slider-Metadaten wurden von 424×560 auf
+  996×560 angepasst. Dadurch erscheint das breite Bild vollständig und ohne Beschnitt;
+  Reihenfolge, Animation und die übrigen 32 IP-Motive bleiben unverändert.
+- **Weboptimiert:** Das gelieferte 2048×1152-WebP wurde auf 996×560 px und 66 KB
+  optimiert. ESLint, TypeScript, `git diff --check` und der Produktions-Build sind
+  ohne Fehler durchgelaufen.
+
 ## [main] — 2026-08-07
 
 ### Cape-Cross-Postproduction-Video aktualisiert
