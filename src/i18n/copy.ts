@@ -64,7 +64,9 @@ export const SITE_COPY = {
     },
     form: {
       send: "Nachricht senden",
+      sending: "Wird gesendet …",
       success: "Danke! Deine Nachricht ist eingegangen — wir melden uns.",
+      error: "Das hat leider nicht geklappt. Bitte versuche es erneut oder schreib direkt an hello@banijay.de.",
       name: "Name",
       namePlaceholder: "Dein Name",
       company: "Unternehmen",
@@ -153,7 +155,9 @@ export const SITE_COPY = {
     },
     form: {
       send: "Send message",
+      sending: "Sending …",
       success: "Thank you! We’ve received your message and will be in touch.",
+      error: "That did not work. Please try again or email hello@banijay.de directly.",
       name: "Name",
       namePlaceholder: "Your name",
       company: "Company",

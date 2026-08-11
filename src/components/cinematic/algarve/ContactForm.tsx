@@ -32,26 +32,27 @@ const TEXTAREA = `${FIELD} h-[7vw] resize-none text-[1.39vw] max-[767px]:h-[26vw
 const LABEL =
   "uppercase font-bold tracking-[0.052vw] text-[rgba(248,247,243,0.64)] text-[1vw] leading-[100%] max-[991px]:text-[1.4vw] max-[767px]:text-[3vw]";
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
     <div className="flex w-full flex-col gap-[0.83vw] max-[767px]:gap-[2vw]">
-      <div className={LABEL}>{label}</div>
+      <label className={LABEL} htmlFor={htmlFor}>{label}</label>
       {children}
     </div>
   );
 }
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton({ label, disabled }: { label: string; disabled: boolean }) {
   const [hovered, setHovered] = useState(false);
   return (
     <button
       type="submit"
+      disabled={disabled}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       // Border als Inline-Style wie die Referenz (BANIJAY TOMORROW Login) — die
       // Klassen-Border wird sonst von einer globalen Form-Regel auf 16%-Weiss gedimmt.
       style={{ fontFamily: SHARP, border: "1px solid #f8f7f3" }}
-      className={`inline-flex cursor-pointer items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-[1.9vw] py-[0.95vw] text-[1.05vw] font-medium leading-[110%] transition-colors duration-300 max-[767px]:gap-[2vw] max-[767px]:px-[6vw] max-[767px]:py-[3vw] max-[767px]:text-[3.6vw] ${
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-[6px] border border-[#f8f7f3] px-[1.9vw] py-[0.95vw] text-[1.05vw] font-medium leading-[110%] transition-colors duration-300 disabled:cursor-wait disabled:opacity-60 max-[767px]:gap-[2vw] max-[767px]:px-[6vw] max-[767px]:py-[3vw] max-[767px]:text-[3.6vw] ${
         hovered ? "bg-[#ff4370] text-[#f8f7f3]" : "bg-transparent text-[#f8f7f3]"
       }`}
     >
@@ -95,7 +96,8 @@ export function AlgarveContactForm({
     ? topics.map((topic, index) => ({ ...topic, label: careerCopy.topics[index] ?? topic.label }))
     : topics;
   const root = useRef<HTMLElement>(null);
-  const [sent, setSent] = useState(false);
+  const fieldId = (name: string) => `career-${name}-${locale}`;
+  const [submitState, setSubmitState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   useGSAP(
     () => {
@@ -120,10 +122,37 @@ export function AlgarveContactForm({
     { scope: root },
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    e.currentTarget.reset();
+    if (context !== "career" || submitState === "sending") return;
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    setSubmitState("sending");
+
+    try {
+      const response = await fetch("/api/career-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(formData.get("name") ?? ""),
+          company: String(formData.get("company") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          phone: String(formData.get("phone") ?? ""),
+          topic: String(formData.get("topic") ?? ""),
+          message: String(formData.get("message") ?? ""),
+          locale,
+          website: String(formData.get("website") ?? ""),
+        }),
+      });
+
+      if (!response.ok) throw new Error("Career contact request failed");
+
+      form.reset();
+      setSubmitState("sent");
+    } catch {
+      setSubmitState("error");
+    }
   };
 
   return (
@@ -169,7 +198,7 @@ export function AlgarveContactForm({
                   <a className="underline underline-offset-4" href="mailto:hello@banijay.de">hello@banijay.de</a>.
                 </p>
               </div>
-            ) : sent ? (
+            ) : submitState === "sent" ? (
               <div
                 role="status"
                 className="glass-panel p-6 text-center text-[#f8f7f3] max-[767px]:p-[6vw] max-[767px]:text-[4vw]"
@@ -177,37 +206,54 @@ export function AlgarveContactForm({
                 {ui.success}
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="flex flex-col items-start gap-[2.22vw] max-[767px]:gap-[6vw]">
+              <form
+                onSubmit={onSubmit}
+                aria-busy={submitState === "sending"}
+                className="relative flex flex-col items-start gap-[2.22vw] max-[767px]:gap-[6vw]"
+              >
+                <div className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" inert>
+                  <label htmlFor={`career-website-${locale}`}>Website</label>
+                  <input
+                    id={`career-website-${locale}`}
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 {/* Reihe 1: Name + Unternehmen (Halbspalten, mobil gestapelt) */}
                 <div className="grid w-full grid-cols-2 gap-[1vw] max-[767px]:!grid-cols-1 max-[767px]:!gap-[6vw]">
-                  <Field label={ui.name}>
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Name" type="text" placeholder={ui.namePlaceholder} maxLength={256} />
+                  <Field label={ui.name} htmlFor={fieldId("name")}>
+                    <input id={fieldId("name")} className={INPUT} style={{ fontFamily: SHARP }} name="name" type="text" placeholder={ui.namePlaceholder} maxLength={120} autoComplete="name" required />
                   </Field>
-                  <Field label={ui.company}>
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Company" type="text" placeholder={ui.companyPlaceholder} maxLength={256} />
+                  <Field label={ui.company} htmlFor={fieldId("company")}>
+                    <input id={fieldId("company")} className={INPUT} style={{ fontFamily: SHARP }} name="company" type="text" placeholder={ui.companyPlaceholder} maxLength={120} autoComplete="organization" />
                   </Field>
                 </div>
 
                 {/* Reihe 2: E-Mail + Telefon (Halbspalten, mobil gestapelt) */}
                 <div className="grid w-full grid-cols-2 gap-[1vw] max-[767px]:!grid-cols-1 max-[767px]:!gap-[6vw]">
-                  <Field label={ui.email}>
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Email" type="email" placeholder={ui.emailPlaceholder} maxLength={256} required />
+                  <Field label={ui.email} htmlFor={fieldId("email")}>
+                    <input id={fieldId("email")} className={INPUT} style={{ fontFamily: SHARP }} name="email" type="email" placeholder={ui.emailPlaceholder} maxLength={254} autoComplete="email" required />
                   </Field>
-                  <Field label={ui.phone}>
-                    <input className={INPUT} style={{ fontFamily: SHARP }} name="Phone" type="tel" placeholder={ui.phonePlaceholder} maxLength={256} />
+                  <Field label={ui.phone} htmlFor={fieldId("phone")}>
+                    <input id={fieldId("phone")} className={INPUT} style={{ fontFamily: SHARP }} name="phone" type="tel" placeholder={ui.phonePlaceholder} maxLength={50} autoComplete="tel" />
                   </Field>
                 </div>
 
                 {/* Anliegen (3 Optionen) */}
-                <Field label={ui.topic}>
+                <Field label={ui.topic} htmlFor={fieldId("topic")}>
                   {/* colorScheme dark: das native Dropdown rendert dunkel statt
                       weiß-auf-weiß; Options-BG als Fallback für Browser, die
                       option-Styles erlauben. */}
                   <select
+                    id={fieldId("topic")}
                     className={`${INPUT} cursor-pointer`}
                     style={{ fontFamily: SHARP, colorScheme: "dark" }}
-                    name="Topic"
+                    name="topic"
                     defaultValue=""
+                    required
                   >
                     <option value="" style={{ background: "#1a0612", color: "#f8f7f3" }}>{ui.select}</option>
                     {localizedTopics.map((t) => (
@@ -219,13 +265,21 @@ export function AlgarveContactForm({
                 </Field>
 
                 {/* Nachricht */}
-                <Field label={ui.message}>
-                  <textarea className={TEXTAREA} style={{ fontFamily: SHARP }} name="Message" placeholder={ui.messagePlaceholder} maxLength={5000} />
+                <Field label={ui.message} htmlFor={fieldId("message")}>
+                  <textarea id={fieldId("message")} className={TEXTAREA} style={{ fontFamily: SHARP }} name="message" placeholder={ui.messagePlaceholder} maxLength={5000} required />
                 </Field>
 
                 {/* Submit */}
                 <div className="mt-[0.5vw] flex w-full flex-col items-start">
-                  <SubmitButton label={ui.send} />
+                  <SubmitButton
+                    label={submitState === "sending" ? ui.sending : ui.send}
+                    disabled={submitState === "sending"}
+                  />
+                  {submitState === "error" ? (
+                    <p role="alert" className="mt-4 text-[#f8f7f3] max-[767px]:text-[3.6vw]">
+                      {ui.error}
+                    </p>
+                  ) : null}
                 </div>
               </form>
             )}

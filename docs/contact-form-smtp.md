@@ -2,9 +2,9 @@
 
 ## Status und Umfang
 
-Der Versand-Endpunkt für das Karriereformular ist vorbereitet. Das sichtbare Formular auf
-`/career` und `/en/career` bleibt mit `available={false}` pausiert, bis die UI den hier
-dokumentierten Vertrag verwendet und die Produktionsfreigabe abgeschlossen ist.
+Der Versand-Endpunkt und die sichtbare Formular-UI auf `/career` und `/en/career` sind aktiviert.
+Die UI verwendet den hier dokumentierten Vertrag und zeigt während des Versands sowie bei Erfolg
+oder Fehler einen lokalisierten Status an.
 
 Die Anbindung gilt ausschließlich für Karriere-Anfragen. Die allgemeinen Kontaktseiten bleiben
 unverändert. Es gibt keine Anhänge, keine Bestätigungsmail an die absendende Person und keine
@@ -125,18 +125,17 @@ Kontext auf das Rate Limit umgestellt, erneut vom Owner veröffentlicht und gete
 Preview-Stufe wird die Environment-Einschränkung entfernt, das Limit für Production gestaged,
 erneut per Diff geprüft und abschließend vom Owner veröffentlicht.
 
-## Spätere Aktivierung der UI
+## UI-Anbindung
 
-Der Formularentwickler muss vor `available={true}`:
+Die aktive Career-UI:
 
-1. das bestehende Career-Formular an `POST /api/career-contact` anbinden;
-2. die Feldnamen, Pflichtfelder und Maximalwerte aus der Tabelle exakt übernehmen;
-3. ein visuell verborgenes, aber für Bots normales Feld `website` mitsenden;
-4. `locale` aus der aktuellen deutschen oder englischen Route mitsenden;
-5. Lade-, Erfolgs- und Fehlerzustände behandeln und nur bei HTTP 200 Erfolg anzeigen;
-6. keine Datei-Inputs, Autoantworten oder lokale Zwischenspeicherung ergänzen;
-7. beide Sprachen und die WAF-Rate-Limit-Antwort testen;
-8. erst danach ausschließlich auf den Career-Routen `available={true}` setzen.
+1. sendet an `POST /api/career-contact`;
+2. übernimmt Feldnamen, Pflichtfelder und Maximalwerte aus der Tabelle;
+3. sendet das visuell verborgene Honeypot-Feld `website` mit;
+4. übernimmt `locale` aus der aktuellen deutschen oder englischen Route;
+5. behandelt Lade-, Erfolgs- und Fehlerzustände und zeigt nur bei HTTP 200 Erfolg an;
+6. enthält keine Datei-Inputs, Autoantworten oder lokale Zwischenspeicherung;
+7. ist ausschließlich auf den Career-Routen aktiviert.
 
 ## Tests und Fehlerdiagnose
 
@@ -164,13 +163,13 @@ Die deutsch- und englischsprachige Datenschutzerklärung beschreibt den kurzzeit
 die Vercel Function, die SMTP-Übermittlung über den kasserver.com-Maildienst und die anschließende
 Speicherung im Empfängerpostfach.
 
-Vor Aktivierung des sichtbaren Formulars muss der verantwortliche Accountinhaber bestätigen, dass
+Der verantwortliche Accountinhaber muss bestätigen, dass
 mit ALL-INKL für den verwendeten Maildienst ein gültiger Auftragsverarbeitungsvertrag besteht. Der
 Status dieser organisatorischen Prüfung ist im Repository **offen**; technische Konfiguration allein
 ist kein Nachweis. Hinweise stellt ALL-INKL in seinen
 [Datenschutzinformationen](https://all-inkl.com/index.php?open=faq&sek=wichtig) bereit.
 
-Auch die aktualisierten Datenschutztexte müssen vor Aktivierung juristisch freigegeben werden. Sie
+Auch die aktualisierten Datenschutztexte müssen juristisch freigegeben werden. Sie
 nennen für Anfragen mit Bewerbungsbezug § 26 Abs. 1 BDSG in Verbindung mit Art. 88 DSGVO und
 unterscheiden diese von sonstigen vorvertraglichen oder allgemeinen Karriere-Anfragen.
 

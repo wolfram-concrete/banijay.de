@@ -5,7 +5,18 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [main] — 2026-08-11
 
-### Abgesicherter SMTP-Endpunkt für das pausierte Karriereformular
+### Karriereformular aktiviert
+
+- **Formular wieder sichtbar:** Das Career-Formular ist auf `/career` und `/en/career`
+  aktiviert; die allgemeinen Kontaktseiten bleiben unverändert.
+- **Echter Versandfluss:** Die vorhandene Formularoptik sendet jetzt den dokumentierten
+  JSON-Vertrag an `POST /api/career-contact`. Pflichtfelder und Maximalwerte entsprechen der
+  Servervalidierung, einschließlich des unsichtbaren Honeypot-Felds.
+- **Nutzerfeedback:** Während des Versands ist der Button gesperrt und lokalisiert beschriftet.
+  Erfolg und Fehler werden auf Deutsch beziehungsweise Englisch barrierearm ausgegeben; das
+  Formular wird erst nach erfolgreicher SMTP-Annahme zurückgesetzt.
+
+### Abgesicherter SMTP-Endpunkt für das Karriereformular
 
 - **Öffentliche API vorbereitet:** `POST /api/career-contact` validiert den festen
   Career-Feldvertrag, akzeptiert nur JSON bis 16 KiB von den beiden Produktions-Origins und

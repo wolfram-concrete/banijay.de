@@ -155,12 +155,11 @@ Stand beschreibt das Hosting über Vercel, den eingebetteten Spotify-Podcast-Pla
 HTML5-Videos, die serverseitig abgerufenen Social-Media-Inhalte sowie Softgarden. Google Maps und
 Analyse- oder Marketing-Cookies werden derzeit nicht eingesetzt.
 
-Die sichtbaren Kontaktformulare bleiben pausiert und verweisen derzeit transparent auf
-`hello@banijay.de`. Für das Karriereformular ist der serverseitige SMTP-Endpunkt
-`POST /api/career-contact` vorbereitet; die allgemeinen Kontaktseiten sind nicht daran angebunden.
-Der Endpunkt speichert keine Einsendungen bei Vercel, versendet keine Autoantwort und akzeptiert
-keine Anhänge. Aktivierung, Schnittstellenvertrag, WAF-Rollout und Datenschutz-Checkliste sind in
-der SMTP-Dokumentation beschrieben.
+Das Karriereformular auf `/career` und `/en/career` ist an den serverseitigen SMTP-Endpunkt
+`POST /api/career-contact` angebunden. Die allgemeinen Kontaktseiten bleiben unverändert und
+verweisen direkt auf `hello@banijay.de`. Der Endpunkt speichert keine Einsendungen bei Vercel,
+versendet keine Autoantwort und akzeptiert keine Anhänge. Schnittstellenvertrag, WAF-Rollout,
+Betrieb und Datenschutz-Checkliste sind in der SMTP-Dokumentation beschrieben.
 
 ### Company-Video-Poster aktualisieren
 

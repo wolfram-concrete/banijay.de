@@ -60,8 +60,8 @@ export default function DatenschutzPage() {
       <p>
         Für formelle Bewerbungen verlinkt unsere Karriereseite auf das externe
         Bewerbermanagement-System softgarden. Hinweise zur dortigen Verarbeitung im
-        Bewerbungsverfahren erhalten Sie bei softgarden. Sobald das Karriereformular dieser Website
-        freigeschaltet ist, können Sie uns darüber zusätzlich eine Anfrage ohne Anhang senden.
+        Bewerbungsverfahren erhalten Sie bei softgarden. Über das Karriereformular dieser Website
+        können Sie uns zusätzlich eine Anfrage ohne Anhang senden.
       </p>
       <p>
         Dabei verarbeiten wir Name, optional Unternehmen, E-Mail-Adresse, optional Telefonnummer,
