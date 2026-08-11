@@ -3,6 +3,18 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-12
+
+### Deutscher Erklärungstext auf der englischen 404
+
+- **404-Copy vereinheitlicht:** Die englische Fehlerseite behält ihre englische
+  Headline und Navigation, zeigt den erklärenden Absatz nun aber wie gewünscht
+  auf Deutsch: „Diese Seite existiert nicht oder wurde verschoben. Die
+  Banijay-Welt geht an anderer Stelle weiter.“
+- **End-to-End geprüft:** Der englische 404-Pfad liefert weiterhin HTTP 404,
+  bleibt ohne horizontalen Überlauf und Browserwarnungen und verlinkt korrekt
+  auf die englische Startseite, News und Careers.
+
 ## [main] — 2026-08-11
 
 ### SEO-/AEO-Basics und globale 404
