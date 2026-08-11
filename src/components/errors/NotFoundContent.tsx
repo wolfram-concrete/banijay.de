@@ -1,10 +1,23 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { localizeHref, useLocale } from "@/i18n/config";
+import {
+  localeFromPathname,
+  localizeHref,
+} from "@/i18n/config";
+
+const subscribeToHydration = () => () => undefined;
 
 export function NotFoundContent() {
-  const locale = useLocale();
+  const pathname = usePathname();
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  );
+  const locale = hydrated ? localeFromPathname(pathname) : "de";
   const isEnglish = locale === "en";
 
   return (

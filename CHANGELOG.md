@@ -21,7 +21,8 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Echte Fehlerseite:** Globale unbekannte Pfade und ungültige News-Slugs teilen
   eine gebrandete, zweisprachige 404 mit Header, Footer, hilfreichen Links,
   echtem HTTP-404 und `noindex, follow`; die englische Headline bleibt auch auf
-  schmalen Mobile-Viewports vollständig sichtbar.
+  schmalen Mobile-Viewports vollständig sichtbar und wechselt hydration-sicher
+  anhand des `/en/`-Pfads auf Englisch.
 - **Tests und Betrieb:** Automatisierte Tests decken Sitemap, Sprachalternativen,
   redaktionelle Datumsumwandlung, JSON-LD-Serialisierung und Crawler-Regeln ab.
   Ein neues Runbook dokumentiert Pflege, Release-Prüfung und die Owner-Schritte für

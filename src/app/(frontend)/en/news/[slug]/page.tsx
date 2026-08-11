@@ -21,7 +21,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const item = getEnglishNewsBySlug(slug);
-  if (!item) return { title: "News" };
+  if (!item) {
+    return {
+      title: { absolute: "404 | Banijay Germany" },
+      robots: { index: false, follow: true },
+    };
+  }
   const url = `/en/news/${slug}`;
   const image = absoluteUrl(item.img);
   return {
