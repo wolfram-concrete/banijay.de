@@ -24,7 +24,7 @@ export function NotFoundContent() {
         <p className="m-0 text-xs font-medium uppercase tracking-[0.28em] text-[#ff4370]">
           Error 404
         </p>
-        <h1 className="mt-6 text-[clamp(3.25rem,8vw,8rem)] font-normal uppercase leading-[0.92] tracking-[-0.035em] text-[#f8f7f3]">
+        <h1 className="mt-6 text-[clamp(2rem,9vw,8rem)] font-normal uppercase leading-[0.92] tracking-[-0.035em] text-[#f8f7f3] md:text-[clamp(3.25rem,8vw,8rem)]">
           {isEnglish ? "Lost in entertainment." : "Im Entertainment verirrt."}
         </h1>
         <p className="mt-7 max-w-xl text-base leading-relaxed text-[#f8f7f3]/70 md:text-lg">
