@@ -146,6 +146,19 @@ npm run lint    # ESLint
 > abbrechen. Ein grüner Dev-Server ist KEINE Garantie für einen grünen Deploy (siehe
 > Changelog 24.07.).
 
+### Rechtliche und technische Angaben
+
+Impressum und Datenschutzerklärung werden auf Deutsch und Englisch parallel gepflegt. Der aktuelle
+Stand beschreibt das Hosting über Vercel, den eingebetteten Spotify-Podcast-Player, die eigenen
+HTML5-Videos, die serverseitig abgerufenen Social-Media-Inhalte sowie Softgarden. Google Maps und
+Analyse- oder Marketing-Cookies werden derzeit nicht eingesetzt.
+
+Die Kontaktformulare sind bis zur Klärung des technischen Mailversands mit Google Workspace
+pausiert. Kontakt- und Karriereseite verweisen in dieser Zeit transparent auf
+`hello@banijay.de`; es werden keine Formulareingaben über die Website übertragen. Vor einer
+Aktivierung müssen Empfänger, SMTP-/Workspace-Anbindung, Spam-Schutz und die dazugehörigen
+Datenschutzhinweise gemeinsam aktualisiert und getestet werden.
+
 ### Company-Video-Poster aktualisieren
 
 Die Poster unter `public/company-media/posters/` stammen immer aus Sekunde 1 der

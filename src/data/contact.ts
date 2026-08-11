@@ -12,17 +12,4 @@ export const CONTACT_PAGE = {
     { title: "Career", text: "Für Bewerbungen, Jobs und Einstiegsmöglichkeiten." },
     { title: "Allgemeine Anfragen", text: "Für alles, was nicht in eine der anderen Kategorien fällt." },
   ],
-  /** Felder für das Kontaktformular-Wireframe. */
-  formFields: [
-    { name: "name", label: "Name", type: "text" },
-    { name: "email", label: "E-Mail", type: "email" },
-    { name: "topic", label: "Anliegen", type: "select", options: ["Projekt oder Partnerschaft", "Presseanfrage", "Karriere", "Allgemeine Anfrage"] },
-    { name: "message", label: "Nachricht", type: "textarea" },
-  ],
-  form: {
-    submit: "Anfrage senden",
-    success: "Danke. Deine Anfrage ist angekommen. Das passende Team meldet sich bei dir.",
-    error:
-      "Die Nachricht konnte gerade nicht gesendet werden. Bitte prüfe deine Angaben und versuche es erneut.",
-  },
 };

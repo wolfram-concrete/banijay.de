@@ -80,6 +80,7 @@ export async function CareerPageContent({
         headline={"Kein passender Job\ndabei?"}
         copy="Erzähl uns, was du mitbringst — wir freuen uns über deine Initiativbewerbung und melden uns bei dir."
         context="career"
+        available={false}
         // Career-spezifische Anliegen (Wolfram 22.07.).
         topics={[
           { value: "initiativbewerbung", label: "Initiativbewerbung" },

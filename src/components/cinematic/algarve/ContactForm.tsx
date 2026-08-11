@@ -73,6 +73,7 @@ export function AlgarveContactForm({
   copy,
   topics = DEFAULT_TOPICS,
   context,
+  available = true,
 }: {
   /** Seitenkontextbezogene Überschrift. */
   headline: string;
@@ -82,6 +83,8 @@ export function AlgarveContactForm({
   topics?: { value: string; label: string }[];
   /** Aktiviert sprachabhängige Standardtexte für den jeweiligen Seitenkontext. */
   context?: "career";
+  /** Bis zur finalen Mail-Anbindung kann das Formular transparent pausiert werden. */
+  available?: boolean;
 }) {
   const locale = useLocale();
   const ui = copyFor(locale).form;
@@ -157,7 +160,16 @@ export function AlgarveContactForm({
 
           {/* Rechts: Formular */}
           <div data-cf-fade className="w-full">
-            {sent ? (
+            {!available ? (
+              <div className="glass-panel p-6 text-[#f8f7f3] max-[767px]:p-[6vw] max-[767px]:text-[4vw]">
+                <p className="m-0 leading-relaxed">
+                  {locale === "de"
+                    ? "Das Kontaktformular wird derzeit technisch eingerichtet. Schreib uns bis dahin bitte direkt per E-Mail an "
+                    : "The contact form is currently being configured. Until then, please email us directly at "}
+                  <a className="underline underline-offset-4" href="mailto:hello@banijay.de">hello@banijay.de</a>.
+                </p>
+              </div>
+            ) : sent ? (
               <div
                 role="status"
                 className="glass-panel p-6 text-center text-[#f8f7f3] max-[767px]:p-[6vw] max-[767px]:text-[4vw]"

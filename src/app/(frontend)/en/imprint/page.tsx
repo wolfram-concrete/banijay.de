@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ImprintPage() {
   return (
-    <AlgarveLegalPage title="Imprint" updated="Information pursuant to Section 5 TMG">
+    <AlgarveLegalPage title="Imprint" updated="Information pursuant to Section 5 DDG">
       <h2>Banijay Germany GmbH</h2>
       <p>Schanzenstraße 22<br />51063 Cologne<br />Germany</p>
 
@@ -30,10 +30,6 @@ export default function ImprintPage() {
 
       <h2>Consumer dispute resolution</h2>
       <p>We are neither willing nor obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
-
-      <h2>Liability for content</h2>
-      <p>As a service provider, we are responsible for our own content on these pages in accordance with general legislation. Under Sections 8 to 10 TMG, however, we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances indicating unlawful activity.</p>
-      <p>Obligations to remove or block the use of information under general legislation remain unaffected. Liability in this respect is only possible from the time we become aware of a specific infringement. We will remove such content immediately upon becoming aware of corresponding infringements.</p>
 
       <h2>Liability for links</h2>
       <p>Our website contains links to external third-party websites whose content is beyond our control. We therefore cannot accept any liability for such external content. The respective provider or operator is always responsible for the content of linked pages. We will remove links immediately if we become aware of any legal infringement.</p>

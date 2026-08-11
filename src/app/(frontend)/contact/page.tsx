@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Section, Eyebrow } from "@/components/wireframe";
-import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
@@ -92,58 +91,15 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Formular (Logik in Phase 2) — kein Kasten, nur Linien-Felder */}
-            <form className="pt-1">
-              <div className="space-y-5">
-                {CONTACT_PAGE.formFields.map((field) => (
-                  <div key={field.name}>
-                    <label
-                      htmlFor={field.name}
-                      className="mb-1.5 block text-sm font-medium text-foreground"
-                    >
-                      {field.label}
-                    </label>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        id={field.name}
-                        name={field.name}
-                        rows={5}
-                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
-                      />
-                    ) : field.type === "select" ? (
-                      <select
-                        id={field.name}
-                        name={field.name}
-                        defaultValue=""
-                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
-                      >
-                        <option value="" disabled>
-                          Bitte wählen
-                        </option>
-                        {field.options?.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        id={field.name}
-                        name={field.name}
-                        type={field.type}
-                        className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors"
-                      />
-                    )}
-                  </div>
-                ))}
-                <Button type="button" className="w-full sm:w-auto">
-                  Anfrage senden
-                </Button>
-                <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground">
-                  Formular-Logik & Spam-Schutz folgen in der CMS-Anbindung.
-                </p>
-              </div>
-            </form>
+            <div className="border-t border-border pt-6 text-sm leading-relaxed text-muted-foreground">
+              <p>
+                Das Kontaktformular wird derzeit technisch eingerichtet. Schreib uns bis dahin bitte
+                direkt per E-Mail an{" "}
+                <a className="text-foreground underline underline-offset-4" href={`mailto:${CONTACT.email}`}>
+                  {CONTACT.email}
+                </a>.
+              </p>
+            </div>
           </div>
         </Reveal>
       </Section>

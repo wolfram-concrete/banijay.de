@@ -3,6 +3,32 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-11
+
+### Rechtstexte an den tatsächlichen Website-Stand angepasst
+
+- **Impressum aktualisiert:** Die veralteten Verweise auf das Telemediengesetz wurden
+  in der deutschen und englischen Fassung auf das DDG umgestellt. Der Abschnitt
+  „Haftung für Inhalte“ einschließlich der überholten TMG-Verweise wurde entfernt.
+- **Datenschutzerklärung technisch präzisiert:** Vercel ist als aktueller Hosting-
+  Dienstleister benannt. Google Maps und die dazugehörigen Einwilligungshinweise wurden
+  entfernt, weil keine Karte eingebunden ist. Eigene HTML5-Videos, der Spotify-iFrame,
+  die Social-Media-Datenquellen Elfsight/Juicer sowie Softgarden sind entsprechend der
+  tatsächlichen Einbindung beschrieben.
+- **Cookie-Angaben korrigiert:** Die Website setzt selbst keine Analyse- oder Marketing-
+  Cookies. Dokumentiert sind das technisch notwendige Vorschau-Cookie und die möglichen
+  Cookies beziehungsweise Speichertechniken des eingebetteten Spotify-Players. Ein
+  separates Consent-Management ist derzeit nicht eingebunden.
+- **Formulare transparent pausiert:** Die bislang nur visuell vorhandenen Kontakt- und
+  Karriereformulare werden nicht mehr als funktionsfähige Eingabemöglichkeit dargestellt.
+  Bis Empfänger, Google-Workspace-/Mail-Anbindung und Spam-Schutz geklärt sind, verweisen
+  die deutsche und englische Website direkt auf `hello@banijay.de`. Dadurch werden aktuell
+  keine Formulareingaben über die Website übertragen.
+- **Dokumentation ergänzt:** Der README hält den aktuellen Stand der Rechtstexte sowie die
+  Voraussetzungen für eine spätere Formularaktivierung fest. Nach dem geplanten Umzug von
+  Vercel auf den eigenen Server müssen Hosting-Angaben und Datenschutzerklärung erneut
+  synchron aktualisiert werden.
+
 ## [main] — 2026-08-10
 
 ### Karriere-Links auf das zentrale Softgarden-Board umgestellt

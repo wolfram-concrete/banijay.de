@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Section, Eyebrow } from "@/components/wireframe";
-import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/cinematic/Reveal";
 import { AlgarveHome } from "@/components/cinematic/AlgarveHome";
 import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageStatement";
@@ -22,13 +21,6 @@ const AREAS = [
   { title: "Careers", text: "Questions about opportunities, applications and working at Banijay." },
   { title: "General enquiries", text: "Everything else — we will make sure your message reaches the right team." },
 ];
-
-const FIELDS = [
-  { name: "name", label: "Name", type: "text" },
-  { name: "email", label: "Email", type: "email" },
-  { name: "topic", label: "Topic", type: "select", options: ["Project / format", "Press", "Careers", "Other"] },
-  { name: "message", label: "Message", type: "textarea" },
-] as const;
 
 export default function ContactPageEn() {
   return (
@@ -77,27 +69,14 @@ export default function ContactPageEn() {
               </div>
             </div>
 
-            <form className="pt-1">
-              <div className="space-y-5">
-                {FIELDS.map((field) => (
-                  <div key={field.name}>
-                    <label htmlFor={`en-${field.name}`} className="mb-1.5 block text-sm font-medium text-foreground">{field.label}</label>
-                    {field.type === "textarea" ? (
-                      <textarea id={`en-${field.name}`} name={field.name} rows={5} className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors" />
-                    ) : field.type === "select" ? (
-                      <select id={`en-${field.name}`} name={field.name} defaultValue="" className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors">
-                        <option value="" disabled>Please select</option>
-                        {field.options.map((option) => <option key={option} value={option}>{option}</option>)}
-                      </select>
-                    ) : (
-                      <input id={`en-${field.name}`} name={field.name} type={field.type} className="cf-field w-full rounded-none border-0 border-b bg-transparent pb-2.5 text-sm outline-none transition-colors" />
-                    )}
-                  </div>
-                ))}
-                <Button type="button" className="w-full sm:w-auto">Send enquiry</Button>
-                <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground">Form handling and spam protection will be added with the CMS integration.</p>
-              </div>
-            </form>
+            <div className="border-t border-border pt-6 text-sm leading-relaxed text-muted-foreground">
+              <p>
+                The contact form is currently being configured. Until then, please email us directly at{" "}
+                <a className="text-foreground underline underline-offset-4" href={`mailto:${CONTACT.email}`}>
+                  {CONTACT.email}
+                </a>.
+              </p>
+            </div>
           </div>
         </Reveal>
       </Section>
