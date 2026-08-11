@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { ChevronDown } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -158,6 +158,18 @@ const TONE = (i: number) =>
 
 const fmt = (n: number, locale: "de" | "en") => Math.round(n).toLocaleString(locale === "en" ? "en-GB" : "de-DE");
 
+const MOBILE_QUERY = "(max-width: 767px)";
+
+function subscribeToMobileQuery(onStoreChange: () => void) {
+  const query = window.matchMedia(MOBILE_QUERY);
+  query.addEventListener("change", onStoreChange);
+  return () => query.removeEventListener("change", onStoreChange);
+}
+
+function getMobileSnapshot() {
+  return window.matchMedia(MOBILE_QUERY).matches;
+}
+
 export function EditorialStickyScene() {
   const locale = useLocale();
   const facts = locale === "en" ? FACTS_EN : FACTS_DE;
@@ -165,14 +177,16 @@ export function EditorialStickyScene() {
   const stage = useRef<HTMLDivElement>(null);
   const imgWrap = useRef<HTMLDivElement>(null);
   const aside = useRef<HTMLDivElement>(null);
-  // Accordion: erste Kennzahl offen; Klick toggelt (Single-Open).
-  const [open, setOpen] = useState<number | null>(0);
-  // Mobile (Wolfram 24.07.): NICHT vorab geöffnet — der „Companies & Labels"-Balken (Fakt 0)
-  // stand mobil immer offen. Nach Mount schließen (SSR bleibt bei 0 → kein Hydration-Mismatch;
-  // die Section liegt weit unten, das Zu-Setzen passiert lange bevor man hinscrollt).
-  useEffect(() => {
-    if (window.matchMedia("(max-width: 767px)").matches) setOpen(null);
-  }, []);
+  const isMobile = useSyncExternalStore(
+    subscribeToMobileQuery,
+    getMobileSnapshot,
+    () => false,
+  );
+  // Accordion: Desktop startet mit der ersten Kennzahl, Mobile geschlossen. `undefined`
+  // bedeutet „noch keine Nutzerwahl"; so bleibt der Server-Snapshot stabil und es braucht
+  // kein synchrones setState in einem Effect. Klick toggelt weiterhin Single-Open.
+  const [selectedOpen, setOpen] = useState<number | null>();
+  const open = selectedOpen === undefined ? (isMobile ? null : 0) : selectedOpen;
 
   useGSAP(
     () => {

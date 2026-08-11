@@ -56,11 +56,32 @@ export default function DatenschutzPage() {
         gelöscht, sobald sie für die genannten Zwecke nicht mehr erforderlich sind und keine
         gesetzlichen Aufbewahrungspflichten entgegenstehen.
       </p>
-      <h3>2. Bewerbungen</h3>
+      <h3>2. Bewerbungen und Karriere-Anfragen</h3>
       <p>
-        Unsere Karriereseite verlinkt für Bewerbungen auf das externe Bewerbermanagement-System
-        softgarden. Personenbezogene Bewerbungsdaten werden nicht über diese Website übermittelt.
-        Hinweise zur Verarbeitung im Bewerbungsverfahren erhalten Sie bei softgarden.
+        Für formelle Bewerbungen verlinkt unsere Karriereseite auf das externe
+        Bewerbermanagement-System softgarden. Hinweise zur dortigen Verarbeitung im
+        Bewerbungsverfahren erhalten Sie bei softgarden. Sobald das Karriereformular dieser Website
+        freigeschaltet ist, können Sie uns darüber zusätzlich eine Anfrage ohne Anhang senden.
+      </p>
+      <p>
+        Dabei verarbeiten wir Name, optional Unternehmen, E-Mail-Adresse, optional Telefonnummer,
+        gewähltes Anliegen und Nachricht, um Ihre Anfrage zu beantworten und mögliche nächste
+        Schritte zu prüfen. Bei Anfragen mit Bewerbungsbezug ist Rechtsgrundlage § 26 Abs. 1 BDSG
+        in Verbindung mit Art. 88 DSGVO. Für andere vorvertragliche Anfragen gilt Art. 6 Abs. 1
+        lit. b DSGVO, andernfalls Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
+        Bearbeitung von Karriere-Anfragen). Einer auf Art. 6 Abs. 1 lit. f DSGVO gestützten
+        Verarbeitung können Sie jederzeit unter{" "}
+        <a href="mailto:datenschutz@banijaygermany.de">datenschutz@banijaygermany.de</a>{" "}
+        widersprechen.
+      </p>
+      <p>
+        Die Formulardaten werden kurzzeitig in einer Vercel Function verarbeitet und dort nicht
+        dauerhaft gespeichert. Anschließend werden sie per SMTP über den kasserver.com-Maildienst
+        von ALL-INKL.COM an unser Empfängerpostfach übermittelt. Empfänger sind die intern mit der
+        Anfrage befassten Stellen sowie Vercel und ALL-INKL.COM als technische Dienstleister. Die
+        Nachricht bleibt im Empfängerpostfach gespeichert, bis die Anfrage abschließend bearbeitet
+        ist; gesetzliche Aufbewahrungspflichten können eine längere Speicherung erfordern. Über das
+        Formular werden keine Dateien, Lebensläufe oder Zeugnisse übertragen.
       </p>
       <h3>3. Kontaktaufnahme</h3>
       <p>
@@ -110,10 +131,10 @@ export default function DatenschutzPage() {
       <h3>8. Stellenangebote und softgarden</h3>
       <p>
         Die auf unserer Karriereseite dargestellten Stelleninformationen werden serverseitig aus dem
-        Bewerbermanagement-System softgarden abgerufen. Eine Bewerbung und die dabei stattfindende
-        Verarbeitung personenbezogener Daten erfolgen erst nach dem Öffnen des entsprechend
-        gekennzeichneten externen Angebots bei softgarden. Dort gelten die Datenschutzhinweise des
-        Anbieters.
+        Bewerbermanagement-System softgarden abgerufen. Eine formelle Bewerbung auf ein konkretes
+        Stellenangebot und die dabei stattfindende Verarbeitung von Bewerbungsunterlagen erfolgen
+        erst nach dem Öffnen des entsprechend gekennzeichneten externen Angebots bei softgarden.
+        Dort gelten die Datenschutzhinweise des Anbieters.
       </p>
 
       <h2>§ 4 Weitergabe von Daten</h2>

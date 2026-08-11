@@ -5,6 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [main] — 2026-08-11
 
+### Abgesicherter SMTP-Endpunkt für das pausierte Karriereformular
+
+- **Öffentliche API vorbereitet:** `POST /api/career-contact` validiert den festen
+  Career-Feldvertrag, akzeptiert nur JSON bis 16 KiB von den beiden Produktions-Origins und
+  liefert definierte Statuscodes. Das sichtbare Formular bleibt weiterhin pausiert.
+- **SMTP ohne Datenspeicher:** Nachrichten werden synchron als reine Textmail per erzwungenem
+  STARTTLS auf Port 587 an den festen Empfänger übergeben. Absender und Empfänger sind
+  serverseitig gesetzt; die Besuchermail dient nur als validiertes `Reply-To`. Es gibt keine
+  Anhänge, CC/BCC, Autoantwort oder persistente Vercel-Speicherung.
+- **Missbrauchsschutz:** Strikte Feld-Allowlist, Größenlimit, Origin-Prüfung und Honeypot sind
+  im Endpunkt umgesetzt. Das zusätzliche Vercel-WAF-Rate-Limit wird kontrolliert über Log-,
+  Preview- und Production-Stufe ausgerollt.
+- **Tests und Betrieb:** Vitest deckt Validierung, Feldgrenzen, Request-Schutz, Mail-Mapping,
+  fehlende Konfiguration und SMTP-Fehler ab. Eine leere `.env.example` und die neue
+  Betriebsdokumentation beschreiben Variablen, Aktivierung, Fehlerdiagnose und Secret-Rotation.
+- **Framework-Sicherheit:** Next.js und `eslint-config-next` wurden von 16.2.9 auf den
+  bereinigten Stand 16.3.0 aktualisiert; der anschließende npm-Audit meldet keine bekannten
+  Schwachstellen mehr.
+- **Datenschutz aktualisiert:** Deutsche und englische Fassung unterscheiden künftig zwischen
+  externen Softgarden-Bewerbungen und Career-Anfragen über die Website und beschreiben Vercel,
+  den kasserver.com-Maildienst, Datenarten, Rechtsgrundlage, Empfänger und Löschung.
+
 ### Rechtstexte an den tatsächlichen Website-Stand angepasst
 
 - **Impressum aktualisiert:** Die veralteten Verweise auf das Telemediengesetz wurden

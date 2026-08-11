@@ -138,6 +138,8 @@ npm run dev     # Dev-Server (http://localhost:3000)
 npm run build   # Produktions-Build
 npm run start   # Produktions-Server
 npm run lint    # ESLint
+npm test        # Vitest-Unit-Tests
+npm run typecheck # TypeScript-Prüfung
 ```
 
 > **Vor jedem Push auf `main` (= Vercel-Production) einmal `npm run build` fahren.**
@@ -153,11 +155,12 @@ Stand beschreibt das Hosting über Vercel, den eingebetteten Spotify-Podcast-Pla
 HTML5-Videos, die serverseitig abgerufenen Social-Media-Inhalte sowie Softgarden. Google Maps und
 Analyse- oder Marketing-Cookies werden derzeit nicht eingesetzt.
 
-Die Kontaktformulare sind bis zur Klärung des technischen Mailversands mit Google Workspace
-pausiert. Kontakt- und Karriereseite verweisen in dieser Zeit transparent auf
-`hello@banijay.de`; es werden keine Formulareingaben über die Website übertragen. Vor einer
-Aktivierung müssen Empfänger, SMTP-/Workspace-Anbindung, Spam-Schutz und die dazugehörigen
-Datenschutzhinweise gemeinsam aktualisiert und getestet werden.
+Die sichtbaren Kontaktformulare bleiben pausiert und verweisen derzeit transparent auf
+`hello@banijay.de`. Für das Karriereformular ist der serverseitige SMTP-Endpunkt
+`POST /api/career-contact` vorbereitet; die allgemeinen Kontaktseiten sind nicht daran angebunden.
+Der Endpunkt speichert keine Einsendungen bei Vercel, versendet keine Autoantwort und akzeptiert
+keine Anhänge. Aktivierung, Schnittstellenvertrag, WAF-Rollout und Datenschutz-Checkliste sind in
+der SMTP-Dokumentation beschrieben.
 
 ### Company-Video-Poster aktualisieren
 
@@ -179,6 +182,7 @@ done
 
 - [Dokumentationsübersicht](docs/README.md)
 - [Wartungsmodus: Architektur und Betrieb](docs/maintenance-mode.md)
+- [Karriereformular: SMTP-Anbindung](docs/contact-form-smtp.md)
 - [Changelog](CHANGELOG.md)
 
 ## Projektstruktur

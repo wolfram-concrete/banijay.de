@@ -93,7 +93,7 @@ export default function TypeTestPage() {
 
       <header style={{ padding: "40px 48px 8px" }}>
         <h1 style={{ margin: 0, fontFamily: "monospace", fontSize: 15 }}>
-          Specimen-Vergleich — „STRATEGY. BRANDING" (Referenz 08.07.)
+          Specimen-Vergleich — „STRATEGY. BRANDING“ (Referenz 08.07.)
         </h1>
       </header>
 
