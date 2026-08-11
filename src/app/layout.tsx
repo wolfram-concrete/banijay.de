@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Anton } from "next/font/google";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 // Sharp Grotesk — Brand-Font von Banijay Germany (lokal eingebunden).
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   },
   description:
     "Banijay Germany vereint starke Companies, kreative Unternehmer:innen und bekannte Formate unter einem Dach. Unterhaltung für TV, Streaming, Digital, Live und Bühnen.",
-  metadataBase: new URL("https://banijay.de"),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

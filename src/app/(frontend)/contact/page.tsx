@@ -8,7 +8,7 @@ import { CONTACT_PAGE } from "@/data/contact";
 import { CONTACT } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: { absolute: "Kontakt | Banijay Germany" },
   description:
     "Let’s talk entertainment. Kontakt für Partner & Projekte, Presse, Career und allgemeine Anfragen an Banijay Germany.",
   alternates: {

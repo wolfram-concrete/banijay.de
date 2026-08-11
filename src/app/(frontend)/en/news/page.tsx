@@ -6,7 +6,7 @@ import { mergeFeed } from "@/data/feed";
 import { NEWS_EN } from "@/data/news.en";
 
 export const metadata: Metadata = {
-  title: "News",
+  title: { absolute: "News & Press | Banijay Germany" },
   description: "News, press releases and stories from across the Banijay world.",
   alternates: { canonical: "/en/news", languages: { de: "/news", en: "/en/news", "x-default": "/news" } },
 };

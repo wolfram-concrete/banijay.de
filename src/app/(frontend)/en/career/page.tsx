@@ -4,7 +4,7 @@ import { CareerPageContent } from "../../career/page";
 export const revalidate = 900;
 
 export const metadata: Metadata = {
-  title: "Careers",
+  title: { absolute: "Careers & Jobs | Banijay Germany" },
   description: "Work where entertainment is made. Discover roles, opportunities and development across the Banijay world, including BANIJAY TOMORROW.",
   alternates: {
     canonical: "/en/career",

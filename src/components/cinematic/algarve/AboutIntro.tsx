@@ -139,7 +139,7 @@ export function AlgarveAboutIntro({
         style={{ width: "100vw", height: "100vh", position: "sticky", top: 0 }}
       >
         <div data-intro-content className="flex w-full flex-col items-center" style={{ padding: "2vw" }}>
-          <p
+          <h1
             className="m-0 mx-auto text-center text-[#f8f7f3] max-[991px]:!max-w-[80vw] max-[767px]:!max-w-[92vw] max-[767px]:!text-[6.4vw] max-[767px]:!leading-[140%]"
             style={{ ...H4, maxWidth: "55.28vw" }}
           >
@@ -150,7 +150,7 @@ export function AlgarveAboutIntro({
                 </span>{" "}
               </span>
             ))}
-          </p>
+          </h1>
           {/* Optionaler Inhalt DIREKT unter dem Statement (Love-Brands-Ticker) */}
           {below && (
             <div className="w-full" style={{ marginTop: "clamp(2.5rem, 6vh, 5.5rem)" }}>

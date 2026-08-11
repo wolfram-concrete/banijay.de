@@ -8,6 +8,8 @@ Technische und operative Dokumentation für den Relaunch von banijay.de.
   Umschalten, Bypass, Verifikation und Rollback
 - [Karriereformular: SMTP-Anbindung](./contact-form-smtp.md) — API-Vertrag,
   Vercel-Variablen, Sicherheit, Tests, Aktivierung und Datenschutz
+- [SEO-, AEO- und GEO-Betrieb](./seo-aeo-geo.md) — Canonicals, Sitemap,
+  Crawler-Regeln, strukturierte Daten, 404 und Webmaster-Rollout
 
 ## Weitere Dokumentation
 

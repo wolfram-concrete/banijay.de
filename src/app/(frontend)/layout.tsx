@@ -3,10 +3,13 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/cinematic/SmoothScroll";
 import { MoodBackdrop } from "@/components/cinematic/algarve/MoodBackdrop";
 import { BackToTop } from "@/components/layout/BackToTop";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { SITE_JSON_LD } from "@/lib/seo";
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <JsonLd id="site-structured-data" data={SITE_JSON_LD} />
       <SmoothScroll />
       {/* V2-Mood (Task #69): globaler dunkler Backdrop hinter ALLEN Seiten —
           Basis-Farbton wandert beim Scrollen subtil durchs Brombeer-Spektrum. */}

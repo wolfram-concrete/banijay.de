@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HomePage from "../page";
 
 export const metadata: Metadata = {
-  title: "Banijay Germany — Entertainment, Companies & Talent",
+  title: { absolute: "Banijay Germany | Entertainment, Companies & Talent" },
   description: "Banijay Germany brings together leading production companies, creative entrepreneurs and outstanding entertainment brands.",
   alternates: {
     canonical: "/en",

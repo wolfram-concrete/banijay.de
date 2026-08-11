@@ -6,6 +6,8 @@ import { ArrowUpRight, Download } from "lucide-react";
 import { NEWS_EN, getEnglishNewsBySlug } from "@/data/news.en";
 import { NewsArticleBody } from "@/components/news/NewsArticleBody";
 import { NewsHeroTitle } from "@/components/news/NewsHeroTitle";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, germanDateToIso, newsPageJsonLd } from "@/lib/seo";
 
 const SHARP = "var(--font-sharp), sans-serif";
 const PAPER = "#f8f7f3";
@@ -20,12 +22,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const item = getEnglishNewsBySlug(slug);
   if (!item) return { title: "News" };
+  const url = `/en/news/${slug}`;
+  const image = absoluteUrl(item.img);
   return {
     title: item.title,
     description: item.lead,
     alternates: {
-      canonical: `/en/news/${slug}`,
+      canonical: url,
       languages: { de: `/news/${slug}`, en: `/en/news/${slug}`, "x-default": `/news/${slug}` },
+    },
+    openGraph: {
+      type: "article",
+      title: item.title,
+      description: item.lead,
+      url,
+      siteName: "Banijay Germany",
+      locale: "en_GB",
+      alternateLocale: ["de_DE"],
+      publishedTime: germanDateToIso(item.date),
+      images: [{ url: image, alt: item.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: item.title,
+      description: item.lead,
+      images: [image],
     },
   };
 }
@@ -39,6 +60,7 @@ export default async function NewsDetailPageEn({ params }: { params: Promise<{ s
 
   return (
     <div style={{ background: "transparent" }}>
+      <JsonLd id="news-article-structured-data" data={newsPageJsonLd(item, "en")} />
       <section style={{ paddingTop: "7rem", paddingBottom: "2.22vw" }}>
         <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>
           <div

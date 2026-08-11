@@ -12,7 +12,7 @@ import { ElfsightFeed } from "@/components/cinematic/ElfsightFeed";
 import { AlgarveLogoTicker } from "@/components/cinematic/algarve/LogoTicker";
 
 export const metadata: Metadata = {
-  title: "Banijay Germany",
+  title: { absolute: "Banijay Germany | Entertainment, Companies & Talente" },
   description: "Banijay Germany vereint führende Produktionsunternehmen, kreative Unternehmer:innen und bekannte Entertainment-Marken.",
   alternates: { canonical: "/", languages: { de: "/", en: "/en", "x-default": "/" } },
 };

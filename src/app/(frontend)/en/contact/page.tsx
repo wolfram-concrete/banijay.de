@@ -7,7 +7,7 @@ import { AlgarveImageStatement } from "@/components/cinematic/algarve/ImageState
 import { CONTACT } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: { absolute: "Contact | Banijay Germany" },
   description: "Talk to Banijay Germany about projects, press, careers, partnerships and general enquiries.",
   alternates: {
     canonical: "/en/contact",

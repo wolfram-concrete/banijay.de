@@ -5,6 +5,27 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [main] — 2026-08-11
 
+### SEO-/AEO-Basics und globale 404
+
+- **Kanonische Domain vereinheitlicht:** Metadata-Basis, Canonicals,
+  Sprachalternativen, Open-Graph-URLs, Sitemap und strukturierte Daten verwenden
+  durchgängig `https://www.banijay.de`.
+- **Technische Auffindbarkeit:** Eine zweisprachige Sitemap enthält ausschließlich
+  indexierbare Seiten und News-Artikel. `robots.txt` trennt Such-/User-Crawler von
+  reinen Trainingscrawlern und sperrt die API-Routen.
+- **Semantik und Snippets:** Home, Career, News und Contact besitzen in beiden
+  Sprachen genau eine layoutneutrale H1 und eindeutige Seitentitel. News-Details
+  liefern artikelbezogene Open-Graph-/Twitter-Metadaten und ISO-Daten.
+- **Strukturierte Daten:** Sichere JSON-LD-Ausgabe für `Organization`, `WebSite`,
+  `NewsArticle` und `BreadcrumbList`, jeweils auf Basis sichtbarer Inhalte.
+- **Echte Fehlerseite:** Globale unbekannte Pfade und ungültige News-Slugs teilen
+  eine gebrandete, zweisprachige 404 mit Header, Footer, hilfreichen Links,
+  echtem HTTP-404 und `noindex, follow`.
+- **Tests und Betrieb:** Automatisierte Tests decken Sitemap, Sprachalternativen,
+  redaktionelle Datumsumwandlung, JSON-LD-Serialisierung und Crawler-Regeln ab.
+  Ein neues Runbook dokumentiert Pflege, Release-Prüfung und die Owner-Schritte für
+  Google Search Console und Bing Webmaster Tools.
+
 ### Karriereformular aktiviert
 
 - **Formular wieder sichtbar:** Das Career-Formular ist auf `/career` und `/en/career`

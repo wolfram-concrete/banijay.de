@@ -21,7 +21,7 @@ import {
 export const revalidate = 900;
 
 export const metadata: Metadata = {
-  title: "Career",
+  title: { absolute: "Karriere & Jobs | Banijay Germany" },
   description:
     "Arbeite dort, wo Unterhaltung entsteht. Rollen, offene Stellen und Entwicklung in der Banijay-Welt — plus BANIJAY TOMORROW.",
   alternates: {

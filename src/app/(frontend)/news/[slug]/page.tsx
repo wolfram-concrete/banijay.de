@@ -6,6 +6,8 @@ import { ArrowUpRight, Download } from "lucide-react";
 import { NEWS, getNewsBySlug } from "@/data/news";
 import { NewsArticleBody } from "@/components/news/NewsArticleBody";
 import { NewsHeroTitle } from "@/components/news/NewsHeroTitle";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absoluteUrl, germanDateToIso, newsPageJsonLd } from "@/lib/seo";
 
 // section_blog-post (Algarve/ByQ cms-page-2, adaptiert): Hero-Bild mit Overlay +
 // Tags/Titel, darunter Content-Grid (sticky Info-Spalte + Fließtext), Divider und
@@ -34,12 +36,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const item = getNewsBySlug(slug);
   if (!item) return { title: "News" };
+  const url = `/news/${slug}`;
+  const image = absoluteUrl(item.img);
   return {
     title: item.title,
     description: item.lead,
     alternates: {
-      canonical: `/news/${slug}`,
+      canonical: url,
       languages: { de: `/news/${slug}`, en: `/en/news/${slug}`, "x-default": `/news/${slug}` },
+    },
+    openGraph: {
+      type: "article",
+      title: item.title,
+      description: item.lead,
+      url,
+      siteName: "Banijay Germany",
+      locale: "de_DE",
+      alternateLocale: ["en_GB"],
+      publishedTime: germanDateToIso(item.date),
+      images: [{ url: image, alt: item.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: item.title,
+      description: item.lead,
+      images: [image],
     },
   };
 }
@@ -54,6 +75,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div style={{ background: "transparent" }}>
+      <JsonLd id="news-article-structured-data" data={newsPageJsonLd(item, "de")} />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section style={{ paddingTop: "7rem", paddingBottom: "2.22vw" }}>
         <div className="max-[767px]:!px-[3vw]" style={{ paddingLeft: "2vw", paddingRight: "2vw" }}>

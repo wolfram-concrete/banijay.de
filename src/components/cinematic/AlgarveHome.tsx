@@ -453,7 +453,7 @@ export function AlgarveHome({
               GRÖSSER als das Home-Statement (AlgarveAboutIntro, „Das weltweit führende
               Zuhause …"). Jetzt exakt dessen Werte übernommen: 2.5vw, lh 138%,
               letterSpacing -0.104vw, maxWidth 55.28vw; mobil 6.4vw statt 7.4vw. */}
-          <p
+          <h1
             data-hero-statement
             className="max-[767px]:!text-[6.4vw] max-[767px]:!leading-[140%] max-[767px]:!max-w-[92vw]"
             style={{
@@ -491,7 +491,7 @@ export function AlgarveHome({
                 ])
               ),
             )}
-          </p>
+          </h1>
         </section>
       )}
     </div>

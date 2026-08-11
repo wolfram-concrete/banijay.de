@@ -161,6 +161,15 @@ verweisen direkt auf `hello@banijay.de`. Der Endpunkt speichert keine Einsendung
 versendet keine Autoantwort und akzeptiert keine Anhänge. Schnittstellenvertrag, WAF-Rollout,
 Betrieb und Datenschutz-Checkliste sind in der SMTP-Dokumentation beschrieben.
 
+### SEO, KI-Suche und Fehlerseiten
+
+Die kanonische Produktionsdomain ist `https://www.banijay.de`. Next.js erzeugt eine
+zweisprachige Sitemap und differenzierte Crawler-Regeln; Website-, Organisations- und
+News-Daten werden als JSON-LD ausgegeben. Unbekannte deutsche und englische URLs liefern
+eine gebrandete 404 mit echtem Fehlerstatus und `noindex`. Pflege, Verifikation und die
+Owner-Schritte für Google Search Console und Bing stehen in der
+[SEO-/AEO-/GEO-Dokumentation](docs/seo-aeo-geo.md).
+
 ### Company-Video-Poster aktualisieren
 
 Die Poster unter `public/company-media/posters/` stammen immer aus Sekunde 1 der
@@ -180,6 +189,7 @@ done
 ## Dokumentation
 
 - [Dokumentationsübersicht](docs/README.md)
+- [SEO-, AEO- und GEO-Betrieb](docs/seo-aeo-geo.md)
 - [Wartungsmodus: Architektur und Betrieb](docs/maintenance-mode.md)
 - [Karriereformular: SMTP-Anbindung](docs/contact-form-smtp.md)
 - [Changelog](CHANGELOG.md)
