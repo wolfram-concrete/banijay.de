@@ -294,7 +294,7 @@ export function AlgarveEditorial() {
             {/* kein per-Zeilen-overflow-hidden → die Ä-Punkte bleiben sichtbar;
                 der Translate wird vom overflow-clip des Panels gefasst. */}
             <span data-ed-hl-first className="block">About</span>
-            <span data-ed-hl-last className="block">Banijay</span>
+            <span data-ed-hl-last className="block">Banijay Germany</span>
           </h2>
         </div>
 

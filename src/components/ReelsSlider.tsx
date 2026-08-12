@@ -28,7 +28,7 @@ export function ReelsSlider({ reels }: { reels?: InstagramReel[] }) {
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
-            Frisch aus der Banijay-Welt
+            Frisch aus der Welt von Banijay Germany
           </p>
           <h2 className="mt-2 text-3xl font-medium tracking-tight md:text-5xl">Neueste Reels</h2>
           {hasLive && (

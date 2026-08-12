@@ -57,7 +57,7 @@ export const CAREER = {
 
   jobs: {
     headline: "Aktuelle Einstiege",
-    text: "Ein Ausschnitt aus den offenen Stellen der Banijay-Companies. Die komplette Übersicht mit Filtern nach Company, Standort und Arbeitszeit liegt in der Jobbörse.",
+    text: "Ein Ausschnitt aus den offenen Stellen der Companies von Banijay Germany. Die komplette Übersicht mit Filtern nach Company, Standort und Arbeitszeit liegt in der Jobbörse.",
     cta: { text: "Alle Jobs ansehen", href: ALL_JOBS_URL },
   },
 
@@ -91,7 +91,7 @@ export const CAREER = {
 
   codeOfConduct: {
     headline: "Wie wir zusammenarbeiten.",
-    text: "Banijay steht für kreative Eigenständigkeit, Vielfalt im Denken und Zusammenarbeit mit gemeinsamen Ambitionen.",
+    text: "Banijay Germany steht für kreative Eigenständigkeit, Vielfalt im Denken und Zusammenarbeit mit gemeinsamen Ambitionen.",
     cta: {
       text: "Code of Conduct öffnen",
       href: "https://banijay.de/assets/template/Medien/Dateien/CoC/Banijay_Code_of_Conduct_DEUTSCH_FINAL_15.12.2022_KA_extern.pdf",

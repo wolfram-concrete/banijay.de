@@ -73,7 +73,7 @@ const FACTS_DE: Fact[] = [
     // „und" → „&" (Wolfram 20.07.). Gilt NUR hier; „Mitarbeiterinnen und Mitarbeiter"
     // bleibt ausgeschrieben, das ist eine Paarformel und kein Aufzählungs-und.
     label: "Companies & Labels",
-    copy: "In Deutschland vereint die Banijay-Gruppe über 40+ Companies und Label. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live, sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media ergänzen das Portfolio.",
+    copy: "Banijay Germany vereint über 40+ Companies und Labels. Unter ihnen befinden sich viele der bekanntesten deutschen Produktionshäuser, darunter EndemolShine, Banijay Productions Germany, MadeFor oder filmpool entertainment. Auch die Live-Company Banijay Germany Live sowie die Tech-Company Cape Cross gehören zu Banijay Germany. Die Künstlermanagements SR, MTS und OGP sowie die Influencer- und Brandexperten influence.vision und die Vermarktungsagentur Banijay Media Germany ergänzen das Portfolio.",
   },
   // ENTFERNT am 24.07. (Wolfram): die Kachel „Primetime Hitrate" (Wert 90 %) — sowohl hier
   // in den About-Fakten als auch der ganze Primetime-Abschnitt auf der News-Seite.
@@ -109,7 +109,7 @@ const FACTS_DE: Fact[] = [
     value: 4500,
     suffix: " hrs.",
     label: "Entertainment",
-    copy: "Banijay Germany profitiert von der unternehmerischen Diversität und Qualität innerhalb des Verbundes und vereint eine große Breite von Entertainment-Expertise unter einem Dach. Künstler und Kreative entwickeln und produzieren jedes Jahr gemeinsam rund 4.500 Stunden Programm, darunter Bühnenshows, Live-Sendungen und Serien. Auch Online-Plattformen und Podcasts gehören zum Banijay-Kosmos.",
+    copy: "Banijay Germany profitiert von der unternehmerischen Diversität und Qualität innerhalb des Verbundes und vereint eine große Breite von Entertainment-Expertise unter einem Dach. Künstler und Kreative entwickeln und produzieren jedes Jahr gemeinsam rund 4.500 Stunden Programm, darunter Bühnenshows, Live-Sendungen und Serien. Auch Online-Plattformen und Podcasts gehören zum Kosmos von Banijay Germany.",
   },
 ];
 
@@ -118,7 +118,7 @@ const FACTS_EN: Fact[] = [
     value: 40,
     suffix: "+",
     label: "Companies & labels",
-    copy: "Banijay brings together more than 40 companies and labels in Germany, including many of the country’s best-known production houses. EndemolShine, Banijay Productions, MadeFor and filmpool entertainment sit alongside Banijay Germany Live and technology specialist Cape Cross. Artist management, influencer expertise, brand partnerships and sales complete the portfolio.",
+    copy: "Banijay Germany brings together more than 40 companies and labels, including many of the country’s best-known production houses. EndemolShine, Banijay Productions Germany, MadeFor and filmpool entertainment sit alongside Banijay Germany Live and technology specialist Cape Cross. Artist management, influencer expertise, brand partnerships and sales complete the portfolio.",
   },
   {
     value: 1500,

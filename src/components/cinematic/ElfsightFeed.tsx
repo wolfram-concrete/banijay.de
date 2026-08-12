@@ -89,7 +89,7 @@ export async function fetchElfsightPosts(limit = 12): Promise<SocialPost[]> {
 }
 
 export async function ElfsightFeed({
-  headline = "#BanijayGermany",
+  headline = "#WeAreBanijay",
   subline = "Neuigkeiten, Menschen und Momente — direkt aus unseren Kanälen.",
   dark = true,
   showText = false,

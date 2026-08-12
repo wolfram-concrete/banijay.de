@@ -14,7 +14,7 @@ export type EcoCategory = {
 
 export const ECOSYSTEM = {
   // ⚠️ Wording final via Heike (#58)
-  title: "Banijay Ökosystem",
+  title: "Banijay Germany Ökosystem",
 } as const;
 
 // Rubrizierung des Companies-Bentos (Task #61): Card-ID (companyCards.ts) →

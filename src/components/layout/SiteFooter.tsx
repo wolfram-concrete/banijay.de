@@ -14,7 +14,7 @@ import { copyFor } from "@/i18n/copy";
 const INK = "#0e0d0b";
 const ACCENT = "#ff4370"; // verbindliches Banijay-Magenta
 const PAPER = "#f8f7f3";
-const marqueeWords = ["Banijay", "Banijay", "Banijay"];
+const marqueeWords = ["Banijay Germany", "Banijay Germany", "Banijay Germany"];
 
 function IconInstagram() {
   return (

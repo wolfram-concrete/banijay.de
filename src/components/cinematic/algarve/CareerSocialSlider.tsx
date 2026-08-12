@@ -218,7 +218,7 @@ function Card({ post, showText }: { post: SocialPost; showText: boolean }) {
 export function AlgarveCareerSocialSlider({
   posts,
   headline = "#workatBanijay",
-  subline = "Einblicke, Menschen und Momente aus der Banijay-Welt — direkt aus unseren Kanälen.",
+  subline = "Einblicke, Menschen und Momente aus der Welt von Banijay Germany — direkt aus unseren Kanälen.",
   dark = true, // V2: gesamte Site ist moody-dark
   showText = true,
 }: {
@@ -236,7 +236,7 @@ export function AlgarveCareerSocialSlider({
   const locale = useLocale();
   const copy = copyFor(locale);
   const localizedSubline = locale === "en"
-    ? (headline === "#BanijayGermany" ? copy.home.socialSubline : "A look at the people, roles and moments that shape the Banijay world — straight from our channels.")
+    ? (headline === "#WeAreBanijay" ? copy.home.socialSubline : "A look at the people, roles and moments that shape Banijay Germany — straight from our channels.")
     : subline;
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);

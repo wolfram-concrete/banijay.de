@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const AREAS = [
   { title: "Projects & formats", text: "Ideas, productions, co-productions and creative partnerships." },
   { title: "Press", text: "Media enquiries, interviews, company information and press materials." },
-  { title: "Careers", text: "Questions about opportunities, applications and working at Banijay." },
+  { title: "Careers", text: "Questions about opportunities, applications and working at Banijay Germany." },
   { title: "General enquiries", text: "Everything else — we will make sure your message reaches the right team." },
 ];
 

@@ -67,6 +67,13 @@ das vollständige Motiv ohne Beschnitt. Die News-Page überblendet ihr Statement
 Career-Code-of-Conduct-Section liegt auf einer Magenta-Box, über deren Ränder driftende
 Film-Snippets ragen. Der vollständige Verlauf steht in `CHANGELOG.md`.
 
+**Markenstand 12.08.2026.** Verweise auf die deutsche Organisation werden in der
+deutsch- und englischsprachigen Website-Copy als „Banijay Germany“ geführt (unter anderem
+„About Banijay Germany“ und „Banijay Germany Ecosystem“). Offizielle Unternehmens- und
+Produktnamen bleiben unverändert. Die Social-Section der Home verwendet den offiziellen
+Marken-Hashtag `#WeAreBanijay`; die zugrunde liegenden Beiträge stammen weiterhin vom
+Instagram-Konto `@banijaygermany`.
+
 **Mobile ist kein verkleinertes Desktop.** Drei Sektionen haben auf schmalen Viewports einen
 eigenen Aufbau (per Breakpoint gegated, Desktop bleibt unberührt): Das **Ökosystem** zeigt statt
 der gepinnten Orbit-Grafik mit Chips ein symmetrisches Atom (gleich lange Bahnen, Tilts

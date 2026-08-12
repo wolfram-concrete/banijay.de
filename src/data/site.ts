@@ -12,7 +12,7 @@ export const NAV_ITEMS: NavItem[] = [
   // About-Seite ARCHIVIERT (Wolfram 21.07.): vorerst komplett aus der Seite genommen.
   // Die Route liegt als Speicher unter about/page.tsx.archived — durch Zurück-Benennen
   // in page.tsx (+ diesen Nav-Eintrag reaktivieren) jederzeit wieder online.
-  { label: "Banijay", href: "/" },
+  { label: "Banijay Germany", href: "/" },
   // { label: "About", href: "/about" },
   { label: "News", href: "/news" },
   { label: "Career", href: "/career" },

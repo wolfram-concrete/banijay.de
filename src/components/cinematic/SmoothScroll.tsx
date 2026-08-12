@@ -18,7 +18,7 @@ export function SmoothScroll() {
 
     // syncTouch (Wolfram 23.07.): Touch-Scroll läuft jetzt durch dieselbe Lenis-Smooth-
     // Pipeline wie das Mausrad. Vorher war Touch NATIV → die gepinnten Sektionen (Team-Snap,
-    // #BanijayGermany-Slider, LogoReveal-Blende) rasteten mobil unsauber ein: man überscrollte
+    // #WeAreBanijay-Slider, LogoReveal-Blende) rasteten mobil unsauber ein: man überscrollte
     // den Trigger, dann sprang der Pin zurück. Mit syncTouch verhält sich Mobile wie Desktop,
     // wo die Pins „optimal" sitzen.
     // (touchInertiaMultiplier entfernt, Wolfram 23.07.: die Option existiert in dieser

@@ -41,7 +41,7 @@ export function NotFoundContent() {
           {isEnglish ? "Lost in entertainment." : "Im Entertainment verirrt."}
         </h1>
         <p className="mt-7 max-w-xl text-base leading-relaxed text-[#f8f7f3]/70 md:text-lg">
-          Diese Seite existiert nicht oder wurde verschoben. Die Banijay-Welt geht an anderer Stelle weiter.
+          Diese Seite existiert nicht oder wurde verschoben. Die Welt von Banijay Germany geht an anderer Stelle weiter.
         </p>
         <nav
           aria-label={isEnglish ? "Helpful links" : "Hilfreiche Links"}

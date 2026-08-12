@@ -9,7 +9,7 @@ export const HOME = {
       "Ihre größte Wirkung erreicht sie erst, wenn sie Menschen verbindet, bewegt und begeistert.",
       "Wir bieten Unterhaltung, über die ganz Deutschland spricht.",
     ],
-    signature: "We are Banijay.",
+    signature: "We are Banijay Germany.",
   },
 
   /** Section 2: Hero nach Intro. */
@@ -25,14 +25,14 @@ export const HOME = {
   brands: {
     headline: "Du kennst die Formate. Jetzt lernst du die Welt dahinter kennen.",
     text:
-      "Viele Shows, Formate und Entertainment-Momente, die Menschen in Deutschland kennen, entstehen in der Banijay-Welt. Die Brands sind der Kernwert des Unternehmens und werden von eigenständigen Companies produziert, die unterschiedliche Genres, Plattformen und Zielgruppen bedienen – von Prime-Time-Shows über Reality und Factual bis Fiction, Comedy, Digital und Live.",
+      "Viele Shows, Formate und Entertainment-Momente, die Menschen in Deutschland kennen, entstehen in der Welt von Banijay Germany. Die Brands sind der Kernwert des Unternehmens und werden von eigenständigen Companies produziert, die unterschiedliche Genres, Plattformen und Zielgruppen bedienen – von Prime-Time-Shows über Reality und Factual bis Fiction, Comedy, Digital und Live.",
   },
 
   /** Section 4: Impact in Zahlen. */
   stats: {
     headline: "Entertainment mit messbarer Wirkung.",
     text:
-      "Banijay Germany steht für kreative Vielfalt, Produktionskraft und Reichweite. Hinter der Banijay-Welt stehen Companies, Labels, Teams und Formate, die täglich Entertainment für ein Millionenpublikum möglich machen.",
+      "Banijay Germany steht für kreative Vielfalt, Produktionskraft und Reichweite. Dahinter stehen Companies, Labels, Teams und Formate, die täglich Entertainment für ein Millionenpublikum möglich machen.",
   },
 
   /** Section 5: Die Banijay-Welt. */
@@ -40,14 +40,14 @@ export const HOME = {
     headline: "Eine Welt. Viele kreative Zentren.",
     text:
       "Banijay Germany ist kein einzelnes Produktionshaus, sondern ein Verbund aus eigenständigen Companies und Labels. Jede Einheit bringt ihr eigenes Profil, ihre eigene Handschrift und ihre eigene Marktnähe ein. Gemeinsam entsteht daraus ein Entertainment-Netzwerk, das Ideen entwickelt, Formate produziert, Talente begleitet und Inhalte in die Öffentlichkeit bringt.",
-    extra: "Die Stärke von Banijay liegt nicht in Gleichförmigkeit. Sie liegt in der Verbindung unterschiedlicher kreativer Spezialist:innen.",
+    extra: "Die Stärke von Banijay Germany liegt nicht in Gleichförmigkeit. Sie liegt in der Verbindung unterschiedlicher kreativer Spezialist:innen.",
   },
 
   /** Section 6: Kompetenzfelder. */
   competenceFields: {
     headline: "Von Show bis Fiction. Von TV bis Live.",
     text:
-      "Die Banijay-Welt lässt sich nicht über eine einzige Kategorie erklären. Manche Companies entwickeln große Shows, andere produzieren Fiction, betreuen Talente, bauen digitale Reichweiten auf, schaffen Live-Erlebnisse oder ermöglichen Produktionen technisch und organisatorisch.",
+      "Die Welt von Banijay Germany lässt sich nicht über eine einzige Kategorie erklären. Manche Companies entwickeln große Shows, andere produzieren Fiction, betreuen Talente, bauen digitale Reichweiten auf, schaffen Live-Erlebnisse oder ermöglichen Produktionen technisch und organisatorisch.",
     fields: [
       { title: "Show & Entertainment", claim: "Große Momente für Prime Time, Streaming und Bühne.", text: "Prime-Time, Studio, Quiz, Competition, große Publikumsformate." },
       { title: "Reality & Factual", claim: "Nah an Menschen, Geschichten und gesellschaftlichen Bewegungen.", text: "Reality, Factual Entertainment, Doku-Entertainment, Social Experiments." },

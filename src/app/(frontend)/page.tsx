@@ -90,7 +90,7 @@ export default function HomePage() {
 
       {/* Social-Feed (Wolfram 22.07.) — Instagram @banijaygermany über das von Banijay
           eingerichtete Elfsight-Widget (Token via Linda). Löst hier den Juicer-Block ab. */}
-      <ElfsightFeed headline="#BanijayGermany" />
+      <ElfsightFeed headline="#WeAreBanijay" />
 
       {/* Company-Logo-Banderole (Wolfram 23.07.) — dieselbe endlose Ticker-Banderole wie
           auf der Career-Seite, hier UNTER der Social-Section und ÜBER dem Footer: während

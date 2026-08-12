@@ -7,7 +7,7 @@ import { NEWS } from "@/data/news";
 
 export const metadata: Metadata = {
   title: { absolute: "News & Presse | Banijay Germany" },
-  description: "Neuigkeiten, Pressemeldungen und Stories aus der Banijay-Welt.",
+  description: "Neuigkeiten, Pressemeldungen und Stories aus der Welt von Banijay Germany.",
   alternates: {
     canonical: "/news",
     languages: { de: "/news", en: "/en/news", "x-default": "/news" },

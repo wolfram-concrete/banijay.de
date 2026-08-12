@@ -5,12 +5,28 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 
 ## [main] — 2026-08-12
 
+### Markenbezeichnung auf „Banijay Germany“ präzisiert
+
+- **Marketing-Copy vereinheitlicht:** Alleinstehende Verweise auf die deutsche
+  Organisation wurden in der deutsch- und englischsprachigen Seiten-Copy auf
+  „Banijay Germany“ präzisiert. Das betrifft unter anderem Home, Career, News,
+  Kontakt, Footer, 404 und die zugehörigen Metadaten.
+- **Zwischenheadlines angepasst:** „About Banijay“ heißt nun „About Banijay Germany“;
+  das Ökosystem wird als „Banijay Germany Ökosystem“ beziehungsweise „Banijay Germany
+  Ecosystem“ bezeichnet.
+- **Eigennamen bewahrt:** Offizielle Namen und Marken wie Banijay Entertainment,
+  Banijay Productions Germany, Banijay Media Germany, BANIJAY TOMORROW, Doc.Banijay
+  und redaktionelle Presseartikel bleiben unverändert.
+- **Offizieller Social-Hashtag:** Die Home-Social-Section trägt nun `#WeAreBanijay`
+  statt `#BanijayGermany` und folgt damit dem wiederkehrenden Marken-Hashtag der
+  offiziellen Banijay-Kanäle.
+
 ### Deutscher Erklärungstext auf der englischen 404
 
 - **404-Copy vereinheitlicht:** Die englische Fehlerseite behält ihre englische
   Headline und Navigation, zeigt den erklärenden Absatz nun aber wie gewünscht
   auf Deutsch: „Diese Seite existiert nicht oder wurde verschoben. Die
-  Banijay-Welt geht an anderer Stelle weiter.“
+  Welt von Banijay Germany geht an anderer Stelle weiter.“
 - **End-to-End geprüft:** Der englische 404-Pfad liefert weiterhin HTTP 404,
   bleibt ohne horizontalen Überlauf und Browserwarnungen und verlinkt korrekt
   auf die englische Startseite, News und Careers.

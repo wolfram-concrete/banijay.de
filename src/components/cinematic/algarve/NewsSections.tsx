@@ -44,8 +44,8 @@ type Block = {
 // (die Beiträge liegen weiter in den Daten unter category „Primetime", werden hier
 // aber nicht mehr als eigener Block ausgespielt).
 const BLOECKE: Block[] = [
-  { rubrik: "Presse", label: "Presse", note: "Meldungen aus der Banijay-Welt.", ratio: "4 / 3" },
-  { rubrik: "Podcast", label: "Podcast", note: "WOLTER TALKS — der Banijay-Podcast.", ratio: "4 / 3" },
+  { rubrik: "Presse", label: "Presse", note: "Meldungen aus der Welt von Banijay Germany.", ratio: "4 / 3" },
+  { rubrik: "Podcast", label: "Podcast", note: "WOLTER TALKS — der Podcast von Banijay Germany.", ratio: "4 / 3" },
   { rubrik: "Marcus Wolter", label: "Marcus Wolter", note: "Interviews und Auftritte in externen Medien.", ratio: "4 / 3" },
   { rubrik: "Social", label: "Social", note: "Direkt aus unseren Kanälen.", ratio: "4 / 5" },
 ];
