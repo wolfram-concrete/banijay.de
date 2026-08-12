@@ -20,6 +20,8 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Offizieller Social-Hashtag:** Die Home-Social-Section trägt nun `#WeAreBanijay`
   statt `#BanijayGermany` und folgt damit dem wiederkehrenden Marken-Hashtag der
   offiziellen Banijay-Kanäle.
+- **Career-Claim bewahrt:** Die großformatige Code-of-Conduct-Zwischenheadline bleibt
+  als globaler Markenclaim „WE ARE BANIJAY“ ohne den Zusatz „Germany“ bestehen.
 
 ### Deutscher Erklärungstext auf der englischen 404
 

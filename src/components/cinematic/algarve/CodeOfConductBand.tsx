@@ -37,7 +37,7 @@ const H4 = {
 // 7vw / 132 % / zentriert / uppercase, mobil 13vw. Wolfram 16.07. — vorher stand der
 // Claim in 22vw (Footer-Marquee-Klasse) und war damit zu dominant.
 // Bleibt zweizeilig: in einer Zeile stünde er auch bei 7vw randlos gedrängt.
-const CLAIM_LINES = ["We are", "Banijay Germany"] as const;
+const CLAIM_LINES = ["We are", "Banijay"] as const;
 const CLAIM_STYLE = {
   fontFamily: SHARP,
   fontSize: "7vw",

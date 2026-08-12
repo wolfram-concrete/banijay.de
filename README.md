@@ -72,7 +72,8 @@ deutsch- und englischsprachigen Website-Copy als „Banijay Germany“ geführt 
 „About Banijay Germany“ und „Banijay Germany Ecosystem“). Offizielle Unternehmens- und
 Produktnamen bleiben unverändert. Die Social-Section der Home verwendet den offiziellen
 Marken-Hashtag `#WeAreBanijay`; die zugrunde liegenden Beiträge stammen weiterhin vom
-Instagram-Konto `@banijaygermany`.
+Instagram-Konto `@banijaygermany`. Der globale Markenclaim in der Career-Code-of-Conduct-
+Section bleibt davon ausgenommen und lautet weiterhin „WE ARE BANIJAY“.
 
 **Mobile ist kein verkleinertes Desktop.** Drei Sektionen haben auf schmalen Viewports einen
 eigenen Aufbau (per Breakpoint gegated, Desktop bleibt unberührt): Das **Ökosystem** zeigt statt
