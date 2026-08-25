@@ -46,6 +46,7 @@ export async function CareerPageContent({
       <AlgarveHome
         variant="companies"
         frame3="/hero-v2/frame-3-career.webp"
+        entryAnimation="direct"
         statementKey="career"
       />
 

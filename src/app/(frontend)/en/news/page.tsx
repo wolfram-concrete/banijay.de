@@ -17,7 +17,7 @@ export default async function NewsPageEn() {
 
   return (
     <>
-      <AlgarveHome variant="companies" frame3="/hero-v2/frame-3-news.webp" statementKey="news" parallaxExit />
+      <AlgarveHome variant="companies" frame3="/hero-v2/frame-3-news.webp" entryAnimation="direct" statementKey="news" parallaxExit />
       <section className="py-20 lg:py-28" style={{ background: "transparent" }}>
         <div className="mx-auto w-full px-6 max-[767px]:!px-6 lg:px-[2.5vw]" style={{ maxWidth: "1840px" }}>
           <NewsSections items={feed} />

@@ -3,6 +3,26 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-08-25
+
+### Hero-Visuals erneuert und Unterseiten-Einstieg vereinfacht
+
+- **Neue Hero-Motive:** Die Desktop- und Mobile-Visuals für Home, News und Career
+  wurden durch die neuen kundenseitigen Motive ersetzt und aus den JPEG-Mastern
+  als optimierte WebP-Dateien exportiert.
+- **Home-Sequenz bewahrt:** Auf der Startseite bleibt die bestehende Abfolge aus
+  „Licht aus“, „Licht an“ und finalem Typo-Visual einschließlich ihrer Animation
+  unverändert erhalten.
+- **News und Career starten direkt:** Die Unterseiten zeigen beim Einstieg sofort
+  das helle Grundmotiv; nur das jeweilige News- beziehungsweise Career-Typo-Visual
+  blendet darüber ein. Das dunkle erste Home-Frame wird dort weder gerendert noch
+  geladen.
+- **Responsive Fassungen:** Alle sechs Motive liegen weiterhin getrennt für Desktop
+  und Mobile vor. Die Mobile-Dateien sind auf 1400 px Breite begrenzt, um den
+  Decode-Speicher auf schmalen Geräten kontrolliert zu halten.
+- **Verifiziert:** Home-, News- und Career-Hero wurden in Desktop- und Mobile-Preview
+  geprüft; TypeScript, ESLint und Produktions-Build laufen fehlerfrei durch.
+
 ## [main] — 2026-08-12
 
 ### Markenbezeichnung auf „Banijay Germany“ präzisiert

@@ -76,6 +76,7 @@ export function AlgarveHome({
   statement,
   statementKey,
   frame3 = "/hero-v2/frame-3.webp",
+  entryAnimation = "sequence",
   parallaxExit = false,
 }: {
   /** "home" = Magenta-Übergangszone; "companies" = dunkler moody Staub + Statement */
@@ -86,6 +87,9 @@ export function AlgarveHome({
   statementKey?: "career" | "news";
   /** Frame 3 (Typo-Bild) — je Seite passend, z. B. „/hero-v2/frame-3-career.webp" */
   frame3?: string;
+  /** Home spielt Licht aus → Licht an → Typo. News/Career starten direkt mit
+   *  dem hellen Grundmotiv; nur ihr finales Typo-Visual blendet darüber ein. */
+  entryAnimation?: "sequence" | "direct";
   /** News-Page: das Statement driftet beim Verlassen als Parallax nach unten (lag)
    *  → weicher, tiefengestaffelter Übergang in den darunterliegenden News-Feed. */
   parallaxExit?: boolean;
@@ -93,6 +97,7 @@ export function AlgarveHome({
   const copy = copyFor(useLocale());
   const localizedStatement = statementKey === "career" ? copy.career.statement : statementKey === "news" ? copy.news.statement : statement;
   const dark = variant === "companies";
+  const directEntry = entryAnimation === "direct";
   const root = useRef<HTMLDivElement>(null);
   const heroImg = useRef<HTMLImageElement>(null); // Frame 1 (dunkel)
   const heroImgB = useRef<HTMLImageElement>(null); // Frame 2 (wird lebendig)
@@ -103,13 +108,27 @@ export function AlgarveHome({
   // beim Scrollen (Section-Radius + Zirkel-Kontur).
   const curveP = useRef(0);
 
-  // 3-FRAME-EINBLEND-ANIMATION (Wolfram 14.07.): nach der Intro spielt der Hero
-  // eine kurze Sequenz — ① dunkler Screen blendet weich auf (langsam heller),
-  // ② Frame 2 blendet transparent → klar ein (wird lebendig, leuchtet mehr),
-  // ③ Frame 3 blendet ein und bringt die Font „We Are Banijay" in den Hintergrund.
+  // HOME: 3-FRAME-EINBLEND-ANIMATION (Wolfram 14.07.): nach der Intro spielt der
+  // Hero ① dunkel → ② Licht an → ③ Typo. NEWS/CAREER (Wolfram 24.08.) starten
+  // dagegen direkt auf Frame 2; dort blendet ausschließlich Frame 3 mit dem
+  // Seitentitel ein. Dadurch gibt es auf den Unterseiten keine Wiederholung der
+  // Home-Lichtsequenz und Frame 1 wird dort gar nicht geladen.
   useEffect(() => {
-    const f1 = heroImg.current, f2 = heroImgB.current, f3 = heroImg3.current;
-    if (!f1 || !f2 || !f3) return;
+    const f2 = heroImgB.current, f3 = heroImg3.current;
+    if (!f2 || !f3) return;
+
+    if (directEntry) {
+      gsap.set(f2, { opacity: 1 });
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set(f3, { opacity: 1 });
+      } else {
+        gsap.to(f3, { opacity: 1, duration: 1.15, delay: 0.08, ease: "sine.inOut" });
+      }
+      return () => gsap.killTweensOf([f2, f3]);
+    }
+
+    const f1 = heroImg.current;
+    if (!f1) return;
     let played = false;
     const play = () => {
       if (played) return;
@@ -144,7 +163,7 @@ export function AlgarveHome({
       window.clearTimeout(soft);
       window.clearTimeout(fallback);
     };
-  }, []);
+  }, [directEntry]);
 
   useGSAP(
     () => {
@@ -176,8 +195,11 @@ export function AlgarveHome({
           onUpdate: (self) => applyCurve(self.progress),
         });
         // Ruhiges „Atmen": beide Visuals zoomen langsam (behält Leben ohne Linse).
+        const breathingVisuals = [heroImg.current, heroImgB.current, heroImg3.current].filter(
+          (visual): visual is HTMLImageElement => visual !== null,
+        );
         gsap.fromTo(
-          [heroImg.current, heroImgB.current, heroImg3.current],
+          breathingVisuals,
           { scale: 1.06 },
           { scale: 1.14, duration: 26, ease: "sine.inOut", yoyo: true, repeat: -1 },
         );
@@ -309,9 +331,9 @@ export function AlgarveHome({
           <DustLayer boost={0.8} center={{ x: 0.5, y: 0.62 }} radius={0.85} />
         </div>
 
-        {/* 3-FRAME-VISUAL (Wolfram 14.07.): Frame 1 dunkel (Base, blendet weich auf),
-            Frame 2 „wird lebendig", Frame 3 mit der Font „We Are Banijay" — blenden
-            per Sequenz (useEffect) transparent → klar übereinander.
+        {/* HOME: Frame 1 dunkel, Frame 2 „wird lebendig", Frame 3 mit Typo — per
+            Sequenz übereinander. NEWS/CAREER: Frame 2 steht sofort; nur das jeweilige
+            Frame 3 mit Seitentitel blendet ein. Frame 1 wird dort nicht gerendert.
 
             MOBILE-MOTIVE (Wolfram 17.07.): Auf schmalen Viewports laufen eigene, im
             HOCHFORMAT gesetzte Fassungen (0.75 statt 1.35) — das sind neu gesetzte
@@ -322,19 +344,21 @@ export function AlgarveHome({
             Blend-Sequenz sind damit unberührt. `contents` am <picture>, damit der Wrapper
             keine eigene Box erzeugt und die absolute Positionierung der <img> exakt so
             aufgeht wie vorher. */}
-        <picture className="contents">
-          <source media={MOBILE_MQ} srcSet="/hero-v2/frame-1-mobile.webp" />
-          <img
-            ref={heroImg}
-            src="/hero-v2/frame-1.webp"
-            alt=""
-            draggable={false}
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-            // Startet UNSICHTBAR (Wolfram 15.07.): der Hero baut sich erst auf, wenn der
-            // Preloader komplett weg ist — vorher keine sichtbare Veränderung, kein Flackern.
-            style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
-          />
-        </picture>
+        {!directEntry && (
+          <picture className="contents">
+            <source media={MOBILE_MQ} srcSet="/hero-v2/frame-1-mobile.webp" />
+            <img
+              ref={heroImg}
+              src="/hero-v2/frame-1.webp"
+              alt=""
+              draggable={false}
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+              // Startet UNSICHTBAR (Wolfram 15.07.): der Hero baut sich erst auf, wenn der
+              // Preloader komplett weg ist — vorher keine sichtbare Veränderung, kein Flackern.
+              style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+            />
+          </picture>
+        )}
         <picture className="contents">
           <source media={MOBILE_MQ} srcSet="/hero-v2/frame-2-mobile.webp" />
           <img
@@ -343,7 +367,7 @@ export function AlgarveHome({
             alt=""
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-            style={{ zIndex: 0, opacity: 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
+            style={{ zIndex: 0, opacity: directEntry ? 1 : 0, filter: "saturate(1.04)", transform: "scale(1.06)", objectPosition: "50% 50%" }}
           />
         </picture>
         <picture className="contents">

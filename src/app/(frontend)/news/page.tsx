@@ -26,6 +26,7 @@ export default async function NewsPage() {
       <AlgarveHome
         variant="companies"
         frame3="/hero-v2/frame-3-news.webp"
+        entryAnimation="direct"
         statementKey="news"
         parallaxExit
       />

@@ -13,11 +13,14 @@ Sticky-Nav, Bildcontainer nutzen native Seitenverhältnisse und Fokuspunkte. Das
 News-Grid ist ein CSS-Grid-Masonry mit nativen Thumbnail-Proportionen + Feature-Karten
 (2 Spalten) und berechneten Row-Spans. Scroll-getriebene Zähler laufen über
 ScrollTrigger (nicht IntersectionObserver), damit sie exakt beim Sichtbarwerden starten.
-Alle Subpages (Career/News/Contact) teilen sich denselben **Home-Hero**
-(`AlgarveHome`): die „We Are Banijay"-Frame-Sequenz + auffächernde Satellitenringe auf
-dunklem Sternenstaub, darunter das seiteneigene Statement mittelachsig. Frame 3 ist je
-Seite passend (`/hero-v2/frame-3-<page>.webp`, z. B. „ABOUT"/„CAREER"; alle Hero-Motive
-sind kundenseitig komprimierte WebP). Ein globaler
+Home und Subpages teilen sich dieselbe **Hero-Bühne** (`AlgarveHome`) mit auffächernden
+Satellitenringen auf dunklem Sternenstaub und dem seiteneigenen Statement darunter. Nur
+die Home spielt die vollständige Drei-Frame-Sequenz „Licht aus“ → „Licht an“ →
+„We Are Banijay“. News und Career starten direkt auf dem hellen Grundmotiv und blenden
+nur ihr finales Typo-Visual ein; das dunkle erste Frame wird auf diesen Unterseiten nicht
+geladen. Frame 3 ist je Seite passend (`/hero-v2/frame-3-<page>.webp`, z. B. „NEWS“ oder
+„CAREER“). Alle Hero-Motive liegen als getrennte, weboptimierte Desktop- und Mobile-WebPs
+vor. Ein globaler
 `MoodBackdrop` mit ambient Sternenstaub liegt fix hinter allen Seiten.
 
 **Redesign V2 (Branch `redesign-v2`):** die Site ist auf einen durchgehenden dark/moody
