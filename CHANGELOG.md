@@ -3,6 +3,27 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-09-01
+
+### Dynamic-Ally-Company-Reel erneuert
+
+- **Heroanimation als eigenes Reel:** Die Dynamic-Ally-Pictures-Kachel verwendet nun
+  die Logo-/Gradient-Sequenz aus dem Hero der offiziellen Dynamic-Ally-Website statt
+  des zuvor automatisch zugeordneten generischen Company-Reels.
+- **Ruckelfreier 60-fps-Loop:** Die achtsekündige Sequenz wurde aus der originalen
+  SVG-Logomaske, dem originalen Schriftzug und den tatsächlich wirksamen CSS-Keyframes
+  in 480 gleichmäßig berechneten Frames neu gerendert. Der Endzustand führt ohne
+  sichtbaren Sprung in den Startzustand zurück.
+- **Sauberer Website-Ausschnitt:** Das Reel enthält ausschließlich die zentrale
+  Heroanimation auf schwarzem Grund; Website-Logo, Navigation und Menü-Icon sind nicht
+  Bestandteil des Videos. Ausgabe: H.264, 960 × 540 px, 60 fps, stumm und Fast-Start.
+- **Poster und Cache aktualisiert:** Das gleichnamige Poster wurde aus dem neuen Loop
+  erzeugt. Eine neue Asset-Version in der Reel-Zuordnung verhindert, dass Browser noch
+  die vorherige Bildschirmaufnahme aus dem Cache zeigen.
+- **Verifiziert:** Der neue Medienpfad liefert lokal HTTP 200; Dauer, Auflösung,
+  Bildrate, Pixelformat und fehlende Tonspur wurden mit ffprobe geprüft. TypeScript,
+  ESLint und Produktions-Build laufen ohne Fehler durch.
+
 ## [main] — 2026-08-25
 
 ### Hero-Visuals erneuert und Unterseiten-Einstieg vereinfacht

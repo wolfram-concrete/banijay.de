@@ -245,6 +245,10 @@ REEL["filmpool-fiction"] = "/company-media/filmpool-fiction.mp4";
 REEL["south-and-browse"] = "/company-media/south-and-browse.mp4";
 REEL["good-humor"] = "/company-media/good-humor.mp4";
 REEL["madefor"] = "/company-media/madefor.mp4";
+// Dynamic Ally Pictures (Wolfram 01.09.): Die achtsekündige Hero-Logoanimation wurde
+// aus der originalen Maske und den originalen CSS-Keyframes in echten 60 fps neu
+// gerendert. 960×540, stumm, ohne Website-Logo/Navigation und nahtlos geloopt.
+REEL["dynamic-ally-pictures"] = "/company-media/dynamic-ally-pictures.mp4?v=2";
 REEL["cape-cross"] = "/company-media/cape-cross.mp4";
 REEL["filmpool-entertainment"] = "/company-media/filmpool-entertainment.mp4";
 REEL["rainer-laux-productions"] = "/company-media/rainer-laux-productions.mp4";
@@ -342,9 +346,9 @@ const STILL: Record<string, { src: string; alt: string; objectPosition: string }
 const hasOwnMedia = (id: string) =>
   !!STILL[id] || !/^\/company-media\/reel-\d+\.mp4$/.test(REEL[id] ?? "");
 
-// KEIN MARKER (Wolfram 21.07.): Bei diesen Companies wird der Magenta-Arbeitsmarker NICHT
-// gezeigt, auch wenn (noch) kein eigenes Bewegtbild vorliegt.
-const NO_MARKER = new Set<string>(["dynamic-ally-pictures"]);
+// KEIN MARKER: Ausnahmen für Companies, die trotz fehlendem Eigenmaterial keinen
+// Magenta-Arbeitsmarker bekommen sollen. Aktuell sind keine Ausnahmen erforderlich.
+const NO_MARKER = new Set<string>();
 
 export function AlgarveCompaniesBento() {
   const copy = copyFor(useLocale());

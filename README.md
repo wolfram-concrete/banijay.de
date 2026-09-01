@@ -109,6 +109,13 @@ Cape Cross Postproduction nutzen denselben Imagefilm, aber zwei getrennte, jewei
 lange Sequenzen: Entertainment zeigt die Arena ab 29,6 s, Postproduction die spätere
 Backstage- und Kameratechnik-Passage ab 40,0 s. Details im Changelog.
 
+Dynamic Ally Pictures besitzt seit 01.09. ein eigenes, achtsekündiges Company-Reel:
+Die zentrale Logo-/Gradient-Animation wurde aus der originalen SVG-Maske und den
+CSS-Keyframes der offiziellen Website deterministisch mit 60 fps gerendert. Der Clip
+ist 960 × 540 px groß, stumm und nahtlos geloopt; Website-Logo und Navigation wurden
+nicht übernommen. Das zugehörige Ladeposter liegt wie gewohnt unter
+`public/company-media/posters/dynamic-ally-pictures.jpg`.
+
 **Redaktioneller Stand 04.08.2026.** Die aktuelle Pressemitteilung zur neuen
 Führungsmannschaft nach dem All3Media-Merger ist auf Home und News-Page sowie als deutsche
 Volltext- und englische Kurzfassung hinterlegt. Ihr breites Gruppenmotiv wird nativ in 40:17
