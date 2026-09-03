@@ -21,6 +21,8 @@ Request
        │
        ├─ gültiger ?preview=<TOKEN> ─────────────────► Cookie setzen, Redirect
        │
+       ├─ Supplier-Code-Vertragslink/PDF ────────────► PDF direkt ausliefern
+       │
        ├─ maintenance != true / Edge Config fehlt ───► reguläre Website
        │
        ├─ gültiges Bypass-Cookie ────────────────────► reguläre Website
@@ -100,6 +102,10 @@ Für reine Flag-Änderungen ist kein Redeploy nötig.
   Zwischenspeicherung der Wartungsantwort.
 - `/wartung` selbst wird nicht erneut umgeschrieben und kann direkt geöffnet
   werden.
+- Die vertraglich verwendeten URLs `/supplier_code_of_conduct_DE` und
+  `/supplier_code_of_conduct_EN` sowie ihre direkten PDF-Ziele unter `/downloads/`
+  bleiben erreichbar. So funktionieren bereits versendete Vertragslinks auch
+  während einer Wartungsphase.
 - `_next/static`, `_next/image`, `favicon.ico`, `/brand/` und `/fonts/` bleiben
   erreichbar, damit CSS, Fonts und Logo geladen werden können.
 

@@ -179,6 +179,21 @@ verweisen direkt auf `hello@banijay.de`. Der Endpunkt speichert keine Einsendung
 versendet keine Autoantwort und akzeptiert keine Anhänge. Schnittstellenvertrag, WAF-Rollout,
 Betrieb und Datenschutz-Checkliste sind in der SMTP-Dokumentation beschrieben.
 
+### Vertragliche Supplier-Code-URLs
+
+Die in bestehenden Lieferantenverträgen verwendeten Adressen
+`/supplier_code_of_conduct_DE` und `/supplier_code_of_conduct_EN` sind dauerhafte,
+extensionlose Dokumenten-URLs. Next.js schreibt sie intern auf die unveränderten
+deutschen beziehungsweise englischen PDFs unter `public/downloads/` um und zeigt
+die Dateien direkt im Browser an; eine gestaltete Zwischenseite gibt es bewusst
+nicht. Beide Vertrags-URLs und ihre direkten PDF-Ziele bleiben auch im
+Wartungsmodus erreichbar.
+
+Beim Austausch eines Dokuments müssen Datei und zugehöriger SHA-256-Wert in
+`src/lib/supplier-code-documents.ts` gemeinsam aktualisiert werden. Der Test schützt
+damit sowohl die exakten Vertragsadressen als auch die freigegebenen PDF-Dateien
+gegen unbeabsichtigte Änderungen.
+
 ### SEO, KI-Suche und Fehlerseiten
 
 Die kanonische Produktionsdomain ist `https://www.banijay.de`. Next.js erzeugt eine

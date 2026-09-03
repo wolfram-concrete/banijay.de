@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { get } from "@vercel/edge-config";
+import { isSupplierCodeDocumentPath } from "@/lib/supplier-code-documents";
 
 /*
   ──────────────────────────────────────────────────────────────────────────
@@ -64,6 +65,10 @@ export async function proxy(request: NextRequest) {
     });
     return response;
   }
+
+  // Diese beiden Vertragslinks stehen in bestehenden Dokumenten und müssen
+  // deshalb auch während einer Wartungsphase dauerhaft erreichbar bleiben.
+  if (isSupplierCodeDocumentPath(pathname)) return NextResponse.next();
 
   if (!(await isMaintenanceOn())) return NextResponse.next();
 

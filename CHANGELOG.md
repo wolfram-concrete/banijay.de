@@ -3,6 +3,23 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-09-03
+
+### Supplier Code of Conduct unter den Vertrags-URLs bereitgestellt
+
+- **Bestehende Links wiederhergestellt:** Die in Lieferantenverträgen verwendeten
+  Pfade `/supplier_code_of_conduct_DE` und `/supplier_code_of_conduct_EN` liefern
+  wieder direkt die deutsche beziehungsweise englische PDF-Fassung aus.
+- **Ohne zusätzliche Deep Page:** Interne Rewrites behalten die sichtbaren
+  Vertrags-URLs bei und zeigen die Dokumente inline im Browser an.
+- **Freigegebene Originale geschützt:** Beide PDFs wurden bytegenau übernommen;
+  SHA-256-Prüfungen sichern die hinterlegten Fassungen gegen unbeabsichtigte
+  Änderungen ab.
+- **Auch während Wartung verfügbar:** Vertragslinks und direkte PDF-Ziele sind vom
+  Wartungs-Rewrite ausgenommen, damit externe Empfänger jederzeit zugreifen können.
+- **Saubere Dokumentantworten:** PDF-Typ, Sprache, Inline-Dateiname und
+  `nosniff`-Header sind für beide Sprachen explizit gesetzt.
+
 ## [main] — 2026-09-01
 
 ### Dynamic-Ally-Company-Reel erneuert
