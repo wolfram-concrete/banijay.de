@@ -52,18 +52,11 @@ export const LEADERSHIP: Leader[] = [
   // um den Kinnpunkt gezoomt) → näher an Knut.
   { name: "Marcus Wolter", role: "CEO & Co-Founder", img: "/people/marcus-wolter.webp" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.webp" },
-  // Echtes Portrait (Wolfram 17.07.) — löst den Platzhalter lead-3.jpg ab.
-  // ACHTUNG, ANDERE ZAHL ALS UNTEN: Michael Laegel steht in der LEADER-Reihe, deren
-  // Kacheln 248×182 (1.36) messen — nicht 142×138 (1.03) wie die Reihen darunter. Von
-  // einem 0.75-Hochformat bleiben dort nur 55 % der Bildhöhe stehen (statt 73 %). Ein
-  // 32 %-Kopf wie bei den anderen wäre hier auf 58 % der Kachelhöhe aufgeblasen worden.
-  // Daher Kopf = 24 % der Ausschnitthöhe → 24/0.55 = 43,6 % der Kachel, das entspricht
-  // Knut (~43 %). Nachskaliert (Wolfram 21.07., 2. Runde): Kopf −15 % + auf die Leader-
-  // Kinnlinie (~49 % der Kachel) gehoben — frisch aus assets/People/Michael Laegel.jpg
-  // (4912×7360) beschnitten: extract(839,1629,2283,3043).
-  // HORIZONTAL ZENTRIERT (Wolfram 21.07., 4. Runde): saß zu weit rechts (~68 %), links war
-  // zu viel weiße Wand zu sehen. Fenster nach rechts geschoben → Gesicht ~51 %, Wand nur
-  // noch schmaler Streifen. extract(1240,1320,2250,3000).
+  // Neues, schärferes Portrait (Wolfram 10.09.2026). Quelle „2026_07 Banijay _ Nick
+  // Harwart-8054-2 (1).jpg" (4912×7360). Für die bestehende Leader-Skalierung auf
+  // 900×1200 beschnitten: extract(1750,1740,1500,2000). Scheitel (~7 %), Kinnlinie
+  // (~48 %) und horizontale Gesichtsmitte entsprechen Marcus, Knut und Arno; der
+  // bestehende Fokuswert 50 % 14 % bleibt dadurch unverändert.
   { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.webp" },
   // Neu im Board (Wolfram 04.08.): direkt hinter Michael Laegel. Quelle
   // assets/People/weboptimiert/Arno.webp (3800×5712). Für die Leader-Reihe auf
