@@ -3,18 +3,20 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
-## [main] — 2026-09-10
+## [main] — 2026-09-24
 
 ### Team-Porträt von Michael Laegel erneuert
 
-- **Schärferes Original eingesetzt:** Das bisherige Portrait von Michael Laegel wurde
-  durch die neu gelieferte, höher aufgelöste Schwarz-Weiß-Aufnahme ersetzt.
+- **Finales Original eingesetzt:** Das bisherige Portrait von Michael Laegel wurde
+  durch die kundenseitig ausgewählte Schwarz-Weiß-Aufnahme `IMG_7344.JPG` ersetzt.
 - **Einheitliche Proportionen:** Der Ausschnitt wurde auf das bestehende Teamformat
   900 × 1200 px abgestimmt. Kopfposition, Kinnlinie und Größenwirkung orientieren sich
   an den benachbarten Board-Porträts von Marcus Wolter, Knut Kremling und Arno
   Schneppenheim.
-- **Weboptimiert:** Das Original wurde verlustarm als WebP auf rund 83 KB reduziert;
-  der vorhandene Fokuspunkt und sämtliche Team-Layouts bleiben unverändert.
+- **Weboptimiert und cache-sicher:** Das Original wurde verlustarm als WebP reduziert
+  und unter einem neuen, datierten Dateinamen eingebunden. Browser und CDN können
+  dadurch nicht mehr die zuvor ausgelieferte Aufnahme aus dem Cache verwenden; der
+  vorhandene Fokuspunkt und sämtliche Team-Layouts bleiben unverändert.
 - **Verifiziert:** Die vier Board-Porträts wurden direkt nebeneinander verglichen;
   TypeScript-Prüfung, ESLint und der Produktions-Build laufen ohne Fehler durch.
 

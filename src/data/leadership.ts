@@ -52,12 +52,11 @@ export const LEADERSHIP: Leader[] = [
   // um den Kinnpunkt gezoomt) → näher an Knut.
   { name: "Marcus Wolter", role: "CEO & Co-Founder", img: "/people/marcus-wolter.webp" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.webp" },
-  // Neues, schärferes Portrait (Wolfram 10.09.2026). Quelle „2026_07 Banijay _ Nick
-  // Harwart-8054-2 (1).jpg" (4912×7360). Für die bestehende Leader-Skalierung auf
-  // 900×1200 beschnitten: extract(1750,1740,1500,2000). Scheitel (~7 %), Kinnlinie
-  // (~48 %) und horizontale Gesichtsmitte entsprechen Marcus, Knut und Arno; der
-  // bestehende Fokuswert 50 % 14 % bleibt dadurch unverändert.
-  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel.webp" },
+  // Finales Portrait (Wolfram 24.09.2026). Quelle IMG_7344.JPG (3812×5712).
+  // Für die bestehende Leader-Skalierung auf 900×1200 beschnitten:
+  // extract(1375,1325,1200,1600). Der versionssichere Dateiname verhindert,
+  // dass Browser oder CDN weiterhin die zuvor ausgelieferte Aufnahme zeigen.
+  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel-2026-09-24.webp" },
   // Neu im Board (Wolfram 04.08.): direkt hinter Michael Laegel. Quelle
   // assets/People/weboptimiert/Arno.webp (3800×5712). Für die Leader-Reihe auf
   // 900×1200 beschnitten: extract(663,200,2475,3300). Dadurch sitzt der Scheitel bei
