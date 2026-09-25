@@ -4,7 +4,7 @@
 export const FOCUS: Record<string, string> = {
   "/people/marcus-wolter.webp": "50% 14%",
   "/people/knut-kremling.webp": "50% 14%",
-  "/people/michael-laegel-2026-09-24.webp": "50% 14%",
+  "/people/michael-laegel-2026-09-25.webp": "50% 14%",
   "/people/arno-schneppenheim.webp": "50% 14%",
   "/people/simone-lenzen.webp": "50% 0%",
   "/people/heike-lutzer.webp": "50% 0%",

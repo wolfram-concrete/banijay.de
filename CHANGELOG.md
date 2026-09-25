@@ -3,7 +3,7 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
-## [main] — 2026-09-24
+## [main] — 2026-09-25
 
 ### Team-Porträt von Michael Laegel erneuert
 
@@ -12,7 +12,8 @@ Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 - **Einheitliche Proportionen:** Der Ausschnitt wurde auf das bestehende Teamformat
   900 × 1200 px abgestimmt. Kopfposition, Kinnlinie und Größenwirkung orientieren sich
   an den benachbarten Board-Porträts von Marcus Wolter, Knut Kremling und Arno
-  Schneppenheim.
+  Schneppenheim. Nach der Live-Prüfung wurde Michael nochmals um rund 14 % vergrößert,
+  damit seine Kopf- und Schultergröße in der Board-Reihe optisch gleichwertig erscheint.
 - **Weboptimiert und cache-sicher:** Das Original wurde verlustarm als WebP reduziert
   und unter einem neuen, datierten Dateinamen eingebunden. Browser und CDN können
   dadurch nicht mehr die zuvor ausgelieferte Aufnahme aus dem Cache verwenden; der

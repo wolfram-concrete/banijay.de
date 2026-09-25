@@ -122,9 +122,10 @@ Volltext- und englische Kurzfassung hinterlegt. Ihr breites Gruppenmotiv wird na
 ausgespielt; der Artikel bietet strukturierte Hervorhebungen, den PicDrop-Link und die
 Original-PDF als Download. News-Detailseiten nutzen global eine kompaktere H1, damit lange
 Headlines das Hero-Motiv nicht verdecken. In der Team-Section ergänzt Arno Schneppenheim als
-CCO die Board-Reihe direkt hinter Michael Laegel. Michaels finales Portrait wurde am 24.09.2026
+CCO die Board-Reihe direkt hinter Michael Laegel. Michaels finales Portrait wurde am 25.09.2026
 aus `IMG_7344.JPG` im bestehenden 900 × 1200-px-Format proportional an die übrigen
-Board-Porträts angepasst. Ein datierter Assetname stellt die cache-sichere Auslieferung sicher.
+Board-Porträts angepasst und nach der Live-Prüfung um rund 14 % vergrößert. Ein datierter
+Assetname stellt die cache-sichere Auslieferung sicher.
 
 **Karriere-Stand 10.08.2026.** Alle Karriere-CTAs und Standorte verweisen auf das
 gruppenweite Softgarden-Board `https://banijay.softgarden.io/de/vacancies`; die entfernte

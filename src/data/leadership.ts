@@ -52,11 +52,13 @@ export const LEADERSHIP: Leader[] = [
   // um den Kinnpunkt gezoomt) → näher an Knut.
   { name: "Marcus Wolter", role: "CEO & Co-Founder", img: "/people/marcus-wolter.webp" },
   { name: "Knut Kremling", role: "COO", img: "/people/knut-kremling.webp" },
-  // Finales Portrait (Wolfram 24.09.2026). Quelle IMG_7344.JPG (3812×5712).
+  // Finales Portrait (Wolfram 25.09.2026). Quelle IMG_7344.JPG (3812×5712).
   // Für die bestehende Leader-Skalierung auf 900×1200 beschnitten:
-  // extract(1375,1325,1200,1600). Der versionssichere Dateiname verhindert,
+  // extract(1450,1340,1050,1400). Gegenüber der ersten Fassung rund 14 % größer,
+  // damit Kopf- und Schultergröße Marcus, Knut und Arno entsprechen. Der datierte
+  // Dateiname verhindert,
   // dass Browser oder CDN weiterhin die zuvor ausgelieferte Aufnahme zeigen.
-  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel-2026-09-24.webp" },
+  { name: "Michael Laegel", role: "CFO", img: "/people/michael-laegel-2026-09-25.webp" },
   // Neu im Board (Wolfram 04.08.): direkt hinter Michael Laegel. Quelle
   // assets/People/weboptimiert/Arno.webp (3800×5712). Für die Leader-Reihe auf
   // 900×1200 beschnitten: extract(663,200,2475,3300). Dadurch sitzt der Scheitel bei
