@@ -3,6 +3,23 @@
 Alle nennenswerten Änderungen an diesem Projekt. Format angelehnt an
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
+## [main] — 2026-11-12
+
+### Iconic-IP-Galerie mit aktuellen Produktionsmotiven erweitert
+
+- **Sechs neue Produktionen:** „Club der Reality Detektive", „One Night at KitKat",
+  „1LIVE Köln Comedy-Nacht XXL", „The Summit", „Promis unter Palmen" und „Deal or
+  No Deal" ergänzen die Iconic-IP-Galerie.
+- **Vier Motive aktualisiert:** „Kampf der Realitystars – Allstars", „Temptation
+  Island VIP", „Das große Promi-Büßen" und „Die Höhle der Löwen" verwenden die am
+  11.11.2026 redaktionell gelieferten Produktionsbilder.
+- **Originalproportionen erhalten:** Alle zehn Motive wurden ohne Beschnitt auf die
+  bestehende Gallery-Höhe von 560 px gebracht und als WebP optimiert. Neue Dateinamen
+  für die vier Austausche umgehen alte Browser- und CDN-Caches.
+- **Drei Reihen neu ausbalanciert:** Die nun 39 aktiven Motive verteilen sich auf
+  13 / 13 / 13 Elemente. Neben der Anzahl sind auch die kumulierten Bildbreiten
+  ausgeglichen, damit die gegenläufigen Marquees homogen laufen.
+
 ## [main] — 2026-09-25
 
 ### Team-Porträt von Michael Laegel erneuert

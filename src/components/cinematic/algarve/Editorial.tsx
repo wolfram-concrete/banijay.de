@@ -34,8 +34,10 @@ const MAGENTA = "#ff4370";
 // „TV total" führen die obere Reihe an → im ersten Screen garantiert sichtbar.
 // Assets: /public/ip-brands (weboptimiert aus assets/Bilder, Höhe 560).
 //
-// Die 33 vorhandenen Motive sind gleichmäßig auf 11/11/11 verteilt.
-// Kommen neue IP-Visuals dazu, einfach hier verteilen.
+// Die 39 vorhandenen Motive sind gleichmäßig auf 13/13/13 verteilt.
+// Kommen neue IP-Visuals dazu, einfach hier verteilen. Die drei Reihen sind
+// zusätzlich nach ihrer Gesamtbreite ausbalanciert, damit die Laufgeschwindigkeit
+// trotz sehr unterschiedlicher Hoch-/Querformate annähernd gleich wirkt.
 // Nachtrag 20.07. (Wolfram): „Beauty & the Nerd" in die mittlere Reihe ergänzt (war
 // 10/9/9). Quelle nur 800×536 — auf Reihenhöhe 560 gebracht, also 4,5 % hochskaliert;
 // bei diesem Betrag optisch unauffällig. Der Quellordner heißt „Beaty and the nerd",
@@ -45,17 +47,21 @@ const b = (slug: string, name: string, width: number, height = 560): Brand => ({
 const BRANDS_TOP: Brand[] = [
   b("wer-wird-millionar", "Wer wird Millionär", 384),
   b("tv-total", "TV total", 695),
-  b("die-hohle-der-lowen-2026", "Die Höhle der Löwen", 996),
+  b("die-hohle-der-lowen-2026-11", "Die Höhle der Löwen", 996),
+  b("club-der-reality-detektive", "Club der Reality Detektive", 997),
+  b("promis-unter-palmen", "Promis unter Palmen", 1005),
   b("the-masked-singer", "The Masked Singer", 650),
-  b("kitchen-impossible", "Kitchen Impossible", 610),
+  b("die-verrater", "Die Verräter", 1067),
   b("schlag-den-star", "Schlag den Star", 840),
   b("promi-big-brother", "Promi Big Brother", 664),
-  b("temptation-island", "Temptation Island", 755),
+  b("temptation-island-vip-2026", "Temptation Island VIP", 996),
   b("bad-boyfriends", "Bad Boyfriends", 996),
-  b("kampf-der-realitystars", "Kampf der Realitystars", 460),
+  b("kampf-der-realitystars-allstars-2026", "Kampf der Realitystars – Allstars", 483),
   b("stromberg", "Stromberg", 664),
 ];
 const BRANDS_MID: Brand[] = [
+  b("1live-koeln-comedy-nacht-xxl", "1LIVE Köln Comedy-Nacht XXL", 841),
+  b("deal-or-no-deal", "Deal or No Deal", 893),
   b("nightwash", "NightWash", 693),
   b("barbara-salesch", "Barbara Salesch", 560),
   b("der-lehrer", "Der Lehrer", 996),
@@ -63,12 +69,15 @@ const BRANDS_MID: Brand[] = [
   b("the-50", "The 50", 996),
   b("beauty-and-the-nerd", "Beauty & the Nerd", 836),
   b("roadtrip-australien", "Roadtrip Australien – 3 Spitzenköche auf 4 Rädern", 840),
-  b("die-verrater", "Die Verräter", 1067),
+  b("kitchen-impossible", "Kitchen Impossible", 610),
   b("villa-der-versuchung", "Villa der Versuchung", 642),
   b("richter-alexander-hold", "Richter Alexander Hold", 860),
   b("kommissar-dupin", "Kommissar Dupin", 996),
 ];
 const BRANDS_BOTTOM: Brand[] = [
+  b("one-night-at-kitkat", "One Night at KitKat", 374),
+  b("the-summit", "The Summit – Der steile Weg zur Million", 909),
+  b("das-grosse-promi-buessen-2026", "Das große Promi-Büßen", 1004),
   b("die-landarztpraxis", "Die Landarztpraxis", 996),
   b("berlin-tag-und-nacht", "Berlin – Tag und Nacht", 866),
   b("bitte-melde-dich", "Bitte melde dich", 887),
@@ -79,8 +88,6 @@ const BRANDS_BOTTOM: Brand[] = [
   b("luminiscence", "Luminiscence", 560),
   b("mcdonalds-stromberg-mockumentary", "Stromberg × McDonald's", 733),
   b("tatort-nachtschatten", "Tatort Nachtschatten", 365, 501),
-  // Nachtrag 20.07. (Wolfram) — Verteilung damit 10/10/10, alle drei Reihen gleich lang.
-  b("das-grosse-promi-buessen", "Das große Promi Büßen", 996),
 ];
 // VIERTE Reihe — NUR MOBILE (Wolfram 22.07.): läuft von rechts nach links. Kuratierter
 // Mix quer durch die drei Sets (dekorativer Marquee, Mehrfachnutzung einzelner Motive ok),
@@ -94,7 +101,7 @@ const BRANDS_MOBILE4: Brand[] = [
   b("berlin-tag-und-nacht", "Berlin – Tag und Nacht", 866),
   b("kitchen-impossible", "Kitchen Impossible", 610),
   b("kommissar-dupin", "Kommissar Dupin", 996),
-  b("das-grosse-promi-buessen", "Das große Promi Büßen", 996),
+  b("das-grosse-promi-buessen-2026", "Das große Promi-Büßen", 1004),
   b("tv-total", "TV total", 695),
 ];
 

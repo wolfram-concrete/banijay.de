@@ -44,13 +44,17 @@ gepinnte Atom-Orbit-Grafik.
 
 Die Editorial-Section der Home trägt ein CEO-Porträt im großen Sticky-Bildcontainer, „Die Story"
 auf hellem Paper-Feld, eine gepinnte Fakten-Accordion-Spalte (Kennzahlen zählen beim Scroll-in hoch,
-inkl. „90 % Primetime-Hitrate") und einen **dreireihigen IP-Brands-Slider** (33 ikonische
-Formate, gleichmäßig 11 / 11 / 11 auf gegenläufige Reihen verteilt, in Originalproportion
+inkl. „90 % Primetime-Hitrate") und einen **dreireihigen IP-Brands-Slider** (39 ikonische
+Formate, gleichmäßig 13 / 13 / 13 auf gegenläufige Reihen verteilt, in Originalproportion
 weboptimiert aus `/public/ip-brands`; mobil ergänzt eine vierte kuratierte Reihe). Seit
 05.08. gehören auch „Bad Boyfriends", „Roadtrip Australien – 3 Spitzenköche auf 4 Rädern"
 und „Undercover Boss" zum Slider. Das Motiv von „Die Höhle der Löwen" zeigt seit
-10.08. das aktuelle Ensemble als vollständig sichtbares, weboptimiertes 16:9-Visual;
-ein versionssicherer Dateiname verhindert die Auslieferung der grauen Cache-Fassung.
+12.11. das aktuelle Ensemble als vollständig sichtbares, weboptimiertes 16:9-Visual.
+Ebenfalls neu sind „Club der Reality Detektive", „One Night at KitKat", „1LIVE Köln
+Comedy-Nacht XXL", „The Summit", „Promis unter Palmen" und „Deal or No Deal"; die
+aktuellen Motive von „Kampf der Realitystars – Allstars", „Temptation Island VIP" und
+„Das große Promi-Büßen" ersetzen ihre Vorgänger. Versionssichere Dateinamen verhindern
+bei allen Austauschen die Auslieferung älterer Cache-Fassungen.
 In allen Fact-Boxen
 sitzt das Einheiten-„+" grundlinienbündig an der Ziffer (Wrapper mit eigener `font-size` +
 Glyph-Offset), genau wie `%`/`Mrd.`/`hrs.`. Team-Headlines
@@ -291,7 +295,7 @@ public/
                          Website-Screencast, weiße Nav-Leiste weggecroppt;
                          cape-cross.mp4 und cape-cross-postproduction.mp4 = zwei
                          unterschiedliche Sequenzen desselben Cape-Cross-Imagefilms.
-  ip-brands/             33 weboptimierte Iconic-IP-Motive ohne Beschnitt in drei
+  ip-brands/             39 aktive weboptimierte Iconic-IP-Motive ohne Beschnitt in drei
                          Desktop-Reihen (Assets überwiegend 560 px hoch, eine
                          Bestandsausnahme mit 501 px); mobil auf 135 px sichtbarer
                          Reihenhöhe plus vierter kuratierter Reihe.
